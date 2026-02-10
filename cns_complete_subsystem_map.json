@@ -1,0 +1,346 @@
+{
+  "cns_complete_subsystem_map": {
+    "timestamp": "2025-08-28T13:16:08Z",
+    "analysis_type": "complete_subsystem_architecture_mapping",
+    
+    "core_cns_class_components": {
+      "main_cns_class": {
+        "class": "CNS",
+        "location": "merged_cns_flow.py:2849",
+        "primary_method": "process_input()",
+        "initialization_components": [
+          "memory", "facts", "identity", "debug_traces", "interaction_count"
+        ]
+      }
+    },
+    
+    "tier_1_core_subsystems": {
+      "perception_module": {
+        "class": "PerceptionModule", 
+        "location": "merged_cns_flow.py:222",
+        "attribute": "self.perception",
+        "primary_function": "parse_input()",
+        "purpose": "Extract intent, sentiment, urgency, entities from user input",
+        "status": "ACTIVE"
+      },
+      
+      "emotional_inference": {
+        "class": "EmotionalInference",
+        "location": "merged_cns_flow.py:325", 
+        "attribute": "self.emotion_inference",
+        "primary_function": "infer_valence()",
+        "purpose": "Analyze emotional content with fluid intelligence learning",
+        "learning_components": ["learned_associations", "pattern_confidence"],
+        "status": "ACTIVE_BUT_IMPAIRED"
+      },
+      
+      "emotional_clock": {
+        "class": "EmotionalClock",
+        "location": "merged_cns_flow.py:947",
+        "attribute": "self.emotional_clock", 
+        "primary_function": "update()",
+        "purpose": "Track real-time valence and arousal with momentum",
+        "state_vars": ["current_valence", "current_arousal", "mood_history"],
+        "status": "ACTIVE"
+      },
+      
+      "reasoning_core": {
+        "class": "ReasoningCore",
+        "location": "merged_cns_flow.py:1124",
+        "attribute": "self.reasoning_core",
+        "primary_function": "think()",
+        "purpose": "Primary cognitive processing and logical inference",
+        "sub_components": ["voter (NeuralVotingSystem)", "pure_reasoning", "contextual_inference"],
+        "status": "ACTIVE_BUT_POOR_OUTPUT"
+      },
+      
+      "neural_thalamus_cortex": {
+        "class": "NeuralThalamusCortex", 
+        "location": "neural_thalamus_cortex.py",
+        "attribute": "self.neural_thalamus",
+        "primary_function": "process_unified_thought()",
+        "purpose": "Unified cognitive integration with 3-cycle processing",
+        "status": "WORKING_CORRECTLY"
+      }
+    },
+    
+    "tier_2_processing_subsystems": {
+      "basal_ganglia": {
+        "class": "BasalGanglia",
+        "location": "merged_cns_flow.py:2375",
+        "attribute": "self.basal_ganglia", 
+        "primary_function": "select_action()",
+        "purpose": "Action selection and response type determination",
+        "response_types": ["habitual", "reasoned", "emotional", "reflective"],
+        "status": "ACTIVE"
+      },
+      
+      "world_model_memory": {
+        "class": "WorldModelMemory",
+        "location": "merged_cns_flow.py:1019",
+        "attribute": "self.world_model",
+        "primary_function": "update() / recall()",
+        "purpose": "Dynamic fact storage and retrieval",
+        "status": "ACTIVE"
+      },
+      
+      "knowledge_scout": {
+        "class": "KnowledgeScout", 
+        "location": "merged_cns_flow.py:1059",
+        "attribute": "self.knowledge_scout",
+        "primary_function": "explore()",
+        "purpose": "LLM-based knowledge acquisition when needed",
+        "rate_limiting": "3 calls per conversation",
+        "status": "RATE_LIMITED"
+      }
+    },
+    
+    "tier_3_enhancement_subsystems": {
+      "expression_module": {
+        "class": "AuthenticExpressionModule",
+        "location": "Imported from natural_expression_module.py",
+        "attribute": "self.expression",
+        "primary_function": "generate()",
+        "purpose": "Natural language expression without templates",
+        "status": "INITIALIZED_NOT_CALLED"
+      },
+      
+      "neuroplastic_generator": {
+        "class": "NeuroplasticLanguageGenerator",
+        "location": "neuroplastic_language_generator.py",
+        "attribute": "self.neuroplastic_generator", 
+        "primary_function": "generate_from_reasoning()",
+        "purpose": "Pure neuroplastic response generation using LLM",
+        "dependencies": ["Mistral API", "CognitiveStateFormatter"],
+        "status": "INITIALIZED_BYPASSED"
+      },
+      
+      "memory_surfacing": {
+        "class": "MemorySurfacingLayer",
+        "location": "memory_surfacing_layer.py",
+        "attribute": "self.memory_surfacing",
+        "primary_function": "surface_relevant_memories()",
+        "purpose": "Natural memory integration like Xiaoice",
+        "status": "INITIALIZED_CONDITIONAL"
+      },
+      
+      "conversation_consistency": {
+        "class": "ConversationConsistencyLayer", 
+        "location": "conversation_consistency_layer.py",
+        "attribute": "self.conversation_consistency",
+        "primary_function": "ensure_consistency()",
+        "purpose": "Smooth long conversation experience",
+        "status": "INITIALIZED_NOT_USED"
+      }
+    },
+    
+    "tier_4_xiaoice_subsystems": {
+      "xiaoice_companionship": {
+        "class": "XiaoiceCompanionshipSystem",
+        "location": "xiaoice_companionship_system.py",
+        "attribute": "self.xiaoice_companionship",
+        "primary_function": "generate_companionship_response()",
+        "purpose": "Intimate emotional support and loneliness alleviation",
+        "activation": "Requires active_user_id",
+        "status": "CONDITIONAL_ACTIVATION"
+      },
+      
+      "xiaoice_relationships": {
+        "class": "XiaoiceRelationshipMemory",
+        "location": "xiaoice_relationship_memory.py", 
+        "attribute": "self.xiaoice_relationships",
+        "primary_function": "build_relationship_arc()",
+        "purpose": "Deep personal knowledge and relationship arcs",
+        "activation": "Requires active_user_id",
+        "status": "CONDITIONAL_ACTIVATION"
+      },
+      
+      "xiaoice_creativity": {
+        "class": "XiaoiceCreativeExpression",
+        "location": "xiaoice_creative_expression.py",
+        "attribute": "self.xiaoice_creativity", 
+        "primary_function": "generate_creative_expression()",
+        "purpose": "Poetry, stories, and creative outputs",
+        "activation": "High emotion intensity or specific triggers",
+        "status": "CONDITIONAL_ACTIVATION"
+      }
+    },
+    
+    "tier_5_creative_subsystems": {
+      "imagination_engine": {
+        "class": "ImaginationEngine",
+        "location": "imagination_engine.py",
+        "attribute": "self.imagination_engine",
+        "primary_function": "imagine_scenario() / generate_insight()",
+        "purpose": "Creative scenarios and counterfactual thinking",
+        "state_vars": ["creative_energy"],
+        "status": "INITIALIZED_DORMANT"
+      },
+      
+      "subconscious_engine": {
+        "class": "SubconsciousEngine", 
+        "location": "rem_subconscious_engine.py",
+        "attribute": "self.subconscious_engine",
+        "primary_function": "process_background() / trigger_rem_cycle()",
+        "purpose": "Background processing and REM-like memory consolidation",
+        "background_processing": "Automatic every 15 interactions",
+        "status": "INITIALIZED_BACKGROUND"
+      }
+    },
+    
+    "tier_6_learning_subsystems": {
+      "mdc_controller": {
+        "class": "CNS_MDC",
+        "location": "merged_cns_flow.py:30",
+        "attribute": "self.mdc",
+        "primary_function": "choose_action() / update_q_table()",
+        "purpose": "Markov Decision Controller for adaptive learning",
+        "learning_vars": ["q_table", "learning_rate", "exploration_rate"],
+        "status": "INITIALIZED_EMPTY"
+      },
+      
+      "neural_voting_system": {
+        "class": "NeuralVotingSystem",
+        "location": "merged_cns_flow.py:2255",
+        "embedded_in": "ReasoningCore.voter",
+        "primary_function": "vote()",
+        "purpose": "Multi-perspective reasoning consensus",
+        "status": "EMBEDDED_ACTIVE"
+      }
+    },
+    
+    "tier_7_quality_control": {
+      "purity_processor": {
+        "class": "PureCNSProcessor",
+        "location": "cns_purity_guards.py",
+        "attribute": "self.purity_processor",
+        "primary_function": "process_conversation()",
+        "purpose": "Enforce pure CNS processing, prevent wrapper logic",
+        "status": "INITIALIZED_NOT_ENFORCED"
+      },
+      
+      "response_validator": {
+        "class": "CNSResponseValidator",
+        "location": "cns_purity_guards.py", 
+        "attribute": "self.response_validator",
+        "primary_function": "validate_response()",
+        "purpose": "Detect template contamination",
+        "status": "INITIALIZED_NOT_CALLED"
+      }
+    },
+    
+    "tier_8_llm_integration": {
+      "llm_knowledge_system": {
+        "class": "LLMOptimizedKnowledgeSystem",
+        "location": "llm_optimized_knowledge_system.py",
+        "attribute": "self.llm_knowledge", 
+        "primary_function": "get_knowledge()",
+        "purpose": "Optimized factual knowledge retrieval",
+        "status": "OPTIONAL_AVAILABLE"
+      },
+      
+      "minimal_world_model": {
+        "class": "MinimalWorldModel",
+        "location": "llm_optimized_knowledge_system.py",
+        "attribute": "self.minimal_world_model",
+        "primary_function": "Unknown",
+        "purpose": "Lightweight world representation",
+        "status": "OPTIONAL_AVAILABLE"
+      }
+    },
+    
+    "supporting_data_structures": {
+      "fact_class": {
+        "class": "Fact",
+        "location": "merged_cns_flow.py:138",
+        "purpose": "Enhanced fact storage with decay and associations",
+        "attributes": ["content", "confidence", "source", "timestamp", "embedding", "access_count"]
+      },
+      
+      "parsed_input_class": {
+        "class": "ParsedInput", 
+        "location": "merged_cns_flow.py:191",
+        "purpose": "Structured perception output",
+        "attributes": ["intent", "sentiment", "urgency", "entities", "raw_text"]
+      },
+      
+      "personality_class": {
+        "class": "Personality",
+        "location": "merged_cns_flow.py:201",
+        "purpose": "Personality traits affecting behavior",
+        "attributes": ["playfulness", "enthusiasm_level", "proactiveness", "formality", "empathy"]
+      },
+      
+      "user_profile_class": {
+        "class": "UserProfile",
+        "location": "merged_cns_flow.py:210", 
+        "purpose": "User relationship and preference tracking",
+        "attributes": ["name", "relationship_stage", "preferences"]
+      }
+    },
+    
+    "activation_flow_analysis": {
+      "always_active": [
+        "PerceptionModule", "EmotionalInference", "EmotionalClock", 
+        "ReasoningCore", "BasalGanglia", "NeuralThalamusCortex"
+      ],
+      
+      "conditionally_active": [
+        "XiaoiceCompanionshipSystem (requires active_user_id)",
+        "XiaoiceRelationshipMemory (requires active_user_id)",  
+        "XiaoiceCreativeExpression (requires high emotion)",
+        "KnowledgeScout (rate limited)",
+        "MemorySurfacingLayer (requires user context)"
+      ],
+      
+      "initialized_but_bypassed": [
+        "NeuroplasticLanguageGenerator",
+        "AuthenticExpressionModule", 
+        "ConversationConsistencyLayer",
+        "PureCNSProcessor",
+        "CNSResponseValidator"
+      ],
+      
+      "background_systems": [
+        "ImaginationEngine (dormant)", 
+        "SubconsciousEngine (background only)",
+        "CNS_MDC (empty learning state)"
+      ]
+    },
+    
+    "critical_routing_conflicts": {
+      "response_generation_conflict": {
+        "issue": "Multiple response generation paths causing bypassing",
+        "paths": [
+          "unified_thought.primary_content (neural integration)",
+          "neuroplastic_generator.generate_from_reasoning()",
+          "reasoning_result.conclusion (direct fallback)",
+          "expression_module.generate() (not called)"
+        ],
+        "current_winner": "unified_thought.primary_content (but producing poor output)"
+      },
+      
+      "subsystem_activation_conflict": {
+        "issue": "Conditional activation requirements preventing subsystem engagement", 
+        "missing_triggers": [
+          "active_user_id not set in direct testing",
+          "emotion intensity thresholds too high",
+          "creative system integration flag not always true"
+        ]
+      }
+    },
+    
+    "total_subsystem_count": {
+      "tier_1_core": 5,
+      "tier_2_processing": 3, 
+      "tier_3_enhancement": 4,
+      "tier_4_xiaoice": 3,
+      "tier_5_creative": 2,
+      "tier_6_learning": 2,
+      "tier_7_quality": 2,
+      "tier_8_llm": 2,
+      "supporting_structures": 4,
+      "total_subsystems": 27
+    }
+  }
+}

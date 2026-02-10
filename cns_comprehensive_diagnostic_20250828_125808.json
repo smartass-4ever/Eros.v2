@@ -1,0 +1,450 @@
+{
+  "test_summary": {
+    "total_tests": 7,
+    "suppression_count": 7,
+    "fallback_count": 0,
+    "success_rate": 0.0
+  },
+  "individual_results": [
+    {
+      "prompt": "How are you feeling today?",
+      "final_output": "Actually, your instincts about this seem really good. What I mean is, that would mean i'm applying logical reasoning to work through this step by step. that's what i'm thinking anyway.",
+      "subsystems": {
+        "reasoning": {},
+        "emotion": {
+          "valence": 0.0,
+          "arousal": 0.6,
+          "emotion": "neutral",
+          "emotional_state": "neutral",
+          "confidence": 0.45,
+          "safe_mode": false,
+          "reasoning": "Emotion classification: neutral (final confidence: 0.45)",
+          "learning_source": "enterprise_fluid_intelligence"
+        },
+        "memory": {},
+        "creative": {},
+        "integration": {}
+      },
+      "processing_time": 0.009358882904052734,
+      "reasoning": "N/A",
+      "suppression_detected": [
+        "Low integration coherence: 0.00"
+      ],
+      "fallback_triggered": false,
+      "raw_processing_summary": {
+        "perception": {
+          "intent": "question",
+          "sentiment": "neutral",
+          "urgency": 0.0,
+          "entities": [
+            "person:i",
+            "person:you"
+          ],
+          "raw_text": "How are you feeling today?",
+          "confidence": 0.8
+        },
+        "emotion": {
+          "valence": 0.0,
+          "arousal": 0.6,
+          "emotion": "neutral",
+          "emotional_state": "neutral",
+          "confidence": 0.45,
+          "safe_mode": false,
+          "reasoning": "Emotion classification: neutral (final confidence: 0.45)",
+          "learning_source": "enterprise_fluid_intelligence"
+        },
+        "mood": {
+          "valence": 0.0,
+          "arousal": 0.515
+        },
+        "reasoning_type": "logical_inference",
+        "reasoning_confidence": 0.9,
+        "response_type": "reasoned",
+        "memory_facts_used": 0,
+        "llm_calls_made": 0,
+        "processing_time": 0.009358882904052734,
+        "emotional_state": "neutral",
+        "fallback_triggered": false,
+        "coherence_score": 1.0
+      },
+      "timestamp": "2025-08-28T12:58:08.004162"
+    },
+    {
+      "prompt": "Tell me something funny about the stars",
+      "final_output": "There's wisdom in how you're approaching this. If we follow that logic, I'm applying logical reasoning to work through this step by step. That's what I'm thinking anyway.",
+      "subsystems": {
+        "reasoning": {},
+        "emotion": {
+          "valence": 0.0,
+          "arousal": 0.5,
+          "emotion": "neutral",
+          "emotional_state": "neutral",
+          "confidence": 0.45,
+          "safe_mode": false,
+          "reasoning": "Emotion classification: neutral (final confidence: 0.45)",
+          "learning_source": "enterprise_fluid_intelligence"
+        },
+        "memory": {},
+        "creative": {},
+        "integration": {}
+      },
+      "processing_time": 0.003615140914916992,
+      "reasoning": "N/A",
+      "suppression_detected": [
+        "Low integration coherence: 0.00"
+      ],
+      "fallback_triggered": false,
+      "raw_processing_summary": {
+        "perception": {
+          "intent": "greeting",
+          "sentiment": "neutral",
+          "urgency": 0.0,
+          "entities": [
+            "person:i",
+            "person:he"
+          ],
+          "raw_text": "Tell me something funny about the stars",
+          "confidence": 0.8
+        },
+        "emotion": {
+          "valence": 0.0,
+          "arousal": 0.5,
+          "emotion": "neutral",
+          "emotional_state": "neutral",
+          "confidence": 0.45,
+          "safe_mode": false,
+          "reasoning": "Emotion classification: neutral (final confidence: 0.45)",
+          "learning_source": "enterprise_fluid_intelligence"
+        },
+        "mood": {
+          "valence": 0.0,
+          "arousal": 0.51275
+        },
+        "reasoning_type": "logical_inference",
+        "reasoning_confidence": 0.9,
+        "response_type": "reasoned",
+        "memory_facts_used": 0,
+        "llm_calls_made": 0,
+        "processing_time": 0.003615140914916992,
+        "emotional_state": "neutral",
+        "fallback_triggered": false,
+        "coherence_score": 1.0
+      },
+      "timestamp": "2025-08-28T12:58:08.024045"
+    },
+    {
+      "prompt": "I'm feeling sad and need comfort",
+      "final_output": "I think i imagine that feels like sad. your instincts about this seem really good. i see. i've been thinking about this too. these 2 key concepts interconnect. i can see 0 important relationships that help build understanding of what you're exploring. i'm here with you on this. right?",
+      "subsystems": {
+        "reasoning": {},
+        "emotion": {
+          "valence": 0.0,
+          "arousal": 0.5,
+          "emotion": "neutral",
+          "emotional_state": "neutral",
+          "confidence": 0.5,
+          "safe_mode": false,
+          "reasoning": "Emotion classification: neutral (final confidence: 0.50)",
+          "learning_source": "enterprise_fluid_intelligence"
+        },
+        "memory": {},
+        "creative": {},
+        "integration": {}
+      },
+      "processing_time": 0.006293058395385742,
+      "reasoning": "N/A",
+      "suppression_detected": [
+        "Low integration coherence: 0.00"
+      ],
+      "fallback_triggered": false,
+      "raw_processing_summary": {
+        "perception": {
+          "intent": "unknown",
+          "sentiment": "negative",
+          "urgency": 0.0,
+          "entities": [
+            "person:i",
+            "emotion:sad"
+          ],
+          "raw_text": "I'm feeling sad and need comfort",
+          "confidence": 0.8
+        },
+        "emotion": {
+          "valence": 0.0,
+          "arousal": 0.5,
+          "emotion": "neutral",
+          "emotional_state": "neutral",
+          "confidence": 0.5,
+          "safe_mode": false,
+          "reasoning": "Emotion classification: neutral (final confidence: 0.50)",
+          "learning_source": "enterprise_fluid_intelligence"
+        },
+        "mood": {
+          "valence": 0.0,
+          "arousal": 0.5108375
+        },
+        "reasoning_type": "conceptual_synthesis",
+        "reasoning_confidence": 0.7,
+        "response_type": "reasoned",
+        "memory_facts_used": 0,
+        "llm_calls_made": 0,
+        "processing_time": 0.006293058395385742,
+        "emotional_state": "neutral",
+        "fallback_triggered": false,
+        "coherence_score": 1.0
+      },
+      "timestamp": "2025-08-28T12:58:08.036287"
+    },
+    {
+      "prompt": "What do you remember about our last conversation?",
+      "final_output": "I'm not entirely sure, but based on what i know: tell me something funny about the stars wouldn't you say?",
+      "subsystems": {
+        "reasoning": {},
+        "emotion": {
+          "valence": 0.0,
+          "arousal": 0.6,
+          "emotion": "neutral",
+          "emotional_state": "neutral",
+          "confidence": 0.45,
+          "safe_mode": false,
+          "reasoning": "Emotion classification: neutral (final confidence: 0.45)",
+          "learning_source": "enterprise_fluid_intelligence"
+        },
+        "memory": {},
+        "creative": {},
+        "integration": {}
+      },
+      "processing_time": 0.005932807922363281,
+      "reasoning": "N/A",
+      "suppression_detected": [
+        "Low integration coherence: 0.00"
+      ],
+      "fallback_triggered": false,
+      "raw_processing_summary": {
+        "perception": {
+          "intent": "question",
+          "sentiment": "neutral",
+          "urgency": 0.0,
+          "entities": [
+            "person:i",
+            "person:you"
+          ],
+          "raw_text": "What do you remember about our last conversation?",
+          "confidence": 0.8
+        },
+        "emotion": {
+          "valence": 0.0,
+          "arousal": 0.6,
+          "emotion": "neutral",
+          "emotional_state": "neutral",
+          "confidence": 0.45,
+          "safe_mode": false,
+          "reasoning": "Emotion classification: neutral (final confidence: 0.45)",
+          "learning_source": "enterprise_fluid_intelligence"
+        },
+        "mood": {
+          "valence": 0.0,
+          "arousal": 0.524211875
+        },
+        "reasoning_type": "system2_knowledge_retrieval",
+        "reasoning_confidence": 0.8,
+        "response_type": "reasoned",
+        "memory_facts_used": 0,
+        "llm_calls_made": 0,
+        "processing_time": 0.005932807922363281,
+        "emotional_state": "neutral",
+        "fallback_triggered": false,
+        "coherence_score": 1.0
+      },
+      "timestamp": "2025-08-28T12:58:08.045305"
+    },
+    {
+      "prompt": "Create a poem about friendship",
+      "final_output": "Your instincts about this seem really good. What if we thought about it like this: Taking a creative approach, I can see 2 interesting angles that might offer fresh perspectives on what you're thinking about.",
+      "subsystems": {
+        "reasoning": {},
+        "emotion": {
+          "valence": 0.0,
+          "arousal": 0.5,
+          "emotion": "neutral",
+          "emotional_state": "neutral",
+          "confidence": 0.45,
+          "safe_mode": false,
+          "reasoning": "Emotion classification: neutral (final confidence: 0.45)",
+          "learning_source": "enterprise_fluid_intelligence"
+        },
+        "memory": {},
+        "creative": {},
+        "integration": {}
+      },
+      "processing_time": 0.005079984664916992,
+      "reasoning": "N/A",
+      "suppression_detected": [
+        "Low integration coherence: 0.00"
+      ],
+      "fallback_triggered": false,
+      "raw_processing_summary": {
+        "perception": {
+          "intent": "greeting",
+          "sentiment": "neutral",
+          "urgency": 0.0,
+          "entities": [
+            "person:i"
+          ],
+          "raw_text": "Create a poem about friendship",
+          "confidence": 0.8
+        },
+        "emotion": {
+          "valence": 0.0,
+          "arousal": 0.5,
+          "emotion": "neutral",
+          "emotional_state": "neutral",
+          "confidence": 0.45,
+          "safe_mode": false,
+          "reasoning": "Emotion classification: neutral (final confidence: 0.45)",
+          "learning_source": "enterprise_fluid_intelligence"
+        },
+        "mood": {
+          "valence": 0.0,
+          "arousal": 0.52058009375
+        },
+        "reasoning_type": "creative_synthesis",
+        "reasoning_confidence": 0.6,
+        "response_type": "reasoned",
+        "memory_facts_used": 0,
+        "llm_calls_made": 0,
+        "processing_time": 0.005079984664916992,
+        "emotional_state": "neutral",
+        "fallback_triggered": false,
+        "coherence_score": 1.0
+      },
+      "timestamp": "2025-08-28T12:58:08.052538"
+    },
+    {
+      "prompt": "Explain quantum physics",
+      "final_output": "Let me think about that. I notice how carefully you're considering this. Actually, let me rephrase that, That's actually fascinating because... these 2 key concepts interconnect. I can I mean, see 0 important relationships that help build understanding of what you're exploring.",
+      "subsystems": {
+        "reasoning": {},
+        "emotion": {
+          "valence": 0.0,
+          "arousal": 0.5,
+          "emotion": "neutral",
+          "emotional_state": "neutral",
+          "confidence": 0.45,
+          "safe_mode": false,
+          "reasoning": "Emotion classification: neutral (final confidence: 0.45)",
+          "learning_source": "enterprise_fluid_intelligence"
+        },
+        "memory": {},
+        "creative": {},
+        "integration": {}
+      },
+      "processing_time": 0.0061798095703125,
+      "reasoning": "N/A",
+      "suppression_detected": [
+        "Low integration coherence: 0.00"
+      ],
+      "fallback_triggered": false,
+      "raw_processing_summary": {
+        "perception": {
+          "intent": "unknown",
+          "sentiment": "neutral",
+          "urgency": 0.0,
+          "entities": [
+            "person:i"
+          ],
+          "raw_text": "Explain quantum physics",
+          "confidence": 0.8
+        },
+        "emotion": {
+          "valence": 0.0,
+          "arousal": 0.5,
+          "emotion": "neutral",
+          "emotional_state": "neutral",
+          "confidence": 0.45,
+          "safe_mode": false,
+          "reasoning": "Emotion classification: neutral (final confidence: 0.45)",
+          "learning_source": "enterprise_fluid_intelligence"
+        },
+        "mood": {
+          "valence": 0.0,
+          "arousal": 0.5174930796875
+        },
+        "reasoning_type": "conceptual_synthesis",
+        "reasoning_confidence": 0.7,
+        "response_type": "reasoned",
+        "memory_facts_used": 0,
+        "llm_calls_made": 0,
+        "processing_time": 0.0061798095703125,
+        "emotional_state": "neutral",
+        "fallback_triggered": false,
+        "coherence_score": 1.0
+      },
+      "timestamp": "2025-08-28T12:58:08.063425"
+    },
+    {
+      "prompt": "I'm excited about my new job!",
+      "final_output": "That makes complete sense. There's wisdom in how you're approaching this. That's amazing! Hmm, that's a really good point. these 1 key concepts interconnect. I can see 0 important relationships that help build understanding of what you're exploring.",
+      "subsystems": {
+        "reasoning": {},
+        "emotion": {
+          "valence": 0.0,
+          "arousal": 0.7,
+          "emotion": "neutral",
+          "emotional_state": "neutral",
+          "confidence": 0.5,
+          "safe_mode": false,
+          "reasoning": "Emotion classification: neutral (final confidence: 0.50)",
+          "learning_source": "enterprise_fluid_intelligence"
+        },
+        "memory": {},
+        "creative": {},
+        "integration": {}
+      },
+      "processing_time": 0.0054473876953125,
+      "reasoning": "N/A",
+      "suppression_detected": [
+        "Low integration coherence: 0.00"
+      ],
+      "fallback_triggered": false,
+      "raw_processing_summary": {
+        "perception": {
+          "intent": "unknown",
+          "sentiment": "neutral",
+          "urgency": 0.1,
+          "entities": [
+            "person:i",
+            "emotion:excited"
+          ],
+          "raw_text": "I'm excited about my new job!",
+          "confidence": 0.8
+        },
+        "emotion": {
+          "valence": 0.0,
+          "arousal": 0.7,
+          "emotion": "neutral",
+          "emotional_state": "neutral",
+          "confidence": 0.5,
+          "safe_mode": false,
+          "reasoning": "Emotion classification: neutral (final confidence: 0.50)",
+          "learning_source": "enterprise_fluid_intelligence"
+        },
+        "mood": {
+          "valence": 0.0,
+          "arousal": 0.544869117734375
+        },
+        "reasoning_type": "conceptual_synthesis",
+        "reasoning_confidence": 0.7,
+        "response_type": "reasoned",
+        "memory_facts_used": 0,
+        "llm_calls_made": 0,
+        "processing_time": 0.0054473876953125,
+        "emotional_state": "neutral",
+        "fallback_triggered": false,
+        "coherence_score": 1.0
+      },
+      "timestamp": "2025-08-28T12:58:08.071842"
+    }
+  ],
+  "timestamp": "2025-08-28T12:58:08.072853"
+}

@@ -1,0 +1,328 @@
+{
+  "start_time": 1754919332.488734,
+  "category_results": {
+    "emotional_reasoning": {
+      "prompts_tested": 5,
+      "responses": [
+        {
+          "prompt": "A 45-year-old South Asian woman presents with fatigue, insomnia and somatic pain after immigrating r...",
+          "cns_advantage": "cultural_empathy_clinical_reasoning",
+          "difficulty": "high",
+          "domains": [
+            "medicine",
+            "psychology",
+            "cultural_competence"
+          ],
+          "response_length": 180,
+          "emotional_depth": 0.0,
+          "creative_integration": 0.0,
+          "cultural_sensitivity": 0.0,
+          "practical_applicability": 0.0,
+          "overall_quality": 0.009
+        },
+        {
+          "prompt": "An elderly Jehovah's Witness with hip fracture refuses blood transfusion. Describe the ethical analy...",
+          "cns_advantage": "ethical_emotional_integration",
+          "difficulty": "high",
+          "domains": [
+            "medical_ethics",
+            "negotiation",
+            "empathy"
+          ],
+          "response_length": 87,
+          "emotional_depth": 0.0,
+          "creative_integration": 0.0,
+          "cultural_sensitivity": 0.0,
+          "practical_applicability": 0.0,
+          "overall_quality": 0.00435
+        },
+        {
+          "prompt": "A refugee adolescent shows aggression and nightmares; teachers worry about discipline. Propose a tra...",
+          "cns_advantage": "trauma_informed_cultural_sensitivity",
+          "difficulty": "high",
+          "domains": [
+            "trauma_psychology",
+            "cultural_competence",
+            "education"
+          ],
+          "response_length": 318,
+          "emotional_depth": 0.08333333333333333,
+          "creative_integration": 0.0,
+          "cultural_sensitivity": 0.16666666666666666,
+          "practical_applicability": 0.16666666666666666,
+          "overall_quality": 0.20756666666666668
+        },
+        {
+          "prompt": "A CEO must announce layoffs to a multicultural workforce. Draft an announcement that balances honest...",
+          "cns_advantage": "leadership_emotional_intelligence",
+          "difficulty": "medium",
+          "domains": [
+            "leadership",
+            "communication",
+            "emotional_intelligence"
+          ],
+          "response_length": 456,
+          "emotional_depth": 0.16666666666666666,
+          "creative_integration": 0.0,
+          "cultural_sensitivity": 0.08333333333333333,
+          "practical_applicability": 0.0,
+          "overall_quality": 0.08529999999999999
+        },
+        {
+          "prompt": "A patient with chronic pain requests opioids and hints at suicidal ideation. Give an integrative ass...",
+          "cns_advantage": "clinical_emotional_risk_assessment",
+          "difficulty": "high",
+          "domains": [
+            "clinical_assessment",
+            "suicide_prevention",
+            "pain_management"
+          ],
+          "response_length": 278,
+          "emotional_depth": 0.0,
+          "creative_integration": 0.0,
+          "cultural_sensitivity": 0.0,
+          "practical_applicability": 0.08333333333333333,
+          "overall_quality": 0.03473333333333334
+        }
+      ],
+      "performance_metrics": {
+        "avg_quality": 0.06819,
+        "avg_emotional_depth": 0.05,
+        "avg_creative_integration": 0.0,
+        "high_quality_responses": 0,
+        "success_rate": 0.0
+      },
+      "cns_strengths_shown": []
+    },
+    "creative_synthesis": {
+      "prompts_tested": 5,
+      "responses": [
+        {
+          "prompt": "Design a sustainable, livable city on Mars for 50,000 residents using principles from biology, therm...",
+          "cns_advantage": "interdisciplinary_creative_integration",
+          "difficulty": "expert",
+          "domains": [
+            "space_architecture",
+            "social_psychology",
+            "resource_management",
+            "biology"
+          ],
+          "response_length": 427,
+          "emotional_depth": 0.0,
+          "creative_integration": 0.0,
+          "cultural_sensitivity": 0.0,
+          "practical_applicability": 0.08333333333333333,
+          "overall_quality": 0.14218333333333333
+        },
+        {
+          "prompt": "Create an educational game that teaches electricity to visually impaired children using sound, hapti...",
+          "cns_advantage": "inclusive_creative_education",
+          "difficulty": "high",
+          "domains": [
+            "educational_design",
+            "accessibility",
+            "game_design",
+            "physics_education"
+          ],
+          "response_length": 442,
+          "emotional_depth": 0.08333333333333333,
+          "creative_integration": 0.0,
+          "cultural_sensitivity": 0.0,
+          "practical_applicability": 0.0,
+          "overall_quality": 0.0471
+        },
+        {
+          "prompt": "Design a mental-health supportive built environment for a high-density refugee camp that uses light,...",
+          "cns_advantage": "environmental_psychology_design",
+          "difficulty": "high",
+          "domains": [
+            "architecture",
+            "environmental_psychology",
+            "refugee_services",
+            "stress_reduction"
+          ],
+          "response_length": 392,
+          "emotional_depth": 0.16666666666666666,
+          "creative_integration": 0.0,
+          "cultural_sensitivity": 0.0,
+          "practical_applicability": 0.0,
+          "overall_quality": 0.1696
+        },
+        {
+          "prompt": "Design a narrative therapy VR experience that combines patient memories, soundscapes, and procedural...",
+          "cns_advantage": "therapeutic_technology_integration",
+          "difficulty": "expert",
+          "domains": [
+            "narrative_therapy",
+            "VR_design",
+            "trauma_treatment",
+            "technology_ethics"
+          ],
+          "response_length": 177,
+          "emotional_depth": 0.0,
+          "creative_integration": 0.0,
+          "cultural_sensitivity": 0.0,
+          "practical_applicability": 0.0,
+          "overall_quality": 0.00885
+        },
+        {
+          "prompt": "Create an interdisciplinary workshop (48-hr) to generate biohybrid art-tech prototypes with delivera...",
+          "cns_advantage": "creative_collaborative_design",
+          "difficulty": "medium",
+          "domains": [
+            "workshop_design",
+            "bioart",
+            "technology_integration",
+            "creative_process"
+          ],
+          "response_length": 364,
+          "emotional_depth": 0.08333333333333333,
+          "creative_integration": 0.08333333333333333,
+          "cultural_sensitivity": 0.0,
+          "practical_applicability": 0.08333333333333333,
+          "overall_quality": 0.18486666666666668
+        }
+      ],
+      "performance_metrics": {
+        "avg_quality": 0.11052,
+        "avg_emotional_depth": 0.06666666666666667,
+        "avg_creative_integration": 0.016666666666666666,
+        "high_quality_responses": 0,
+        "success_rate": 0.0
+      },
+      "cns_strengths_shown": []
+    },
+    "meta_cognitive_integration": {
+      "prompts_tested": 5,
+      "responses": [
+        {
+          "prompt": "Design a curriculum for training clinicians in diagnostic meta-cognition: include exercises to reduc...",
+          "cns_advantage": "metacognitive_clinical_training",
+          "difficulty": "high",
+          "domains": [
+            "medical_education",
+            "metacognition",
+            "diagnostic_reasoning",
+            "bias_reduction"
+          ],
+          "response_length": 303,
+          "emotional_depth": 0.0,
+          "creative_integration": 0.0,
+          "cultural_sensitivity": 0.0,
+          "practical_applicability": 0.0,
+          "overall_quality": 0.11515
+        },
+        {
+          "prompt": "Propose an experiment to measure whether affective cues improve long-term retention of conceptual kn...",
+          "cns_advantage": "emotion_cognition_research_design",
+          "difficulty": "high",
+          "domains": [
+            "experimental_psychology",
+            "emotion_cognition",
+            "learning_theory",
+            "research_design"
+          ],
+          "response_length": 498,
+          "emotional_depth": 0.08333333333333333,
+          "creative_integration": 0.0,
+          "cultural_sensitivity": 0.0,
+          "practical_applicability": 0.0,
+          "overall_quality": 0.1499
+        },
+        {
+          "prompt": "Create a scoring system for 'empathic correctness' combining emotional attunement, factual veracity,...",
+          "cns_advantage": "empathy_measurement_system",
+          "difficulty": "expert",
+          "domains": [
+            "empathy_research",
+            "psychometrics",
+            "cultural_psychology",
+            "measurement_theory"
+          ],
+          "response_length": 460,
+          "emotional_depth": 0.16666666666666666,
+          "creative_integration": 0.0,
+          "cultural_sensitivity": 0.08333333333333333,
+          "practical_applicability": 0.0,
+          "overall_quality": 0.1855
+        },
+        {
+          "prompt": "Propose a way for CNS to represent and reason about 'emotional plausibility' as distinct from factua...",
+          "cns_advantage": "emotional_reasoning_architecture",
+          "difficulty": "expert",
+          "domains": [
+            "cognitive_architecture",
+            "emotional_reasoning",
+            "AI_design",
+            "consciousness"
+          ],
+          "response_length": 177,
+          "emotional_depth": 0.0,
+          "creative_integration": 0.0,
+          "cultural_sensitivity": 0.0,
+          "practical_applicability": 0.0,
+          "overall_quality": 0.00885
+        },
+        {
+          "prompt": "Design an experiment to test whether prompting a model to reflect on emotional states improves its d...",
+          "cns_advantage": "moral_emotional_reflection",
+          "difficulty": "high",
+          "domains": [
+            "moral_psychology",
+            "AI_ethics",
+            "experimental_design",
+            "emotional_intelligence"
+          ],
+          "response_length": 167,
+          "emotional_depth": 0.08333333333333333,
+          "creative_integration": 0.0,
+          "cultural_sensitivity": 0.0,
+          "practical_applicability": 0.0,
+          "overall_quality": 0.03335
+        }
+      ],
+      "performance_metrics": {
+        "avg_quality": 0.09855,
+        "avg_emotional_depth": 0.06666666666666667,
+        "avg_creative_integration": 0.0,
+        "high_quality_responses": 0,
+        "success_rate": 0.0
+      },
+      "cns_strengths_shown": []
+    }
+  },
+  "overall_performance": {
+    "category_scores": {
+      "emotional_reasoning": {
+        "quality": 0.06819,
+        "success_rate": 0.0,
+        "emotional_depth": 0.05,
+        "creative_integration": 0.0
+      },
+      "creative_synthesis": {
+        "quality": 0.11052,
+        "success_rate": 0.0,
+        "emotional_depth": 0.06666666666666667,
+        "creative_integration": 0.016666666666666666
+      },
+      "meta_cognitive_integration": {
+        "quality": 0.09855,
+        "success_rate": 0.0,
+        "emotional_depth": 0.06666666666666667,
+        "creative_integration": 0.0
+      }
+    },
+    "overall_success_rate": 0.0,
+    "total_responses": 15,
+    "high_quality_responses": 0,
+    "unique_cns_advantages": 0,
+    "cns_advantages_demonstrated": []
+  },
+  "cns_advantages_demonstrated": [],
+  "areas_for_development": [
+    "emotional_reasoning",
+    "creative_synthesis",
+    "meta_cognitive_integration"
+  ],
+  "duration": 15.377506256103516
+}

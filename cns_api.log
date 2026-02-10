@@ -1,0 +1,90 @@
+2025-10-26 03:38:25,655 - aiohttp.access - INFO - 127.0.0.1 [26/Oct/2025:03:38:25 +0000] "GET / HTTP/1.1" 404 175 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"
+2025-10-26 03:38:33,345 - aiohttp.access - INFO - 127.0.0.1 [26/Oct/2025:03:38:33 +0000] "GET /favicon.ico HTTP/1.1" 401 551 "http://127.0.0.1:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"
+2025-10-26 03:44:33,218 - aiohttp.access - INFO - 127.0.0.1 [26/Oct/2025:03:44:33 +0000] "GET /health HTTP/1.1" 200 453 "-" "curl/8.14.1"
+2025-10-26 04:27:58,188 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:27:58 +0000] "POST /api/v1/message HTTP/1.1" 401 501 "-" "python-requests/2.32.4"
+2025-10-26 04:27:58,230 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:27:58 +0000] "POST /api/v1/message HTTP/1.1" 401 501 "-" "python-requests/2.32.4"
+2025-10-26 04:27:58,259 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:27:58 +0000] "POST /api/v1/message HTTP/1.1" 401 501 "-" "python-requests/2.32.4"
+2025-10-26 04:27:58,278 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:27:58 +0000] "POST /api/v1/message HTTP/1.1" 401 501 "-" "python-requests/2.32.4"
+2025-10-26 04:28:36,270 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:28:36 +0000] "POST /admin/keys/create HTTP/1.1" 201 736 "-" "curl/8.14.1"
+2025-10-26 04:28:55,630 - cns_enterprise - INFO - Request | req_02c6d862f560dd12 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 0.13ms
+2025-10-26 04:28:55,630 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:28:55 +0000] "POST /api/v1/message HTTP/1.1" 500 639 "-" "python-requests/2.32.4"
+2025-10-26 04:28:55,665 - cns_enterprise - INFO - Request | req_77ef51bd75b8e9ed | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 0.13ms
+2025-10-26 04:28:55,666 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:28:55 +0000] "POST /api/v1/message HTTP/1.1" 500 637 "-" "python-requests/2.32.4"
+2025-10-26 04:28:55,696 - cns_enterprise - INFO - Request | req_0616a3f9eccb4bce | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 0.41ms
+2025-10-26 04:28:55,697 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:28:55 +0000] "POST /api/v1/message HTTP/1.1" 500 637 "-" "python-requests/2.32.4"
+2025-10-26 04:28:55,720 - cns_enterprise - INFO - Request | req_7f1d7a319c1fd817 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 0.15ms
+2025-10-26 04:28:55,721 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:28:55 +0000] "POST /api/v1/message HTTP/1.1" 500 637 "-" "python-requests/2.32.4"
+2025-10-26 04:38:44,748 - aiohttp.access - INFO - 127.0.0.1 [26/Oct/2025:04:38:44 +0000] "GET / HTTP/1.1" 200 758 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"
+2025-10-26 04:38:52,951 - aiohttp.access - INFO - 127.0.0.1 [26/Oct/2025:04:38:52 +0000] "GET /favicon.ico HTTP/1.1" 401 551 "http://127.0.0.1:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"
+2025-10-26 04:39:07,223 - cns_enterprise - INFO - Request | req_460a503e0909926a | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2127.34ms
+2025-10-26 04:39:07,223 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:39:05 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:39:10,136 - cns_enterprise - INFO - Request | req_912ac4bf1d659aa2 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2864.41ms
+2025-10-26 04:39:10,137 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:39:07 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:39:12,974 - cns_enterprise - INFO - Request | req_f786ab8dec5f60a3 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2661.37ms
+2025-10-26 04:39:12,975 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:39:10 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:39:15,373 - cns_enterprise - INFO - Request | req_be88bbc73befd24a | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2333.75ms
+2025-10-26 04:39:15,374 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:39:13 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:40:46,103 - cns_enterprise - INFO - Request | req_f8f97ba79f4c65ea | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 1988.80ms
+2025-10-26 04:40:46,103 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:40:44 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:40:48,482 - cns_enterprise - INFO - Request | req_71adfa6006e32a01 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2353.93ms
+2025-10-26 04:40:48,483 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:40:46 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:40:51,013 - cns_enterprise - INFO - Request | req_55f7d6f7c88adee0 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2501.99ms
+2025-10-26 04:40:51,013 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:40:48 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:40:53,351 - cns_enterprise - INFO - Request | req_5c484c70298323e7 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2295.96ms
+2025-10-26 04:40:53,352 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:40:51 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:42:06,976 - cns_enterprise - INFO - Request | req_4660916ef4424d06 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 1995.14ms
+2025-10-26 04:42:06,977 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:42:04 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:42:09,599 - cns_enterprise - INFO - Request | req_2ad3a808597c78f3 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2602.06ms
+2025-10-26 04:42:09,600 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:42:06 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:42:12,035 - cns_enterprise - INFO - Request | req_e891e62f6c566818 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2400.01ms
+2025-10-26 04:42:12,036 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:42:09 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:42:14,373 - cns_enterprise - INFO - Request | req_291310d5cbfd1cf8 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2302.79ms
+2025-10-26 04:42:14,374 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:42:12 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:43:14,009 - cns_enterprise - INFO - Request | req_811825ca4c8b794f | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 1921.32ms
+2025-10-26 04:43:14,010 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:43:12 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:43:16,848 - cns_enterprise - INFO - Request | req_9ce9e71b62367eae | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2790.10ms
+2025-10-26 04:43:16,853 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:43:14 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:43:19,292 - cns_enterprise - INFO - Request | req_6404c54d154aff23 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2408.02ms
+2025-10-26 04:43:19,293 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:43:16 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:43:21,755 - cns_enterprise - INFO - Request | req_7b4593592b5913f3 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2421.58ms
+2025-10-26 04:43:21,757 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:43:19 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:43:25,227 - cns_enterprise - INFO - Request | req_b1d239dd1d58d51d | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2423.70ms
+2025-10-26 04:43:25,227 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:43:22 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:43:28,083 - cns_enterprise - INFO - Request | req_6e1655eb0966afac | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2833.00ms
+2025-10-26 04:43:28,084 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:43:25 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:43:30,072 - cns_enterprise - INFO - Request | req_a0d1e0ee2a024b54 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 1932.26ms
+2025-10-26 04:43:30,073 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:43:28 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:43:32,523 - cns_enterprise - INFO - Request | req_fc057739021f9aae | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2423.21ms
+2025-10-26 04:43:32,523 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:43:30 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:43:35,894 - cns_enterprise - INFO - Request | req_86cad5f6039d3451 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2339.89ms
+2025-10-26 04:43:35,894 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:43:33 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:43:37,941 - cns_enterprise - INFO - Request | req_b9bab98b4e14d9ba | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2022.41ms
+2025-10-26 04:43:37,941 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:43:35 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:43:40,156 - cns_enterprise - INFO - Request | req_126442123b1995f1 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2186.49ms
+2025-10-26 04:43:40,156 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:43:37 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:43:41,975 - cns_enterprise - INFO - Request | req_e789343656cd4e38 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 1782.94ms
+2025-10-26 04:43:41,975 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:43:40 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:43:45,923 - cns_enterprise - INFO - Request | req_1606ffbeca5d133d | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2925.88ms
+2025-10-26 04:43:45,924 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:43:42 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:43:49,181 - cns_enterprise - INFO - Request | req_b042e1d57443d8df | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 3223.09ms
+2025-10-26 04:43:49,182 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:43:45 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:43:53,500 - cns_enterprise - INFO - Request | req_b162f81812a76dd0 | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 4292.05ms
+2025-10-26 04:43:53,500 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:43:49 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-26 04:43:56,010 - cns_enterprise - INFO - Request | req_69cdba2de1118bfa | key_33cc4370dad1e066 | free | POST /api/v1/message | 500 | 2475.27ms
+2025-10-26 04:43:56,011 - aiohttp.access - INFO - 172.31.110.194 [26/Oct/2025:04:43:53 +0000] "POST /api/v1/message HTTP/1.1" 500 630 "-" "python-requests/2.32.4"
+2025-10-27 07:41:51,086 - aiohttp.access - INFO - 127.0.0.1 [27/Oct/2025:07:41:51 +0000] "GET / HTTP/1.1" 200 758 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"
+2025-10-27 07:42:00,777 - aiohttp.access - INFO - 127.0.0.1 [27/Oct/2025:07:42:00 +0000] "GET /favicon.ico HTTP/1.1" 401 551 "http://127.0.0.1:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"
+2025-10-28 21:03:32,017 - aiohttp.access - INFO - 127.0.0.1 [28/Oct/2025:21:03:32 +0000] "GET / HTTP/1.1" 200 758 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"
+2025-10-28 21:03:40,725 - aiohttp.access - INFO - 127.0.0.1 [28/Oct/2025:21:03:40 +0000] "GET /favicon.ico HTTP/1.1" 401 551 "http://127.0.0.1:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"
+2025-11-08 12:57:41,202 - aiohttp.access - INFO - 127.0.0.1 [08/Nov/2025:12:57:41 +0000] "GET / HTTP/1.1" 200 758 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"
+2025-11-08 12:57:45,551 - aiohttp.access - INFO - 127.0.0.1 [08/Nov/2025:12:57:45 +0000] "GET /favicon.ico HTTP/1.1" 401 551 "http://127.0.0.1:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"
+2025-12-13 09:42:19,090 - aiohttp.access - INFO - 127.0.0.1 [13/Dec/2025:09:42:19 +0000] "GET / HTTP/1.1" 200 758 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"
+2025-12-13 09:42:27,161 - aiohttp.access - INFO - 127.0.0.1 [13/Dec/2025:09:42:27 +0000] "GET /favicon.ico HTTP/1.1" 401 551 "http://127.0.0.1:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"
+2025-12-18 06:16:12,715 - aiohttp.access - INFO - 127.0.0.1 [18/Dec/2025:06:16:12 +0000] "GET / HTTP/1.1" 200 758 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"
+2025-12-18 06:16:12,778 - aiohttp.access - INFO - 127.0.0.1 [18/Dec/2025:06:16:12 +0000] "GET /favicon.ico HTTP/1.1" 401 551 "http://127.0.0.1:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"
+2025-12-29 08:49:56,792 - aiohttp.access - INFO - 127.0.0.1 [29/Dec/2025:08:49:56 +0000] "GET /health HTTP/1.1" 200 453 "-" "curl/8.14.1"
+2025-12-29 08:49:56,822 - aiohttp.access - INFO - 127.0.0.1 [29/Dec/2025:08:49:56 +0000] "POST /admin/keys/create HTTP/1.1" 401 457 "-" "curl/8.14.1"
+2025-12-29 09:06:09,575 - aiohttp.access - INFO - 127.0.0.1 [29/Dec/2025:09:06:09 +0000] "GET / HTTP/1.1" 200 758 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"
+2025-12-29 09:06:16,239 - aiohttp.access - INFO - 127.0.0.1 [29/Dec/2025:09:06:16 +0000] "GET /favicon.ico HTTP/1.1" 401 551 "http://127.0.0.1:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"
+2026-01-02 08:57:00,181 - aiohttp.access - INFO - 127.0.0.1 [02/Jan/2026:08:57:00 +0000] "GET / HTTP/1.1" 200 758 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"
+2026-01-02 08:57:00,214 - aiohttp.access - INFO - 127.0.0.1 [02/Jan/2026:08:57:00 +0000] "GET /favicon.ico HTTP/1.1" 401 551 "http://127.0.0.1:8000/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/140.0.0.0 Safari/537.36"

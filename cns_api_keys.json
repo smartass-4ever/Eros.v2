@@ -1,0 +1,514 @@
+{
+  "keys": {
+    "key_6ef1a2e5a4120c67": {
+      "key_id": "key_6ef1a2e5a4120c67",
+      "client_name": "Test Company Free",
+      "client_email": "free@testcompany.com",
+      "tier": "free",
+      "created_at": 1761448036.3731918,
+      "last_used": null,
+      "is_active": true,
+      "rate_limit_hour": 1000,
+      "rate_limit_day": 10000,
+      "custom_config": {},
+      "notes": "Test free tier"
+    },
+    "key_158559c480f21db1": {
+      "key_id": "key_158559c480f21db1",
+      "client_name": "Test Company Pro",
+      "client_email": "pro@testcompany.com",
+      "tier": "pro",
+      "created_at": 1761448036.3978996,
+      "last_used": 1761448036.9283652,
+      "is_active": true,
+      "rate_limit_hour": 10000,
+      "rate_limit_day": 100000,
+      "custom_config": {},
+      "notes": "Test pro tier"
+    },
+    "key_f7b5f7a851354d2d": {
+      "key_id": "key_f7b5f7a851354d2d",
+      "client_name": "Test Company Enterprise",
+      "client_email": "enterprise@testcompany.com",
+      "tier": "enterprise",
+      "created_at": 1761448036.4036841,
+      "last_used": null,
+      "is_active": true,
+      "rate_limit_hour": -1,
+      "rate_limit_day": -1,
+      "custom_config": {},
+      "notes": "Test enterprise tier"
+    },
+    "key_87232f6cf6a26409": {
+      "key_id": "key_87232f6cf6a26409",
+      "client_name": "Test Company Free",
+      "client_email": "free@testcompany.com",
+      "tier": "free",
+      "created_at": 1761448126.6178918,
+      "last_used": null,
+      "is_active": true,
+      "rate_limit_hour": 1000,
+      "rate_limit_day": 10000,
+      "custom_config": {},
+      "notes": "Test free tier"
+    },
+    "key_1ed6554e561ff30d": {
+      "key_id": "key_1ed6554e561ff30d",
+      "client_name": "Test Company Pro",
+      "client_email": "pro@testcompany.com",
+      "tier": "pro",
+      "created_at": 1761448126.6516724,
+      "last_used": 1761448127.0663075,
+      "is_active": true,
+      "rate_limit_hour": 10000,
+      "rate_limit_day": 100000,
+      "custom_config": {},
+      "notes": "Test pro tier"
+    },
+    "key_1f692bcd8b6712d9": {
+      "key_id": "key_1f692bcd8b6712d9",
+      "client_name": "Test Company Enterprise",
+      "client_email": "enterprise@testcompany.com",
+      "tier": "enterprise",
+      "created_at": 1761448126.6635554,
+      "last_used": null,
+      "is_active": true,
+      "rate_limit_hour": -1,
+      "rate_limit_day": -1,
+      "custom_config": {},
+      "notes": "Test enterprise tier"
+    },
+    "key_b75656b63cf8c6ee": {
+      "key_id": "key_b75656b63cf8c6ee",
+      "client_name": "Test Company Free",
+      "client_email": "free@testcompany.com",
+      "tier": "free",
+      "created_at": 1761448225.4237878,
+      "last_used": null,
+      "is_active": true,
+      "rate_limit_hour": 1000,
+      "rate_limit_day": 10000,
+      "custom_config": {},
+      "notes": "Test free tier"
+    },
+    "key_f0b2221a0d15e349": {
+      "key_id": "key_f0b2221a0d15e349",
+      "client_name": "Test Company Pro",
+      "client_email": "pro@testcompany.com",
+      "tier": "pro",
+      "created_at": 1761448225.4448447,
+      "last_used": 1761448225.890295,
+      "is_active": true,
+      "rate_limit_hour": 10000,
+      "rate_limit_day": 100000,
+      "custom_config": {},
+      "notes": "Test pro tier"
+    },
+    "key_f9d624fb0c1f7ea6": {
+      "key_id": "key_f9d624fb0c1f7ea6",
+      "client_name": "Test Company Enterprise",
+      "client_email": "enterprise@testcompany.com",
+      "tier": "enterprise",
+      "created_at": 1761448225.4627473,
+      "last_used": null,
+      "is_active": true,
+      "rate_limit_hour": -1,
+      "rate_limit_day": -1,
+      "custom_config": {},
+      "notes": "Test enterprise tier"
+    },
+    "key_03b00461f231c86b": {
+      "key_id": "key_03b00461f231c86b",
+      "client_name": "Demo Sandbox",
+      "client_email": "demo@cns-api.com",
+      "tier": "free",
+      "created_at": 1761449689.305177,
+      "last_used": null,
+      "is_active": true,
+      "rate_limit_hour": 1000,
+      "rate_limit_day": 10000,
+      "custom_config": {},
+      "notes": "Public demo key for testing - limited rate limits"
+    },
+    "key_33cc4370dad1e066": {
+      "key_id": "key_33cc4370dad1e066",
+      "client_name": "Demo Testing User",
+      "client_email": "demo@test.com",
+      "tier": "free",
+      "created_at": 1761452916.2677534,
+      "last_used": 1761453833.5281358,
+      "is_active": true,
+      "rate_limit_hour": 1000,
+      "rate_limit_day": 10000,
+      "custom_config": {},
+      "notes": "Fresh demo key for comprehensive testing"
+    }
+  },
+  "key_hashes": {
+    "5cfc3b1f3720490c5a4ef95d94542f60e92cc9ab4c76261e0e820315f985be28": "key_6ef1a2e5a4120c67",
+    "4c16318c85de27d99bac2e6fa7ef098fc1e4b548ebda29e274125817f007b0c9": "key_158559c480f21db1",
+    "0713a1ed7a5aff6a71d36f3a67b46312460eb9ff929b7a2a4d3cf0ce6c44186b": "key_f7b5f7a851354d2d",
+    "05ac1ddb10806a9dbc433ceee81838e80170f61e261888d07819e7eff9c0ca7a": "key_87232f6cf6a26409",
+    "aeb5301624f6ce72ac98d9bfdd008f9db5837e10feac89fa051af0899a481cb2": "key_1ed6554e561ff30d",
+    "2e9c036512850a52c5cfd2e75bf2a93a31184d88b34dc692685800320e61172b": "key_1f692bcd8b6712d9",
+    "235c8b696f4ca98249bdd12166b491a9215e12bf1aeaaed0cd529baf9019f844": "key_b75656b63cf8c6ee",
+    "c815eafe14c2ee1b40358ce3c8943b403c9d2a61cd0b264fdd13d74fca3bce02": "key_f0b2221a0d15e349",
+    "b929ba759347821a3248171f9fb0d9d662d3adf640e69c0071b2c0274f125062": "key_f9d624fb0c1f7ea6",
+    "253e1246d042ce3a65a44dd770f69635fbf8ffe60881a75145e13e1927098690": "key_03b00461f231c86b",
+    "24dc140b14afcf820fb1aaefc2b439ee6f602c66fd4e8be8f7613357487c1e60": "key_33cc4370dad1e066"
+  },
+  "usage_records": [
+    {
+      "key_id": "key_158559c480f21db1",
+      "timestamp": 1761448036.8965135,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 0.4760453701019287,
+      "success": false
+    },
+    {
+      "key_id": "key_158559c480f21db1",
+      "timestamp": 1761448036.907976,
+      "endpoint": "/api/v1/limits",
+      "tokens_used": 0,
+      "processing_time": 4.220008850097656e-05,
+      "success": true
+    },
+    {
+      "key_id": "key_158559c480f21db1",
+      "timestamp": 1761448036.9169815,
+      "endpoint": "/api/v1/usage",
+      "tokens_used": 0,
+      "processing_time": 0.00011205673217773438,
+      "success": true
+    },
+    {
+      "key_id": "key_158559c480f21db1",
+      "timestamp": 1761448036.9290767,
+      "endpoint": "/api/v1/info",
+      "tokens_used": 0,
+      "processing_time": 0.00012111663818359375,
+      "success": true
+    },
+    {
+      "key_id": "key_1ed6554e561ff30d",
+      "timestamp": 1761448127.0285907,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 0.34081578254699707,
+      "success": false
+    },
+    {
+      "key_id": "key_1ed6554e561ff30d",
+      "timestamp": 1761448127.036666,
+      "endpoint": "/api/v1/limits",
+      "tokens_used": 0,
+      "processing_time": 3.910064697265625e-05,
+      "success": true
+    },
+    {
+      "key_id": "key_1ed6554e561ff30d",
+      "timestamp": 1761448127.0574515,
+      "endpoint": "/api/v1/usage",
+      "tokens_used": 0,
+      "processing_time": 9.751319885253906e-05,
+      "success": true
+    },
+    {
+      "key_id": "key_1ed6554e561ff30d",
+      "timestamp": 1761448127.067963,
+      "endpoint": "/api/v1/info",
+      "tokens_used": 0,
+      "processing_time": 4.363059997558594e-05,
+      "success": true
+    },
+    {
+      "key_id": "key_f0b2221a0d15e349",
+      "timestamp": 1761448225.8550577,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 0.372265100479126,
+      "success": false
+    },
+    {
+      "key_id": "key_f0b2221a0d15e349",
+      "timestamp": 1761448225.874953,
+      "endpoint": "/api/v1/limits",
+      "tokens_used": 0,
+      "processing_time": 6.008148193359375e-05,
+      "success": true
+    },
+    {
+      "key_id": "key_f0b2221a0d15e349",
+      "timestamp": 1761448225.884495,
+      "endpoint": "/api/v1/usage",
+      "tokens_used": 0,
+      "processing_time": 9.703636169433594e-05,
+      "success": true
+    },
+    {
+      "key_id": "key_f0b2221a0d15e349",
+      "timestamp": 1761448225.8911066,
+      "endpoint": "/api/v1/info",
+      "tokens_used": 0,
+      "processing_time": 7.104873657226562e-05,
+      "success": true
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761452935.6199856,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 0.00012969970703125,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761452935.6646197,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 0.00013327598571777344,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761452935.6878695,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 0.0004093647003173828,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761452935.7182298,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 0.0001461505889892578,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453547.2213507,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.1273422241210938,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453550.1248171,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.8644144535064697,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453552.9727936,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.6613664627075195,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453555.3717794,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.333753824234009,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453646.1019468,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 1.9887988567352295,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453648.4787247,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.3539257049560547,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453651.010716,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.5019917488098145,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453653.3505418,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.2959558963775635,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453726.9664586,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 1.9951441287994385,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453729.5977097,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.6020586490631104,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453732.0276232,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.400007486343384,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453734.3616273,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.302788019180298,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453794.0002177,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 1.921318531036377,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453796.8412378,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.7900986671447754,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453799.2898402,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.408022165298462,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453801.7482636,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.421576976776123,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453805.2212644,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.423701286315918,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453808.0808456,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.8330001831054688,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453810.05469,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 1.9322600364685059,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453812.5212493,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.423210620880127,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453815.891692,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.3398852348327637,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453817.9377074,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.0224127769470215,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453820.1545718,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.186488151550293,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453821.969665,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 1.7829444408416748,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453825.9216113,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.925882339477539,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453829.1790354,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 3.223092555999756,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453833.497492,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 4.292051076889038,
+      "success": false
+    },
+    {
+      "key_id": "key_33cc4370dad1e066",
+      "timestamp": 1761453836.0077114,
+      "endpoint": "/api/v1/message",
+      "tokens_used": 0,
+      "processing_time": 2.4752650260925293,
+      "success": false
+    }
+  ]
+}

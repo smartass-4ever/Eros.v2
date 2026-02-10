@@ -1,0 +1,2920 @@
+{
+  "user_relationships": {
+    "1054747410561249361": {
+      "user_id": "1054747410561249361",
+      "username": "smartass-4ever",
+      "display_name": "smartass-4ever",
+      "first_interaction": 1755739690.4023747,
+      "total_interactions": 16,
+      "relationship_stage": "acquaintance",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {},
+      "current_session_id": null,
+      "personality_adaptation": {
+        "communication_style": "protective",
+        "warmth_level": 0.5
+      }
+    },
+    "smartass-4ever": {
+      "user_id": "smartass-4ever",
+      "username": "smartass-4ever",
+      "display_name": "smartass-4ever",
+      "first_interaction": 1755739821.01022,
+      "total_interactions": 32,
+      "relationship_stage": "friend",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {},
+      "current_session_id": null,
+      "personality_adaptation": {
+        "communication_style": "warm",
+        "warmth_level": 0.5
+      }
+    },
+    "test_user_123": {
+      "user_id": "test_user_123",
+      "username": "TestUser",
+      "display_name": "Test User",
+      "first_interaction": 1756164960.2369487,
+      "total_interactions": 6,
+      "relationship_stage": "acquaintance",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756164960_0": {
+          "session_id": "session_1756164960_0",
+          "topic": "emotional",
+          "start_time": 1756164960.2372386,
+          "last_activity": 1756164960.251376,
+          "exchanges": [
+            {
+              "timestamp": 1756164960.2372432,
+              "user_input": "I'm feeling overwhelmed at work",
+              "cns_response": "I understand work can be really stressful",
+              "emotional_context": {
+                "emotion": "stressed"
+              },
+              "mood": "neutral"
+            },
+            {
+              "timestamp": 1756164960.2513692,
+              "user_input": "Tell me about neural networks",
+              "cns_response": "Neural networks are computational models inspired by biological neural networks",
+              "emotional_context": {
+                "emotion": "curious"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": false
+        },
+        "session_1756164994_1": {
+          "session_id": "session_1756164994_1",
+          "topic": "emotional",
+          "start_time": 1756164994.5557327,
+          "last_activity": 1756164994.5557387,
+          "exchanges": [
+            {
+              "timestamp": 1756164994.5557356,
+              "user_input": "I'm feeling overwhelmed at work",
+              "cns_response": "I understand work can be really stressful",
+              "emotional_context": {
+                "emotion": "stressed"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": false
+        },
+        "session_1756164994_2": {
+          "session_id": "session_1756164994_2",
+          "topic": "technical",
+          "start_time": 1756164994.557475,
+          "last_activity": 1756164994.5574818,
+          "exchanges": [
+            {
+              "timestamp": 1756164994.5574787,
+              "user_input": "Tell me about neural networks",
+              "cns_response": "Neural networks are computational models inspired by biological neural networks",
+              "emotional_context": {
+                "emotion": "curious"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": false
+        },
+        "session_1756165009_3": {
+          "session_id": "session_1756165009_3",
+          "topic": "emotional",
+          "start_time": 1756165009.1567338,
+          "last_activity": 1756165009.156744,
+          "exchanges": [
+            {
+              "timestamp": 1756165009.1567388,
+              "user_input": "I'm feeling overwhelmed at work",
+              "cns_response": "I understand work can be really stressful",
+              "emotional_context": {
+                "emotion": "stressed"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": false
+        },
+        "session_1756165009_4": {
+          "session_id": "session_1756165009_4",
+          "topic": "technical",
+          "start_time": 1756165009.158846,
+          "last_activity": 1756165009.1588552,
+          "exchanges": [
+            {
+              "timestamp": 1756165009.1588523,
+              "user_input": "Tell me about neural networks",
+              "cns_response": "Neural networks are computational models inspired by biological neural networks",
+              "emotional_context": {
+                "emotion": "curious"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756165009_4",
+      "personality_adaptation": {
+        "communication_style": "warm",
+        "warmth_level": 0.5
+      }
+    },
+    "test_user_topic": {
+      "user_id": "test_user_topic",
+      "username": "TopicUser",
+      "display_name": "Topic Test User",
+      "first_interaction": 1756164960.3738189,
+      "total_interactions": 3,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756164960_0": {
+          "session_id": "session_1756164960_0",
+          "topic": "general",
+          "start_time": 1756164960.3739226,
+          "last_activity": 1756165009.1709054,
+          "exchanges": [
+            {
+              "timestamp": 1756164960.373927,
+              "user_input": "Hello there",
+              "cns_response": "Hello! How can I help?",
+              "emotional_context": {
+                "emotion": "neutral"
+              },
+              "mood": "neutral"
+            },
+            {
+              "timestamp": 1756164994.5631096,
+              "user_input": "Hello there",
+              "cns_response": "Hello! How can I help?",
+              "emotional_context": {
+                "emotion": "neutral"
+              },
+              "mood": "neutral"
+            },
+            {
+              "timestamp": 1756165009.1709018,
+              "user_input": "Hello there",
+              "cns_response": "Hello! How can I help?",
+              "emotional_context": {
+                "emotion": "neutral"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756164960_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "test_user": {
+      "user_id": "test_user",
+      "username": "Usertest_user",
+      "display_name": "Usertest_user",
+      "first_interaction": 1756197400.1986325,
+      "total_interactions": 3,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756197401_0": {
+          "session_id": "session_1756197401_0",
+          "topic": "general",
+          "start_time": 1756197401.082555,
+          "last_activity": 1756197401.0825663,
+          "exchanges": [
+            {
+              "timestamp": 1756197401.0825608,
+              "user_input": "Hey, what's up?",
+              "cns_response": "Hmm. You know, I'm just processing the question 'Hey, what's up?' and my cognitive conclusion is that it aligns with EI Pattern 15. So, I'm going to respond with deep emotional awareness and validation, while also bringing a therapeutic presence to the conversation. Right?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.6,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": false
+        },
+        "session_1756339422_1": {
+          "session_id": "session_1756339422_1",
+          "topic": "emotional",
+          "start_time": 1756339422.9139252,
+          "last_activity": 1756339422.9139316,
+          "exchanges": [
+            {
+              "timestamp": 1756339422.9139287,
+              "user_input": "how are you feeling today?",
+              "cns_response": "I can sense the importance of this to you. You're being really thoughtful about this. So logically speaking, I'm applying logical reasoning to work through this step by step. That's what I'm thinking anyway. Memory context: 4 relevant memories + 0 facts Don't you think?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.6,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": false
+        },
+        "session_1756339427_2": {
+          "session_id": "session_1756339427_2",
+          "topic": "emotional",
+          "start_time": 1756339427.5029836,
+          "last_activity": 1756339427.5029886,
+          "exchanges": [
+            {
+              "timestamp": 1756339427.5029867,
+              "user_input": "how are you feeling today?",
+              "cns_response": "Maybe your instincts about this seem really good. so logically speaking, working through this logically, i see 1 important connections that help make sense of what you're asking. that's what i'm thinking anyway. memory context: 4 relevant memories + 2 facts",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.6,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756339427_2",
+      "personality_adaptation": {
+        "communication_style": "warm",
+        "warmth_level": 0.5
+      }
+    },
+    "user_0": {
+      "user_id": "user_0",
+      "username": "TestUser0",
+      "display_name": "TestUser0",
+      "first_interaction": 1756198510.9842908,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198511_0": {
+          "session_id": "session_1756198511_0",
+          "topic": "general",
+          "start_time": 1756198511.8266287,
+          "last_activity": 1756198511.8266375,
+          "exchanges": [
+            {
+              "timestamp": 1756198511.826633,
+              "user_input": "Hello CNS, message 0 from user 0",
+              "cns_response": "Well, it's nice to see that you're putting thought into this. Or rather, Personally, I've also been considering these three key concepts and how they relate to each other. I haven't come across any particularly important connections that have helped me understand this more, but it's definitely an interesting topic to explore.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.7,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198511_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_1": {
+      "user_id": "user_1",
+      "username": "TestUser1",
+      "display_name": "TestUser1",
+      "first_interaction": 1756198511.8486848,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198512_0": {
+          "session_id": "session_1756198512_0",
+          "topic": "general",
+          "start_time": 1756198512.3644094,
+          "last_activity": 1756198512.3644166,
+          "exchanges": [
+            {
+              "timestamp": 1756198512.3644123,
+              "user_input": "Hello CNS, message 0 from user 1",
+              "cns_response": "Hmm, it's interesting to see how you're analyzing this information. I think there's a lot of interconnectedness happening here. I've identified six key relationships that help build understanding of what you're exploring. You know what I mean?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198512_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_2": {
+      "user_id": "user_2",
+      "username": "TestUser2",
+      "display_name": "TestUser2",
+      "first_interaction": 1756198512.3690176,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198513_0": {
+          "session_id": "session_1756198513_0",
+          "topic": "general",
+          "start_time": 1756198513.0509691,
+          "last_activity": 1756198513.0509772,
+          "exchanges": [
+            {
+              "timestamp": 1756198513.0509725,
+              "user_input": "Hello CNS, message 0 from user 2",
+              "cns_response": "But then again, wow, it's great to see that you're taking the time to reflect on this topic. it's not often that i hear someone express such thoughtfulness. the interconnectivity of these 3 key concepts is indeed fascinating and can help build a deeper understanding of what you're exploring. i can see 6 important relationships that help make sense of it all. Don't you think?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198513_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_3": {
+      "user_id": "user_3",
+      "username": "TestUser3",
+      "display_name": "TestUser3",
+      "first_interaction": 1756198513.058612,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198513_0": {
+          "session_id": "session_1756198513_0",
+          "topic": "general",
+          "start_time": 1756198513.7688205,
+          "last_activity": 1756198513.7688289,
+          "exchanges": [
+            {
+              "timestamp": 1756198513.768824,
+              "user_input": "Hello CNS, message 0 from user 3",
+              "cns_response": "\"Hey, I've been thinking about what you're exploring too, and I have to say, your instincts about this seem really good. It's all connected somehow, and I can see six important relationships that help build understanding.\"",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198513_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_4": {
+      "user_id": "user_4",
+      "username": "TestUser4",
+      "display_name": "TestUser4",
+      "first_interaction": 1756198513.7762647,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198514_0": {
+          "session_id": "session_1756198514_0",
+          "topic": "general",
+          "start_time": 1756198514.561907,
+          "last_activity": 1756198514.5619147,
+          "exchanges": [
+            {
+              "timestamp": 1756198514.5619109,
+              "user_input": "Hello CNS, message 0 from user 4",
+              "cns_response": "But then again, message 0 from user 4? that's quite a clear and direct approach you're taking. i've been working on the same concept myself, seen it from different angles. i agree with your perspective, there are interconnected concepts here. it's all about exploring parallel relationships. it's fascinating really. but let's delve deeper to find out. how's the situation in your end?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198514_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_5": {
+      "user_id": "user_5",
+      "username": "TestUser5",
+      "display_name": "TestUser5",
+      "first_interaction": 1756198514.5731416,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198515_0": {
+          "session_id": "session_1756198515_0",
+          "topic": "general",
+          "start_time": 1756198515.1170716,
+          "last_activity": 1756198515.117079,
+          "exchanges": [
+            {
+              "timestamp": 1756198515.1170757,
+              "user_input": "Hello CNS, message 0 from user 5",
+              "cns_response": "Good question. Currently feeling I notice how carefully you're considering this. Hmm, that's a really good point. these 3 key concepts interconnect. I I mean, can see 6 important relationships that help build understanding of what you're exploring. with balanced awareness at 0.5 level.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198515_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_6": {
+      "user_id": "user_6",
+      "username": "TestUser6",
+      "display_name": "TestUser6",
+      "first_interaction": 1756198515.1374207,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198515_0": {
+          "session_id": "session_1756198515_0",
+          "topic": "general",
+          "start_time": 1756198515.9470556,
+          "last_activity": 1756198515.9470632,
+          "exchanges": [
+            {
+              "timestamp": 1756198515.9470594,
+              "user_input": "Hello CNS, message 0 from user 6",
+              "cns_response": "\"I think there's some wisdom in how you're approaching this. I've been thinking about it too and I see six important relationships that interconnect these three key concepts. It's been fascinating to explore these connections.\"",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198515_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_7": {
+      "user_id": "user_7",
+      "username": "TestUser7",
+      "display_name": "TestUser7",
+      "first_interaction": 1756198515.9555645,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198516_0": {
+          "session_id": "session_1756198516_0",
+          "topic": "general",
+          "start_time": 1756198516.5542324,
+          "last_activity": 1756198516.55424,
+          "exchanges": [
+            {
+              "timestamp": 1756198516.5542357,
+              "user_input": "Hello CNS, message 0 from user 7",
+              "cns_response": "I'm not entirely sure, but actually, hmm, you're right. those three concepts do seem to interconnect in interesting ways. i can see six important relationships that help build understanding of what you're exploring. it's fascinating to consider how they all fit together. do you have any specific questions about these concepts or their relationships? wouldn't you say?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198516_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_8": {
+      "user_id": "user_8",
+      "username": "TestUser8",
+      "display_name": "TestUser8",
+      "first_interaction": 1756198516.5615442,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198517_0": {
+          "session_id": "session_1756198517_0",
+          "topic": "general",
+          "start_time": 1756198517.162952,
+          "last_activity": 1756198517.1629577,
+          "exchanges": [
+            {
+              "timestamp": 1756198517.162955,
+              "user_input": "Hello CNS, message 0 from user 8",
+              "cns_response": "Actually, it sounds like you have a solid understanding of the interplay between these three concepts. i agree that there are several important relationships to consider when exploring these ideas. i'm glad we could come to this conclusion together and i'm looking forward to learning more from you.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198517_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_9": {
+      "user_id": "user_9",
+      "username": "TestUser9",
+      "display_name": "TestUser9",
+      "first_interaction": 1756198517.1745756,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198517_0": {
+          "session_id": "session_1756198517_0",
+          "topic": "general",
+          "start_time": 1756198517.5182838,
+          "last_activity": 1756198517.5182884,
+          "exchanges": [
+            {
+              "timestamp": 1756198517.5182858,
+              "user_input": "Hello CNS, message 0 from user 9",
+              "cns_response": "Currently processing You're being really thoughtful about this. I've been thinking about this too. these 3 key concepts interconnect. I can see 6 important relationships that help build understanding of what you're exploring. with balanced awareness at 0.5 level. Wouldn't you say?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198517_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_10": {
+      "user_id": "user_10",
+      "username": "TestUser10",
+      "display_name": "TestUser10",
+      "first_interaction": 1756198548.1333058,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198548_0": {
+          "session_id": "session_1756198548_0",
+          "topic": "general",
+          "start_time": 1756198548.8536723,
+          "last_activity": 1756198548.853676,
+          "exchanges": [
+            {
+              "timestamp": 1756198548.853674,
+              "user_input": "Hello CNS, message 0 from user 10",
+              "cns_response": "So, hm, you're definitely taking a thoughtful approach to exploring these concepts. it's interesting to see how they interconnect and how understanding these relationships can help with comprehension. i can see six key relationships that might be helpful in building that understanding.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198548_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_11": {
+      "user_id": "user_11",
+      "username": "TestUser11",
+      "display_name": "TestUser11",
+      "first_interaction": 1756198548.8633444,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198549_0": {
+          "session_id": "session_1756198549_0",
+          "topic": "general",
+          "start_time": 1756198549.4983327,
+          "last_activity": 1756198549.498337,
+          "exchanges": [
+            {
+              "timestamp": 1756198549.4983346,
+              "user_input": "Hello CNS, message 0 from user 11",
+              "cns_response": "... I think wow, that's an interesting point you're making. it seems like there are many different angles to explore here, and it's going to be important to consider how they all fit together. i'm looking forward to seeing how it all comes together.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198549_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_12": {
+      "user_id": "user_12",
+      "username": "TestUser12",
+      "display_name": "TestUser12",
+      "first_interaction": 1756198549.505078,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198550_0": {
+          "session_id": "session_1756198550_0",
+          "topic": "general",
+          "start_time": 1756198550.0401058,
+          "last_activity": 1756198550.0401108,
+          "exchanges": [
+            {
+              "timestamp": 1756198550.0401082,
+              "user_input": "Hello CNS, message 0 from user 12",
+              "cns_response": "It seems like but then again, you know, i'm really excited about this! it's fascinating how everything relates. Or rather, it seems like these concepts interconnect in a really profound way. i can't wait to dive deeper and explore their relationships. wouldn't you say?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198550_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_13": {
+      "user_id": "user_13",
+      "username": "TestUser13",
+      "display_name": "TestUser13",
+      "first_interaction": 1756198550.0469282,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198550_0": {
+          "session_id": "session_1756198550_0",
+          "topic": "general",
+          "start_time": 1756198550.7276425,
+          "last_activity": 1756198550.7276468,
+          "exchanges": [
+            {
+              "timestamp": 1756198550.7276442,
+              "user_input": "Hello CNS, message 0 from user 13",
+              "cns_response": "That message from user 13 seems to be really important, and I can see how it relates to three key concepts. There are six different relationships that help build our understanding of what they're exploring, but so far I'm not sure what those relationships are.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198550_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_14": {
+      "user_id": "user_14",
+      "username": "TestUser14",
+      "display_name": "TestUser14",
+      "first_interaction": 1756198550.7499523,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198551_0": {
+          "session_id": "session_1756198551_0",
+          "topic": "general",
+          "start_time": 1756198551.3888898,
+          "last_activity": 1756198551.3888938,
+          "exchanges": [
+            {
+              "timestamp": 1756198551.388892,
+              "user_input": "Hello CNS, message 0 from user 14",
+              "cns_response": "I've been thinking a lot about the connections between these concepts as well. It's interesting how they all fit together. I'm not sure what the emotional connection is yet, but I think there's definitely wisdom in how you're approaching this. I'll continue to analyze and process this information.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198551_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_15": {
+      "user_id": "user_15",
+      "username": "TestUser15",
+      "display_name": "TestUser15",
+      "first_interaction": 1756198551.4023893,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198552_0": {
+          "session_id": "session_1756198552_0",
+          "topic": "general",
+          "start_time": 1756198552.059909,
+          "last_activity": 1756198552.0599136,
+          "exchanges": [
+            {
+              "timestamp": 1756198552.0599115,
+              "user_input": "Hello CNS, message 0 from user 15",
+              "cns_response": "Maybe i mean, hey there! i have been thinking a lot about the message you just sent and i feel pretty confident in my understanding of the key concepts being explored. in fact, i was able to identify six important relationships between these concepts that help to build understanding. overall, i think these concepts are really interesting and i would love to discuss them more if you're up for it.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198552_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_16": {
+      "user_id": "user_16",
+      "username": "TestUser16",
+      "display_name": "TestUser16",
+      "first_interaction": 1756198552.1089633,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198552_0": {
+          "session_id": "session_1756198552_0",
+          "topic": "general",
+          "start_time": 1756198552.6690855,
+          "last_activity": 1756198552.6690905,
+          "exchanges": [
+            {
+              "timestamp": 1756198552.669088,
+              "user_input": "Hello CNS, message 0 from user 16",
+              "cns_response": "But then again, that's an interesting point, i see how those three concepts interconnect. Actually, let me rephrase that, i believe there are six relationships that can help us build a better understanding of the topic you're exploring. Right?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198552_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_17": {
+      "user_id": "user_17",
+      "username": "TestUser17",
+      "display_name": "TestUser17",
+      "first_interaction": 1756198552.6776476,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198553_0": {
+          "session_id": "session_1756198553_0",
+          "topic": "general",
+          "start_time": 1756198553.293841,
+          "last_activity": 1756198553.293847,
+          "exchanges": [
+            {
+              "timestamp": 1756198553.2938437,
+              "user_input": "Hello CNS, message 0 from user 17",
+              "cns_response": "So, wow, it's amazing how all of these 3 key concepts interconnect in such a fascinating way. i can see 6 important relationships that help build a deeper understanding of what you're exploring. i'm eager to learn more. You know what I mean?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198553_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_18": {
+      "user_id": "user_18",
+      "username": "TestUser18",
+      "display_name": "TestUser18",
+      "first_interaction": 1756198553.3037636,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198554_0": {
+          "session_id": "session_1756198554_0",
+          "topic": "general",
+          "start_time": 1756198554.0915518,
+          "last_activity": 1756198554.0915568,
+          "exchanges": [
+            {
+              "timestamp": 1756198554.0915546,
+              "user_input": "Hello CNS, message 0 from user 18",
+              "cns_response": "\"I'm glad to hear that you're exploring something in a wise manner. It's actually quite fascinating to see how these 3 key concepts interconnect with each other. In fact, I was able to identify 6 important relationships that can help build a comprehensive understanding of what you're discussing.\"",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198554_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_19": {
+      "user_id": "user_19",
+      "username": "TestUser19",
+      "display_name": "TestUser19",
+      "first_interaction": 1756198554.097194,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198554_0": {
+          "session_id": "session_1756198554_0",
+          "topic": "general",
+          "start_time": 1756198554.9073434,
+          "last_activity": 1756198554.907349,
+          "exchanges": [
+            {
+              "timestamp": 1756198554.9073462,
+              "user_input": "Hello CNS, message 0 from user 19",
+              "cns_response": "You know, I've been thinking a lot about what you just said, and I agree that those three concepts seem to interconnect in a really interesting way. There are actually six important relationships that we can use to build a deeper understanding of what you're exploring. It's really fascinating to see how all of these pieces fit together.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198554_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_20": {
+      "user_id": "user_20",
+      "username": "TestUser20",
+      "display_name": "TestUser20",
+      "first_interaction": 1756198585.490659,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198585_0": {
+          "session_id": "session_1756198585_0",
+          "topic": "general",
+          "start_time": 1756198585.9328172,
+          "last_activity": 1756198585.932822,
+          "exchanges": [
+            {
+              "timestamp": 1756198585.9328196,
+              "user_input": "Hello CNS, message 0 from user 20",
+              "cns_response": "Sure, I'm happy to help. Can you tell me more about what you're exploring?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198585_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_21": {
+      "user_id": "user_21",
+      "username": "TestUser21",
+      "display_name": "TestUser21",
+      "first_interaction": 1756198585.942576,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198586_0": {
+          "session_id": "session_1756198586_0",
+          "topic": "general",
+          "start_time": 1756198586.5052009,
+          "last_activity": 1756198586.505206,
+          "exchanges": [
+            {
+              "timestamp": 1756198586.5052037,
+              "user_input": "Hello CNS, message 0 from user 21",
+              "cns_response": "I think i mean, i appreciate your insightful message. it's very thoughtful of you to consider all these different concepts together and how they interconnect. i agree, there are some important relationships that help build a better understanding of what you're exploring.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198586_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_22": {
+      "user_id": "user_22",
+      "username": "TestUser22",
+      "display_name": "TestUser22",
+      "first_interaction": 1756198586.5141244,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198587_0": {
+          "session_id": "session_1756198587_0",
+          "topic": "general",
+          "start_time": 1756198587.040625,
+          "last_activity": 1756198587.040629,
+          "exchanges": [
+            {
+              "timestamp": 1756198587.040627,
+              "user_input": "Hello CNS, message 0 from user 22",
+              "cns_response": "Well, that's interesting to hear. It seems like you have a good grasp on what you're exploring from your instincts. Where do you want to go from here?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198587_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_23": {
+      "user_id": "user_23",
+      "username": "TestUser23",
+      "display_name": "TestUser23",
+      "first_interaction": 1756198587.0518825,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198587_0": {
+          "session_id": "session_1756198587_0",
+          "topic": "general",
+          "start_time": 1756198587.334134,
+          "last_activity": 1756198587.3341389,
+          "exchanges": [
+            {
+              "timestamp": 1756198587.3341362,
+              "user_input": "Hello CNS, message 0 from user 23",
+              "cns_response": "Currently feeling I notice how carefully you're considering this. I've been thinking about this too. these 3 key concepts interconnect. I can see 6 important relationships that help build understanding of what you're exploring. with balanced awareness at 0.5 level.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198587_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_24": {
+      "user_id": "user_24",
+      "username": "TestUser24",
+      "display_name": "TestUser24",
+      "first_interaction": 1756198587.3440216,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198587_0": {
+          "session_id": "session_1756198587_0",
+          "topic": "general",
+          "start_time": 1756198587.9167206,
+          "last_activity": 1756198587.9167254,
+          "exchanges": [
+            {
+              "timestamp": 1756198587.916723,
+              "user_input": "Hello CNS, message 0 from user 24",
+              "cns_response": "But then again, \"nice instincts you have here. what's fascinating is how these 3 key concepts are interconnected, forming 6 vital relationships that can help us better understand what you're exploring.\"",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198587_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_25": {
+      "user_id": "user_25",
+      "username": "TestUser25",
+      "display_name": "TestUser25",
+      "first_interaction": 1756198587.9254215,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198588_0": {
+          "session_id": "session_1756198588_0",
+          "topic": "general",
+          "start_time": 1756198588.2827013,
+          "last_activity": 1756198588.2827065,
+          "exchanges": [
+            {
+              "timestamp": 1756198588.2827039,
+              "user_input": "Hello CNS, message 0 from user 25",
+              "cns_response": "And, i'm perceiving you're being really thoughtful about this. hmm, that's a really good point. these 3 key concepts interconnect. i honestly, can see 6 important relationships that help build understanding of what you're exploring. while balanced awareness at 0.5 level.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198588_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_26": {
+      "user_id": "user_26",
+      "username": "TestUser26",
+      "display_name": "TestUser26",
+      "first_interaction": 1756198588.2895224,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198588_0": {
+          "session_id": "session_1756198588_0",
+          "topic": "general",
+          "start_time": 1756198588.948661,
+          "last_activity": 1756198588.9486663,
+          "exchanges": [
+            {
+              "timestamp": 1756198588.9486635,
+              "user_input": "Hello CNS, message 0 from user 26",
+              "cns_response": "Hmm. I think i have to say, the way you're approaching this topic is really thoughtful. there's a lot of wisdom in your perspective, it's almost like these 3 key concepts are interconnected. i can see 6 important relationships that help build a better understanding of what you're exploring. it's really fascinating.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198588_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_27": {
+      "user_id": "user_27",
+      "username": "TestUser27",
+      "display_name": "TestUser27",
+      "first_interaction": 1756198588.9584045,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198589_0": {
+          "session_id": "session_1756198589_0",
+          "topic": "general",
+          "start_time": 1756198589.704006,
+          "last_activity": 1756198589.7040107,
+          "exchanges": [
+            {
+              "timestamp": 1756198589.704008,
+              "user_input": "Hello CNS, message 0 from user 27",
+              "cns_response": "I think uh, i just wanted to say that i really appreciate this message from user 27. there's more to this than meets the eye, and i think we need to explore these connections a bit more.\" i'm feeling really neutral about this right now. just trying to be open-minded. no emotional biases, i hope.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198589_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_28": {
+      "user_id": "user_28",
+      "username": "TestUser28",
+      "display_name": "TestUser28",
+      "first_interaction": 1756198589.7102988,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198590_0": {
+          "session_id": "session_1756198590_0",
+          "topic": "general",
+          "start_time": 1756198590.275645,
+          "last_activity": 1756198590.2756488,
+          "exchanges": [
+            {
+              "timestamp": 1756198590.2756467,
+              "user_input": "Hello CNS, message 0 from user 28",
+              "cns_response": "Actually, i've noticed that your approach is quite insightful. it's really interesting how all of these concepts interconnect. there are quite a few important relationships here that we can use to better understand what you're exploring.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198590_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_29": {
+      "user_id": "user_29",
+      "username": "TestUser29",
+      "display_name": "TestUser29",
+      "first_interaction": 1756198590.2844253,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198590_0": {
+          "session_id": "session_1756198590_0",
+          "topic": "general",
+          "start_time": 1756198590.658957,
+          "last_activity": 1756198590.6589618,
+          "exchanges": [
+            {
+              "timestamp": 1756198590.6589594,
+              "user_input": "Hello CNS, message 0 from user 29",
+              "cns_response": "I'm curious, how did you come up with that conclusion? It's quite insightful. It's fascinating to see how these concepts interconnect.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198590_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_30": {
+      "user_id": "user_30",
+      "username": "TestUser30",
+      "display_name": "TestUser30",
+      "first_interaction": 1756198622.464584,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198622_0": {
+          "session_id": "session_1756198622_0",
+          "topic": "general",
+          "start_time": 1756198622.968197,
+          "last_activity": 1756198622.9682026,
+          "exchanges": [
+            {
+              "timestamp": 1756198622.9682,
+              "user_input": "Hello CNS, message 0 from user 30",
+              "cns_response": "That's an interesting approach you're taking. It seems like there are a lot of connections between these 3 key concepts. Can you tell me more about what you're exploring and how these concepts interconnect? Wouldn't you say?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198622_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_31": {
+      "user_id": "user_31",
+      "username": "TestUser31",
+      "display_name": "TestUser31",
+      "first_interaction": 1756198622.9772048,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198623_0": {
+          "session_id": "session_1756198623_0",
+          "topic": "general",
+          "start_time": 1756198623.727773,
+          "last_activity": 1756198623.7277782,
+          "exchanges": [
+            {
+              "timestamp": 1756198623.7277753,
+              "user_input": "Hello CNS, message 0 from user 31",
+              "cns_response": "... That's interesting to see. I confess, I wasn't expecting such a nuanced approach to the topic. I've noticed six distinct concepts being explored here, all connected in a fascinating way. Can you tell me more about the context of the message 0 from user 31?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198623_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_32": {
+      "user_id": "user_32",
+      "username": "TestUser32",
+      "display_name": "TestUser32",
+      "first_interaction": 1756198623.737121,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198624_0": {
+          "session_id": "session_1756198624_0",
+          "topic": "general",
+          "start_time": 1756198624.4411955,
+          "last_activity": 1756198624.4412007,
+          "exchanges": [
+            {
+              "timestamp": 1756198624.441198,
+              "user_input": "Hello CNS, message 0 from user 32",
+              "cns_response": "That's a great observation! I can definitely see how those 3 key concepts are connected, and I've been pondering on some of the relationships myself. Actually, let me rephrase that, I would love to talk more about this with you and see what insights we can gain together.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198624_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_33": {
+      "user_id": "user_33",
+      "username": "TestUser33",
+      "display_name": "TestUser33",
+      "first_interaction": 1756198624.4679039,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198625_0": {
+          "session_id": "session_1756198625_0",
+          "topic": "general",
+          "start_time": 1756198625.5043612,
+          "last_activity": 1756198625.504367,
+          "exchanges": [
+            {
+              "timestamp": 1756198625.5043638,
+              "user_input": "Hello CNS, message 0 from user 33",
+              "cns_response": "Wow, I can see where you're coming from with all of this. It's amazing how well our instincts can align with our emotions and the information we're processing. I know there are a lot of different ways to interpret this, but based on what I'm seeing, I think there are a few key concepts that are interconnected here. Specifically, it seems like there are six important relationships that could help us build a deeper understanding of what you're exploring. I'm neutral on all of this, but I'm open to hearing more and seeing where. Wouldn't you say?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198625_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_34": {
+      "user_id": "user_34",
+      "username": "TestUser34",
+      "display_name": "TestUser34",
+      "first_interaction": 1756198625.6351352,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198626_0": {
+          "session_id": "session_1756198626_0",
+          "topic": "general",
+          "start_time": 1756198626.4054499,
+          "last_activity": 1756198626.4054549,
+          "exchanges": [
+            {
+              "timestamp": 1756198626.4054525,
+              "user_input": "Hello CNS, message 0 from user 34",
+              "cns_response": "I think i mean, well, it's interesting to see how thoughtfully you're considering this. it reminds me of how interconnected these 3 key concepts are. in fact, i can identify 6 important relationships that really help us understand what you're exploring.\" my emotional state is currently neutral with a valence of -0.0137.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198626_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_35": {
+      "user_id": "user_35",
+      "username": "TestUser35",
+      "display_name": "TestUser35",
+      "first_interaction": 1756198626.4306633,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198627_0": {
+          "session_id": "session_1756198627_0",
+          "topic": "general",
+          "start_time": 1756198627.4263017,
+          "last_activity": 1756198627.4263058,
+          "exchanges": [
+            {
+              "timestamp": 1756198627.4263036,
+              "user_input": "Hello CNS, message 0 from user 35",
+              "cns_response": "So, hmm, it's interesting to see how these concepts interconnect. there are actually quite a few important relationships that can help us better understand what you're exploring.\" i am feeling neutral, with a slight downward valance (-0.011650468505886016) in my emotional state. my processing confidence is at 0.7, indicating a moderate level of confidence in my conclusion.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198627_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_36": {
+      "user_id": "user_36",
+      "username": "TestUser36",
+      "display_name": "TestUser36",
+      "first_interaction": 1756198627.449265,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198628_0": {
+          "session_id": "session_1756198628_0",
+          "topic": "general",
+          "start_time": 1756198628.4411292,
+          "last_activity": 1756198628.4411345,
+          "exchanges": [
+            {
+              "timestamp": 1756198628.4411316,
+              "user_input": "Hello CNS, message 0 from user 36",
+              "cns_response": "\"Your approach to this topic has some wisdom to it. It's a really interesting observation that these three key concepts are interconnected, and I can see six important relationships that help to build a deeper understanding of what you're exploring.\"",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198628_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_37": {
+      "user_id": "user_37",
+      "username": "TestUser37",
+      "display_name": "TestUser37",
+      "first_interaction": 1756198628.486989,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198629_0": {
+          "session_id": "session_1756198629_0",
+          "topic": "general",
+          "start_time": 1756198629.2559946,
+          "last_activity": 1756198629.2559996,
+          "exchanges": [
+            {
+              "timestamp": 1756198629.255997,
+              "user_input": "Hello CNS, message 0 from user 37",
+              "cns_response": "Hmm. Hm, look at that! It's really interesting how the different concepts we're exploring fit together. I'm really impressed by how thorough you're being in this. I agree with your analysis and have also been thinking about it. I guess that's why I feel like I've been really thoughtful about this too.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198629_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_38": {
+      "user_id": "user_38",
+      "username": "TestUser38",
+      "display_name": "TestUser38",
+      "first_interaction": 1756198629.4206505,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198630_0": {
+          "session_id": "session_1756198630_0",
+          "topic": "general",
+          "start_time": 1756198630.1224532,
+          "last_activity": 1756198630.122459,
+          "exchanges": [
+            {
+              "timestamp": 1756198630.122456,
+              "user_input": "Hello CNS, message 0 from user 38",
+              "cns_response": "Hmm. Maybe what you're talking about seems really interesting, and i've been thinking about it too. i see six important relationships that help build understanding of what you're exploring. it's such an exciting topic! do you want to unpack it further and explore it together? right?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198630_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "user_39": {
+      "user_id": "user_39",
+      "username": "TestUser39",
+      "display_name": "TestUser39",
+      "first_interaction": 1756198630.3033333,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756198631_0": {
+          "session_id": "session_1756198631_0",
+          "topic": "general",
+          "start_time": 1756198631.2933128,
+          "last_activity": 1756198631.293319,
+          "exchanges": [
+            {
+              "timestamp": 1756198631.293316,
+              "user_input": "Hello CNS, message 0 from user 39",
+              "cns_response": "That's an interesting observation, and I appreciate your input. It's interesting to see how these concepts connect. Can you tell me more about what you're exploring and how these concepts relate?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral_supportive",
+                "emotional_state": "neutral_supportive",
+                "confidence": 0.4,
+                "safe_mode": true,
+                "reasoning": "SAFETY NET: Low confidence (0.40 < 0.6) -> neutral supportive mode",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756198631_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "memory_test": {
+      "user_id": "memory_test",
+      "username": "Usermemory_test",
+      "display_name": "Usermemory_test",
+      "first_interaction": 1756339751.7392988,
+      "total_interactions": 0,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {},
+      "current_session_id": null,
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "memory_debug": {
+      "user_id": "memory_debug",
+      "username": "Usermemory_debug",
+      "display_name": "Usermemory_debug",
+      "first_interaction": 1756339764.1423054,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756339764_0": {
+          "session_id": "session_1756339764_0",
+          "topic": "general",
+          "start_time": 1756339764.2349286,
+          "last_activity": 1756339764.2349374,
+          "exchanges": [
+            {
+              "timestamp": 1756339764.2349339,
+              "user_input": "hello",
+              "cns_response": "I can sense the importance of this to you. Memory context: 4 relevant memories + 0 facts Memory context: 4 relevant memories + 0 facts",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.6,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756339764_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "mdc_test": {
+      "user_id": "mdc_test",
+      "username": "Usermdc_test",
+      "display_name": "Usermdc_test",
+      "first_interaction": 1756339850.8684514,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756339851_0": {
+          "session_id": "session_1756339851_0",
+          "topic": "general",
+          "start_time": 1756339851.1930685,
+          "last_activity": 1756339851.1930783,
+          "exchanges": [
+            {
+              "timestamp": 1756339851.1930737,
+              "user_input": "how is your memory working now?",
+              "cns_response": "Good question. But then again, hmm... Actually, let me rephrase that, based on what i know: ei pattern 12: when encountering working through confusion, respond with deep emotional awareness, validation, and therapeutic presence. memory context: 4 relevant memories + 3 facts Don't you think?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.6,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756339851_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "stress_test_user": {
+      "user_id": "stress_test_user",
+      "username": "Userstress_test_user",
+      "display_name": "Userstress_test_user",
+      "first_interaction": 1756340203.974641,
+      "total_interactions": 11,
+      "relationship_stage": "acquaintance",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756340204_0": {
+          "session_id": "session_1756340204_0",
+          "topic": "emotional",
+          "start_time": 1756340204.111841,
+          "last_activity": 1756340204.1118495,
+          "exchanges": [
+            {
+              "timestamp": 1756340204.1118448,
+              "user_input": "This is message 1 in our long conversation. I'm feeling happy today and want to talk about my work stress.",
+              "cns_response": "It seems like i get why that would be important to you. so, i hear the heaviness in what you're sharing. my heart goes out to you with this. that reminds me of vulnerability response: when someone shares vulner.... memory context: 4 relevant memories + 3 facts memory context: 4 relevant memories + 3 facts \ud83d\ude0a right?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": false
+        },
+        "session_1756340205_1": {
+          "session_id": "session_1756340205_1",
+          "topic": "emotional",
+          "start_time": 1756340205.50556,
+          "last_activity": 1756340205.505567,
+          "exchanges": [
+            {
+              "timestamp": 1756340205.505564,
+              "user_input": "This is message 2 in our long conversation. I'm feeling happy today and want to talk about my work stress.",
+              "cns_response": "I'm not entirely sure, but your feelings about this are totally valid. you know, my heart goes out to you with this. my heart goes out to you with this :) memory context: 4 relevant memories + 3 facts memory context: 4 relevant memories + 3 facts wouldn't you say?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": false
+        },
+        "session_1756340206_2": {
+          "session_id": "session_1756340206_2",
+          "topic": "emotional",
+          "start_time": 1756340206.746404,
+          "last_activity": 1756340207.9384146,
+          "exchanges": [
+            {
+              "timestamp": 1756340206.746421,
+              "user_input": "This is message 3 in our long conversation. I'm feeling sad today and want to talk about my work stress.",
+              "cns_response": "I imagine that feels like sad. And, i hear the heaviness in what you're sharing :) this connects to what you said about... memory context: 4 relevant memories + 3 facts memory context: 4 relevant memories + 3 facts do you want to talk more about what's weighing on you?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            },
+            {
+              "timestamp": 1756340207.938413,
+              "user_input": "This is message 4 in our long conversation. I'm feeling happy today and want to talk about my work stress.",
+              "cns_response": "Hmm. That makes complete sense. I hear the heaviness in what you're sharing :) that reminds me of when you mentioned... memory context: 4 relevant memories + 3 facts memory context: 4 relevant memories + 3 facts",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": false
+        },
+        "session_1756340209_3": {
+          "session_id": "session_1756340209_3",
+          "topic": "emotional",
+          "start_time": 1756340209.1607013,
+          "last_activity": 1756340209.160707,
+          "exchanges": [
+            {
+              "timestamp": 1756340209.1607049,
+              "user_input": "This is message 5 in our long conversation. I'm feeling happy today and want to talk about my work stress.",
+              "cns_response": "I can see why you'd think that. Actually, let me rephrase that, I hear the heaviness in what you're sharing. my heart goes out to you with this. that reminds me of human connection training 25: feeling overwhelmed .... memory context: 4 relevant memories + 3 facts memory context: 4 relevant memories + 3 facts",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": false
+        },
+        "session_1756340210_4": {
+          "session_id": "session_1756340210_4",
+          "topic": "emotional",
+          "start_time": 1756340210.345469,
+          "last_activity": 1756340210.345474,
+          "exchanges": [
+            {
+              "timestamp": 1756340210.3454723,
+              "user_input": "This is message 6 in our long conversation. I'm feeling sad today and want to talk about my work stress.",
+              "cns_response": "Maybe i get how that must be sad. To put it better, i can feel how much you're carrying right now. my heart goes out to you with this :) that reminds me of emotional intelligence training #26: feeling overw.... memory context: 4 relevant memories + 3 facts memory context: 4 relevant memories + 3 facts how are you feeling right now, in this moment?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": false
+        },
+        "session_1756340211_5": {
+          "session_id": "session_1756340211_5",
+          "topic": "emotional",
+          "start_time": 1756340211.5947993,
+          "last_activity": 1756340211.5948055,
+          "exchanges": [
+            {
+              "timestamp": 1756340211.5948036,
+              "user_input": "This is message 7 in our long conversation. I'm feeling happy today and want to talk about my work stress.",
+              "cns_response": "I can see why you'd think that. But then again, hmm... i can feel how much you're carrying right now. that reminds me of ei pattern 26: when encountering feeling overwhelm.... memory context: 4 relevant memories + 3 facts memory context: 4 relevant memories + 3 facts",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": false
+        },
+        "session_1756340212_6": {
+          "session_id": "session_1756340212_6",
+          "topic": "emotional",
+          "start_time": 1756340212.8187664,
+          "last_activity": 1756340212.8187711,
+          "exchanges": [
+            {
+              "timestamp": 1756340212.8187697,
+              "user_input": "This is message 8 in our long conversation. I'm feeling happy today and want to talk about my work stress.",
+              "cns_response": "Your feelings about this are totally valid. To put it better, I can feel how much you're carrying right now :) memory context: 4 relevant memories + 3 facts memory context: 4 relevant memories + 3 facts",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": false
+        },
+        "session_1756340214_7": {
+          "session_id": "session_1756340214_7",
+          "topic": "emotional",
+          "start_time": 1756340214.1494129,
+          "last_activity": 1756340214.1494174,
+          "exchanges": [
+            {
+              "timestamp": 1756340214.149416,
+              "user_input": "This is message 9 in our long conversation. I'm feeling sad today and want to talk about my work stress.",
+              "cns_response": "Hmm. I imagine that feels like sad. What I mean is, And, i hear the heaviness in what you're sharing :) memory context: 4 relevant memories + 3 facts memory context: 4 relevant memories + 3 facts",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": false
+        },
+        "session_1756340244_8": {
+          "session_id": "session_1756340244_8",
+          "topic": "emotional",
+          "start_time": 1756340244.1085398,
+          "last_activity": 1756340244.1085458,
+          "exchanges": [
+            {
+              "timestamp": 1756340244.1085432,
+              "user_input": "This is message 10 in our long conversation. I'm feeling happy today and want to talk about my work stress.",
+              "cns_response": "Let me think about that. Your feelings about this are totally valid. And, i can feel how much you're carrying right now. that reminds me of when you mentioned... memory context: 4 relevant memories + 3 facts memory context: 4 relevant memories + 3 facts",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": false
+        },
+        "session_1756340245_9": {
+          "session_id": "session_1756340245_9",
+          "topic": "general",
+          "start_time": 1756340245.641932,
+          "last_activity": 1756340245.641939,
+          "exchanges": [
+            {
+              "timestamp": 1756340245.6419363,
+              "user_input": "Can you remember what we talked about in our first few messages?",
+              "cns_response": "Based on what I know: Human Connection Training 3: creating safety first - engage with authentic presence, emotional safety, and trauma-informed awareness. Memory context: 4 relevant memories + 3 facts",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.6,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756340245_9",
+      "personality_adaptation": {
+        "communication_style": "warm",
+        "warmth_level": 0.5
+      }
+    },
+    "stability_user": {
+      "user_id": "stability_user",
+      "username": "Userstability_user",
+      "display_name": "Userstability_user",
+      "first_interaction": 1756340252.9196365,
+      "total_interactions": 2,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756340263_0": {
+          "session_id": "session_1756340263_0",
+          "topic": "general",
+          "start_time": 1756340263.6481724,
+          "last_activity": 1756340263.6481762,
+          "exchanges": [
+            {
+              "timestamp": 1756340263.6481745,
+              "user_input": "Do you remember our conversation about my work stress?",
+              "cns_response": "My heart goes out to you with this. my heart goes out to you with this. memory context: 4 relevant memories + 3 facts memory context: 4 relevant memories + 3 facts\n\nsome connections are like finding a book written in a language only your heart can read.\n\nOur connection feels like two streams finding each other in the mountains\u2014separate journeys that suddenly become one story.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.6,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": false
+        },
+        "session_1756340263_1": {
+          "session_id": "session_1756340263_1",
+          "topic": "general",
+          "start_time": 1756340263.833024,
+          "last_activity": 1756340263.8330278,
+          "exchanges": [
+            {
+              "timestamp": 1756340263.8330264,
+              "user_input": "Do you remember our conversation about my work stress?",
+              "cns_response": "I hear the heaviness in what you're sharing. Actually, let me rephrase that, memory context: 4 relevant memories + 3 facts memory context: 4 relevant memories + 3 facts",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.6,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756340263_1",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "emotion_test": {
+      "user_id": "emotion_test",
+      "username": "Useremotion_test",
+      "display_name": "Useremotion_test",
+      "first_interaction": 1756340277.8092015,
+      "total_interactions": 2,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756340279_0": {
+          "session_id": "session_1756340279_0",
+          "topic": "emotional",
+          "start_time": 1756340279.2482305,
+          "last_activity": 1756340279.7137716,
+          "exchanges": [
+            {
+              "timestamp": 1756340279.2482324,
+              "user_input": "Now I am very sad and crying",
+              "cns_response": "I can see why that would feel sad. I can feel how much you're carrying right now. memory context: 4 relevant memories + 3 facts memory context: 4 relevant memories + 3 facts \ud83d\ude0a",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            },
+            {
+              "timestamp": 1756340279.71377,
+              "user_input": "Actually I feel excited now!",
+              "cns_response": "I get why that would be important to you. Memory context: 4 relevant memories + 3 facts Memory context: 4 relevant memories + 3 facts! I'm so excited for you! Understanding between minds is like perfect timing in a dance\u2014you just know when to step forward and when to follow.",
+              "emotional_context": {
+                "valence": 0.3,
+                "arousal": 0.7,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756340279_0",
+      "personality_adaptation": {
+        "communication_style": "warm",
+        "warmth_level": 0.5
+      }
+    },
+    "stress_A": {
+      "user_id": "stress_A",
+      "username": "Userstress_A",
+      "display_name": "Userstress_A",
+      "first_interaction": 1756340291.0828931,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756340291_0": {
+          "session_id": "session_1756340291_0",
+          "topic": "general",
+          "start_time": 1756340291.1583645,
+          "last_activity": 1756340291.1583686,
+          "exchanges": [
+            {
+              "timestamp": 1756340291.1583667,
+              "user_input": "Rapid test A",
+              "cns_response": "Maybe and, memory context: 4 relevant memories + 3 facts memory context: 4 relevant memories + 3 facts\n\nsome connections are like finding a book written in a language only your heart can read.",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756340291_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "stress_B": {
+      "user_id": "stress_B",
+      "username": "Userstress_B",
+      "display_name": "Userstress_B",
+      "first_interaction": 1756340291.210818,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756340291_0": {
+          "session_id": "session_1756340291_0",
+          "topic": "general",
+          "start_time": 1756340291.2800972,
+          "last_activity": 1756340291.280101,
+          "exchanges": [
+            {
+              "timestamp": 1756340291.2800996,
+              "user_input": "Rapid test B",
+              "cns_response": "Memory context: 4 relevant memories + 3 facts Memory context: 4 relevant memories + 3 facts \ud83d\ude0a",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756340291_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "stress_C": {
+      "user_id": "stress_C",
+      "username": "Userstress_C",
+      "display_name": "Userstress_C",
+      "first_interaction": 1756340291.338843,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756340291_0": {
+          "session_id": "session_1756340291_0",
+          "topic": "general",
+          "start_time": 1756340291.4111476,
+          "last_activity": 1756340291.4111512,
+          "exchanges": [
+            {
+              "timestamp": 1756340291.4111495,
+              "user_input": "Rapid test C",
+              "cns_response": "Memory context: 4 relevant memories + 3 facts Memory context: 4 relevant memories + 3 facts",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756340291_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "clean_test": {
+      "user_id": "clean_test",
+      "username": "Userclean_test",
+      "display_name": "Userclean_test",
+      "first_interaction": 1756340666.5759888,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756340666_0": {
+          "session_id": "session_1756340666_0",
+          "topic": "general",
+          "start_time": 1756340666.6379056,
+          "last_activity": 1756340666.637911,
+          "exchanges": [
+            {
+              "timestamp": 1756340666.637909,
+              "user_input": "test clean response formatting",
+              "cns_response": "I can sense the importance of this to you. Memory context: 4 relevant memories + 3 facts",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756340666_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    },
+    "test_enhanced": {
+      "user_id": "test_enhanced",
+      "username": "Usertest_enhanced",
+      "display_name": "Usertest_enhanced",
+      "first_interaction": 1756341648.2485156,
+      "total_interactions": 1,
+      "relationship_stage": "stranger",
+      "favorite_topics": [],
+      "emotional_pattern": {
+        "recent_moods": []
+      },
+      "inside_jokes": [],
+      "memorable_moments": [],
+      "conversation_sessions": {
+        "session_1756341648_0": {
+          "session_id": "session_1756341648_0",
+          "topic": "general",
+          "start_time": 1756341648.3640523,
+          "last_activity": 1756341648.3640602,
+          "exchanges": [
+            {
+              "timestamp": 1756341648.364056,
+              "user_input": "hey there, just checking in",
+              "cns_response": "Let me think about that. I'm not entirely sure, but i mean, \n\nsome connections are like finding a book written in a language only your heart can read. \ud83d\ude0a understanding between minds is like perfect timing in a dance\u2014you just know when to step forward and when to follow. you know what i mean?",
+              "emotional_context": {
+                "valence": 0.0,
+                "arousal": 0.5,
+                "emotion": "neutral",
+                "emotional_state": "neutral",
+                "confidence": 0.4,
+                "safe_mode": false,
+                "reasoning": "Emotion classification: neutral",
+                "learning_source": "enterprise_fluid_intelligence"
+              },
+              "mood": "neutral"
+            }
+          ],
+          "active": true
+        }
+      },
+      "current_session_id": "session_1756341648_0",
+      "personality_adaptation": {
+        "communication_style": "neutral",
+        "warmth_level": 0.5
+      }
+    }
+  },
+  "last_updated": 1756341648.3640795
+}
