@@ -1,0 +1,145 @@
+================================================================================
+🎭 MULTI-TURN CONVERSATION TEST
+Scenario: Unrequited feelings for best friend (20 turns)
+================================================================================
+
+✅ Loaded enhanced brain state with 74 base training patterns
+🧠 Total facts: 74
+🧠 FLUID INTELLIGENCE: Learned 15 emotional patterns from 17 training experiences
+✅ Knowledge systems connected
+🧠 Cognitive orchestrator initialized - intelligent resource management active
+🧠 Intelligent memory system initialized - coordinated memory hierarchy active
+🚀 Neuroplastic optimizer initialized - all systems working at peak efficiency
+🚀 Loading conversation dataset from attached_assets/cns_dataset_1757141914931.jsonl
+✅ Loaded 14197 conversation patterns
+🎭 Personas: 5 | Styles: 5 | Emotions: 5
+🚀 Neuroplastic enhancement calculated: 15.20
+🎭 Enhanced expression trainer loaded - 3000+ conversation patterns integrated
+✅ MDC (Markov Decision Controller) integrated for adaptive learning
+✅ REM Subconscious Engine initialized - dream-like processing active
+✅ Creative systems fully integrated with main processing flow
+✅ LLM-optimized knowledge system initialized
+🎯 LLM fine-tuning system initialized - persona conditioning active
+🎖️ Humanness reward model initialized - quality scoring active
+[EXPRESSION] Loaded existing training data and reward model
+🚀 Enhanced expression system initialized - LLM-conditioned responses active
+🎨 Multimodal capabilities initialized - vision and generation active
+✨ Advanced AI capabilities fully integrated into unified CNS pipeline
+📝 No existing relationship data found - starting fresh
+✅ Feedback loops and memory integration established
+💭 Memory surfacing layer initialized for natural conversation flow
+🎭 Conversation consistency layer initialized for smooth long-chat experience
+💖 Xiaoice-style companionship system initialized for intimate emotional connection
+📚 Xiaoice-style relationship memory initialized - 'knows you better than anyone'
+🧠 Neural thalamus-cortex integration system initialized - unified cognitive routing
+🧠💬 Emotional language priming initialized - brain-like emotion-language integration
+🎭⚡ CNS Personality Engine initialized - dynamic warmth/sharpness/wit adaptation
+🎭 Loading intimate conversation dataset: attached_assets/lovers_friends_conversations_1757421552543.jsonl
+📊 Processed 500 intimate conversations...
+📊 Processed 1000 intimate conversations...
+📊 Processed 1500 intimate conversations...
+📊 Processed 2000 intimate conversations...
+📊 Processed 2500 intimate conversations...
+📊 Processed 3000 intimate conversations...
+✅ Psychological training complete!
+📊 Loaded 3000 intimate conversations
+🎭 Personas: 5
+💬 Communication styles: 5
+💭 Emotional themes: 12
+🎭 Psychological system trained with 3000 conversations
+✅ Companion system integrated with emotional and world systems
+✅ User profiles system initialized
+✅ CNS initialized with user_id: multiturn_test_user
+
+================================================================================
+TURN 1/20
+================================================================================
+👤 USER: I think I'm falling for my best friend but they just started dating someone...
+
+[PERCEPTION] 🎯 Extracted: intent=statement, sentiment=neutral, urgency=0.26, entities=['person:they', 'person:i', 'person:he'], confidence=0.64
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.55, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.85, Multiplier=1.05, Systems=1
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=person:they, valence=-0.80, load=0.55
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 0.700 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): False
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.32, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 3 gaps, mode: curiosity
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[CLARITY] ✅ Updated arc story (target: i think i'm falling for my) with clarity 0.50
+[CLARITY] ✅ Updated arc hint (target: i think i'm falling for my) with clarity 0.50
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.19
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 44 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.562s | Response: 44 chars
+🤖 CNS: okay so, real talk - tell me more about them
+
+📊 HUMANNESS: ⚠️ MIXED (score: 0.60)
+   Traits: {'casual_tone': True, 'specific_reference': False, 'question': False, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 💤 NO QUESTION (score: 0.00)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.32, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.22
+Traceback (most recent call last):
+  File "/home/runner/workspace/test_multiturn_conversation.py", line 222, in <module>
+    asyncio.run(run_conversation())
+  File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/asyncio/runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nix/store/7d088dip86hlzri9sk0h78b63yfmx0a0-python3-3.11.13/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/test_multiturn_conversation.py", line 156, in run_conversation
+    print(f"   Memory: episodic={len(brain.intelligent_memory.episodic_memories.get(brain.current_user_id, []))}")
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'IntelligentMemorySystem' object has no attribute 'episodic_memories'. Did you mean: 'episodic_memory'?

@@ -1,0 +1,1656 @@
+================================================================================
+🎭 MULTI-TURN CONVERSATION TEST
+Scenario: Unrequited feelings for best friend (20 turns)
+================================================================================
+
+✅ Loaded enhanced brain state with 74 base training patterns
+🧠 Total facts: 74
+🧠 FLUID INTELLIGENCE: Learned 15 emotional patterns from 17 training experiences
+✅ Knowledge systems connected
+🧠 Cognitive orchestrator initialized - intelligent resource management active
+🧠 Intelligent memory system initialized - coordinated memory hierarchy active
+🚀 Neuroplastic optimizer initialized - all systems working at peak efficiency
+🚀 Loading conversation dataset from attached_assets/cns_dataset_1757141914931.jsonl
+✅ Loaded 14197 conversation patterns
+🎭 Personas: 5 | Styles: 5 | Emotions: 5
+🚀 Neuroplastic enhancement calculated: 15.20
+🎭 Enhanced expression trainer loaded - 3000+ conversation patterns integrated
+✅ MDC (Markov Decision Controller) integrated for adaptive learning
+✅ REM Subconscious Engine initialized - dream-like processing active
+✅ Creative systems fully integrated with main processing flow
+✅ LLM-optimized knowledge system initialized
+🎯 LLM fine-tuning system initialized - persona conditioning active
+🎖️ Humanness reward model initialized - quality scoring active
+[EXPRESSION] Loaded existing training data and reward model
+🚀 Enhanced expression system initialized - LLM-conditioned responses active
+🎨 Multimodal capabilities initialized - vision and generation active
+✨ Advanced AI capabilities fully integrated into unified CNS pipeline
+📝 No existing relationship data found - starting fresh
+✅ Feedback loops and memory integration established
+💭 Memory surfacing layer initialized for natural conversation flow
+🎭 Conversation consistency layer initialized for smooth long-chat experience
+💖 Xiaoice-style companionship system initialized for intimate emotional connection
+📚 Xiaoice-style relationship memory initialized - 'knows you better than anyone'
+🧠 Neural thalamus-cortex integration system initialized - unified cognitive routing
+🧠💬 Emotional language priming initialized - brain-like emotion-language integration
+🎭⚡ CNS Personality Engine initialized - dynamic warmth/sharpness/wit adaptation
+🎭 Loading intimate conversation dataset: attached_assets/lovers_friends_conversations_1757421552543.jsonl
+📊 Processed 500 intimate conversations...
+📊 Processed 1000 intimate conversations...
+📊 Processed 1500 intimate conversations...
+📊 Processed 2000 intimate conversations...
+📊 Processed 2500 intimate conversations...
+📊 Processed 3000 intimate conversations...
+✅ Psychological training complete!
+📊 Loaded 3000 intimate conversations
+🎭 Personas: 5
+💬 Communication styles: 5
+💭 Emotional themes: 12
+🎭 Psychological system trained with 3000 conversations
+✅ Companion system integrated with emotional and world systems
+✅ User profiles system initialized
+✅ CNS initialized with user_id: multiturn_test_user
+
+================================================================================
+TURN 1/20
+================================================================================
+👤 USER: I think I'm falling for my best friend but they just started dating someone...
+
+[PERCEPTION] 🎯 Extracted: intent=statement, sentiment=neutral, urgency=0.26, entities=['person:i', 'person:they', 'person:he'], confidence=0.64
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.55, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.85, Multiplier=1.05, Systems=1
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=person:i, valence=-0.80, load=0.55
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 0.700 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): False
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.32, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 3 gaps, mode: curiosity
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[CLARITY] ✅ Updated arc story (target: i think i'm falling for my) with clarity 0.50
+[CLARITY] ✅ Updated arc hint (target: i think i'm falling for my) with clarity 0.50
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.29
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 26 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.408s | Response: 26 chars
+🤖 CNS: damn, who are they to you?
+
+📊 HUMANNESS: ⚠️ MIXED (score: 0.60)
+   Traits: {'casual_tone': False, 'specific_reference': False, 'question': True, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 🤔 EXPLORATORY (score: 0.60)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.32, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.22
+   Memory: interactions=1
+   REM counter: 1/15
+
+================================================================================
+TURN 2/20
+================================================================================
+👤 USER: Her name is Maya. We've been friends since college, like 6 years now.
+
+[PERCEPTION] 🎯 Extracted: intent=unknown, sentiment=neutral, urgency=0.30, entities=[], confidence=0.30
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.57, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.85, Multiplier=1.10, Systems=2
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=general, valence=-0.80, load=0.57
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): False
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.32, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 4 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[CLARITY] ✅ Updated arc novelty (target: we) with clarity 0.40
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.34
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 43 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.699s | Response: 43 chars
+🤖 CNS: damn... what's your relationship with them?
+
+📊 HUMANNESS: ⚠️ MIXED (score: 0.60)
+   Traits: {'casual_tone': False, 'specific_reference': False, 'question': True, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 🤔 EXPLORATORY (score: 0.60)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.32, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=2
+   REM counter: 2/15
+
+================================================================================
+TURN 3/20
+================================================================================
+👤 USER: Yeah exactly. I never said anything because I didn't want to ruin the friendship.
+
+[PERCEPTION] 🎯 Extracted: intent=greeting, sentiment=neutral, urgency=0.00, entities=['person:i', 'person:he'], confidence=0.40
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.60, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.85, Multiplier=1.10, Systems=3
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=person:i, valence=-0.80, load=0.60
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): False
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.32, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 2 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[CLARITY] ✅ Updated arc novelty (target: yeah) with clarity 0.40
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.32
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 30 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.052s | Response: 30 chars
+🤖 CNS: what happened between you two?
+
+📊 HUMANNESS: ⚠️ MIXED (score: 0.60)
+   Traits: {'casual_tone': False, 'specific_reference': False, 'question': True, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 😐 GENERIC (score: 0.30)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.32, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=3
+   REM counter: 3/15
+
+================================================================================
+TURN 4/20
+================================================================================
+👤 USER: Last week. She introduced me to him at a party and I just... felt sick.
+
+[PERCEPTION] 🎯 Extracted: intent=greeting, sentiment=neutral, urgency=0.00, entities=['person:we', 'person:i', 'person:he', 'person:she'], confidence=0.40
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.62, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.85, Multiplier=1.15, Systems=5
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=person:we, valence=-0.80, load=0.62
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): False
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.32, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 3 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[CLARITY] ✅ Updated arc novelty (target: last) with clarity 0.40
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.29
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 26 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.093s | Response: 26 chars
+🤖 CNS: ngl - who are they to you?
+
+📊 HUMANNESS: ⚠️ MIXED (score: 0.60)
+   Traits: {'casual_tone': False, 'specific_reference': False, 'question': True, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 🤔 EXPLORATORY (score: 0.60)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.32, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=4
+   REM counter: 4/15
+
+================================================================================
+TURN 5/20
+================================================================================
+👤 USER: His name is Ryan. He seems nice which makes it worse honestly.
+
+[PERCEPTION] 🎯 Extracted: intent=greeting, sentiment=neutral, urgency=0.00, entities=['person:i', 'person:he'], confidence=0.40
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.65, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.85, Multiplier=1.15, Systems=7
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=person:i, valence=-0.80, load=0.65
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): False
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.32, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 4 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.29
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 25 chars
+[PERSONALITY EVOLUTION] 🎭 High engagement with warmth → increasing warmth
+[PERSONALITY EVOLUTION] ✅ Evolved traits: warmth=1.00, sharpness=0.10, wit=0.10
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.722s | Response: 25 chars
+🤖 CNS: oof, who are they to you?
+
+📊 HUMANNESS: ⚠️ MIXED (score: 0.60)
+   Traits: {'casual_tone': False, 'specific_reference': False, 'question': True, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 🤔 EXPLORATORY (score: 0.60)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.32, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=5
+   REM counter: 5/15
+
+================================================================================
+TURN 6/20
+================================================================================
+👤 USER: We used to talk every day. Now she's always busy with him.
+
+[PERCEPTION] 🎯 Extracted: intent=greeting, sentiment=neutral, urgency=0.30, entities=['person:we', 'person:i', 'person:he', 'person:she'], confidence=0.40
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.68, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.85, Multiplier=1.15, Systems=9
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=person:we, valence=-0.80, load=0.68
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+LLM API error: 429
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): False
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.32, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 3 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[CLARITY] ✅ Updated arc novelty (target: now) with clarity 0.40
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.24
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 31 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.239s | Response: 31 chars
+🤖 CNS: damn... tell me more about them
+
+📊 HUMANNESS: ⚠️ MIXED (score: 0.40)
+   Traits: {'casual_tone': False, 'specific_reference': False, 'question': False, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 💤 NO QUESTION (score: 0.00)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.32, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=6
+   REM counter: 6/15
+
+================================================================================
+TURN 7/20
+================================================================================
+👤 USER: I don't know. Part of me wants to tell her how I feel, part of me thinks it's too late.
+
+[PERCEPTION] 🎯 Extracted: intent=question, sentiment=neutral, urgency=0.30, entities=['person:i', 'person:he'], confidence=0.40
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.70, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.85, Multiplier=1.15, Systems=10
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=person:i, valence=-0.80, load=0.70
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): False
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.34, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 2 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[CLARITY] ✅ Updated arc novelty (target: her) with clarity 0.70
+[CLARITY] ✅ Updated arc novelty (target: part) with clarity 0.70
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.34
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 42 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.042s | Response: 42 chars
+🤖 CNS: oof... what's your relationship with them?
+
+📊 HUMANNESS: ⚠️ MIXED (score: 0.60)
+   Traits: {'casual_tone': False, 'specific_reference': False, 'question': True, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 🤔 EXPLORATORY (score: 0.60)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.34, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=7
+   REM counter: 7/15
+
+================================================================================
+TURN 8/20
+================================================================================
+👤 USER: I mean... there were moments. Like last summer when we went to the beach together.
+
+[PERCEPTION] 🎯 Extracted: intent=question, sentiment=neutral, urgency=0.00, entities=['person:we', 'person:i', 'person:he'], confidence=0.40
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.73, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.75, Multiplier=1.10, Systems=10
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=person:we, valence=-0.80, load=0.73
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): None
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.34, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 2 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[CLARITY] ✅ Updated arc novelty (target: we) with clarity 0.40
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.41
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 42 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.744s | Response: 42 chars
+🤖 CNS: honestly... what happened between you two?
+
+📊 HUMANNESS: ✅ HUMAN (score: 0.80)
+   Traits: {'casual_tone': True, 'specific_reference': False, 'question': True, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 😐 GENERIC (score: 0.30)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.34, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=8
+   REM counter: 8/15
+
+================================================================================
+TURN 9/20
+================================================================================
+👤 USER: She held my hand during the sunset. I thought maybe she felt it too.
+
+[PERCEPTION] 🎯 Extracted: intent=unknown, sentiment=neutral, urgency=0.30, entities=[], confidence=0.30
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.75, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.75, Multiplier=1.10, Systems=10
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=general, valence=-0.80, load=0.75
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): False
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.34, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 3 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[CLARITY] ✅ Updated arc novelty (target: she) with clarity 0.40
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.28
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 41 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.278s | Response: 41 chars
+🤖 CNS: oof - what's your relationship with them?
+
+📊 HUMANNESS: ⚠️ MIXED (score: 0.60)
+   Traits: {'casual_tone': False, 'specific_reference': False, 'question': True, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 🤔 EXPLORATORY (score: 0.60)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.34, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=9
+   REM counter: 9/15
+
+================================================================================
+TURN 10/20
+================================================================================
+👤 USER: But then she started dating someone else a month later. So clearly I misread it.
+
+[PERCEPTION] 🎯 Extracted: intent=unknown, sentiment=neutral, urgency=0.30, entities=[], confidence=0.30
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.70, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.75, Multiplier=1.10, Systems=10
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=general, valence=-0.80, load=0.70
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): False
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.34, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 3 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[CLARITY] ✅ Updated arc novelty (target: but) with clarity 0.40
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.24
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 30 chars
+[PERSONALITY EVOLUTION] 🎭 High engagement with warmth → increasing warmth
+[PERSONALITY EVOLUTION] ✅ Evolved traits: warmth=1.00, sharpness=0.10, wit=0.10
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.167s | Response: 30 chars
+🤖 CNS: ngl... tell me more about them
+
+📊 HUMANNESS: ⚠️ MIXED (score: 0.40)
+   Traits: {'casual_tone': False, 'specific_reference': False, 'question': False, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 💤 NO QUESTION (score: 0.00)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.34, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=10
+   REM counter: 10/15
+
+================================================================================
+TURN 11/20
+================================================================================
+👤 USER: I'm trying to be happy for her but it's killing me inside.
+
+[PERCEPTION] 🎯 Extracted: intent=unknown, sentiment=neutral, urgency=0.30, entities=[], confidence=0.30
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (LLM rejected joy in context: No, the text does not express joy. The statement "it's killing me inside" contradicts the statement "I'm trying to be happy for her". The logical principle at play here is the principle of contradiction, which states that a statement cannot be both true and false at the same time.)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.73, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.75, Multiplier=1.10, Systems=10
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=general, valence=-0.80, load=0.73
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): False
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.34, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 2 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.29
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 41 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.600s | Response: 41 chars
+🤖 CNS: ngl - what's your relationship with them?
+
+📊 HUMANNESS: ⚠️ MIXED (score: 0.60)
+   Traits: {'casual_tone': False, 'specific_reference': False, 'question': True, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 🤔 EXPLORATORY (score: 0.60)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.34, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=11
+   REM counter: 11/15
+
+================================================================================
+TURN 12/20
+================================================================================
+👤 USER: What if I tell her and she freaks out? I'd lose my best friend.
+
+[PERCEPTION] 🎯 Extracted: intent=question, sentiment=neutral, urgency=0.17, entities=['person:i', 'person:he', 'person:she'], confidence=0.55
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+LLM API error: 429
+🔗 EMOTION DETECTED: neutral - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.57, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.75, Multiplier=1.10, Systems=10
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=person:i, valence=0.00, load=0.57
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=0.000, vulnerability=0.000, intensity=0.000
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? False, vulnerability>0.2? False, intensity>0.5? False
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: False
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +0.000)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=0.000, sharpness-=0.000, wit-=0.000
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: False
+    - needs_empathy: True (warmth=1.000)
+    - valence: 0.000
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): None
+    - is_crisis: False
+    - needs_empathy: True
+    - valence < -0.2: False (valence=0.000)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: False
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: 0.000
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.34, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 2 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': False, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: False
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: False
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.31
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 31 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 0.656s | Response: 31 chars
+🤖 CNS: honestly - who are they to you?
+
+📊 HUMANNESS: ✅ HUMAN (score: 0.80)
+   Traits: {'casual_tone': True, 'specific_reference': False, 'question': True, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 🤔 EXPLORATORY (score: 0.60)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.34, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=12
+   REM counter: 12/15
+
+================================================================================
+TURN 13/20
+================================================================================
+👤 USER: Sometimes I wonder if she knows. Like she's avoiding being alone with me now.
+
+[PERCEPTION] 🎯 Extracted: intent=question, sentiment=neutral, urgency=0.40, entities=[], confidence=0.65
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.80, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.75, Multiplier=1.10, Systems=10
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=general, valence=-0.80, load=0.80
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): False
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.34, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 3 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[CLARITY] ✅ Updated arc emotion (target: joy) with clarity 0.80
+[CLARITY] ✅ Updated arc novelty (target: so) with clarity 0.40
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.22
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 41 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.551s | Response: 41 chars
+🤖 CNS: Honestly - tell me more about them Plus,.
+
+📊 HUMANNESS: ⚠️ MIXED (score: 0.60)
+   Traits: {'casual_tone': True, 'specific_reference': False, 'question': False, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 💤 NO QUESTION (score: 0.00)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.34, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=13
+   REM counter: 13/15
+
+================================================================================
+TURN 14/20
+================================================================================
+👤 USER: Maybe I should just move on. But how do you move on from someone you see every day?
+
+[PERCEPTION] 🎯 Extracted: intent=question, sentiment=neutral, urgency=0.17, entities=['person:i', 'person:you'], confidence=0.55
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.80, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.75, Multiplier=1.10, Systems=10
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=person:i, valence=-0.80, load=0.80
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+LLM API error: 429
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): None
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.34, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 5 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[CLARITY] ✅ Updated arc novelty (target: so) with clarity 0.70
+[CLARITY] ✅ Updated arc novelty (target: but) with clarity 0.70
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.31
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 31 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.111s | Response: 31 chars
+🤖 CNS: honestly - who are they to you?
+
+📊 HUMANNESS: ✅ HUMAN (score: 0.80)
+   Traits: {'casual_tone': True, 'specific_reference': False, 'question': True, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 🤔 EXPLORATORY (score: 0.60)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.34, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=14
+   REM counter: 14/15
+
+================================================================================
+TURN 15/20
+================================================================================
+🌙 REM CYCLE SHOULD TRIGGER AT THIS TURN
+
+👤 USER: I saw them together yesterday. They looked so happy. It hurt more than I expected.
+
+[PERCEPTION] 🎯 Extracted: intent=greeting, sentiment=neutral, urgency=0.00, entities=['emotion:happy', 'person:i', 'person:they', 'person:he'], confidence=0.40
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (LLM rejected joy in context: No, the text does not express joy. The statement "It hurt more than I expected" contradicts the statement "They looked so happy." The logical principle at play here is the principle of contradiction, which states that two contradictory statements cannot both be true at the same time.)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=CRITICAL, Load=0.80, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.75, Multiplier=1.10, Systems=10
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=emotion:happy, valence=-0.80, load=0.80
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): False
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.34, metacognition=0.20, existential=0.00
+[REM] 💤 Triggering REM cycle 15 - consolidating memories and discovering patterns...
+🌙 Entering REM cycle (intensity: 0.80)
+🌅 REM cycle complete. Processed: 5 memories, found 10 patterns, resolved 3 emotions
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 4 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[CLARITY] ✅ Updated arc emotion (target: joy) with clarity 0.80
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.34
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 27 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 3.085s | Response: 27 chars
+🤖 CNS: oof... who are they to you?
+
+📊 HUMANNESS: ⚠️ MIXED (score: 0.60)
+   Traits: {'casual_tone': False, 'specific_reference': False, 'question': True, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 🤔 EXPLORATORY (score: 0.60)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.34, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=15
+   REM counter: 0/15
+   🌙 REM CYCLE TRIGGERED!
+
+================================================================================
+TURN 16/20
+================================================================================
+👤 USER: The worst part is I keep replaying all our memories wondering what I could've done differently.
+
+[PERCEPTION] 🎯 Extracted: intent=question, sentiment=neutral, urgency=0.22, entities=['person:i', 'person:he'], confidence=0.63
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.80, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.75, Multiplier=1.10, Systems=10
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=person:i, valence=-0.80, load=0.80
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): None
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.34, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 3 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.24
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 30 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.460s | Response: 30 chars
+🤖 CNS: ngl... tell me more about them
+
+📊 HUMANNESS: ⚠️ MIXED (score: 0.40)
+   Traits: {'casual_tone': False, 'specific_reference': False, 'question': False, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 💤 NO QUESTION (score: 0.00)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.34, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=16
+   REM counter: 1/15
+
+================================================================================
+TURN 17/20
+================================================================================
+👤 USER: Like if I'd said something last summer, would things be different?
+
+[PERCEPTION] 🎯 Extracted: intent=question, sentiment=neutral, urgency=0.17, entities=['person:i'], confidence=0.55
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.73, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.75, Multiplier=1.10, Systems=10
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=person:i, valence=-0.80, load=0.73
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): None
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.34, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 2 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[CLARITY] ✅ Updated arc novelty (target: like) with clarity 0.40
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.33
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 26 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.639s | Response: 26 chars
+🤖 CNS: okay so... what went down?
+
+📊 HUMANNESS: ✅ HUMAN (score: 0.80)
+   Traits: {'casual_tone': True, 'specific_reference': False, 'question': True, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 🤔 EXPLORATORY (score: 0.60)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.34, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=17
+   REM counter: 2/15
+
+================================================================================
+TURN 18/20
+================================================================================
+👤 USER: I feel pathetic. Who falls for their best friend and just... watches them date someone else?
+
+[PERCEPTION] 🎯 Extracted: intent=question, sentiment=neutral, urgency=0.21, entities=['person:i', 'person:he'], confidence=0.63
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.73, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.75, Multiplier=1.10, Systems=10
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=person:i, valence=-0.80, load=0.73
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): False
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.36, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 2 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.22
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 38 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.077s | Response: 38 chars
+🤖 CNS: Okay so, tell me more about them And,.
+
+📊 HUMANNESS: ⚠️ MIXED (score: 0.60)
+   Traits: {'casual_tone': True, 'specific_reference': False, 'question': False, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 💤 NO QUESTION (score: 0.00)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.36, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=18
+   REM counter: 3/15
+
+================================================================================
+TURN 19/20
+================================================================================
+👤 USER: I don't even know why I'm telling you this. I haven't told anyone.
+
+[PERCEPTION] 🎯 Extracted: intent=question, sentiment=neutral, urgency=0.30, entities=['person:i', 'person:you'], confidence=0.40
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.73, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.75, Multiplier=1.10, Systems=10
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=person:i, valence=-0.80, load=0.73
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): None
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.36, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 1 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.27
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 31 chars
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.543s | Response: 31 chars
+🤖 CNS: okay so, what's the full story?
+
+📊 HUMANNESS: ✅ HUMAN (score: 0.80)
+   Traits: {'casual_tone': True, 'specific_reference': False, 'question': True, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 🤔 EXPLORATORY (score: 0.60)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.36, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=19
+   REM counter: 4/15
+
+================================================================================
+TURN 20/20
+================================================================================
+👤 USER: Do you think I waited too long?
+
+[PERCEPTION] 🎯 Extracted: intent=question, sentiment=neutral, urgency=0.17, entities=['person:i', 'person:you'], confidence=0.55
+[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation
+[EMOTION] 🧠 STEP 2: Deep analysis (No clear emotional patterns detected)
+🔗 EMOTION DETECTED: devastated - Adaptive personality will naturally respond
+🧠 Orchestration: Priority=MEDIUM, Load=0.73, State=OVERWHELMED
+🚀 Neuroplastic: Efficiency=0.75, Multiplier=1.10, Systems=10
+[MEMORY] 🧬 Retrieved: episodic=0, semantic=0, working=0
+[MEMORY] 💾 Stored: topic=person:i, valence=-0.80, load=0.73
+🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...
+🩻 [X-RAY] EMOTION SIGNALS: valence=-0.800, vulnerability=0.000, intensity=0.800
+🩻 [X-RAY] CRISIS CHECK: valence<-0.2? True, vulnerability>0.2? False, intensity>0.5? True
+🩻 [X-RAY] IS_CRISIS_EMOTIONAL: True
+🩻 [X-RAY] PERSONALITY ADAPTATION: warmth 1.000 → 1.000 (change: +1.152)
+🩻 [X-RAY] ADJUSTMENTS: warmth+=1.152, sharpness-=0.480, wit-=0.320
+🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:
+    - is_crisis: True
+    - needs_empathy: True (warmth=1.000)
+    - valence: -0.800
+    - vulnerability: 0.000
+🩻 [X-RAY] OVERRIDE CHECK:
+    - use_direct_conclusion (original): None
+    - is_crisis: True
+    - needs_empathy: True
+    - valence < -0.2: True (valence=-0.800)
+    - is_emotional_situation: True
+🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence
+🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:
+    - Crisis: True
+    - Empathy: True
+    - Warmth: 1.000
+    - Valence: -0.800
+    - Vulnerability: 0.000
+    - Should be empathetic: True
+[IMAGINATION] ✨ Generated creative insights: counterfactual=True
+[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness=0.36, metacognition=0.20, existential=0.00
+[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy=1.00)
+[CURIOSITY] 🔍 Detected 2 gaps, mode: exploration
+🩻 [X-RAY] RECEIVED GUIDANCE DATA:
+    - cues keys: ['text', 'emotion', 'dominant_emotion', 'valence', 'arousal', 'confidence', 'intensity', 'mixed_emotions', 'emotion_complexity', 'adaptive_personality_guidance', 'topic', 'tone', 'has_people', 'has_events', 'has_opinions', 'conversation_hooks']
+    - adaptive_guidance: {'is_crisis': True, 'needs_empathy': True, 'warmth_level': 1.0, 'should_be_empathetic': True}
+    - is_crisis: True
+    - needs_empathy: True
+    - should_be_empathetic: True
+    - warmth_level: 1.0
+🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:
+    - should_be_empathetic: True
+    - is_crisis: True
+    - needs_empathy: True
+    - warmth_level > 0.7: True (warmth=1.000)
+🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives
+[STRATEGIC ANALYSIS] ✅ Generated strategic context with 0 vulnerabilities
+🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT
+[EXPRESSION] 🚀 Using LLM-conditioned generation FIRST (strategic intelligence detected)
+[EXPRESSION] ✅ Using ADVANCED strategic prompt - Analysis: True, Vulnerabilities: False, Summary: True
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[EXPRESSION] ❌ LLM API error: status 401
+[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: 0.31
+[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: 24 chars
+[PERSONALITY EVOLUTION] 🎭 High engagement with warmth → increasing warmth
+[PERSONALITY EVOLUTION] ✅ Evolved traits: warmth=1.00, sharpness=0.10, wit=0.10
+[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: 1.336s | Response: 24 chars
+🤖 CNS: damn... what's going on?
+
+📊 HUMANNESS: ⚠️ MIXED (score: 0.60)
+   Traits: {'casual_tone': False, 'specific_reference': False, 'question': True, 'short_length': True, 'no_therapy_speak': True}
+🔍 CURIOSITY: 🤔 EXPLORATORY (score: 0.60)
+
+🧠 BRAIN STATE:
+   Consciousness: self_awareness=0.36, metacognition=0.20
+   Personality: warmth=1.00, sharpness=0.10
+   Memory: interactions=20
+   REM counter: 5/15
+
+================================================================================
+📊 CONVERSATION ANALYSIS
+================================================================================
+
+Average Humanness: 0.62
+Average Curiosity: 0.42
+
+Humanness Trend:
+  Turns 1-5:   0.60
+  Turns 6-10:  0.56
+  Turns 11-15: 0.68
+  Turns 16-20: 0.64
+
+Curiosity Trend:
+  Turns 1-5:   0.54
+  Turns 6-10:  0.30
+  Turns 11-15: 0.48
+  Turns 16-20: 0.36
+
+REM Cycle Triggered: ✅ YES
+
+================================================================================
+🎯 FINAL VERDICT
+================================================================================
+⚠️ HUMANNESS: GOOD (0.62) - Mostly natural with some AI patterns
+❌ CURIOSITY: POOR (0.42) - Generic or no questions
+
+Final Brain State:
+  Total interactions: 20
+  Consciousness self_awareness: 0.36
+  Personality warmth: 1.00

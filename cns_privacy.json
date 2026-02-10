@@ -1,0 +1,79 @@
+{
+  "user_profiles": {
+    "demo_user_123": {
+      "user_id": "demo_user_123",
+      "privacy_level": "standard",
+      "consent_records": {
+        "conversation_logging": {
+          "user_id": "demo_user_123",
+          "consent_type": "conversation_logging",
+          "granted": true,
+          "timestamp": 1757152092.6658654,
+          "expires": null,
+          "version": "1.0",
+          "opt_out_reason": null
+        },
+        "response_analytics": {
+          "user_id": "demo_user_123",
+          "consent_type": "response_analytics",
+          "granted": true,
+          "timestamp": 1757152092.6658714,
+          "expires": null,
+          "version": "1.0",
+          "opt_out_reason": null
+        },
+        "memory_storage": {
+          "user_id": "demo_user_123",
+          "consent_type": "memory_storage",
+          "granted": true,
+          "timestamp": 1757152092.6658733,
+          "expires": null,
+          "version": "1.0",
+          "opt_out_reason": null
+        },
+        "persona_adaptation": {
+          "user_id": "demo_user_123",
+          "consent_type": "persona_adaptation",
+          "granted": true,
+          "timestamp": 1757152092.665875,
+          "expires": null,
+          "version": "1.0",
+          "opt_out_reason": null
+        },
+        "performance_analytics": {
+          "user_id": "demo_user_123",
+          "consent_type": "performance_analytics",
+          "granted": true,
+          "timestamp": 1757152092.6658764,
+          "expires": null,
+          "version": "1.0",
+          "opt_out_reason": null
+        },
+        "error_reporting": {
+          "user_id": "demo_user_123",
+          "consent_type": "error_reporting",
+          "granted": true,
+          "timestamp": 1757152092.665878,
+          "expires": null,
+          "version": "1.0",
+          "opt_out_reason": null
+        },
+        "improvement_feedback": {
+          "user_id": "demo_user_123",
+          "consent_type": "improvement_feedback",
+          "granted": false,
+          "timestamp": 1757152092.66588,
+          "expires": null,
+          "version": "1.0",
+          "opt_out_reason": null
+        }
+      },
+      "data_retention_days": 90,
+      "anonymous_mode": false,
+      "created_timestamp": 1757152092.6658847,
+      "last_updated": 1757152092.6658847
+    }
+  },
+  "processing_logs": [],
+  "consent_versions": {
+    

@@ -1,0 +1,63 @@
+{
+  "prompt": "I'm excited about my new job!",
+  "final_output": "That makes complete sense. There's wisdom in how you're approaching this. That's amazing! Hmm, that's a really good point. these 1 key concepts interconnect. I can see 0 important relationships that help build understanding of what you're exploring.",
+  "subsystems": {
+    "reasoning": {},
+    "emotion": {
+      "valence": 0.0,
+      "arousal": 0.7,
+      "emotion": "neutral",
+      "emotional_state": "neutral",
+      "confidence": 0.5,
+      "safe_mode": false,
+      "reasoning": "Emotion classification: neutral (final confidence: 0.50)",
+      "learning_source": "enterprise_fluid_intelligence"
+    },
+    "memory": {},
+    "creative": {},
+    "integration": {}
+  },
+  "processing_time": 0.0054473876953125,
+  "reasoning": "N/A",
+  "suppression_detected": [
+    "Low integration coherence: 0.00"
+  ],
+  "fallback_triggered": false,
+  "raw_processing_summary": {
+    "perception": {
+      "intent": "unknown",
+      "sentiment": "neutral",
+      "urgency": 0.1,
+      "entities": [
+        "person:i",
+        "emotion:excited"
+      ],
+      "raw_text": "I'm excited about my new job!",
+      "confidence": 0.8
+    },
+    "emotion": {
+      "valence": 0.0,
+      "arousal": 0.7,
+      "emotion": "neutral",
+      "emotional_state": "neutral",
+      "confidence": 0.5,
+      "safe_mode": false,
+      "reasoning": "Emotion classification: neutral (final confidence: 0.50)",
+      "learning_source": "enterprise_fluid_intelligence"
+    },
+    "mood": {
+      "valence": 0.0,
+      "arousal": 0.544869117734375
+    },
+    "reasoning_type": "conceptual_synthesis",
+    "reasoning_confidence": 0.7,
+    "response_type": "reasoned",
+    "memory_facts_used": 0,
+    "llm_calls_made": 0,
+    "processing_time": 0.0054473876953125,
+    "emotional_state": "neutral",
+    "fallback_triggered": false,
+    "coherence_score": 1.0
+  },
+  "timestamp": "2025-08-28T12:58:08.071842"
+}

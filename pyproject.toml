@@ -1,0 +1,28 @@
+[project]
+name = "repl-nix-workspace"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.11"
+dependencies = [
+    "aiohttp-cors>=0.8.1",
+    "aiohttp>=3.12.15",
+    "discord-py>=2.5.2",
+    "matplotlib>=3.10.5",
+    "networkx>=3.5",
+    "numpy>=2.3.2",
+    "opencv-python>=4.11.0.86",
+    "requests>=2.32.4",
+    "nltk>=3.9.1",
+    "psutil>=7.0.0",
+    "pandas>=2.3.3",
+    "stripe>=13.0.1",
+    "textblob>=0.19.0",
+    "sounddevice>=0.5.3",
+    "soundfile>=0.13.1",
+    "psycopg2-binary>=2.9.11",
+    "sqlalchemy>=2.0.45",
+    "python-dateutil>=2.9.0.post0",
+    "mistralai>=1.10.0",
+    "duckduckgo-search>=8.1.1",
+    "ddgs>=9.10.0",
+]

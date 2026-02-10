@@ -1,0 +1,164 @@
+[
+  {
+    "step": "TRAINING_LOAD",
+    "timestamp": 1755921968.9924188,
+    "data": {
+      "training_facts_loaded": 5,
+      "total_facts": 5,
+      "sample_training": [
+        "Emotional Intelligence: When user expresses depres...",
+        "Vulnerability Response: When someone shares vulner..."
+      ]
+    },
+    "notes": "Loaded 5 training facts"
+  },
+  {
+    "step": "INITIAL_STATE",
+    "timestamp": 1755921968.9939277,
+    "data": {
+      "total_facts": 5,
+      "emotional_state": {
+        "valence": 0.0,
+        "arousal": 0.5,
+        "mood": "neutral"
+      },
+      "personality": {
+        "empathy": 0.9,
+        "openness": 0.5
+      },
+      "interaction_count": 0
+    },
+    "notes": "CNS starting state: 5 facts, neutral mood"
+  },
+  {
+    "step": "PERCEPTION",
+    "timestamp": 1755921968.9940662,
+    "data": {
+      "intent": "unknown",
+      "sentiment": "neutral",
+      "urgency": 0.0,
+      "entities": [
+        "person:i",
+        "person:you",
+        "person:he",
+        "person:we"
+      ],
+      "confidence": 0.8
+    },
+    "notes": "Detected: unknown, neutral sentiment"
+  },
+  {
+    "step": "EMOTION_PROCESSING",
+    "timestamp": 1755921968.9941623,
+    "data": {
+      "detected_emotion": {
+        "valence": 0.0,
+        "arousal": 0.7,
+        "emotion": "neutral",
+        "emotional_state": "neutral"
+      },
+      "old_mood": "neutral",
+      "new_mood": {
+        "valence": 0.0,
+        "arousal": 0.53
+      },
+      "valence_change": 0.0,
+      "arousal_change": 0.16999999999999993
+    },
+    "notes": "Mood: neutral \u2192 {'valence': 0.0, 'arousal': 0.53}"
+  },
+  {
+    "step": "MEMORY_RETRIEVAL",
+    "timestamp": 1755921968.9947133,
+    "data": {
+      "total_retrieved": 5,
+      "training_facts_found": 5,
+      "training_facts": [
+        {
+          "content": "Emotional Intelligence: When user expresses depression, over...",
+          "source": "emotional_intelligence_training",
+          "confidence": 0.95,
+          "tags": [
+            "emotional_intelligence",
+            "empathy",
+            "validation",
+            "depression_support"
+          ]
+        },
+        {
+          "content": "Complex Emotion Handling: For contradictory emotions (love/r...",
+          "source": "emotional_complexity_training",
+          "confidence": 0.93,
+          "tags": [
+            "complex_emotions",
+            "contradiction_tolerance"
+          ]
+        },
+        {
+          "content": "Vulnerability Response: When someone shares vulnerable feeli...",
+          "source": "vulnerability_training",
+          "confidence": 0.96,
+          "tags": [
+            "vulnerability",
+            "trust_building",
+            "authentic_presence"
+          ]
+        },
+        {
+          "content": "Anti-Template Protocol: Never use generic phrases like 'that...",
+          "source": "response_authenticity_training",
+          "confidence": 0.99,
+          "tags": [
+            "authentic_responses",
+            "no_templates",
+            "contextual_generation"
+          ]
+        },
+        {
+          "content": "Emotional Attunement: 'I'm fine' with emotional context ofte...",
+          "source": "emotional_attunement_training",
+          "confidence": 0.89,
+          "tags": [
+            "emotional_reading",
+            "subtle_cues",
+            "boundary_respect"
+          ]
+        }
+      ],
+      "other_facts": [],
+      "query_embedding_exists": true
+    },
+    "notes": "Retrieved 5 facts, 5 training-related"
+  },
+  {
+    "step": "REASONING_ERROR",
+    "timestamp": 1755921968.995331,
+    "data": {
+      "reasoning_success": false,
+      "error": "'PureCNSReasoningCore' object has no attribute '_apply_neural_conversation_processing'",
+      "fallback_used": true
+    },
+    "notes": "Reasoning failed: 'PureCNSReasoningCore' object has no attribute '_apply_neural_conversation_processing'"
+  },
+  {
+    "step": "RESPONSE_GENERATION_ERROR",
+    "timestamp": 1755921968.9958801,
+    "data": {
+      "generation_success": false,
+      "error": "'PureCNSReasoningCore' object has no attribute '_apply_neural_conversation_processing'"
+    },
+    "notes": "Response generation failed: 'PureCNSReasoningCore' object has no attribute '_apply_neural_conversation_processing'"
+  },
+  {
+    "step": "TRAINING_ANALYSIS",
+    "timestamp": 1755921968.9960074,
+    "data": {
+      "training_loaded": true,
+      "training_retrieved": true,
+      "training_used_in_reasoning": false,
+      "training_influenced_response": false,
+      "bottleneck_identified": "Training facts not influencing response generation"
+    },
+    "notes": "Bottleneck: Training facts not influencing response generation"
+  }
+]

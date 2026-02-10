@@ -1,0 +1,185 @@
+{
+  "timestamp": 1754889601.4969523,
+  "module_results": {
+    "perception": {
+      "accuracy": 0.6,
+      "total_tests": 5,
+      "status": "functional"
+    },
+    "emotional": {
+      "initial_mood": "neutral",
+      "final_mood": "neutral",
+      "valence_range": "0.00",
+      "arousal_range": "0.50",
+      "emotional_evolution": "static",
+      "status": "functional"
+    },
+    "memory": {
+      "initial_count": 1,
+      "final_count": 1,
+      "formation_successful": false,
+      "status": "functional"
+    },
+    "reasoning": {
+      "processing_success_rate": 1.0,
+      "total_tests": 3,
+      "status": "functional"
+    }
+  },
+  "question_results": [
+    {
+      "question": "What is 2 + 2?",
+      "subject": "mathematics",
+      "difficulty": "easy",
+      "type": "factual",
+      "processing_successful": true,
+      "response_generated": true,
+      "perception_quality": 0.8,
+      "emotional_response": "neutral"
+    },
+    {
+      "question": "What is the capital of France?",
+      "subject": "geography",
+      "difficulty": "easy",
+      "type": "factual",
+      "processing_successful": true,
+      "response_generated": true,
+      "perception_quality": 0.8,
+      "emotional_response": "neutral"
+    },
+    {
+      "question": "What emotion would you feel if someone was kind to you?",
+      "subject": "psychology",
+      "difficulty": "easy",
+      "type": "emotional",
+      "processing_successful": true,
+      "response_generated": true,
+      "perception_quality": 0.8,
+      "emotional_response": "neutral"
+    },
+    {
+      "question": "If it's raining, should you take an umbrella?",
+      "subject": "logic",
+      "difficulty": "easy",
+      "type": "reasoning",
+      "processing_successful": true,
+      "response_generated": true,
+      "perception_quality": 0.8,
+      "emotional_response": "neutral"
+    },
+    {
+      "question": "What do you call a story that's not real?",
+      "subject": "literature",
+      "difficulty": "medium",
+      "type": "knowledge",
+      "processing_successful": true,
+      "response_generated": true,
+      "perception_quality": 0.8,
+      "emotional_response": "neutral"
+    },
+    {
+      "question": "How do you feel right now?",
+      "subject": "self_awareness",
+      "difficulty": "medium",
+      "type": "introspection",
+      "processing_successful": true,
+      "response_generated": true,
+      "perception_quality": 0.8,
+      "emotional_response": "neutral"
+    }
+  ],
+  "analysis": {
+    "module_summary": {
+      "functional": [
+        "perception",
+        "emotional",
+        "memory",
+        "reasoning"
+      ],
+      "broken": [],
+      "total_tested": 4
+    },
+    "processing_summary": {
+      "success_rate": 1.0,
+      "total_questions": 6,
+      "successful": 6
+    },
+    "subject_performance": {
+      "mathematics": [
+        {
+          "question": "What is 2 + 2?",
+          "subject": "mathematics",
+          "difficulty": "easy",
+          "type": "factual",
+          "processing_successful": true,
+          "response_generated": true,
+          "perception_quality": 0.8,
+          "emotional_response": "neutral"
+        }
+      ],
+      "geography": [
+        {
+          "question": "What is the capital of France?",
+          "subject": "geography",
+          "difficulty": "easy",
+          "type": "factual",
+          "processing_successful": true,
+          "response_generated": true,
+          "perception_quality": 0.8,
+          "emotional_response": "neutral"
+        }
+      ],
+      "psychology": [
+        {
+          "question": "What emotion would you feel if someone was kind to you?",
+          "subject": "psychology",
+          "difficulty": "easy",
+          "type": "emotional",
+          "processing_successful": true,
+          "response_generated": true,
+          "perception_quality": 0.8,
+          "emotional_response": "neutral"
+        }
+      ],
+      "logic": [
+        {
+          "question": "If it's raining, should you take an umbrella?",
+          "subject": "logic",
+          "difficulty": "easy",
+          "type": "reasoning",
+          "processing_successful": true,
+          "response_generated": true,
+          "perception_quality": 0.8,
+          "emotional_response": "neutral"
+        }
+      ],
+      "literature": [
+        {
+          "question": "What do you call a story that's not real?",
+          "subject": "literature",
+          "difficulty": "medium",
+          "type": "knowledge",
+          "processing_successful": true,
+          "response_generated": true,
+          "perception_quality": 0.8,
+          "emotional_response": "neutral"
+        }
+      ],
+      "self_awareness": [
+        {
+          "question": "How do you feel right now?",
+          "subject": "self_awareness",
+          "difficulty": "medium",
+          "type": "introspection",
+          "processing_successful": true,
+          "response_generated": true,
+          "perception_quality": 0.8,
+          "emotional_response": "neutral"
+        }
+      ]
+    },
+    "weak_areas": [],
+    "critical_issues": [],
+    "overall_health": "good"
+  }
+}

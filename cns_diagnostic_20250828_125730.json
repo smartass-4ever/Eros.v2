@@ -1,0 +1,64 @@
+{
+  "prompt": "Tell me something funny about the stars",
+  "final_output": "Haha, you know what? I'm still working on my comedy skills, but I appreciate you wanting to laugh together!",
+  "subsystems": {
+    "reasoning": {},
+    "emotion": {
+      "valence": 0.0,
+      "arousal": 0.5,
+      "emotion": "neutral",
+      "emotional_state": "neutral",
+      "confidence": 0.45,
+      "safe_mode": false,
+      "reasoning": "Emotion classification: neutral (final confidence: 0.45)",
+      "learning_source": "enterprise_fluid_intelligence"
+    },
+    "memory": {},
+    "creative": {},
+    "integration": {}
+  },
+  "processing_time": 0.014537334442138672,
+  "reasoning": "N/A",
+  "suppression_detected": [
+    "Low integration coherence: 0.00",
+    "Safety net fallback activated - original response replaced"
+  ],
+  "fallback_triggered": true,
+  "raw_processing_summary": {
+    "perception": {
+      "intent": "greeting",
+      "sentiment": "neutral",
+      "urgency": 0.0,
+      "entities": [
+        "person:i",
+        "person:he"
+      ],
+      "raw_text": "Tell me something funny about the stars",
+      "confidence": 0.8
+    },
+    "emotion": {
+      "valence": 0.0,
+      "arousal": 0.5,
+      "emotion": "neutral",
+      "emotional_state": "neutral",
+      "confidence": 0.45,
+      "safe_mode": false,
+      "reasoning": "Emotion classification: neutral (final confidence: 0.45)",
+      "learning_source": "enterprise_fluid_intelligence"
+    },
+    "mood": {
+      "valence": 0.0,
+      "arousal": 0.5
+    },
+    "reasoning_type": "logical_inference",
+    "reasoning_confidence": 0.9,
+    "response_type": "reasoned",
+    "memory_facts_used": 0,
+    "llm_calls_made": 0,
+    "processing_time": 0.014537334442138672,
+    "emotional_state": "neutral",
+    "fallback_triggered": true,
+    "coherence_score": 1.0
+  },
+  "timestamp": "2025-08-28T12:57:30.376249"
+}

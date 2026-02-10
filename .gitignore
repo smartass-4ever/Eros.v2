@@ -1,0 +1,100 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.pythonlibs/
+.venv/
+venv/
+env/
+
+# Replit
+.cache/
+.config/
+.local/
+.upm/
+.replit
+replit.nix
+.replit.nix
+.breakpoints
+
+# Secrets & credentials - NEVER commit these
+.env
+*.env
+cns_api_keys.json
+cns_privacy.json
+
+# Pickle files (contain runtime state, not source code)
+*.pkl
+
+# Log files
+*.log
+logs/
+/tmp/logs/
+
+# Temporary/generated JSON files (not source code)
+cns_advanced_reasoning_assessment_*.json
+cns_api_usage_validation_*.json
+cns_authenticity_breakthrough_report.json
+cns_companion_state.json
+cns_complete_subsystem_map.json
+cns_comprehensive_diagnostic_*.json
+cns_dependency_metrics.json
+cns_diagnostic_*.json
+cns_direct_warmth_integration_*.json
+cns_emotional_warmth_integration_*.json
+cns_ink_dye_trace.json
+cns_performance_scores.json
+cns_simple_evaluation.json
+cns_tactical_effectiveness.json
+cns_training_neuroplasticity_demo.json
+discord_cns_brain_v2.json
+enhanced_cns_brain.json
+next_training_config.json
+philosophy_creative_development_analysis.json
+
+# Debug & test output
+debug_traces/
+cns_test_logs/
+cns_emotion_test_results/
+old_results/
+
+# Archived code (not part of active project)
+archived_code/
+old_tests/
+
+# Backup files
+enhanced_expression_system_backup.py
+
+# Old test/analysis output files
+multiturn_full_results.txt
+multiturn_results.txt
+test_output.txt
+poison_pill_full_output.txt
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+*.code-workspace
+
+# Downloads (user-facing artifacts, rebuild from source)
+downloads/
+
+# Attached assets (training data - too large for git)
+attached_assets/
+
+# Charts (generated HTML)
+charts/

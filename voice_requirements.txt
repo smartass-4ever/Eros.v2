@@ -1,0 +1,9 @@
+sounddevice
+soundfile
+SpeechRecognition
+gTTS
+pygame
+pyttsx3
+keyboard
+numpy
+PyAudio

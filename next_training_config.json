@@ -1,0 +1,55 @@
+{
+  "training_adjustments": {
+    "questions_per_subject": 20,
+    "adaptive_threshold": 0.4,
+    "learning_rate_boost": 0.05
+  },
+  "module_optimizations": {
+    "logical": {
+      "current_performance": 0.2380952380952381,
+      "focus_subjects": [
+        "calculus",
+        "machine_learning",
+        "statistics"
+      ],
+      "recommended_action": "increase_weight"
+    },
+    "memory": {
+      "current_performance": 0.1875,
+      "focus_subjects": [
+        "astronomy",
+        "geography",
+        "history"
+      ],
+      "recommended_action": "increase_weight"
+    },
+    "creative": {
+      "current_performance": 0.25,
+      "focus_subjects": [
+        "art_history",
+        "creative_writing",
+        "aesthetics"
+      ],
+      "recommended_action": "increase_weight"
+    },
+    "emotional": {
+      "current_performance": 0.16666666666666666,
+      "focus_subjects": [
+        "psychology",
+        "moral_reasoning",
+        "human_development"
+      ],
+      "recommended_action": "increase_weight"
+    }
+  },
+  "focus_subjects": [
+    "abstract_algebra",
+    "machine_learning",
+    "world_religions",
+    "music_theory",
+    "human_development",
+    "mathematics",
+    "geography",
+    "history"
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "template_vs_cns_comparison": {
+    "template_system": {
+      "system_type": "Template-Based (What CNS DOESN'T Do)",
+      "training_method": "Store pre-written responses with keyword triggers",
+      "example_training": {
+        "input": "I'm anxious about job interview",
+        "stored_template": "I understand you're anxious about your interview. Here are some tips: 1) Practice breathing, 2) Prepare questions, 3) Arrive early."
+      },
+      "behavior": {
+        "user_A_says": "I'm anxious about job interview",
+        "response": "I understand you're anxious about your interview. Here are some tips...",
+        "user_B_says": "I'm anxious about job interview",
+        "problem": "IDENTICAL response regardless of user, context, or history"
+      }
+    },
+    "cns_system": {
+      "system_type": "CNS Neuroplastic Learning (What CNS Actually Does)",
+      "training_method": "Create weighted association networks and learning patterns",
+      "example_training": {
+        "input": "I'm anxious about job interview",
+        "learning_created": [
+          "Association: anxiety + job_interview + support_needed (weight: 0.8)",
+          "Pattern: interview_anxiety requires empathy + practical_support",
+          "Context factors: user_history, time_of_day, relationship_stage",
+          "Response approaches: validate_emotion + assess_context + adapt_support"
+        ]
+      },
+      "behavior": {
+        "user_A_first_time": "I'm anxious about job interview",
+        "cns_considers": [
+          "Late night vulnerability",
+          "Rumination likely",
+          "Immediate comfort needed"
+        ],
+        "response": "3am interview anxiety hits different. Right now you don't need to solve everything - just breathe. What might help you feel calmer tonight?",
+        "user_B_recurring_anxiety": "I'm anxious about job interview",
+        "user_C_at_3am": "I'm anxious about job interview"
+      }
+    }
+  },
+  "actual_training_process": [
+    {
+      "content": "Contextual Adaptation: In professional settings with mental health struggles, acknowledge the courage required while offering practical support",
+      "confidence": 0.85,
+      "source": "contextual_training",
+      "timestamp": 1755736258.7574904,
+      "tags": [
+        "professional_context",
+        "depression_support",
+        "contextual_adaptation"
+      ],
+      "valence": 0.4,
+      "arousal": 0.6
+    },
+    {
+      "content": "Professional vulnerability requires balance: validate struggle + respect professional boundaries + offer appropriate support",
+      "confidence": 0.8,
+      "source": "professional_boundary_training",
+      "timestamp": 1755736258.7574918,
+      "tags": [
+        "professional_boundaries",
+        "mental_health",
+        "workplace_support"
+      ],
+      "valence": 0.3,
+      "arousal": 0.5
+    }
+  ],
+  "contextual_response_demo": {
+    "new_user_daytime": {
+      "user_history": null,
+      "time": "2pm",
+      "relationship": "first_interaction",
+      "expected_approach": "General supportive, exploratory"
+    },
+    "known_user_work_stress": {
+      "user_history": "Previous work anxiety discussions",
+      "time": "6pm",
+      "relationship": "established, work-focused",
+      "expected_approach": "Reference work patterns, specific support"
+    },
+    "late_night_vulnerable": {
+      "user_history": "Shares personal struggles",
+      "time": "2am",
+      "relationship": "trusted, vulnerable",
+      "expected_approach": "Immediate comfort, gentle presence"
+    },
+    "family_context": {
+      "user_history": "Family relationship difficulties",
+      "time": "Sunday evening",
+      "relationship": "family-focused discussions",
+      "expected_approach": "Family-aware, boundary-supportive"
+    }
+  },
+  "learning_accumulation_example": {
+    "interaction_1": {
+      "input": "I'm stressed about work",
+      "cns_learns": [
+        "User experiences work stress",
+        "Initial support needed"
+      ],
+      "memory_added": "Work stress pattern identified"
+    },
+    "interaction_5": {
+      "input": "Had another rough day at the office",
+      "cns_learns": [
+        "Work stress is recurring",
+        "Office environment factor",
+        "Pattern recognition"
+      ],
+      "memory_added": "Recurring work stress, office-specific"
+    },
+    "interaction_12": {
+      "input": "I think my boss is part of the problem",
+      "cns_learns": [
+        "Management relationship issues",
+        "Workplace dynamics",
+        "Authority stress"
+      ],
+      "memory_added": "Boss relationship adds to work stress pattern"
+    },
+    "interaction_20": {
+      "input": "I'm thinking about looking for a new job",
+      "cns_learns": [
+        "Career transition consideration",
+        "Stress reaching decision point"
+      ],
+      "memory_added": "Work stress leading to career change thoughts"
+    }
+  },
+  "summary": "CNS creates neuroplastic learning patterns that adapt contextually, not static templates"
+}

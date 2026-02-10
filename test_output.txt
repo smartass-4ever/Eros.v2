@@ -1,0 +1,19 @@
+🧠 CNS Comprehensive Testing Framework
+📡 API: https://65b5afa0-c9d5-42ef-992e-431c839a35fb-00-1dnptrecv18se.worf.replit.dev:8000/api/v1
+🔑 Key: cns_live_0dcf63820a8...
+📂 Output: cns_test_logs/
+
+
+=== Running scenario: sad_breakup ===
+[ERROR] 500: {"error": "Internal server error", "message": "'str' object has no attribute 'value'"}
+[ERROR] 500: {"error": "Internal server error", "message": "'str' object has no attribute 'value'"}
+[ERROR] 500: {"error": "Internal server error", "message": "'str' object has no attribute 'value'"}
+[ERROR] 500: {"error": "Internal server error", "message": "'str' object has no attribute 'value'"}
+Traceback (most recent call last):
+  File "/home/runner/workspace/cns_comprehensive_test.py", line 163, in <module>
+    results[name] = run_scenario(name, convo)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/workspace/cns_comprehensive_test.py", line 103, in run_scenario
+    writer = csv.DictWriter(f, fieldnames=log[0].keys())
+                                          ~~~^^^
+IndexError: list index out of range

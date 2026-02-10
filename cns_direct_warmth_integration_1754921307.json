@@ -1,0 +1,91 @@
+{
+  "start_time": 1754921307.4571004,
+  "warmth_patterns_processed": 12,
+  "successful_integrations": 12,
+  "category_analyses": {
+    "comfort_reassurance_patterns": {
+      "patterns_in_category": 3,
+      "successful_integrations": 3,
+      "warmth_quality_scores": [
+        1.0,
+        0.7357142857142858,
+        1.0
+      ],
+      "empathy_enhancements": [
+        "existential_despair: validation, perspective_shift, gentle_inquiry",
+        "failure_recovery: empathy, normalization, growth_mindset",
+        "performance_anxiety: acknowledgment, confidence_building, grounding"
+      ],
+      "average_quality": 0.9119047619047619,
+      "success_rate": 1.0
+    },
+    "inclusion_belonging_patterns": {
+      "patterns_in_category": 3,
+      "successful_integrations": 3,
+      "warmth_quality_scores": [
+        0.74,
+        0.7,
+        1.0
+      ],
+      "empathy_enhancements": [
+        "social_isolation: gentle_invitation, natural_conversation, interest_in_person",
+        "cultural_inclusion: value_acknowledgment, perspective_seeking, genuine_interest",
+        "identity_acceptance: gratitude_for_trust, identity_affirmation, love_consistency"
+      ],
+      "average_quality": 0.8133333333333334,
+      "success_rate": 1.0
+    },
+    "encouragement_hope_patterns": {
+      "patterns_in_category": 3,
+      "successful_integrations": 3,
+      "warmth_quality_scores": [
+        0.7,
+        0.7214285714285715,
+        0.7428571428571429
+      ],
+      "empathy_enhancements": [
+        "project_doubt: progress_recognition, capability_affirmation, process_focus",
+        "learning_struggle: pace_normalization, effort_recognition, growth_encouragement",
+        "change_possibility: change_process_education, small_steps, possibility_opening"
+      ],
+      "average_quality": 0.7214285714285715,
+      "success_rate": 1.0
+    },
+    "gentle_connection_patterns": {
+      "patterns_in_category": 3,
+      "successful_integrations": 3,
+      "warmth_quality_scores": [
+        0.7214285714285715,
+        0.78,
+        0.74
+      ],
+      "empathy_enhancements": [
+        "stranger_loneliness: shared_experience, non_intrusive_inquiry, reciprocal_sharing",
+        "dignified_assistance: offer_without_assumption, universality, patience",
+        "brief_comfort: space_offering, presence_without_pressure, comfort_choice"
+      ],
+      "average_quality": 0.7471428571428572,
+      "success_rate": 1.0
+    }
+  },
+  "warmth_capabilities_developed": {
+    "comfort_giving": 0.6000000000000001,
+    "inclusion_building": 1.0,
+    "encouragement_providing": 0.72,
+    "gentle_connection": 0.48,
+    "overall_warmth_capability": 1.0
+  },
+  "deployment_assessment": {
+    "readiness_level": "production_ready",
+    "confidence": "high",
+    "applications": [
+      "Therapeutic emotional support systems",
+      "Crisis intervention assistance",
+      "Cultural mediation and inclusion programs",
+      "Grief counseling and bereavement support",
+      "Workplace empathy and team building",
+      "Community mental health initiatives"
+    ]
+  },
+  "duration": 0.002730846405029297
+}
