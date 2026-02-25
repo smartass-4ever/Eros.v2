@@ -166,7 +166,7 @@ Supporting systems active conditionally or in background:
 | NeuroplasticOptimizer | Adaptive weight adjustment across the system over time |
 | ConsequenceSystem | Tracks downstream effects of responses, adjusts future behavior |
 | GrowthTracker | Measures and records Eros's evolution over time |
-| XiaoiceRelationshipMemory | Long-term personal knowledge and relationship arc building per user |
+| XRelationshipMemory | Long-term personal knowledge and relationship arc building per user |
 
 ---
 
