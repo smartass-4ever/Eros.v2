@@ -1,5 +1,5 @@
 """
-Conversation Consistency Layer - Makes CNS feel alive across long chats like Xiaoice
+Conversation Consistency Layer - Makes CNS feel alive across long chats
 """
 
 import time
