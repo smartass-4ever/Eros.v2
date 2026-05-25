@@ -768,11 +768,18 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
         raw = synth.raw_cognitive_outputs if hasattr(synth, 'raw_cognitive_outputs') else {}
         
         identity_prompt = self._get_self_identity_prompt()
-        
+
         orchestrated_prompt = synth.to_expression_prompt()
-        
+
         sections = []
-        
+
+        # Authority layer — always first, always active
+        try:
+            from eros_authority import get_authority_prompt
+            sections.append(get_authority_prompt())
+        except Exception:
+            pass
+
         if identity_prompt:
             sections.append(identity_prompt)
         
