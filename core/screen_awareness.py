@@ -246,41 +246,51 @@ def get_screen_context_sync(use_vision: bool = False) -> Dict[str, Any]:
 
 class ScreenMonitor:
     """
-    Runs in background, tracks what app/window is active.
-    Eros reads `current` at any time to know what you're doing.
+    Runs in background. Tracks active window every 5s (cheap).
+    Runs vision LLM every 30s when API key is available (rich).
+    Eros reads `current` at any time to know exactly what you're doing.
     """
 
-    def __init__(self, poll_interval: float = 5.0):
-        self.poll_interval = poll_interval
+    WINDOW_POLL   = 5    # seconds between window title checks
+    VISION_POLL   = 30   # seconds between vision LLM calls
+
+    def __init__(self):
         self.current: Dict[str, Any] = {}
         self._last_app = ""
+        self._last_vision_at = 0.0
         self._running = False
         self._thread: Optional[threading.Thread] = None
-        self._on_change = None  # optional callback(old, new)
+        self._on_change = None
 
     def on_app_change(self, callback):
-        """Register callback called when focused app changes."""
         self._on_change = callback
 
     def start(self):
         self._running = True
         self._thread = threading.Thread(target=self._loop, daemon=True)
         self._thread.start()
-        print("[SCREEN] Monitor started")
+        has_key = bool(os.environ.get("TOGETHER_API_KEY") or os.environ.get("OPENAI_API_KEY"))
+        print(f"[SCREEN] Monitor started — vision: {'active' if has_key else 'waiting for API key'}")
 
     def stop(self):
         self._running = False
 
     def _loop(self):
+        import asyncio
         while self._running:
             try:
                 window = get_active_window()
-                self.current = {
-                    "active_app": window.get("app", ""),
+                new_app = window.get("app", "")
+                now = time.time()
+
+                # Always update window state
+                self.current.update({
+                    "active_app": new_app,
                     "window_title": window.get("title", ""),
                     "updated_at": datetime.now().isoformat(),
-                }
-                new_app = window.get("app", "")
+                })
+
+                # Fire app-change callback
                 if new_app and new_app != self._last_app:
                     if self._on_change and self._last_app:
                         try:
@@ -288,21 +298,68 @@ class ScreenMonitor:
                         except Exception:
                             pass
                     self._last_app = new_app
+
+                # Periodic vision update when API key available
+                has_key = bool(os.environ.get("TOGETHER_API_KEY") or os.environ.get("OPENAI_API_KEY"))
+                if has_key and (now - self._last_vision_at) >= self.VISION_POLL:
+                    self._last_vision_at = now
+                    self._run_vision()
+
             except Exception:
                 pass
-            time.sleep(self.poll_interval)
+            time.sleep(self.WINDOW_POLL)
+
+    def _run_vision(self):
+        """Synchronous wrapper — runs vision in a new event loop on this thread."""
+        try:
+            loop = asyncio.new_event_loop()
+            desc = loop.run_until_complete(describe_screen_with_llm())
+            loop.close()
+            if desc:
+                self.current["vision_description"] = desc
+                self.current["vision_updated_at"] = datetime.now().isoformat()
+        except Exception:
+            pass
 
     def describe(self) -> str:
-        """Human-readable current screen state."""
+        """One-line summary of current screen state."""
         if not self.current:
             return "Screen state unknown."
-        app = self.current.get("active_app", "")
+        app   = self.current.get("active_app", "")
         title = self.current.get("window_title", "")
-        if title and app and title.lower() != app.lower():
-            return f"You're in {app} — {title}"
-        elif app:
-            return f"You're in {app}"
-        return "Screen state unknown."
+        vision = self.current.get("vision_description", "")
+
+        parts = []
+        if app:
+            parts.append(app)
+        if title and title.lower() != app.lower():
+            parts.append(f'"{title}"')
+        base = " — ".join(parts) if parts else "unknown"
+
+        if vision:
+            return f"{base}. {vision}"
+        return f"You're in {base}"
+
+    def context_for_llm(self) -> str:
+        """
+        Formatted context string injected into every Eros message.
+        Eros sees this automatically — no need to ask.
+        """
+        if not self.current:
+            return ""
+        app    = self.current.get("active_app", "")
+        title  = self.current.get("window_title", "")
+        vision = self.current.get("vision_description", "")
+
+        lines = ["[SCREEN CONTEXT]"]
+        if app:
+            lines.append(f"Active app: {app}")
+        if title:
+            lines.append(f"Window: {title}")
+        if vision:
+            lines.append(f"What's visible: {vision}")
+        lines.append("[/SCREEN CONTEXT]")
+        return "\n".join(lines)
 
 
 # Singleton monitor
