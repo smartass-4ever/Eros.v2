@@ -664,7 +664,7 @@ class ReminderManager:
                 from sqlalchemy import text
                 result = session.execute(text("""
                     SELECT id, user_id, channel_id, reminder_text, remind_at, created_at 
-                    FROM reminders WHERE completed = false AND remind_at > NOW()
+                    FROM reminders WHERE completed = false AND remind_at > datetime('now')
                 """))
                 for row in result:
                     self.reminders.append(Reminder(

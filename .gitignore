@@ -93,6 +93,9 @@ Thumbs.db
 # Downloads (user-facing artifacts, rebuild from source)
 downloads/
 
+# Local SQLite database (runtime data, not source)
+data/
+
 # Attached assets (training data - too large for git)
 attached_assets/
 

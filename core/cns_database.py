@@ -365,16 +365,21 @@ class CNSDatabase:
             
         self.database_url = os.environ.get('DATABASE_URL')
         if not self.database_url:
-            raise ValueError("DATABASE_URL environment variable not set")
-        
-        self.engine = create_engine(
-            self.database_url,
-            poolclass=QueuePool,
-            pool_size=5,
-            max_overflow=10,
-            pool_recycle=300,
-            pool_pre_ping=True
-        )
+            data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data')
+            os.makedirs(data_dir, exist_ok=True)
+            self.database_url = f"sqlite:///{os.path.join(data_dir, 'eros.db')}"
+
+        if self.database_url.startswith('sqlite'):
+            self.engine = create_engine(self.database_url, connect_args={"check_same_thread": False})
+        else:
+            self.engine = create_engine(
+                self.database_url,
+                poolclass=QueuePool,
+                pool_size=5,
+                max_overflow=10,
+                pool_recycle=300,
+                pool_pre_ping=True
+            )
         
         self.Session = sessionmaker(bind=self.engine)
         self._initialized = True

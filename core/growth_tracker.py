@@ -74,7 +74,7 @@ class GrowthTracker:
             try:
                 session.execute(text("""
                     INSERT INTO growth_events (event_type, event_data, timestamp)
-                    VALUES (:event_type, :event_data, NOW())
+                    VALUES (:event_type, :event_data, datetime('now'))
                 """), {
                     'event_type': event_type,
                     'event_data': json.dumps(data)
