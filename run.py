@@ -40,6 +40,14 @@ TOGETHER_KEY = os.environ.get("TOGETHER_API_KEY", "")
 if not TOGETHER_KEY:
     print("\n[!] TOGETHER_API_KEY not set in .env — LLM calls will use fallback.\n")
 
+# ── Fix memory persistence ────────────────────────────────────────────────────
+# IntelligentMemorySystem checks os.environ['DATABASE_URL'] directly.
+# Set it now so memory survives restarts.
+if not os.environ.get("DATABASE_URL"):
+    _data_dir = os.path.join(ROOT, "data")
+    os.makedirs(_data_dir, exist_ok=True)
+    os.environ["DATABASE_URL"] = f"sqlite:///{os.path.join(_data_dir, 'eros.db')}"
+
 
 # ── Voice output helper ───────────────────────────────────────────────────────
 _tts_engine = None
@@ -89,6 +97,15 @@ def boot():
 
     from merged_cns_flow import CNS
     cns = CNS()
+
+    # Start screen monitor
+    try:
+        from screen_awareness import get_monitor
+        monitor = get_monitor()
+        monitor.start()
+        cns._screen_monitor = monitor
+    except Exception as e:
+        print(f"[SCREEN] Monitor unavailable: {e}")
 
     print("=" * 58)
     print(f"  Online.  Talking to: {USER_NAME}")
@@ -185,11 +202,42 @@ async def voice_loop(cns, proactive, continuous: bool = False):
 
 # ── Shared helpers ────────────────────────────────────────────────────────────
 async def _process(cns, user_input: str, history: list) -> str:
+    # Handle screen-awareness shortcuts
+    lower = user_input.lower()
+    if any(p in lower for p in ("what am i", "what's on my screen", "what are you seeing",
+                                  "what do you see", "look at my screen", "see my screen")):
+        try:
+            from screen_awareness import get_screen_context
+            ctx = await get_screen_context(use_vision=True)
+            parts = []
+            if ctx.get("active_app"):
+                parts.append(f"You're in {ctx['active_app']}")
+            if ctx.get("window_title") and ctx["window_title"] != ctx.get("active_app"):
+                parts.append(f'— "{ctx["window_title"]}"')
+            if ctx.get("vision_description"):
+                parts.append(f"\n{ctx['vision_description']}")
+            elif ctx.get("screen_text"):
+                parts.append(f"\nScreen text: {ctx['screen_text'][:300]}")
+            if parts:
+                return " ".join(parts)
+        except Exception:
+            pass
+
+    # Build context dict with screen state
+    context = {}
+    try:
+        monitor = getattr(cns, "_screen_monitor", None)
+        if monitor and monitor.current:
+            context["screen"] = monitor.current
+    except Exception:
+        pass
+
     try:
         result = await cns.process_input(
             user_input=user_input,
             conversation_history=history,
             user_id=USER_ID,
+            context=context,
         )
         response = result.get("response") or result.get("text") or str(result)
         return response
