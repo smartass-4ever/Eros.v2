@@ -12,10 +12,10 @@ class UnifiedSelfSystems:
     def __init__(self):
         self.growth_tracker = _GrowthTracker()
 
-    def process_pre_response(self, user_input=None, emotion_data=None, user_id=None, **kwargs):
+    def process_pre_response(self, *args, **kwargs):
         return {}
 
-    def process_post_response(self, response=None, user_input=None, emotion_data=None, user_id=None, **kwargs):
+    def process_post_response(self, *args, **kwargs):
         return {}
 
 
