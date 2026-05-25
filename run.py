@@ -40,6 +40,11 @@ TOGETHER_KEY = os.environ.get("TOGETHER_API_KEY", "")
 if not TOGETHER_KEY:
     print("\n[!] TOGETHER_API_KEY not set in .env — LLM calls will use fallback.\n")
 
+# The codebase checks MISTRAL_API_KEY in 12+ places but calls the Together endpoint.
+# Alias it so every module picks up the key automatically.
+if TOGETHER_KEY and not os.environ.get("MISTRAL_API_KEY"):
+    os.environ["MISTRAL_API_KEY"] = TOGETHER_KEY
+
 # ── Fix memory persistence ────────────────────────────────────────────────────
 # IntelligentMemorySystem checks os.environ['DATABASE_URL'] directly.
 # Set it now so memory survives restarts.
@@ -146,6 +151,73 @@ async def text_loop(cns, proactive):
         response = await _process(cns, user_input, history)
         print(f"\nEros: {response}\n")
         history = _update_history(history, user_input, response)
+
+
+# ── Wake-word voice loop ──────────────────────────────────────────────────────
+async def wake_word_loop(cns, proactive):
+    """Always-on loop: wait for 'Hey Eros', then capture and respond."""
+    from voice_input_module import VoiceInputHandler
+    voice_in = VoiceInputHandler()
+    loop     = asyncio.get_event_loop()
+    history  = []
+    _wake_event = asyncio.Event()
+
+    def _on_wake():
+        loop.call_soon_threadsafe(_wake_event.set)
+
+    try:
+        from wake_word import get_detector
+        detector = get_detector(on_wake=_on_wake)
+        detector.start()
+    except Exception as e:
+        print(f"[WAKE] Wake word unavailable: {e} — falling back to push-to-talk")
+        await voice_loop(cns, proactive, continuous=False)
+        return
+
+    if proactive:
+        asyncio.ensure_future(proactive.run())
+
+    speak(f"Online. Say 'Hey Eros' when you need me.")
+    print("  [waiting for wake word...]")
+
+    while True:
+        try:
+            _wake_event.clear()
+            await _wake_event.wait()
+
+            # Mute detector while we're responding so it doesn't self-trigger
+            detector.mute()
+            speak("Yeah?")
+
+            user_input = await loop.run_in_executor(
+                None, lambda: voice_in.listen_until_silence()
+            )
+
+            detector.unmute()
+
+            if not user_input or not user_input.strip():
+                print("  [nothing heard — back to listening]")
+                continue
+
+            user_input = user_input.strip()
+            print(f"\n{USER_NAME}: {user_input}")
+
+            if user_input.lower() in ("quit", "exit", "goodbye", "stop", "bye"):
+                speak("Later.")
+                break
+
+            response = await _process(cns, user_input, history)
+            speak(response)
+            history = _update_history(history, user_input, response)
+            print("  [waiting for wake word...]")
+
+        except KeyboardInterrupt:
+            speak("Later.")
+            break
+        except Exception as e:
+            print(f"[wake loop] {e}")
+            detector.unmute()
+            continue
 
 
 # ── Voice loop ────────────────────────────────────────────────────────────────
@@ -259,6 +331,8 @@ def main():
     parser = argparse.ArgumentParser(description="Eros — local AI companion")
     parser.add_argument("--voice",      action="store_true", help="Enable voice I/O")
     parser.add_argument("--continuous", action="store_true", help="Continuous listening (no push-to-talk)")
+    parser.add_argument("--wake",       action="store_true", help="Always-on wake word mode ('Hey Eros')")
+    parser.add_argument("--tray",       action="store_true", help="Run with system tray icon")
     args = parser.parse_args()
 
     cns = boot()
@@ -271,10 +345,22 @@ def main():
     except Exception:
         proactive = None
 
-    if args.voice:
+    # System tray (optional — non-blocking, runs in background thread)
+    if args.tray:
+        try:
+            from tray_daemon import get_tray
+            tray = get_tray()
+            tray.start()
+            print("[TRAY] System tray started")
+        except Exception as e:
+            print(f"[TRAY] {e}")
+
+    if args.wake:
+        asyncio.run(wake_word_loop(cns, proactive))
+    elif args.voice:
         asyncio.run(voice_loop(cns, proactive, continuous=args.continuous))
     else:
-        print("  Type 'quit' to exit. Use --voice for voice mode.\n")
+        print("  Type 'quit' to exit. Use --voice or --wake for voice mode.\n")
         asyncio.run(text_loop(cns, proactive))
 
 

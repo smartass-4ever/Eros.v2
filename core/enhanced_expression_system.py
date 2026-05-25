@@ -1451,30 +1451,30 @@ They're feeling: {user_emotion} | Relationship: {context.relationship_level} | Y
     
     async def _call_mistral_api(self, system_prompt: str, conversation_history: List[Dict[str, str]], current_input: str, temperature: float = 0.7) -> Optional[str]:
         """Call Together AI API for sophisticated response generation with proper message structure
-        
+
         Args:
             system_prompt: System directives, personality, cognitive context
             conversation_history: List of {'role': 'user'/'assistant', 'content': '...'} dicts
             current_input: Current user message
             temperature: LLM temperature
-            
+
         Returns:
             Generated response or None on failure
         """
         if not self.fine_tuning_system.mistral_api_key:
             return None
-        
+
         import requests
         import asyncio
-        
+
         endpoint = "https://api.together.xyz/v1/chat/completions"
         model = "meta-llama/Llama-3.3-70B-Instruct-Turbo"
-        
+
         # ✅ BUILD PROPER MESSAGE ARRAY with conversation history
         messages = [
             {'role': 'system', 'content': system_prompt}
         ]
-        
+
         # Add validated conversation history
         if conversation_history and isinstance(conversation_history, list):
             for msg in conversation_history:
@@ -1484,76 +1484,121 @@ They're feeling: {user_emotion} | Relationship: {context.relationship_level} | Y
                     # Include valid roles: user, assistant, AND system (for memory injection)
                     if role in ['user', 'assistant', 'system'] and content and len(content.strip()) > 0:
                         messages.append({'role': role, 'content': content})
-        
+
         # Add current user message
         messages.append({'role': 'user', 'content': current_input})
-        
+
         print(f"[EXPRESSION] 🔗 Calling Together AI: {endpoint}")
         print(f"[EXPRESSION] 🤖 Model: {model}")
         print(f"[EXPRESSION] 💬 Messages: system + {len(conversation_history) if conversation_history else 0} history + current")
-        
-        # ✅ ASYNC-SAFE LLM CALL: Run blocking request in thread pool
-        # This prevents blocking the Discord event loop when API is slow
-        def _sync_api_call(timeout: int):
-            """Synchronous API call to run in thread pool"""
+
+        # Load action tools — Eros can decide to act as part of its cognitive response
+        try:
+            from eros_tools import TOOLS as _ACTION_TOOLS
+        except Exception:
+            _ACTION_TOOLS = None
+
+        api_key = self.fine_tuning_system.mistral_api_key
+
+        def _sync_api_call(msgs, timeout: int, include_tools: bool = True):
+            payload = {
+                'model': model,
+                'messages': msgs,
+                'temperature': temperature,
+                'max_tokens': 600,
+            }
+            if include_tools and _ACTION_TOOLS:
+                payload['tools'] = _ACTION_TOOLS
+                payload['tool_choice'] = 'auto'
             return requests.post(
                 endpoint,
-                headers={
-                    'Authorization': f'Bearer {self.fine_tuning_system.mistral_api_key}',
-                    'Content-Type': 'application/json'
-                },
-                json={
-                    'model': model,
-                    'messages': messages,
-                    'temperature': temperature,
-                    'max_tokens': 100  # 2-3 sentences, complete thoughts
-                },
-                timeout=timeout
+                headers={'Authorization': f'Bearer {api_key}', 'Content-Type': 'application/json'},
+                json=payload,
+                timeout=timeout,
             )
-        
+
         # ✅ RETRY MECHANISM: Try up to 3 times with increasing timeout
-        timeouts = [15, 25, 35]  # Increasing timeouts for each retry
+        timeouts = [15, 25, 35]
         last_error = None
-        
+
         for attempt, timeout in enumerate(timeouts):
             try:
                 print(f"[EXPRESSION] 🔄 Attempt {attempt + 1}/3 (timeout={timeout}s)")
-                
-                # ✅ RUN IN THREAD POOL - doesn't block event loop
-                response = await asyncio.to_thread(_sync_api_call, timeout)
-                
+
+                response = await asyncio.to_thread(_sync_api_call, messages, timeout)
+
                 print(f"[EXPRESSION] 📡 Response status: {response.status_code}")
-                
+
                 if response.status_code == 200:
                     result = response.json()
-                    generated_response = result["choices"][0]["message"]["content"].strip()
-                    print(f"[EXPRESSION] ✅ Real LLM API success: {len(generated_response)} chars, temp={temperature}")
-                    
-                    # 🔦 DEBUG: Log the LLM's raw response
-                    print(f"\n[LLM-RESPONSE-DEBUG] 🤖 RAW OUTPUT:")
-                    print(f"=" * 80)
-                    print(generated_response)
-                    print(f"=" * 80)
-                    
-                    return generated_response
+                    choice = result["choices"][0]
+                    msg = choice["message"]
+
+                    # ── Tool call path ────────────────────────────────────────
+                    tool_calls = msg.get("tool_calls")
+                    if tool_calls:
+                        try:
+                            from eros_tools import execute_tool
+                            import json as _json
+
+                            tool_msgs = list(messages)
+                            tool_msgs.append({"role": "assistant", "content": None, "tool_calls": tool_calls})
+
+                            for tc in tool_calls:
+                                fn_name = tc["function"]["name"]
+                                try:
+                                    fn_args = _json.loads(tc["function"].get("arguments", "{}"))
+                                except Exception:
+                                    fn_args = {}
+                                print(f"[ACTION] {fn_name}({_json.dumps(fn_args)})")
+                                result_str = execute_tool(fn_name, fn_args)
+                                tool_msgs.append({
+                                    "role": "tool",
+                                    "tool_call_id": tc.get("id", ""),
+                                    "name": fn_name,
+                                    "content": result_str,
+                                })
+
+                            # Follow-up call: get Eros's response informed by action result
+                            followup = await asyncio.to_thread(
+                                _sync_api_call, tool_msgs, timeout, False
+                            )
+                            if followup.status_code == 200:
+                                final = followup.json()["choices"][0]["message"]["content"].strip()
+                                print(f"[EXPRESSION] ✅ Action + response: {len(final)} chars")
+                                return final
+                        except Exception as e:
+                            print(f"[EXPRESSION] Tool execution error: {e}")
+                        # Fall through to plain content if tool handling failed
+
+                    # ── Plain response path ───────────────────────────────────
+                    generated_response = msg.get("content", "").strip()
+                    if generated_response:
+                        print(f"[EXPRESSION] ✅ Real LLM API success: {len(generated_response)} chars, temp={temperature}")
+                        print(f"\n[LLM-RESPONSE-DEBUG] 🤖 RAW OUTPUT:")
+                        print(f"=" * 80)
+                        print(generated_response)
+                        print(f"=" * 80)
+                        return generated_response
+
+                    last_error = "empty response"
                 else:
                     error_detail = response.text[:200] if response.text else "No error details"
                     print(f"[EXPRESSION] ❌ LLM API error: status {response.status_code}")
                     print(f"[EXPRESSION] ❌ Error details: {error_detail}")
                     last_error = f"HTTP {response.status_code}"
-                    # Don't retry on non-timeout errors (like 400, 401, etc.)
                     if response.status_code < 500:
                         break
-                    
+
             except requests.exceptions.Timeout:
                 print(f"[EXPRESSION] ⏱️ Timeout on attempt {attempt + 1} ({timeout}s)")
                 last_error = "timeout"
-                continue  # Retry with longer timeout
+                continue
             except Exception as e:
                 print(f"[EXPRESSION] ❌ API error on attempt {attempt + 1}: {e}")
                 last_error = str(e)
-                continue  # Retry
-        
+                continue
+
         print(f"[EXPRESSION] ❌ All {len(timeouts)} attempts failed. Last error: {last_error}")
         return None
     
