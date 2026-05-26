@@ -304,12 +304,9 @@ async def _process(cns, user_input: str, history: list) -> str:
     except Exception:
         pass
 
-    # Prepend screen context to user input so LLM always sees it
-    augmented_input = f"{screen_note}\n\n{user_input}" if screen_note else user_input
-
     try:
         result = await cns.process_input(
-            user_input=augmented_input,
+            user_input=user_input,
             conversation_history=history,
             user_id=USER_ID,
             context={"screen": screen_note},

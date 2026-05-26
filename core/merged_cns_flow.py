@@ -6980,7 +6980,9 @@ class CNS:
                     self_reflection_prompt=self_reflection_prompt,
                     # ✅ ORCHESTRATOR SYNTHESIS: Unified cognitive package
                     synthesized_context=synthesized_context,
-                    self_system_context=self_system_context
+                    self_system_context=self_system_context,
+                    # ✅ SCREEN CONTEXT: What's on screen (clean path — not injected into user_input)
+                    screen_context=self._action_context.get('screen', '') or None
                 )
                 
                 # Generate response using psychological intelligence instead of templates

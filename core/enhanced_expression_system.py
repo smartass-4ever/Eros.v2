@@ -64,6 +64,8 @@ class ExpressionContext:
     # ✅ ORCHESTRATOR SYNTHESIS: Unified cognitive package from orchestrator
     synthesized_context: Optional[Any] = None  # SynthesizedContext from orchestrator - THE MAIN CONTEXT
     self_system_context: Optional[Dict[str, Any]] = None  # From UnifiedSelfSystems
+    # ✅ SCREEN CONTEXT: What's currently on the user's screen (passed via context param, not user_input)
+    screen_context: Optional[str] = None
 
 @dataclass 
 class GeneratedExpression:
@@ -1028,6 +1030,13 @@ Express these thoughts naturally in conversation.""")
         if uncertainty_note:
             sections.append(uncertainty_note)
         
+        # Screen context (what the user is currently doing/looking at)
+        if getattr(context, 'screen_context', None):
+            sections.append(f"""
+📺 SCREEN CONTEXT (what they're currently doing):
+{context.screen_context}
+You can reference this naturally if relevant — don't force it.""")
+
         # Continuation awareness
         if is_continuation:
             sections.append("""
