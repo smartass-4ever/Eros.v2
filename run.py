@@ -149,7 +149,7 @@ async def text_loop(cns, proactive):
             break
 
         response = await _process(cns, user_input, history)
-        print(f"\nEros: {response}\n")
+        speak(response)
         history = _update_history(history, user_input, response)
 
 
