@@ -1,4 +1,4 @@
-﻿# Merged CNS System - Complete Flow Implementation  
+# Merged CNS System - Complete Flow Implementation  
 # User Input â†’ Perception â†’ Emotion + Mood â†’ Memory Check â†’ Cortex Reasoning â†’ LLM (if needed) â†’ Action Selector â†’ Response
 
 import time
@@ -5075,12 +5075,14 @@ class CNS:
             self.multimodal = None
         
         # âœ… CONTEXT JUDGE: Understands casual language, slang, and true meaning
-        # Create shared mistral_client for context systems (context judge + self-reflection)
+        # Create shared mistral_client ONLY for a real Mistral key.
+        # Groq keys (gsk_...) are rejected by api.mistral.ai with a 120s timeout hang.
         self._shared_mistral_client = None
-        if os.getenv("MISTRAL_API_KEY"):
+        _llm_key = os.getenv('MISTRAL_API_KEY', '')
+        if _llm_key and not _llm_key.startswith('gsk_'):
             try:
                 from mistralai import Mistral
-                self._shared_mistral_client = Mistral(api_key=os.getenv("MISTRAL_API_KEY"))
+                self._shared_mistral_client = Mistral(api_key=_llm_key)
             except ImportError:
                 pass
         
