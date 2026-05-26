@@ -55,37 +55,31 @@ if not os.environ.get("DATABASE_URL"):
 
 
 # ── Voice output helper ───────────────────────────────────────────────────────
-_tts_engine = None
-
-def _get_tts():
-    global _tts_engine
-    if _tts_engine is None:
-        try:
-            import pyttsx3
-            _tts_engine = pyttsx3.init()
-            voices = _tts_engine.getProperty("voices")
-            # prefer a deeper / male voice on Windows
-            for v in voices:
-                if any(x in v.name.lower() for x in ("david", "mark", "george", "male")):
-                    _tts_engine.setProperty("voice", v.id)
-                    break
-            _tts_engine.setProperty("rate", 168)
-            _tts_engine.setProperty("volume", 1.0)
-        except Exception:
-            _tts_engine = None
-    return _tts_engine
+def _speak_sync(text: str):
+    """Run TTS synchronously in its own thread (fresh engine each call — avoids pyttsx3 Windows hang)."""
+    print(f"\nEros: {text}\n")
+    try:
+        import pyttsx3
+        engine = pyttsx3.init()
+        voices = engine.getProperty("voices")
+        for v in voices:
+            if any(x in v.name.lower() for x in ("david", "mark", "george", "male")):
+                engine.setProperty("voice", v.id)
+                break
+        engine.setProperty("rate", 168)
+        engine.setProperty("volume", 1.0)
+        engine.say(text)
+        engine.runAndWait()
+        engine.stop()
+    except Exception:
+        pass
 
 
 def speak(text: str):
-    """Speak text aloud and print it."""
-    print(f"\nEros: {text}\n")
-    engine = _get_tts()
-    if engine:
-        try:
-            engine.say(text)
-            engine.runAndWait()
-        except Exception:
-            pass
+    """Print and speak text. Fire-and-forget in a daemon thread so it never blocks the event loop."""
+    import threading
+    t = threading.Thread(target=_speak_sync, args=(text,), daemon=True)
+    t.start()
 
 
 # ── Boot ──────────────────────────────────────────────────────────────────────
