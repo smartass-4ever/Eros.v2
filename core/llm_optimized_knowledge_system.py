@@ -1,4 +1,4 @@
-"""
+﻿"""
 LLM-Optimized Knowledge System
 Leverages external LLM for knowledge instead of storing static facts
 """
@@ -217,10 +217,10 @@ Answer:"""
         
         try:
             response = requests.post(
-                "https://api.together.xyz/v1/chat/completions",
+                "https://api.groq.com/openai/v1/chat/completions",
                 headers={"Authorization": f"Bearer {together_api_key}"},
                 json={
-                    "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+                    "model": "llama-3.3-70b-versatile",
                     "messages": [{"role": "user", "content": prompt}],
                     "temperature": 0.1,
                     "max_tokens": 200,
@@ -380,7 +380,7 @@ class MinimalWorldModel:
 
 def test_llm_optimized_system():
     """Test the LLM-optimized knowledge system"""
-    print("🧪 Testing LLM-Optimized Knowledge System...")
+    print("ðŸ§ª Testing LLM-Optimized Knowledge System...")
     
     knowledge_system = LLMOptimizedKnowledgeSystem()
     
@@ -392,7 +392,7 @@ def test_llm_optimized_system():
         ("Which force holds atomic nuclei together?", "science")
     ]
     
-    print(f"\n🔬 Testing {len(test_queries)} queries...")
+    print(f"\nðŸ”¬ Testing {len(test_queries)} queries...")
     
     successful_retrievals = 0
     
@@ -408,13 +408,13 @@ def test_llm_optimized_system():
         response = knowledge_system.get_knowledge(query, domain=detected_domain)
         
         if response:
-            print(f"✅ Success: {response}")
+            print(f"âœ… Success: {response}")
             successful_retrievals += 1
         else:
-            print("❌ Failed to retrieve knowledge")
+            print("âŒ Failed to retrieve knowledge")
     
     success_rate = successful_retrievals / len(test_queries)
-    print(f"\n🎯 LLM-Optimized System Results:")
+    print(f"\nðŸŽ¯ LLM-Optimized System Results:")
     print(f"   Success rate: {successful_retrievals}/{len(test_queries)} ({success_rate*100:.1f}%)")
     
     # Cache stats
@@ -425,3 +425,4 @@ def test_llm_optimized_system():
 
 if __name__ == "__main__":
     test_llm_optimized_system()
+

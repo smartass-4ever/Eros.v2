@@ -1,4 +1,4 @@
-"""
+﻿"""
 Agentic Actions System for Eros
 Enables Eros to take real actions, not just chat.
 """
@@ -179,7 +179,7 @@ class ActionIntentClassifier:
         if ('email' in input_lower or 'mail' in input_lower) and '@' in user_input:
             email_match = re.search(r'[\w\.-]+@[\w\.-]+\.\w+', user_input)
             if email_match:
-                print(f"[REGEX-CLASSIFIER] ✅ Fast-track EMAIL detected: {email_match.group(0)}")
+                print(f"[REGEX-CLASSIFIER] âœ… Fast-track EMAIL detected: {email_match.group(0)}")
                 slots = {'recipient': email_match.group(0)}
                 remaining = user_input.replace(email_match.group(0), '').strip()
                 for sep in ['about', 'saying', 'that', 'to say', 'with', ':']:
@@ -213,7 +213,7 @@ class ActionIntentClassifier:
             for pattern in patterns:
                 match = re.search(pattern, input_lower, re.IGNORECASE)
                 if match:
-                    print(f"[REGEX-CLASSIFIER] ✅ MATCHED {action_type.value} with pattern: {pattern[:40]}...")
+                    print(f"[REGEX-CLASSIFIER] âœ… MATCHED {action_type.value} with pattern: {pattern[:40]}...")
                     slots = self._extract_slots(action_type, user_input, match)
                     missing = self._get_missing_slots(action_type, slots)
                     
@@ -324,41 +324,41 @@ class ActionIntentClassifier:
         seconds_match = re.search(self.time_patterns['seconds'], text_lower)
         if seconds_match:
             secs = int(seconds_match.group(1))
-            print(f"[TIME-PARSE] ✅ Matched {secs} seconds")
+            print(f"[TIME-PARSE] âœ… Matched {secs} seconds")
             return timedelta(seconds=secs)
         
         if re.search(self.time_patterns['a_few_minutes'], text_lower):
-            print(f"[TIME-PARSE] ✅ Matched 'a few minutes' -> 3 min")
+            print(f"[TIME-PARSE] âœ… Matched 'a few minutes' -> 3 min")
             return timedelta(minutes=3)
         
         if re.search(self.time_patterns['a_minute'], text_lower):
-            print(f"[TIME-PARSE] ✅ Matched 'a minute' -> 1 min")
+            print(f"[TIME-PARSE] âœ… Matched 'a minute' -> 1 min")
             return timedelta(minutes=1)
         
         minutes_match = re.search(self.time_patterns['minutes'], text_lower)
         if minutes_match:
             mins = int(minutes_match.group(1))
-            print(f"[TIME-PARSE] ✅ Matched {mins} minutes")
+            print(f"[TIME-PARSE] âœ… Matched {mins} minutes")
             return timedelta(minutes=mins)
         
         if re.search(self.time_patterns['an_hour'], text_lower):
-            print(f"[TIME-PARSE] ✅ Matched 'an hour' -> 1 hour")
+            print(f"[TIME-PARSE] âœ… Matched 'an hour' -> 1 hour")
             return timedelta(hours=1)
         
         hours_match = re.search(self.time_patterns['hours'], text_lower)
         if hours_match:
             hrs = int(hours_match.group(1))
-            print(f"[TIME-PARSE] ✅ Matched {hrs} hours")
+            print(f"[TIME-PARSE] âœ… Matched {hrs} hours")
             return timedelta(hours=hrs)
         
         days_match = re.search(self.time_patterns['days'], text_lower)
         if days_match:
             d = int(days_match.group(1))
-            print(f"[TIME-PARSE] ✅ Matched {d} days")
+            print(f"[TIME-PARSE] âœ… Matched {d} days")
             return timedelta(days=d)
         
         if re.search(self.time_patterns['tomorrow'], text_lower):
-            print(f"[TIME-PARSE] ✅ Matched 'tomorrow'")
+            print(f"[TIME-PARSE] âœ… Matched 'tomorrow'")
             return timedelta(days=1)
         
         if re.search(self.time_patterns['tonight'], text_lower):
@@ -366,10 +366,10 @@ class ActionIntentClassifier:
             tonight = now.replace(hour=20, minute=0, second=0)
             if tonight < now:
                 tonight += timedelta(days=1)
-            print(f"[TIME-PARSE] ✅ Matched 'tonight'")
+            print(f"[TIME-PARSE] âœ… Matched 'tonight'")
             return tonight - now
         
-        print(f"[TIME-PARSE] ⚠️ No time match - defaulting to 5 minutes")
+        print(f"[TIME-PARSE] âš ï¸ No time match - defaulting to 5 minutes")
         return timedelta(minutes=5)
     
     def _get_missing_slots(self, action_type: ActionType, slots: Dict) -> List[str]:
@@ -472,10 +472,10 @@ If unsure, default to chat with low confidence."""
         
         async with aiohttp.ClientSession() as session:
             async with session.post(
-                "https://api.together.xyz/v1/chat/completions",
+                "https://api.groq.com/openai/v1/chat/completions",
                 headers={"Authorization": f"Bearer {self._api_key}"},
                 json={
-                    "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+                    "model": "llama-3.3-70b-versatile",
                     "messages": messages,
                     "response_format": {"type": "json_object"},
                     "max_tokens": 200,
@@ -871,3 +871,4 @@ class AgenticActionSystem:
 
 
 agentic_system = AgenticActionSystem()
+

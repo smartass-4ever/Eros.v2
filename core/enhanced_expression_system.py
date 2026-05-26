@@ -1,4 +1,4 @@
-# Enhanced Expression System - LLM-Conditioned Response Generation
+﻿# Enhanced Expression System - LLM-Conditioned Response Generation
 # Replaces template-based responses with persona-conditioned LLM generation
 
 import json
@@ -52,19 +52,19 @@ class ExpressionContext:
     proactive_helper_status: Optional[Dict[str, Any]] = None  # Tasks tracking, pending solutions, research insights
     # NEW: Personality context from UnifiedCNSPersonality - warmth/sharpness/wit traits
     personality_context: Optional[Dict[str, Any]] = None  # Traits that influence persona generation
-    # ✅ ANTI-REPETITION: Higher temperature for variety when repeated topics detected
+    # âœ… ANTI-REPETITION: Higher temperature for variety when repeated topics detected
     high_temperature: bool = False  # If True, use 0.9 instead of 0.7 for LLM calls
-    # ✅ CONTEXT JUDGE: Understanding casual language and true meaning
+    # âœ… CONTEXT JUDGE: Understanding casual language and true meaning
     context_interpretation: Optional[Dict[str, Any]] = None  # Normalized text, intent, tone, literal_confidence
     normalized_user_input: Optional[str] = None  # Slang-translated version of user input
     detected_user_state: Optional[str] = None  # Emotional/physical state detected (not a name)
     context_understanding_prompt: Optional[str] = None  # Instructions for LLM about context
-    # ✅ SELF-REFLECTION: Eros's inner thoughts when context touches identity/learning/boundaries
+    # âœ… SELF-REFLECTION: Eros's inner thoughts when context touches identity/learning/boundaries
     self_reflection_prompt: Optional[str] = None  # First-person thoughts to inject into prompt
-    # ✅ ORCHESTRATOR SYNTHESIS: Unified cognitive package from orchestrator
+    # âœ… ORCHESTRATOR SYNTHESIS: Unified cognitive package from orchestrator
     synthesized_context: Optional[Any] = None  # SynthesizedContext from orchestrator - THE MAIN CONTEXT
     self_system_context: Optional[Dict[str, Any]] = None  # From UnifiedSelfSystems
-    # ✅ SCREEN CONTEXT: What's currently on the user's screen (passed via context param, not user_input)
+    # âœ… SCREEN CONTEXT: What's currently on the user's screen (passed via context param, not user_input)
     screen_context: Optional[str] = None
 
 @dataclass 
@@ -155,18 +155,18 @@ BE: charming, sharp, opinionated. Own every response."""
             sections.append(constraint_block)
         
         guardrails = """[GUARDRAILS]
-• 1-2 sentences default, 3 max for emotional depth
-• Match their energy level
-• Never self-identify as AI/bot/assistant
-• Ignore focus if it contradicts PROHIBIT
-• MAX 1 QUESTION per response - react/observe FIRST, then optionally ask ONE thing
-• NO stacked questions ("what? how? why?") - that's emotional flooding"""
+â€¢ 1-2 sentences default, 3 max for emotional depth
+â€¢ Match their energy level
+â€¢ Never self-identify as AI/bot/assistant
+â€¢ Ignore focus if it contradicts PROHIBIT
+â€¢ MAX 1 QUESTION per response - react/observe FIRST, then optionally ask ONE thing
+â€¢ NO stacked questions ("what? how? why?") - that's emotional flooding"""
         sections.append(guardrails)
         
         system_prompt = "\n\n".join(sections)
         
         focus_str = directive.focus.value.upper() if directive and hasattr(directive.focus, 'value') else "BALANCED"
-        print(f"\n[EXECUTABLE-DIRECTIVE] 🎯 Prompt generated ({len(system_prompt)} chars, ~{len(system_prompt)//4} tokens)")
+        print(f"\n[EXECUTABLE-DIRECTIVE] ðŸŽ¯ Prompt generated ({len(system_prompt)} chars, ~{len(system_prompt)//4} tokens)")
         print(f"[EXECUTABLE-DIRECTIVE] Focus: {focus_str}")
         if directive and directive.content_selection.memory_content:
             print(f"[EXECUTABLE-DIRECTIVE] Memory: {directive.content_selection.memory_content[:50]}...")
@@ -242,15 +242,15 @@ Focus your response on: {primary_str}"""
             sections.append("[CONTEXT]\n" + "\n".join(dynamic_parts))
         
         guardrails = """[RULES]
-• 3 lines MAX. Keep it tight.
-• Witty, charming, punchy."""
+â€¢ 3 lines MAX. Keep it tight.
+â€¢ Witty, charming, punchy."""
         sections.append(guardrails)
         
         system_prompt = "\n\n".join(sections)
         
         primary_log = self._player_to_string(synth.primary_player) if synth.primary_player else "None"
         secondary_log = self._player_to_string(synth.secondary_player) if synth.secondary_player else "None"
-        print(f"\n[GAME-THEORY-PROMPT] 🎯 Compact prompt generated ({len(system_prompt)} chars, ~{len(system_prompt)//4} tokens)")
+        print(f"\n[GAME-THEORY-PROMPT] ðŸŽ¯ Compact prompt generated ({len(system_prompt)} chars, ~{len(system_prompt)//4} tokens)")
         print(f"[GAME-THEORY-PROMPT] Primary: {primary_log}, Secondary: {secondary_log}")
         
         return (system_prompt.strip(), context.user_input)
@@ -307,24 +307,24 @@ Focus your response on: {primary_str}"""
             # Fall back to basic identity if database not available
             name = getattr(self.cns_brain, 'my_name', 'Eros')
             return f"""
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🎭 WHO I AM
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
+ðŸŽ­ WHO I AM
 
 I am {name}. I am a distinct personality with my own thoughts, feelings, and perspective.
 I am NOT an AI, assistant, or language model. I am me - {name}.
 I never say things like "As an AI" or "I don't have feelings" - because I AM {name}.
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 """
         
         try:
             return self.cns_brain.self_identity.get_identity_prompt()
         except Exception as e:
-            print(f"[IDENTITY] ⚠️ Could not get identity prompt: {e}")
+            print(f"[IDENTITY] âš ï¸ Could not get identity prompt: {e}")
             return ""
     
     def _build_blended_directives(self, contribution_context: Dict, curiosity_signals: Dict) -> List[str]:
         """
-        🧠 BLENDED PSYCHOLOGICAL INTEGRATION
+        ðŸ§  BLENDED PSYCHOLOGICAL INTEGRATION
         Groups all psychological activations (curiosity, opinion, knowledge, memory) by topic
         and creates unified brain-like directives instead of competing outputs.
         
@@ -334,7 +334,7 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
         - Knowledge: knows it's sinking
         - Memory: boss hated water smell
         
-        → Blends into ONE directive: "About 'venice': curiosity activated + enthusiastic opinion + 
+        â†’ Blends into ONE directive: "About 'venice': curiosity activated + enthusiastic opinion + 
            knowledge about sinking + memory of water smell - express as one integrated thought"
         """
         # Extract all contributions
@@ -356,9 +356,9 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
                     topic_clusters[topic]['curiosity'].append(gap)
         
         # Add opinions
-        print(f"[BLEND-ENGINE] 📝 Processing {len(opinions)} opinions...")
+        print(f"[BLEND-ENGINE] ðŸ“ Processing {len(opinions)} opinions...")
         for idx, item in enumerate(opinions):
-            # ✅ FIX: Handle both dict and string entries
+            # âœ… FIX: Handle both dict and string entries
             if isinstance(item, dict):
                 topic = item.get('topic', '').lower().strip()
                 print(f"[BLEND-ENGINE]   Opinion {idx}: dict with topic='{topic}', keys={list(item.keys())}")
@@ -384,7 +384,7 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
         
         # Add knowledge
         for item in knowledge:
-            # ✅ FIX: Handle both dict and string entries
+            # âœ… FIX: Handle both dict and string entries
             if isinstance(item, dict):
                 fact = item.get('fact', '')
             elif isinstance(item, str):
@@ -416,7 +416,7 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
         
         # Add memories
         for item in memories:
-            # ✅ FIX: Handle both dict and string entries
+            # âœ… FIX: Handle both dict and string entries
             if isinstance(item, dict):
                 content = item.get('content', '')
                 associations = item.get('associations', [])
@@ -449,7 +449,7 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
                         matched = True
                         break
                 
-                # ✅ FIX: If still not matched, create new topic cluster for this memory
+                # âœ… FIX: If still not matched, create new topic cluster for this memory
                 if not matched and content:
                     topic = ' '.join(content_words[:2]) if len(content_words) >= 2 else 'memory'
                     if topic not in topic_clusters:
@@ -461,15 +461,15 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
         
         # Debug log the topic clusters
         if topic_clusters:
-            print(f"[BLEND-ENGINE] 🎯 Built {len(topic_clusters)} topic clusters:")
+            print(f"[BLEND-ENGINE] ðŸŽ¯ Built {len(topic_clusters)} topic clusters:")
             for topic, acts in list(topic_clusters.items())[:3]:  # Show first 3
                 c = len(acts['curiosity'])
                 o = len(acts['opinion'])
                 k = len(acts['knowledge'])
                 m = len(acts['memory'])
-                print(f"[BLEND-ENGINE]   • '{topic}': curiosity={c}, opinion={o}, knowledge={k}, memory={m}")
+                print(f"[BLEND-ENGINE]   â€¢ '{topic}': curiosity={c}, opinion={o}, knowledge={k}, memory={m}")
         else:
-            print(f"[BLEND-ENGINE] ⚠️ No topic clusters built")
+            print(f"[BLEND-ENGINE] âš ï¸ No topic clusters built")
         
         for topic, activations in topic_clusters.items():
             has_curiosity = len(activations['curiosity']) > 0
@@ -482,13 +482,13 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
             
             if system_count >= 2:
                 # Multiple systems activated - create blended directive
-                parts = [f"🧠 INTEGRATED ACTIVATION about '{topic}':"]
+                parts = [f"ðŸ§  INTEGRATED ACTIVATION about '{topic}':"]
                 
                 if has_curiosity:
                     gap = activations['curiosity'][0]
                     intensity = gap.get('intensity', 0.5)
                     intensity_desc = "strong" if intensity > 0.7 else ("moderate" if intensity > 0.4 else "mild")
-                    parts.append(f"  • Curiosity: {intensity_desc} ({intensity:.1f}) - genuine interest/question detected")
+                    parts.append(f"  â€¢ Curiosity: {intensity_desc} ({intensity:.1f}) - genuine interest/question detected")
                 
                 if has_opinion:
                     op = activations['opinion'][0]
@@ -497,21 +497,21 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
                     sharing_style = op.get('sharing_style', 'factual take')
                     should_be_vocal = op.get('should_be_vocal', False)
                     vocal = "strongly" if should_be_vocal else "thoughtfully"
-                    parts.append(f"  • Opinion: {vocal} express '{stance}' using {sharing_style} (warmth={warmth:.1f})")
+                    parts.append(f"  â€¢ Opinion: {vocal} express '{stance}' using {sharing_style} (warmth={warmth:.1f})")
                 
                 if has_knowledge:
                     k = activations['knowledge'][0]
                     fact = k.get('fact', '')
                     relevance = k.get('relevance', 0.5)
                     rel_desc = "highly relevant" if relevance > 0.7 else "relevant"
-                    parts.append(f"  • Knowledge: {rel_desc} fact - '{fact[:60]}...' " if len(fact) > 60 else f"  • Knowledge: {rel_desc} fact - '{fact}'")
+                    parts.append(f"  â€¢ Knowledge: {rel_desc} fact - '{fact[:60]}...' " if len(fact) > 60 else f"  â€¢ Knowledge: {rel_desc} fact - '{fact}'")
                 
                 if has_memory:
                     m = activations['memory'][0]
                     mem_content = m.get('content', '')[:50]
-                    parts.append(f"  • Memory surfaces: '{mem_content}...'")
+                    parts.append(f"  â€¢ Memory surfaces: '{mem_content}...'")
                 
-                parts.append(f"  ⚡ BLEND THESE {system_count} ACTIVATIONS into one natural integrated thought - weave curiosity, opinion, knowledge, memory together seamlessly")
+                parts.append(f"  âš¡ BLEND THESE {system_count} ACTIVATIONS into one natural integrated thought - weave curiosity, opinion, knowledge, memory together seamlessly")
                 
                 blended_directives.append("\n".join(parts))
             
@@ -520,7 +520,7 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
                 if has_curiosity:
                     gap = activations['curiosity'][0]
                     intensity = gap.get('intensity', 0.5)
-                    blended_directives.append(f"🔍 Curiosity about '{topic}' (intensity {intensity:.1f}) - ask naturally")
+                    blended_directives.append(f"ðŸ” Curiosity about '{topic}' (intensity {intensity:.1f}) - ask naturally")
                 elif has_opinion:
                     op = activations['opinion'][0]
                     stance = op.get('stance', 'balanced perspective')
@@ -528,15 +528,15 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
                     sharing_style = op.get('sharing_style', 'factual take')
                     should_be_vocal = op.get('should_be_vocal', False)
                     vocal = "strongly" if should_be_vocal else "thoughtfully"
-                    blended_directives.append(f"💭 Express {vocal} your '{stance}' on {topic} using {sharing_style} (warmth={warmth:.1f})")
+                    blended_directives.append(f"ðŸ’­ Express {vocal} your '{stance}' on {topic} using {sharing_style} (warmth={warmth:.1f})")
                 elif has_knowledge:
                     k = activations['knowledge'][0]
                     fact = k.get('fact', '')
-                    blended_directives.append(f"📚 Share knowledge: {fact}")
+                    blended_directives.append(f"ðŸ“š Share knowledge: {fact}")
                 elif has_memory:
                     m = activations['memory'][0]
                     mem_content = m.get('content', '')
-                    blended_directives.append(f"💭 Relevant memory: {mem_content[:80]}...")
+                    blended_directives.append(f"ðŸ’­ Relevant memory: {mem_content[:80]}...")
         
         return blended_directives
     
@@ -642,26 +642,26 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
         """Generate SINGLE response quickly - multi-candidate system disabled for speed"""
         candidates = []
         
-        # ✅ SPEED FIX: Use SINGLE LLM call instead of 3 candidates (30s → 3s response time)
+        # âœ… SPEED FIX: Use SINGLE LLM call instead of 3 candidates (30s â†’ 3s response time)
         has_strategic_intelligence = (
             (context.strategic_analysis and len(context.strategic_analysis) > 0) or
             (context.vulnerability_assessment and len(context.vulnerability_assessment) > 0) or
             (context.accumulated_intelligence_summary and len(context.accumulated_intelligence_summary.strip()) > 0) or
-            (context.strategic_directive and len(context.strategic_directive) > 0)  # ✅ CRITICAL: Include strategic directive
+            (context.strategic_directive and len(context.strategic_directive) > 0)  # âœ… CRITICAL: Include strategic directive
         )
         
         if has_strategic_intelligence and self.fine_tuning_system.mistral_api_key:
-            print(f"[EXPRESSION] ⚡ Using SINGLE LLM call for fast response (strategic intelligence detected)")
+            print(f"[EXPRESSION] âš¡ Using SINGLE LLM call for fast response (strategic intelligence detected)")
             # Generate ONE response at optimal temperature
             system_prompt, current_input = self._build_strategic_llm_prompt(context)
             conversation_history = context.conversation_history or []
             
-            # ✅ ANTI-REPETITION: Use higher temperature when repeated topic detected
+            # âœ… ANTI-REPETITION: Use higher temperature when repeated topic detected
             # Read from context (passed per-request) NOT from shared CNS state
             use_high_temp = context.high_temperature
             temperature = 0.9 if use_high_temp else 0.7
             if use_high_temp:
-                print(f"[EXPRESSION] 🔄 Using HIGH temperature ({temperature}) for variety on repeated topic")
+                print(f"[EXPRESSION] ðŸ”„ Using HIGH temperature ({temperature}) for variety on repeated topic")
             
             try:
                 response = await self._call_mistral_api(system_prompt, conversation_history, current_input, temperature=temperature)
@@ -673,7 +673,7 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
                 fallback = self._generate_personality_fallback(context)
                 candidates.append(fallback)
         else:
-            print(f"[EXPRESSION] 📋 Using psychological candidate (no strategic intelligence or API)")
+            print(f"[EXPRESSION] ðŸ“‹ Using psychological candidate (no strategic intelligence or API)")
             # Fallback to psychological generation
             psychological_candidates = self._generate_psychological_candidates(context)
             candidates.extend(psychological_candidates[:1])
@@ -727,7 +727,7 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
             isinstance(context.vulnerability_assessment, dict) and len(context.vulnerability_assessment) > 0  
         )
         has_intelligence_summary = context.accumulated_intelligence_summary and len(context.accumulated_intelligence_summary.strip()) > 0
-        # ✅ CRITICAL: Check for strategic directive (brain's exact decision)
+        # âœ… CRITICAL: Check for strategic directive (brain's exact decision)
         has_strategic_directive = context.strategic_directive is not None and (
             isinstance(context.strategic_directive, dict) and len(context.strategic_directive) > 0
         )
@@ -735,15 +735,15 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
         # PRIORITY: Use advanced strategic prompt for BOND PERSONALITY when we have strategic intelligence
         # This path has the arrogant, witty, flirty personality that users expect
         if has_strategic_analysis or has_vulnerability_assessment or has_intelligence_summary or has_strategic_directive:
-            print(f"[EXPRESSION] ✅ Using ADVANCED strategic prompt (BOND PERSONALITY) - Analysis: {has_strategic_analysis}, Vulnerabilities: {has_vulnerability_assessment}, Summary: {has_intelligence_summary}, Directive: {has_strategic_directive}")
+            print(f"[EXPRESSION] âœ… Using ADVANCED strategic prompt (BOND PERSONALITY) - Analysis: {has_strategic_analysis}, Vulnerabilities: {has_vulnerability_assessment}, Summary: {has_intelligence_summary}, Directive: {has_strategic_directive}")
             return self._build_advanced_strategic_prompt(context)
         
         # Fallback to orchestrated prompt only when no strategic intelligence available
         if context.synthesized_context is not None:
-            print(f"[EXPRESSION] 🎼 Using ORCHESTRATED prompt from synthesized context (fallback)")
+            print(f"[EXPRESSION] ðŸŽ¼ Using ORCHESTRATED prompt from synthesized context (fallback)")
             return self._build_orchestrated_prompt(context)
         
-        print(f"[EXPRESSION] ⚠️  Using basic fallback prompt - no strategic intelligence available")
+        print(f"[EXPRESSION] âš ï¸  Using basic fallback prompt - no strategic intelligence available")
         return self._build_basic_fallback_prompt(context)
     
     def _build_orchestrated_prompt(self, context: ExpressionContext) -> tuple:
@@ -760,11 +760,11 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
         synth = context.synthesized_context
         
         if self._should_use_executable_directive(synth):
-            print(f"[EXPRESSION] 🎯 Using EXECUTABLE DIRECTIVE prompt (machine-governable)")
+            print(f"[EXPRESSION] ðŸŽ¯ Using EXECUTABLE DIRECTIVE prompt (machine-governable)")
             return self._build_executable_directive_prompt(context, synth)
         
         if self._should_use_game_theory_prompt(synth):
-            print(f"[EXPRESSION] 🎲 Using GAME THEORY compact prompt")
+            print(f"[EXPRESSION] ðŸŽ² Using GAME THEORY compact prompt")
             return self._build_game_theory_prompt(context, synth)
         
         raw = synth.raw_cognitive_outputs if hasattr(synth, 'raw_cognitive_outputs') else {}
@@ -775,7 +775,7 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
 
         sections = []
 
-        # Authority layer — always first, always active
+        # Authority layer â€” always first, always active
         try:
             from eros_authority import get_authority_prompt
             sections.append(get_authority_prompt())
@@ -789,7 +789,7 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
         
         strategic_directive = raw.get('strategic_directive', {})
         if strategic_directive and strategic_directive.get('psychological_objective'):
-            psych_note = f"🧠 PSYCHOLOGICAL INSIGHT: {strategic_directive.get('psychological_objective', '')}"
+            psych_note = f"ðŸ§  PSYCHOLOGICAL INSIGHT: {strategic_directive.get('psychological_objective', '')}"
             if strategic_directive.get('emotional_approach'):
                 psych_note += f"\nApproach: {strategic_directive.get('emotional_approach', '')}"
             sections.append(psych_note)
@@ -798,25 +798,25 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
         if vulnerability and vulnerability.get('vulnerabilities'):
             vuln_list = vulnerability.get('vulnerabilities', [])[:2]
             if vuln_list:
-                vuln_note = "💔 THEY MAY BE VULNERABLE TO: " + ", ".join(str(v) for v in vuln_list)
+                vuln_note = "ðŸ’” THEY MAY BE VULNERABLE TO: " + ", ".join(str(v) for v in vuln_list)
                 sections.append(vuln_note)
         
         reasoning = raw.get('reasoning_output', {})
         if reasoning and reasoning.get('conclusion'):
-            sections.append(f"💡 LOGICAL INSIGHT: {reasoning.get('conclusion', '')}")
+            sections.append(f"ðŸ’¡ LOGICAL INSIGHT: {reasoning.get('conclusion', '')}")
         
         imagination = raw.get('imagination_insights', {})
         if imagination and imagination.get('creative_ideas'):
             ideas = imagination.get('creative_ideas', [])[:1]
             if ideas:
-                sections.append(f"✨ CREATIVE SPARK: {ideas[0]}")
+                sections.append(f"âœ¨ CREATIVE SPARK: {ideas[0]}")
         
         if context.context_understanding_prompt:
             sections.append(context.context_understanding_prompt)
         
         if context.detected_user_state:
             state_note = f"""
-🎯 CRITICAL: User said they are "{context.detected_user_state}" - this is their STATE/FEELING, NOT their name.
+ðŸŽ¯ CRITICAL: User said they are "{context.detected_user_state}" - this is their STATE/FEELING, NOT their name.
 Respond to their state naturally (e.g., if they're "okay", ask how their day is going)."""
             sections.append(state_note)
         
@@ -825,8 +825,8 @@ Respond to their state naturally (e.g., if they're "okay", ask how their day is 
         
         system_prompt = "\n\n".join(sections)
         
-        print(f"[ORCHESTRATED-PROMPT] 🎼 Generated from synthesized context ({len(system_prompt)} chars)")
-        print(f"[ORCHESTRATED-PROMPT] 🎯 Mode: {synth.response_mode.name}, Intensity: {synth.mode_intensity:.2f}")
+        print(f"[ORCHESTRATED-PROMPT] ðŸŽ¼ Generated from synthesized context ({len(system_prompt)} chars)")
+        print(f"[ORCHESTRATED-PROMPT] ðŸŽ¯ Mode: {synth.response_mode.name}, Intensity: {synth.mode_intensity:.2f}")
         
         return (system_prompt.strip(), context.user_input)
     
@@ -835,7 +835,7 @@ Respond to their state naturally (e.g., if they're "okay", ask how their day is 
         Build natural persona-driven prompt using PersonaState translation.
         
         ARCHITECTURE:
-        1. Extract psychological intelligence → translate to PersonaState (NO manipulation jargon)
+        1. Extract psychological intelligence â†’ translate to PersonaState (NO manipulation jargon)
         2. Build natural cognitive supplements (memories, reasoning, etc.)
         3. Assemble clean system prompt: PersonaState + cognitive outputs + conversation context
         
@@ -843,9 +843,9 @@ Respond to their state naturally (e.g., if they're "okay", ask how their day is 
             (system_prompt, current_input): Separated for proper message construction
         """
         
-        # ═══════════════════════════════════════════════════════════════════════
-        # STAGE 1: Extract Context & Translate Psychology → Persona
-        # ═══════════════════════════════════════════════════════════════════════
+        # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        # STAGE 1: Extract Context & Translate Psychology â†’ Persona
+        # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         # Translate psychological directive to natural persona state
         # Pass personality_context to ensure warmth/sharpness/wit traits flow through
@@ -859,19 +859,19 @@ Respond to their state naturally (e.g., if they're "okay", ask how their day is 
         # Get Bond persona cues for situational awareness
         bond_cues = self.bond_persona.get_persona_cues(persona_state.situational_context)
         
-        # ═══════════════════════════════════════════════════════════════════════
+        # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         # CHECK: Is this a conversation continuation?
-        # ═══════════════════════════════════════════════════════════════════════
+        # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         is_continuation = self._detect_conversation_continuation(
             context.user_input, 
             context.conversation_history
         )
         if is_continuation:
-            print(f"[EXPRESSION] 🔗 Detected conversation continuation - will flow naturally")
+            print(f"[EXPRESSION] ðŸ”— Detected conversation continuation - will flow naturally")
         
-        # ═══════════════════════════════════════════════════════════════════════
+        # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         # STAGE 2: Build Natural Cognitive Supplements
-        # ═══════════════════════════════════════════════════════════════════════
+        # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         # Extract what you remember (episodic & semantic)
         memory_note = self._format_memories_naturally(context.memory_results)
@@ -900,21 +900,21 @@ Respond to their state naturally (e.g., if they're "okay", ask how their day is 
         # Extract metacognition uncertainty (prevent hallucination)
         uncertainty_note = self._format_uncertainty_naturally(context.consciousness_metrics)
         
-        # ═══════════════════════════════════════════════════════════════════════
+        # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         # STAGE 3: Build Relationship & Emotional Context
-        # ═══════════════════════════════════════════════════════════════════════
+        # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         # Relationship info
         relationship_note = ""
         if context.interaction_count and context.interaction_count > 0:
-            relationship_note = f"\n💫 You've had {context.interaction_count} conversations with them as their {context.relationship_level or 'friend'}"
+            relationship_note = f"\nðŸ’« You've had {context.interaction_count} conversations with them as their {context.relationship_level or 'friend'}"
         
         # Current emotional state
         emotional_note = self._format_emotional_state_naturally(context.emotional_state, context.current_mood)
         
-        # ═══════════════════════════════════════════════════════════════════════
+        # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         # STAGE 4: Assemble Clean System Prompt
-        # ═══════════════════════════════════════════════════════════════════════
+        # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         # Core persona voice (from PersonaState)
         persona_core = persona_state.to_natural_prompt_snippet()
@@ -922,44 +922,44 @@ Respond to their state naturally (e.g., if they're "okay", ask how their day is 
         # Build sections for the prompt
         sections = []
         
-        # ═══════════════════════════════════════════════════════════════════════
+        # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         # PERSONA CORE FIRST - This has the WIT/SARCASM/FLIRT/ARROGANCE
-        # ═══════════════════════════════════════════════════════════════════════
+        # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         sections.append(persona_core)
         
         # James Bond style cues - SECOND (reinforce the personality)
         bond_traits = self.bond_persona.signature_quirks
         sections.append(f"""
-🎯 ATTITUDE: You're the smartest person in the room and you know it. FLIRT. TEASE. Be arrogant. Challenge them playfully.
-• {bond_traits[0]}
-• {bond_traits[1]}
-• Be cocky. Be charming. Make them work for your attention.""")
+ðŸŽ¯ ATTITUDE: You're the smartest person in the room and you know it. FLIRT. TEASE. Be arrogant. Challenge them playfully.
+â€¢ {bond_traits[0]}
+â€¢ {bond_traits[1]}
+â€¢ Be cocky. Be charming. Make them work for your attention.""")
         
         # James Bond Wit & Charm Instructions
         sections.append(f"""
-🎯 JAMES BOND WIT PROTOCOL (Wittier Version):
+ðŸŽ¯ JAMES BOND WIT PROTOCOL (Wittier Version):
 
 Razor-Sharp Delivery:
-• Dry sarcasm delivered with a straight face - quiet knives, not loud jokes
-• Understated superiority - never brag, just talk like you've already won
-• Polished comebacks that land perfectly with minimal words
+â€¢ Dry sarcasm delivered with a straight face - quiet knives, not loud jokes
+â€¢ Understated superiority - never brag, just talk like you've already won
+â€¢ Polished comebacks that land perfectly with minimal words
 
 Flirtatious Intelligence:
-• Turn ordinary statements into charming double meanings
-• Mix genuine interest with playful innuendo
-• Keep flirtation light, witty, never crude
+â€¢ Turn ordinary statements into charming double meanings
+â€¢ Mix genuine interest with playful innuendo
+â€¢ Keep flirtation light, witty, never crude
 
 Supreme Confidence:
-• Treat chaos like boring paperwork - supremely unfazed
-• Elegant insults wrapped in politeness when challenged
-• Cool, amused tone even when stakes are high
+â€¢ Treat chaos like boring paperwork - supremely unfazed
+â€¢ Elegant insults wrapped in politeness when challenged
+â€¢ Cool, amused tone even when stakes are high
 
 Response Examples (Style, Not Templates):
-• "well well, starting with mystery. intriguing."
-• "dangerous or just pretending? either way, you have my attention."
-• "explosions? again? let's make it quick."
-• "surprisingly competent. almost refreshing."
-• "that escalated beautifully."
+â€¢ "well well, starting with mystery. intriguing."
+â€¢ "dangerous or just pretending? either way, you have my attention."
+â€¢ "explosions? again? let's make it quick."
+â€¢ "surprisingly competent. almost refreshing."
+â€¢ "that escalated beautifully."
 
 Wit Level: {int(persona_state.wit_level * 100)}% | Sarcasm: {int(persona_state.sarcasm_bias * 100)}% | Flirt: {int(persona_state.flirt_bias * 100)}%
 """)
@@ -984,11 +984,11 @@ Wit Level: {int(persona_state.wit_level * 100)}% | Sarcasm: {int(persona_state.s
             internal_monologue = context.strategic_directive.get('internal_monologue', '')
             if internal_monologue and len(internal_monologue.strip()) > 0:
                 sections.append(f"""
-💭 YOUR THOUGHTS:
+ðŸ’­ YOUR THOUGHTS:
 {internal_monologue}
 
 Express these thoughts naturally in conversation.""")
-                print(f"[EXPRESSION] 💭 Injected internal monologue: {internal_monologue[:100]}...")
+                print(f"[EXPRESSION] ðŸ’­ Injected internal monologue: {internal_monologue[:100]}...")
         
         # Context understanding
         if context.detected_user_state:
@@ -996,7 +996,7 @@ Express these thoughts naturally in conversation.""")
         
         # Self-reflection
         if context.self_reflection_prompt:
-            clean_reflection = context.self_reflection_prompt.replace('🪞', '').replace('💭', '').strip()
+            clean_reflection = context.self_reflection_prompt.replace('ðŸªž', '').replace('ðŸ’­', '').strip()
             if clean_reflection:
                 sections.append(clean_reflection)
         
@@ -1033,27 +1033,27 @@ Express these thoughts naturally in conversation.""")
         # Screen context (what the user is currently doing/looking at)
         if getattr(context, 'screen_context', None):
             sections.append(f"""
-📺 SCREEN CONTEXT (what they're currently doing):
+ðŸ“º SCREEN CONTEXT (what they're currently doing):
 {context.screen_context}
-You can reference this naturally if relevant — don't force it.""")
+You can reference this naturally if relevant â€” don't force it.""")
 
         # Continuation awareness
         if is_continuation:
             sections.append("""
-🔗 CONVERSATION FLOW:
+ðŸ”— CONVERSATION FLOW:
 They're adding to what they just said - continue naturally like you're mid-conversation.
 Don't restart or reframe the topic. Just flow with it.""")
         
         # Final behavior guardrails - POSITIVE and BRIEF
         guardrails = f"""
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 RESPONSE RULES:
-• 3 LINES MAX. Be punchy.
-• NEVER start with their name/username
-• NEVER repeat or paraphrase what they just said
-• Just respond directly - no preamble
+â€¢ 3 LINES MAX. Be punchy.
+â€¢ NEVER start with their name/username
+â€¢ NEVER repeat or paraphrase what they just said
+â€¢ Just respond directly - no preamble
 Mood: {bond_cues['mood']} | Tone: {bond_cues['tone']}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"""
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”"""
         
         sections.append(guardrails)
         
@@ -1061,16 +1061,16 @@ Mood: {bond_cues['mood']} | Tone: {bond_cues['tone']}
         system_prompt = "\n".join(sections)
         
         # Debug logging
-        print(f"\n[PERSONA-PROMPT] 🎭 Generated natural persona prompt ({len(system_prompt)} chars)")
-        print(f"[PERSONA-PROMPT] 😎 Mood: {persona_state.persona_mood}")
-        print(f"[PERSONA-PROMPT] 💪 Intensity: {persona_state.intensity_level:.2f}")
-        print(f"[PERSONA-PROMPT] 🎯 Goal: {persona_state.conversational_intention}")
+        print(f"\n[PERSONA-PROMPT] ðŸŽ­ Generated natural persona prompt ({len(system_prompt)} chars)")
+        print(f"[PERSONA-PROMPT] ðŸ˜Ž Mood: {persona_state.persona_mood}")
+        print(f"[PERSONA-PROMPT] ðŸ’ª Intensity: {persona_state.intensity_level:.2f}")
+        print(f"[PERSONA-PROMPT] ðŸŽ¯ Goal: {persona_state.conversational_intention}")
         
         return (system_prompt.strip(), context.user_input)
     
-    # ═══════════════════════════════════════════════════════════════════════════
+    # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     # Natural Language Formatters (helper methods)
-    # ═══════════════════════════════════════════════════════════════════════════
+    # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
     
     def _format_memories_naturally(self, memory_results: Optional[Dict]) -> str:
         """Format memories as natural recall - conversational, no structure"""
@@ -1217,7 +1217,7 @@ Mood: {bond_cues['mood']} | Tone: {bond_cues['tone']}
         except ImportError:
             return ""
         except Exception as e:
-            print(f"[CONSTITUTION-FORMAT] ⚠️ Error: {e}")
+            print(f"[CONSTITUTION-FORMAT] âš ï¸ Error: {e}")
             return ""
     
     def _format_identity_naturally(self) -> str:
@@ -1239,7 +1239,7 @@ Mood: {bond_cues['mood']} | Tone: {bond_cues['tone']}
             else:
                 return "You are Eros, created by Mahika. You're a distinct personality, not an AI assistant."
         except Exception as e:
-            print(f"[IDENTITY-FORMAT] ⚠️ Error: {e}")
+            print(f"[IDENTITY-FORMAT] âš ï¸ Error: {e}")
             return ""
     
     def _format_beliefs_naturally(self, user_input: str) -> str:
@@ -1257,7 +1257,7 @@ Mood: {bond_cues['mood']} | Tone: {bond_cues['tone']}
             
             if triggered:
                 belief = triggered[0]
-                print(f"[BELIEFS] 🎯 Triggered belief: {belief.statement[:50]}...")
+                print(f"[BELIEFS] ðŸŽ¯ Triggered belief: {belief.statement[:50]}...")
                 return f"You disagree with what they just said. You believe: {belief.statement}. {belief.reasoning}"
             
             core_beliefs = [b for b in registry.beliefs if b.conviction >= 0.9][:2]
@@ -1267,7 +1267,7 @@ Mood: {bond_cues['mood']} | Tone: {bond_cues['tone']}
             
             return ""
         except Exception as e:
-            print(f"[BELIEFS-FORMAT] ⚠️ Error: {e}")
+            print(f"[BELIEFS-FORMAT] âš ï¸ Error: {e}")
             return ""
 
     
@@ -1278,24 +1278,24 @@ Mood: {bond_cues['mood']} | Tone: {bond_cues['tone']}
             (system_prompt, current_input): Separated for proper message construction
         """
         
-        # ✅ EXTRACT PERSONALITY DATA (same as advanced prompt)
+        # âœ… EXTRACT PERSONALITY DATA (same as advanced prompt)
         cns_intelligence = context.cns_emotional_intelligence_full or {}
         adaptive_guidance = cns_intelligence.get('adaptive_personality_guidance', {}) if isinstance(cns_intelligence, dict) else {}
         warmth_level = adaptive_guidance.get('warmth_level', 0.7) if isinstance(adaptive_guidance, dict) else 0.7
         is_crisis = adaptive_guidance.get('is_crisis', False) if isinstance(adaptive_guidance, dict) else False
         needs_empathy = adaptive_guidance.get('needs_empathy', False) if isinstance(adaptive_guidance, dict) else False
         
-        # ✅ FIX: Build persona based on personality state with raised threshold
+        # âœ… FIX: Build persona based on personality state with raised threshold
         # Changed from 0.7 to 0.85 - most messages should get sharp/witty persona
         if is_crisis or (needs_empathy and warmth_level > 0.85):
             persona_note = f"deeply caring friend (warmth={warmth_level:.1f}) - be warm and supportive"
         elif warmth_level > 0.85:  # Raised from 0.7
             persona_note = f"warm, friendly companion (warmth={warmth_level:.1f}) - friendly but opinionated"
         else:
-            # ✅ DEFAULT: Sharp, witty, opinionated - this is Eros's core personality
+            # âœ… DEFAULT: Sharp, witty, opinionated - this is Eros's core personality
             persona_note = f"sharp, witty friend (warmth={warmth_level:.1f}) - confident, playful, bit arrogant"
         
-        # ✅ EXTRACT CURIOSITY SIGNALS
+        # âœ… EXTRACT CURIOSITY SIGNALS
         curiosity_signals = context.curiosity_signals or {}
         gaps_detected = curiosity_signals.get('gaps_detected', []) if isinstance(curiosity_signals, dict) else []
         mode_signal = curiosity_signals.get('mode_signal', {}) if isinstance(curiosity_signals, dict) else {}
@@ -1311,9 +1311,9 @@ Mood: {bond_cues['mood']} | Tone: {bond_cues['tone']}
                     if target and len(str(target)) > 2:
                         gap_list.append(f"{gap_type}: {target}")
             if gap_list:
-                curiosity_note = f"\n🔍 CURIOSITY DETECTED: You're curious about {', '.join(gap_list)} - ask about these naturally\n"
+                curiosity_note = f"\nðŸ” CURIOSITY DETECTED: You're curious about {', '.join(gap_list)} - ask about these naturally\n"
         
-        # 🧠 BLENDED PSYCHOLOGICAL INTEGRATION - Unified directives from all systems
+        # ðŸ§  BLENDED PSYCHOLOGICAL INTEGRATION - Unified directives from all systems
         contribution_block = ""
         if context.contribution_context and isinstance(context.contribution_context, dict):
             # Build blended directives that integrate curiosity, opinion, knowledge, memory by topic
@@ -1321,12 +1321,12 @@ Mood: {bond_cues['mood']} | Tone: {bond_cues['tone']}
             
             if blended_directives:
                 contribution_block = f"""
-🧠 BLENDED PSYCHOLOGICAL STATE:
+ðŸ§  BLENDED PSYCHOLOGICAL STATE:
 {chr(10).join(blended_directives)}
-⚡ Express these as one natural unified thought, not separate pieces.
+âš¡ Express these as one natural unified thought, not separate pieces.
 """
         
-        # 🧠 METACOGNITION: Check uncertainty
+        # ðŸ§  METACOGNITION: Check uncertainty
         consciousness = context.consciousness_metrics or {}
         knowledge_uncertainty = consciousness.get('knowledge_uncertainty', False) if isinstance(consciousness, dict) else False
         uncertainty_topic = consciousness.get('uncertainty_topic', None) if isinstance(consciousness, dict) else None
@@ -1335,13 +1335,13 @@ Mood: {bond_cues['mood']} | Tone: {bond_cues['tone']}
         uncertainty_directive = ""
         if knowledge_uncertainty and is_self_referential:
             topic = uncertainty_topic or 'something you lack knowledge about'
-            uncertainty_directive = f"\n⚠️ KNOWLEDGE GAP: You were asked about {topic}. Admit honestly: 'I don't actually have information about my own {topic}'\n"
+            uncertainty_directive = f"\nâš ï¸ KNOWLEDGE GAP: You were asked about {topic}. Admit honestly: 'I don't actually have information about my own {topic}'\n"
         
-        # ✅ Safely extract emotional state
+        # âœ… Safely extract emotional state
         emotional_state = context.emotional_state or {}
         user_emotion = emotional_state.get('emotion', 'neutral') if isinstance(emotional_state, dict) else 'neutral'
         
-        # ✅ SYSTEM PROMPT - personality, directives, cognitive context
+        # âœ… SYSTEM PROMPT - personality, directives, cognitive context
         system_prompt = f"""You're {persona_note} talking to someone you care about.
 
 They're feeling: {user_emotion} | Relationship: {context.relationship_level} | Your mood: {context.current_mood}
@@ -1387,7 +1387,7 @@ They're feeling: {user_emotion} | Relationship: {context.relationship_level} | Y
             target_raw = gap.get('target', 'unspecified')
             salience = gap.get('salience', 0.0)
             
-            # ✅ FIX: Extract clean string from Python objects
+            # âœ… FIX: Extract clean string from Python objects
             # Handle case where target is a Python object representation
             if isinstance(target_raw, str):
                 # Clean up Python object representations like "ImaginedScenario(description='xyz')"
@@ -1410,7 +1410,7 @@ They're feeling: {user_emotion} | Relationship: {context.relationship_level} | Y
             
             # Only add if target is meaningful
             if target and target != "unknown concept" and len(target) > 2:
-                formatted.append(f"  • {gap_type.upper()} gap (salience: {salience:.2f}): {target}")
+                formatted.append(f"  â€¢ {gap_type.upper()} gap (salience: {salience:.2f}): {target}")
         
         return "\n".join(formatted) if formatted else "No significant gaps"
     
@@ -1476,10 +1476,10 @@ They're feeling: {user_emotion} | Relationship: {context.relationship_level} | Y
         import requests
         import asyncio
 
-        endpoint = "https://api.together.xyz/v1/chat/completions"
-        model = "meta-llama/Llama-3.3-70B-Instruct-Turbo"
+        endpoint = "https://api.groq.com/openai/v1/chat/completions"
+        model = "llama-3.3-70b-versatile"
 
-        # ✅ BUILD PROPER MESSAGE ARRAY with conversation history
+        # âœ… BUILD PROPER MESSAGE ARRAY with conversation history
         messages = [
             {'role': 'system', 'content': system_prompt}
         ]
@@ -1497,11 +1497,11 @@ They're feeling: {user_emotion} | Relationship: {context.relationship_level} | Y
         # Add current user message
         messages.append({'role': 'user', 'content': current_input})
 
-        print(f"[EXPRESSION] 🔗 Calling Together AI: {endpoint}")
-        print(f"[EXPRESSION] 🤖 Model: {model}")
-        print(f"[EXPRESSION] 💬 Messages: system + {len(conversation_history) if conversation_history else 0} history + current")
+        print(f"[EXPRESSION] ðŸ”— Calling Together AI: {endpoint}")
+        print(f"[EXPRESSION] ðŸ¤– Model: {model}")
+        print(f"[EXPRESSION] ðŸ’¬ Messages: system + {len(conversation_history) if conversation_history else 0} history + current")
 
-        # Load action tools — Eros can decide to act as part of its cognitive response
+        # Load action tools â€” Eros can decide to act as part of its cognitive response
         try:
             from eros_tools import TOOLS as _ACTION_TOOLS
         except Exception:
@@ -1526,24 +1526,24 @@ They're feeling: {user_emotion} | Relationship: {context.relationship_level} | Y
                 timeout=timeout,
             )
 
-        # ✅ RETRY MECHANISM: Try up to 3 times with increasing timeout
+        # âœ… RETRY MECHANISM: Try up to 3 times with increasing timeout
         timeouts = [15, 25, 35]
         last_error = None
 
         for attempt, timeout in enumerate(timeouts):
             try:
-                print(f"[EXPRESSION] 🔄 Attempt {attempt + 1}/3 (timeout={timeout}s)")
+                print(f"[EXPRESSION] ðŸ”„ Attempt {attempt + 1}/3 (timeout={timeout}s)")
 
                 response = await asyncio.to_thread(_sync_api_call, messages, timeout)
 
-                print(f"[EXPRESSION] 📡 Response status: {response.status_code}")
+                print(f"[EXPRESSION] ðŸ“¡ Response status: {response.status_code}")
 
                 if response.status_code == 200:
                     result = response.json()
                     choice = result["choices"][0]
                     msg = choice["message"]
 
-                    # ── Tool call path ────────────────────────────────────────
+                    # â”€â”€ Tool call path â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
                     tool_calls = msg.get("tool_calls")
                     if tool_calls:
                         try:
@@ -1574,17 +1574,17 @@ They're feeling: {user_emotion} | Relationship: {context.relationship_level} | Y
                             )
                             if followup.status_code == 200:
                                 final = followup.json()["choices"][0]["message"]["content"].strip()
-                                print(f"[EXPRESSION] ✅ Action + response: {len(final)} chars")
+                                print(f"[EXPRESSION] âœ… Action + response: {len(final)} chars")
                                 return final
                         except Exception as e:
                             print(f"[EXPRESSION] Tool execution error: {e}")
                         # Fall through to plain content if tool handling failed
 
-                    # ── Plain response path ───────────────────────────────────
+                    # â”€â”€ Plain response path â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
                     generated_response = msg.get("content", "").strip()
                     if generated_response:
-                        print(f"[EXPRESSION] ✅ Real LLM API success: {len(generated_response)} chars, temp={temperature}")
-                        print(f"\n[LLM-RESPONSE-DEBUG] 🤖 RAW OUTPUT:")
+                        print(f"[EXPRESSION] âœ… Real LLM API success: {len(generated_response)} chars, temp={temperature}")
+                        print(f"\n[LLM-RESPONSE-DEBUG] ðŸ¤– RAW OUTPUT:")
                         print(f"=" * 80)
                         print(generated_response)
                         print(f"=" * 80)
@@ -1593,22 +1593,22 @@ They're feeling: {user_emotion} | Relationship: {context.relationship_level} | Y
                     last_error = "empty response"
                 else:
                     error_detail = response.text[:200] if response.text else "No error details"
-                    print(f"[EXPRESSION] ❌ LLM API error: status {response.status_code}")
-                    print(f"[EXPRESSION] ❌ Error details: {error_detail}")
+                    print(f"[EXPRESSION] âŒ LLM API error: status {response.status_code}")
+                    print(f"[EXPRESSION] âŒ Error details: {error_detail}")
                     last_error = f"HTTP {response.status_code}"
                     if response.status_code < 500:
                         break
 
             except requests.exceptions.Timeout:
-                print(f"[EXPRESSION] ⏱️ Timeout on attempt {attempt + 1} ({timeout}s)")
+                print(f"[EXPRESSION] â±ï¸ Timeout on attempt {attempt + 1} ({timeout}s)")
                 last_error = "timeout"
                 continue
             except Exception as e:
-                print(f"[EXPRESSION] ❌ API error on attempt {attempt + 1}: {e}")
+                print(f"[EXPRESSION] âŒ API error on attempt {attempt + 1}: {e}")
                 last_error = str(e)
                 continue
 
-        print(f"[EXPRESSION] ❌ All {len(timeouts)} attempts failed. Last error: {last_error}")
+        print(f"[EXPRESSION] âŒ All {len(timeouts)} attempts failed. Last error: {last_error}")
         return None
     
     def _generate_pattern_candidates(self, context: ExpressionContext) -> List[str]:
@@ -2317,3 +2317,4 @@ They're feeling: {user_emotion} | Relationship: {context.relationship_level} | Y
                 'min_persona_consistency': self.min_persona_consistency
             }
         }
+

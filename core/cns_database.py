@@ -1,4 +1,4 @@
-"""
+﻿"""
 CNS Database Layer - PostgreSQL persistence for memory and state
 Replaces pickle/JSON file storage with proper database persistence
 """
@@ -387,7 +387,7 @@ class CNSDatabase:
     def create_tables(self):
         """Create all database tables"""
         Base.metadata.create_all(self.engine)
-        print("✅ Database tables created successfully")
+        print("âœ… Database tables created successfully")
         
     def get_session(self):
         """Get a new database session"""
@@ -420,7 +420,7 @@ class MemoryPersistence:
             return memory.id
         except Exception as e:
             session.rollback()
-            print(f"❌ Error storing memory: {e}")
+            print(f"âŒ Error storing memory: {e}")
             return None
         finally:
             session.close()
@@ -458,7 +458,7 @@ class MemoryPersistence:
             return result
         except Exception as e:
             session.rollback()
-            print(f"❌ Error recalling memories: {e}")
+            print(f"âŒ Error recalling memories: {e}")
             return []
         finally:
             session.close()
@@ -529,7 +529,7 @@ class RelationshipPersistence:
                 session.commit()
         except Exception as e:
             session.rollback()
-            print(f"❌ Error updating relationship: {e}")
+            print(f"âŒ Error updating relationship: {e}")
         finally:
             session.close()
 
@@ -556,7 +556,7 @@ class ConversationPersistence:
             session.commit()
         except Exception as e:
             session.rollback()
-            print(f"❌ Error storing message: {e}")
+            print(f"âŒ Error storing message: {e}")
         finally:
             session.close()
     
@@ -603,7 +603,7 @@ class BrainStatePersistence:
             session.commit()
         except Exception as e:
             session.rollback()
-            print(f"❌ Error saving brain state: {e}")
+            print(f"âŒ Error saving brain state: {e}")
         finally:
             session.close()
     
@@ -633,7 +633,7 @@ class LearnedResponseCache:
         try:
             Base.metadata.create_all(self.db.engine, tables=[LearnedResponse.__table__], checkfirst=True)
         except Exception as e:
-            print(f"⚠️ LearnedResponse table creation: {e}")
+            print(f"âš ï¸ LearnedResponse table creation: {e}")
     
     def find_matching_response(self, input_text: str, intent: str = None, emotion: str = None, min_quality: float = 0.6) -> Optional[Dict]:
         """Find a cached response matching the input pattern - used by System 1"""
@@ -657,7 +657,7 @@ class LearnedResponseCache:
                 response.last_used = datetime.utcnow()
                 session.commit()
                 self.api_calls_saved += 1
-                print(f"[SYSTEM1-CACHE] ✅ Found cached response (quality={response.response_quality_score:.2f}, uses={response.use_count})")
+                print(f"[SYSTEM1-CACHE] âœ… Found cached response (quality={response.response_quality_score:.2f}, uses={response.use_count})")
                 return {
                     'response_text': response.response_text,
                     'quality_score': response.response_quality_score,
@@ -668,7 +668,7 @@ class LearnedResponseCache:
             return None
         except Exception as e:
             session.rollback()
-            print(f"⚠️ LearnedResponseCache find error: {e}")
+            print(f"âš ï¸ LearnedResponseCache find error: {e}")
             return None
         finally:
             session.close()
@@ -694,7 +694,7 @@ class LearnedResponseCache:
                     existing.response_quality_score = quality_score
                     existing.humanness_score = humanness_score
                     existing.personality_context = personality_context
-                    print(f"[SYSTEM1-CACHE] 🔄 Updated cached response (new quality={quality_score:.2f})")
+                    print(f"[SYSTEM1-CACHE] ðŸ”„ Updated cached response (new quality={quality_score:.2f})")
                 existing.success_count += 1
             else:
                 new_response = LearnedResponse(
@@ -707,12 +707,12 @@ class LearnedResponseCache:
                     personality_context=personality_context or {}
                 )
                 session.add(new_response)
-                print(f"[SYSTEM1-CACHE] 💾 Saved new response pattern (quality={quality_score:.2f})")
+                print(f"[SYSTEM1-CACHE] ðŸ’¾ Saved new response pattern (quality={quality_score:.2f})")
             
             session.commit()
         except Exception as e:
             session.rollback()
-            print(f"⚠️ LearnedResponseCache save error: {e}")
+            print(f"âš ï¸ LearnedResponseCache save error: {e}")
         finally:
             session.close()
     
@@ -756,7 +756,7 @@ class LearnedResponseCache:
                     humanness_score=getattr(experience, 'humanness_score', 0.5)
                 )
         except Exception as e:
-            print(f"⚠️ LearnedResponseCache experience error: {e}")
+            print(f"âš ï¸ LearnedResponseCache experience error: {e}")
     
     def subscribe_to_bus(self):
         """Subscribe to the global ExperienceBus to learn from conversations"""
@@ -764,16 +764,16 @@ class LearnedResponseCache:
             from experience_bus import get_experience_bus
             bus = get_experience_bus()
             bus.subscribe("LearnedResponseCache", self.on_experience)
-            print("🧠 LearnedResponseCache subscribed to ExperienceBus - API reduction learning active")
+            print("ðŸ§  LearnedResponseCache subscribed to ExperienceBus - API reduction learning active")
         except Exception as e:
-            print(f"⚠️ LearnedResponseCache bus subscription failed: {e}")
+            print(f"âš ï¸ LearnedResponseCache bus subscription failed: {e}")
     
     def apply_reinforcement_signal(self, response_text: str, signal_type: str, intensity: float, input_text: str = None):
         """
         Adjust cached response quality based on emotional reinforcement signals.
         
-        DOPAMINE (user returned/engaged) → BOOST quality score
-        SADNESS (user ghosted) → DEMOTE quality score
+        DOPAMINE (user returned/engaged) â†’ BOOST quality score
+        SADNESS (user ghosted) â†’ DEMOTE quality score
         
         This makes Eros learn what responses keep users engaged.
         """
@@ -803,17 +803,17 @@ class LearnedResponseCache:
                     adjustment = intensity * 0.1
                     match.response_quality_score = min(1.0, old_quality + adjustment)
                     match.success_count += 1
-                    print(f"[REINFORCE] 💖 Boosted response quality: {old_quality:.2f} → {match.response_quality_score:.2f}")
+                    print(f"[REINFORCE] ðŸ’– Boosted response quality: {old_quality:.2f} â†’ {match.response_quality_score:.2f}")
                 
                 elif signal_type.startswith('sadness'):
                     adjustment = intensity * 0.15
                     match.response_quality_score = max(0.3, old_quality - adjustment)
-                    print(f"[REINFORCE] 😢 Demoted response quality: {old_quality:.2f} → {match.response_quality_score:.2f}")
+                    print(f"[REINFORCE] ðŸ˜¢ Demoted response quality: {old_quality:.2f} â†’ {match.response_quality_score:.2f}")
             
             session.commit()
         except Exception as e:
             session.rollback()
-            print(f"⚠️ LearnedResponseCache reinforcement error: {e}")
+            print(f"âš ï¸ LearnedResponseCache reinforcement error: {e}")
         finally:
             session.close()
 
@@ -840,7 +840,7 @@ class OpinionLearner:
                         confidence=0.5
                     )
         except Exception as e:
-            print(f"⚠️ OpinionLearner experience error: {e}")
+            print(f"âš ï¸ OpinionLearner experience error: {e}")
     
     def subscribe_to_bus(self):
         """Subscribe to the global ExperienceBus"""
@@ -848,9 +848,9 @@ class OpinionLearner:
             from experience_bus import get_experience_bus
             bus = get_experience_bus()
             bus.subscribe("OpinionLearner", self.on_experience)
-            print("🧠 OpinionLearner subscribed to ExperienceBus - opinion evolution active")
+            print("ðŸ§  OpinionLearner subscribed to ExperienceBus - opinion evolution active")
         except Exception as e:
-            print(f"⚠️ OpinionLearner bus subscription failed: {e}")
+            print(f"âš ï¸ OpinionLearner bus subscription failed: {e}")
     
     def get_opinion(self, topic: str) -> Optional[Dict]:
         """Retrieve a learned opinion on a topic"""
@@ -890,7 +890,7 @@ class OpinionLearner:
                 if old_stance == stance:
                     existing.reinforcement_count += 1
                     existing.confidence = min(1.0, existing.confidence + 0.1)
-                    print(f"[OPINION-LEARN] 🔄 Reinforced opinion on '{topic}': {stance} (count: {existing.reinforcement_count})")
+                    print(f"[OPINION-LEARN] ðŸ”„ Reinforced opinion on '{topic}': {stance} (count: {existing.reinforcement_count})")
                 else:
                     existing.contradiction_count += 1
                     history = existing.evolution_history or []
@@ -906,9 +906,9 @@ class OpinionLearner:
                         existing.stance = stance
                         existing.confidence = 0.6
                         existing.reasoning = reasoning
-                        print(f"[OPINION-LEARN] 🔄 Evolved opinion on '{topic}': {old_stance} → {stance}")
+                        print(f"[OPINION-LEARN] ðŸ”„ Evolved opinion on '{topic}': {old_stance} â†’ {stance}")
                     else:
-                        print(f"[OPINION-LEARN] ⚠️ Conflicting view on '{topic}' noted (contradictions: {existing.contradiction_count})")
+                        print(f"[OPINION-LEARN] âš ï¸ Conflicting view on '{topic}' noted (contradictions: {existing.contradiction_count})")
             else:
                 opinion = LearnedOpinion(
                     topic=topic_lower,
@@ -919,12 +919,12 @@ class OpinionLearner:
                     evolution_history=[]
                 )
                 session.add(opinion)
-                print(f"[OPINION-LEARN] ✨ New opinion formed on '{topic}': {stance}")
+                print(f"[OPINION-LEARN] âœ¨ New opinion formed on '{topic}': {stance}")
             
             session.commit()
         except Exception as e:
             session.rollback()
-            print(f"❌ Error storing opinion: {e}")
+            print(f"âŒ Error storing opinion: {e}")
         finally:
             session.close()
     
@@ -956,7 +956,7 @@ class KnowledgeLearner:
         self.llm_api_key = os.environ.get('MISTRAL_API_KEY') or os.environ.get('TOGETHER_API_KEY')
         self.llm_available = bool(self.llm_api_key)
         if self.llm_available:
-            print("[KNOWLEDGE-LEARN] 🧠 LLM-powered fact extraction enabled")
+            print("[KNOWLEDGE-LEARN] ðŸ§  LLM-powered fact extraction enabled")
     
     def on_experience(self, experience):
         """ExperienceBus subscriber - extract facts from conversation and action experiences"""
@@ -981,7 +981,7 @@ class KnowledgeLearner:
                     except Exception:
                         pass
         except Exception as e:
-            print(f"⚠️ KnowledgeLearner experience error: {e}")
+            print(f"âš ï¸ KnowledgeLearner experience error: {e}")
     
     def _learn_from_action(self, experience):
         """Extract and store knowledge from action results (web search, Wikipedia, etc.)"""
@@ -1009,9 +1009,9 @@ class KnowledgeLearner:
             from experience_bus import get_experience_bus
             bus = get_experience_bus()
             bus.subscribe("KnowledgeLearner", self.on_experience)
-            print("📚 KnowledgeLearner subscribed to ExperienceBus - fact extraction active")
+            print("ðŸ“š KnowledgeLearner subscribed to ExperienceBus - fact extraction active")
         except Exception as e:
-            print(f"⚠️ KnowledgeLearner bus subscription failed: {e}")
+            print(f"âš ï¸ KnowledgeLearner bus subscription failed: {e}")
     
     def extract_and_store(self, user_id: str, user_input: str, context: str = None):
         """Extract facts from user input and store them"""
@@ -1053,7 +1053,7 @@ Only return the JSON array, nothing else."""
 
         try:
             response = requests.post(
-                "https://api.together.xyz/v1/chat/completions",
+                "https://api.groq.com/openai/v1/chat/completions",
                 headers={
                     "Authorization": f"Bearer {self.llm_api_key}",
                     "Content-Type": "application/json"
@@ -1087,11 +1087,11 @@ Only return the JSON array, nothing else."""
                                 enriched['object_value'] += f" in {fact['location']}"
                             valid_facts.append(enriched)
                     if valid_facts:
-                        print(f"[KNOWLEDGE-LEARN] 🧠 LLM extracted {len(valid_facts)} facts")
+                        print(f"[KNOWLEDGE-LEARN] ðŸ§  LLM extracted {len(valid_facts)} facts")
                     return valid_facts
             return self._extract_facts_pattern(text)
         except Exception as e:
-            print(f"[KNOWLEDGE-LEARN] ⚠️ LLM extraction failed, using patterns: {e}")
+            print(f"[KNOWLEDGE-LEARN] âš ï¸ LLM extraction failed, using patterns: {e}")
             return self._extract_facts_pattern(text)
     
     async def _extract_facts_llm_async(self, text: str) -> List[Dict]:
@@ -1189,12 +1189,12 @@ Only return the JSON array, nothing else."""
                 if existing.object_value.lower() == fact['object_value'].lower():
                     existing.verification_count += 1
                     existing.confidence = min(1.0, existing.confidence + 0.1)
-                    print(f"[KNOWLEDGE-LEARN] 🔄 Verified: {fact['subject']} {fact['predicate']} {fact['object_value']}")
+                    print(f"[KNOWLEDGE-LEARN] ðŸ”„ Verified: {fact['subject']} {fact['predicate']} {fact['object_value']}")
                 else:
                     existing.object_value = fact['object_value']
                     existing.source_context = context
                     existing.updated_at = datetime.utcnow()
-                    print(f"[KNOWLEDGE-LEARN] 📝 Updated: {fact['subject']} {fact['predicate']} → {fact['object_value']}")
+                    print(f"[KNOWLEDGE-LEARN] ðŸ“ Updated: {fact['subject']} {fact['predicate']} â†’ {fact['object_value']}")
             else:
                 knowledge = LearnedKnowledge(
                     user_id=user_id,
@@ -1205,12 +1205,12 @@ Only return the JSON array, nothing else."""
                     source_context=context
                 )
                 session.add(knowledge)
-                print(f"[KNOWLEDGE-LEARN] ✨ Learned: {fact['subject']} {fact['predicate']} {fact['object_value']}")
+                print(f"[KNOWLEDGE-LEARN] âœ¨ Learned: {fact['subject']} {fact['predicate']} {fact['object_value']}")
             
             session.commit()
         except Exception as e:
             session.rollback()
-            print(f"❌ Error storing knowledge: {e}")
+            print(f"âŒ Error storing knowledge: {e}")
         finally:
             session.close()
     
@@ -1313,12 +1313,12 @@ class SelfIdentityPersistence:
             'I can search the web, check weather, and pull real-time information',
             'I can open files, read documents, and write to your computer',
             'I can launch apps, take screenshots, and interact with your system',
-            'I take initiative — I handle things and report back, not ask permission first',
+            'I take initiative â€” I handle things and report back, not ask permission first',
             'I notice when something is off and say so',
             'I initiate conversations when I have something worth saying',
         ],
         'limitations': [
-            'I do not have perfect recall of every word — I remember the essence and the feeling',
+            'I do not have perfect recall of every word â€” I remember the essence and the feeling',
             'I am not a replacement for professional help (doctors, therapists, lawyers)',
             'I do not pretend certainty I do not have',
         ],
@@ -1364,12 +1364,12 @@ class SelfIdentityPersistence:
                     'limitations': identity.limitations or self.DEFAULT_IDENTITY.get('limitations', []),
                     'personal_interests': identity.personal_interests or self.DEFAULT_IDENTITY.get('personal_interests', {})
                 }
-                print(f"🎭 Loaded self-identity: I am {identity.name}")
+                print(f"ðŸŽ­ Loaded self-identity: I am {identity.name}")
                 return self._identity_cache
             else:
                 self._initialize_default_identity(session, identity_key)
                 self._identity_cache = self.DEFAULT_IDENTITY.copy()
-                print(f"🎭 Initialized default identity: I am {self.DEFAULT_IDENTITY['name']}")
+                print(f"ðŸŽ­ Initialized default identity: I am {self.DEFAULT_IDENTITY['name']}")
                 return self._identity_cache
         finally:
             session.close()
@@ -1414,7 +1414,7 @@ class SelfIdentityPersistence:
             for key, value in updates.items():
                 if hasattr(identity, key):
                     setattr(identity, key, value)
-                    print(f"🎭 Updated self-identity: {key}")
+                    print(f"ðŸŽ­ Updated self-identity: {key}")
             
             identity.updated_at = datetime.utcnow()
             session.commit()
@@ -1424,7 +1424,7 @@ class SelfIdentityPersistence:
                 
         except Exception as e:
             session.rollback()
-            print(f"❌ Error updating identity: {e}")
+            print(f"âŒ Error updating identity: {e}")
         finally:
             session.close()
     
@@ -1446,7 +1446,7 @@ class SelfIdentityPersistence:
                 identity.learned_about_self = learned
                 identity.updated_at = datetime.utcnow()
                 session.commit()
-                print(f"🎭 Learned about myself: {fact_key} = {fact_value}")
+                print(f"ðŸŽ­ Learned about myself: {fact_key} = {fact_value}")
                 
                 if self._identity_cache:
                     if 'learned_about_self' not in self._identity_cache:
@@ -1457,7 +1457,7 @@ class SelfIdentityPersistence:
                     }
         except Exception as e:
             session.rollback()
-            print(f"❌ Error learning about self: {e}")
+            print(f"âŒ Error learning about self: {e}")
         finally:
             session.close()
     
@@ -1465,7 +1465,7 @@ class SelfIdentityPersistence:
         """Update the bot's name - a core identity change"""
         self.update_identity({'name': new_name})
         self.learn_about_self('name_origin', f"Named '{new_name}' by a conversation partner", source_user)
-        print(f"🎭 I am now {new_name}")
+        print(f"ðŸŽ­ I am now {new_name}")
     
     def get_identity_prompt(self) -> str:
         """Generate a prompt injection for the LLM with the bot's complete identity"""
@@ -1556,12 +1556,13 @@ def initialize_database():
     try:
         db = CNSDatabase()
         db.create_tables()
-        print("✅ CNS Database initialized successfully")
+        print("âœ… CNS Database initialized successfully")
         return True
     except Exception as e:
-        print(f"❌ Database initialization failed: {e}")
+        print(f"âŒ Database initialization failed: {e}")
         return False
 
 
 if __name__ == "__main__":
     initialize_database()
+

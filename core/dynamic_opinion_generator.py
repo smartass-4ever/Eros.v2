@@ -1,4 +1,4 @@
-# Dynamic Opinion Generator for CNS
+﻿# Dynamic Opinion Generator for CNS
 # Generates nuanced opinions on ANY topic using LLM, personality, and strategic goals
 
 import os
@@ -99,7 +99,7 @@ class DynamicOpinionGenerator:
             if time.time() - timestamp < self.cache_ttl:
                 return cached_opinion
         
-        # ⚡ FAST PATH: Always use heuristics for speed - LLM call is too slow
+        # âš¡ FAST PATH: Always use heuristics for speed - LLM call is too slow
         # Opinion quality matters less than response time
         heuristic_opinion = self._generate_heuristic_opinion(topic, user_input, personality, topic_context)
         
@@ -235,13 +235,13 @@ Format your response as JSON with these fields:
         
         try:
             response = requests.post(
-                'https://api.together.xyz/v1/chat/completions',
+                'https://api.groq.com/openai/v1/chat/completions',
                 headers={
                     'Authorization': f'Bearer {self.mistral_api_key}',
                     'Content-Type': 'application/json'
                 },
                 json={
-                    'model': 'meta-llama/Llama-3.3-70B-Instruct-Turbo',
+                    'model': 'llama-3.3-70b-versatile',
                     'messages': [
                         {'role': 'system', 'content': system_prompt},
                         {'role': 'user', 'content': user_prompt}
@@ -262,3 +262,4 @@ Format your response as JSON with these fields:
         except Exception as e:
             print(f"[OPINION] Together API call failed: {e}")
             return None
+

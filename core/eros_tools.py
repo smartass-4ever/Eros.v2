@@ -1,4 +1,4 @@
-"""
+﻿"""
 Tool-calling layer for Eros.
 Defines tool schemas for the Together API and executes them via local_actions.
 """
@@ -7,7 +7,7 @@ import json
 import requests
 from typing import List, Dict, Any, Optional, Tuple
 
-# ── Tool schemas (OpenAI-compatible function format) ──────────────────────────
+# â”€â”€ Tool schemas (OpenAI-compatible function format) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 TOOLS = [
     {
@@ -151,7 +151,7 @@ TOOLS = [
 ]
 
 
-# ── Web search ────────────────────────────────────────────────────────────────
+# â”€â”€ Web search â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def _web_search(query: str) -> Dict:
     try:
@@ -168,7 +168,7 @@ def _web_search(query: str) -> Dict:
         return {"ok": False, "error": str(e)}
 
 
-# ── Execute a single tool call ────────────────────────────────────────────────
+# â”€â”€ Execute a single tool call â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def execute_tool(name: str, args: Dict) -> str:
     from local_actions import execute_local_action
@@ -187,7 +187,7 @@ def execute_tool(name: str, args: Dict) -> str:
         return f"Failed: {result.get('error', 'unknown error')}"
 
 
-# ── Main: run tool-calling pass against Together API ─────────────────────────
+# â”€â”€ Main: run tool-calling pass against Together API â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def run_tool_pass(
     user_message: str,
@@ -220,10 +220,10 @@ def run_tool_pass(
 
     try:
         resp = requests.post(
-            "https://api.together.xyz/v1/chat/completions",
+            "https://api.groq.com/openai/v1/chat/completions",
             headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
             json={
-                "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+                "model": "llama-3.3-70b-versatile",
                 "messages": messages,
                 "tools": TOOLS,
                 "tool_choice": "auto",
@@ -239,7 +239,7 @@ def run_tool_pass(
         choice = data["choices"][0]
         msg = choice["message"]
 
-        # No tool call — model just responded normally, skip
+        # No tool call â€” model just responded normally, skip
         tool_calls = msg.get("tool_calls")
         if not tool_calls:
             return None, conversation_history
@@ -277,3 +277,4 @@ def run_tool_pass(
     except Exception as e:
         print(f"[TOOLS] Tool pass error: {e}")
         return None, conversation_history
+

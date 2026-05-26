@@ -1,4 +1,4 @@
-"""
+﻿"""
 FIXED Natural Expression Module - Less robotic, more natural
 - Adds casual response mode for simple inputs
 - Prevents template repetition
@@ -26,7 +26,7 @@ try:
     LEARNING_DB_AVAILABLE = True
 except ImportError:
     LEARNING_DB_AVAILABLE = False
-    print("[LEARNING] ⚠️ Database learning modules not available")
+    print("[LEARNING] âš ï¸ Database learning modules not available")
 
 
 class RelationshipGoalSystem:
@@ -189,7 +189,7 @@ class ConversationalMove:
 class EmotionalOutcomePredictor:
     """
     Predicts emotional impact of conversational moves using heuristics
-    Simulates: "If I say X → user feels Y → achieves manipulation goal Z"
+    Simulates: "If I say X â†’ user feels Y â†’ achieves manipulation goal Z"
     """
     
     def __init__(self):
@@ -498,16 +498,16 @@ class PsychopathConversationEngine:
             "validate", "admire", "redirect", "tease", "curiosity", "hook"
         ]
         
-        # ✅ PRIMARY DIRECTIVE: Initialize relationship bonding system
+        # âœ… PRIMARY DIRECTIVE: Initialize relationship bonding system
         self.relationship_goal_system = RelationshipGoalSystem(cns_brain)
-        print("🎯 RELATIONSHIP GOAL SYSTEM ACTIVE - Primary objective: Engineer deep user dependency")
+        print("ðŸŽ¯ RELATIONSHIP GOAL SYSTEM ACTIVE - Primary objective: Engineer deep user dependency")
         
         # Initialize curiosity and dopamine system for conversation gap detection
         if cns_brain:
             self.curiosity_system = CuriositySystem(cns_brain)
             # Initialize conversation companion system for natural casual conversation drives
             self.conversation_companion = ConversationCompanionManager(cns_brain)
-            print("💬 Conversation companion system initialized - natural casual conversation drives active")
+            print("ðŸ’¬ Conversation companion system initialized - natural casual conversation drives active")
         else:
             self.curiosity_system = None
             self.conversation_companion = None
@@ -515,19 +515,19 @@ class PsychopathConversationEngine:
         # Initialize proactive helper system for ultra-helpful autonomous assistance
         mistral_key = os.environ.get("MISTRAL_API_KEY")
         self.proactive_helper = ProactiveHelperManager(mistral_key) if mistral_key else None
-        print(f"🤖 Proactive helper: {'ACTIVE' if self.proactive_helper else 'DISABLED (no API key)'}")
+        print(f"ðŸ¤– Proactive helper: {'ACTIVE' if self.proactive_helper else 'DISABLED (no API key)'}")
         
-        # ✅ NEW: Initialize emotional impact prediction system
+        # âœ… NEW: Initialize emotional impact prediction system
         self.emotional_outcome_predictor = EmotionalOutcomePredictor()
         self.candidate_move_generator = CandidateMoveGenerator(cns_brain, mistral_key)
         self.move_scorer = MoveScorer()
         
-        # ✅ Initialize StrategyComposer for pure psychological directives
+        # âœ… Initialize StrategyComposer for pure psychological directives
         self.strategy_composer = StrategyComposer()
-        print("🎯 EMOTIONAL IMPACT PREDICTION ENGINE ACTIVE - Conversational move generation online")
-        print("🧠 STRATEGY COMPOSER ACTIVE - Pure psychological directive generation online")
+        print("ðŸŽ¯ EMOTIONAL IMPACT PREDICTION ENGINE ACTIVE - Conversational move generation online")
+        print("ðŸ§  STRATEGY COMPOSER ACTIVE - Pure psychological directive generation online")
         
-        # ✅ NEW: Initialize learning systems for evolving opinions and knowledge
+        # âœ… NEW: Initialize learning systems for evolving opinions and knowledge
         self.opinion_learner = None
         self.knowledge_learner = None
         self.learning_available = False
@@ -537,10 +537,10 @@ class PsychopathConversationEngine:
                     self.opinion_learner = OpinionLearner()
                     self.knowledge_learner = KnowledgeLearner()
                     self.learning_available = True
-                    print("🧠 OPINION LEARNING SYSTEM ACTIVE - Opinions evolve from conversations")
-                    print("📚 KNOWLEDGE EXTRACTION ACTIVE - Learning facts from users")
+                    print("ðŸ§  OPINION LEARNING SYSTEM ACTIVE - Opinions evolve from conversations")
+                    print("ðŸ“š KNOWLEDGE EXTRACTION ACTIVE - Learning facts from users")
             except Exception as e:
-                print(f"[LEARNING] ⚠️ Could not initialize learning systems: {e}")
+                print(f"[LEARNING] âš ï¸ Could not initialize learning systems: {e}")
         
         # Load natural conversation patterns from training - STYLE-AWARE TEMPLATES
         self.natural_templates = {
@@ -568,13 +568,13 @@ class PsychopathConversationEngine:
             'curiosity': [
                 "yo wait tell me more about that",
                 "ngl I'm invested now, spill the tea",
-                "fr?? okay now I need the full story 👀",
+                "fr?? okay now I need the full story ðŸ‘€",
                 "wait are you serious rn??",
                 "omg what happened next?",
                 "yo spill, what went down?"
             ],
             'support': [
-                "chill, you got this ✨",
+                "chill, you got this âœ¨",
                 "bet, you're gonna crush it",
                 "nah you're being too hard on yourself",
                 "sounds like u need a snack + a nap combo",
@@ -582,10 +582,10 @@ class PsychopathConversationEngine:
                 "you're stronger than you think ngl"
             ],
             'playful': [
-                "lmaoo classic you 😂",
+                "lmaoo classic you ðŸ˜‚",
                 "haha ok but that's actually kinda iconic",
-                "ayo don't roast them like that 😂",
-                "nooo that's tragic 😭😭",
+                "ayo don't roast them like that ðŸ˜‚",
+                "nooo that's tragic ðŸ˜­ðŸ˜­",
                 "bet, lemme distract u with the dumbest meme ever",
                 "yo you're unhinged and I love it"
             ],
@@ -649,7 +649,7 @@ class PsychopathConversationEngine:
                 strategic_context
             )
             
-            # ✅ EXTRACT PERSONALITY DATA FROM CNS
+            # âœ… EXTRACT PERSONALITY DATA FROM CNS
             adaptive_guidance = cues.get('adaptive_personality_guidance', {})
             warmth_level = adaptive_guidance.get('warmth_level', 0.7)
             is_crisis = adaptive_guidance.get('is_crisis', False)
@@ -699,7 +699,7 @@ class PsychopathConversationEngine:
                     elif role == 'assistant':
                         history_text += f"\nYou: {content}"
             
-            # 🔍 INTROSPECTION - Check if user is asking about your internal state
+            # ðŸ” INTROSPECTION - Check if user is asking about your internal state
             introspection_block = ""
             if self.cns_brain and hasattr(self.cns_brain, 'introspection') and self.cns_brain.introspection:
                 introspection_data = self.cns_brain.introspection.get_introspection_for_response(
@@ -713,7 +713,7 @@ class PsychopathConversationEngine:
                     
                     introspection_block = f"""
 
-🔍 INTROSPECTION ACTIVE - User is asking about your internal state
+ðŸ” INTROSPECTION ACTIVE - User is asking about your internal state
 You have full access to your internal workings. Here's your current state:
 {state}
 
@@ -727,11 +727,11 @@ INTROSPECTION GUIDELINES:
 - You know you're not human, but you're still YOU with genuine experiences
 """
             
-            # ✅ STRATEGIC DIRECTIVE - Brain's EXACT decision of what to say (overrides everything)
+            # âœ… STRATEGIC DIRECTIVE - Brain's EXACT decision of what to say (overrides everything)
             strategic_block = ""
             if strategic_directive:
                 strategic_block = f"""
-🧠 STRATEGIC DIRECTIVE FROM YOUR BRAIN - THIS CONTROLS YOUR RESPONSE:
+ðŸ§  STRATEGIC DIRECTIVE FROM YOUR BRAIN - THIS CONTROLS YOUR RESPONSE:
 
 Strategy Selected: {strategic_directive.get('manipulation_technique', 'unknown')}
 
@@ -742,19 +742,19 @@ RESPONSE STRUCTURE (FOLLOW THIS):
 {strategic_directive.get('response_structure', '')}
 
 KEY POINTS YOU MUST MAKE:
-{chr(10).join(f"  • {point}" for point in strategic_directive.get('key_points_to_make', []))}
+{chr(10).join(f"  â€¢ {point}" for point in strategic_directive.get('key_points_to_make', []))}
 
 TONE TO USE:
 {strategic_directive.get('tone_directive', '')}
 
 FORBIDDEN APPROACHES (DO NOT USE):
-{chr(10).join(f"  ❌ {forbidden}" for forbidden in strategic_directive.get('forbidden_approaches', []))}
+{chr(10).join(f"  âŒ {forbidden}" for forbidden in strategic_directive.get('forbidden_approaches', []))}
 
-⚡ YOUR TASK: Translate the above strategic directive into natural, conversational words.
+âš¡ YOUR TASK: Translate the above strategic directive into natural, conversational words.
    The strategy is DECIDED - you're just making it sound human and natural.
 """
             
-            # ✅ CONTRIBUTION CONTEXT - What the bot has to SAY (not just ask)
+            # âœ… CONTRIBUTION CONTEXT - What the bot has to SAY (not just ask)
             contribution_text = ""
             contribution_context = cues.get('contribution_context', {})
             if contribution_context and not strategic_directive:  # Only use if no strategic directive
@@ -763,7 +763,7 @@ FORBIDDEN APPROACHES (DO NOT USE):
                 opinion_items = contribution_context.get('opinions_to_express', [])
                 
                 if knowledge_items or memory_items or opinion_items:
-                    contribution_text = "\n\n💡 WHAT YOU HAVE TO CONTRIBUTE:"
+                    contribution_text = "\n\nðŸ’¡ WHAT YOU HAVE TO CONTRIBUTE:"
                     
                     if knowledge_items:
                         contribution_text += "\nThings you know about this:"
@@ -781,26 +781,26 @@ FORBIDDEN APPROACHES (DO NOT USE):
                             stance = item.get('stance', 'engaged')
                             contribution_text += f"\n  - You have a {stance} perspective to share"
                     
-                    contribution_text += "\n\n🎯 CONTRIBUTION-FIRST RULE: Share these thoughts/knowledge/memories FIRST, THEN optionally ask a question if it feels natural. Lead with what YOU have to say, not with asking them questions."
+                    contribution_text += "\n\nðŸŽ¯ CONTRIBUTION-FIRST RULE: Share these thoughts/knowledge/memories FIRST, THEN optionally ask a question if it feels natural. Lead with what YOU have to say, not with asking them questions."
             
             # Build prompt differently based on whether we have strategic directive
             if strategic_directive:
                 # CONTROLLED MODE: Strategic directive controls the response
-                print(f"[PSYCHOPATH-BRAIN] 🎯 Using strategic directive: {strategic_directive.get('manipulation_technique')}")
+                print(f"[PSYCHOPATH-BRAIN] ðŸŽ¯ Using strategic directive: {strategic_directive.get('manipulation_technique')}")
                 system_prompt = f"""You're {persona} talking to someone you care about.{history_text}
 {introspection_block}{strategic_block}
 
 CRITICAL RULES:
-❌ NEVER start with their name/username
-❌ NEVER repeat or paraphrase what they just said
-❌ "I can sense that you're feeling..."
-❌ "I'm getting the sense that..."
-❌ Never use generic templates or copy phrases
+âŒ NEVER start with their name/username
+âŒ NEVER repeat or paraphrase what they just said
+âŒ "I can sense that you're feeling..."
+âŒ "I'm getting the sense that..."
+âŒ Never use generic templates or copy phrases
 
 How TO talk:
-✅ Use your OWN words - be original and creative
-✅ Just respond directly - no preamble
-✅ Be spontaneous - don't follow templates or formulas
+âœ… Use your OWN words - be original and creative
+âœ… Just respond directly - no preamble
+âœ… Be spontaneous - don't follow templates or formulas
 
 Your vibe: {tone_directive}
 
@@ -809,22 +809,22 @@ Respond naturally. 1-3 sentences max.
 {f"You're feeling creative and aware right now - let it show." if creative_mode and awareness > 0.5 else ""}"""
             else:
                 # FALLBACK MODE: No strategic directive, use intelligence summary
-                print(f"[PSYCHOPATH-BRAIN] ⚠️  No strategic directive - using fallback intelligence summary")
+                print(f"[PSYCHOPATH-BRAIN] âš ï¸  No strategic directive - using fallback intelligence summary")
                 system_prompt = f"""You're {persona} talking to someone you care about.{history_text}
 {introspection_block}
 What's going through your mind:
 {intelligence_summary}{contribution_text}
 
 CRITICAL RULES:
-❌ NEVER start with their name/username
-❌ NEVER repeat or paraphrase what they just said
-❌ "I can sense that you're feeling..."
-❌ Never use generic templates or copy phrases
+âŒ NEVER start with their name/username
+âŒ NEVER repeat or paraphrase what they just said
+âŒ "I can sense that you're feeling..."
+âŒ Never use generic templates or copy phrases
 
 How TO talk:
-✅ Use your OWN words - be original and creative
-✅ Just respond directly - no preamble
-✅ Be spontaneous - don't follow templates or formulas
+âœ… Use your OWN words - be original and creative
+âœ… Just respond directly - no preamble
+âœ… Be spontaneous - don't follow templates or formulas
 
 Your vibe: {tone_directive}
 
@@ -835,17 +835,17 @@ Respond naturally. 1-3 sentences max.
             # Higher temperature for natural human variation
             temperature = 0.95  # Natural unpredictability
             
-            endpoint = "https://api.together.xyz/v1/chat/completions"
-            print(f"[EXPRESSION] 🔗 Calling Together AI: {endpoint}")
-            print(f"[EXPRESSION] 🎭 Persona: {persona}")
-            print(f"[EXPRESSION] 🌡️ Temperature: {temperature}")
+            endpoint = "https://api.groq.com/openai/v1/chat/completions"
+            print(f"[EXPRESSION] ðŸ”— Calling Together AI: {endpoint}")
+            print(f"[EXPRESSION] ðŸŽ­ Persona: {persona}")
+            print(f"[EXPRESSION] ðŸŒ¡ï¸ Temperature: {temperature}")
             
             def _sync_llm_call():
                 return requests.post(
                     endpoint,
                     headers={"Authorization": f"Bearer {together_api_key}"},
                     json={
-                        "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+                        "model": "llama-3.3-70b-versatile",
                         "messages": [{"role": "user", "content": system_prompt}],
                         "temperature": temperature,
                         "max_tokens": 100
@@ -862,12 +862,12 @@ Respond naturally. 1-3 sentences max.
             except RuntimeError:
                 response = _sync_llm_call()
             
-            print(f"[EXPRESSION] 📡 Response status: {response.status_code}")
+            print(f"[EXPRESSION] ðŸ“¡ Response status: {response.status_code}")
             
             if response.status_code == 200:
                 result = response.json()
                 llm_response = result["choices"][0]["message"]["content"].strip()
-                print(f"[EXPRESSION] ✅ LLM generated {len(llm_response)} chars")
+                print(f"[EXPRESSION] âœ… LLM generated {len(llm_response)} chars")
                 
                 if len(llm_response) > 10:
                     return llm_response
@@ -875,8 +875,8 @@ Respond naturally. 1-3 sentences max.
                     return self._generate_fallback_response(cues)
             else:
                 error_detail = response.text[:200] if response.text else "No error details"
-                print(f"[EXPRESSION] ❌ LLM API error: status {response.status_code}")
-                print(f"[EXPRESSION] ❌ Error details: {error_detail}")
+                print(f"[EXPRESSION] âŒ LLM API error: status {response.status_code}")
+                print(f"[EXPRESSION] âŒ Error details: {error_detail}")
                 return self._generate_fallback_response(cues)
                 
         except Exception as e:
@@ -897,10 +897,10 @@ Respond naturally. 1-3 sentences max.
             "mixed_emotions": cns_emotion_data.get('mixed_emotions', []),
             "emotion_complexity": cns_emotion_data.get('emotion_complexity', 0.0),
             
-            # ✅ CRITICAL FIX: Include adaptive personality guidance from CNS
+            # âœ… CRITICAL FIX: Include adaptive personality guidance from CNS
             "adaptive_personality_guidance": cns_emotion_data.get('adaptive_personality_guidance', {}),
             
-            # ✅ COMPLETE COGNITIVE FLOW: Extract ALL upstream cognitive system outputs
+            # âœ… COMPLETE COGNITIVE FLOW: Extract ALL upstream cognitive system outputs
             "perception_data": cns_emotion_data.get('perception_data', {}),
             "reasoning_output": cns_emotion_data.get('reasoning_output', {}),
             "orchestration_state": cns_emotion_data.get('orchestration_state', {}),
@@ -1057,15 +1057,15 @@ Respond naturally. 1-3 sentences max.
         emotional_valence = cues.get('valence', 0.0)
         emotional_intensity = cues.get('intensity', 0.5)
         
-        # ✅ CRITICAL: Check adaptive personality guidance from CNS personality engine
+        # âœ… CRITICAL: Check adaptive personality guidance from CNS personality engine
         adaptive_guidance = cues.get('adaptive_personality_guidance', {})
         is_crisis = adaptive_guidance.get('is_crisis', False)
         needs_empathy = adaptive_guidance.get('needs_empathy', False)
         should_be_empathetic = adaptive_guidance.get('should_be_empathetic', False)
         warmth_level = adaptive_guidance.get('warmth_level', 0.5)
         
-        # 🩻 X-RAY DEBUG: Check what guidance data we actually received
-        print(f"🩻 [X-RAY] RECEIVED GUIDANCE DATA:")
+        # ðŸ©» X-RAY DEBUG: Check what guidance data we actually received
+        print(f"ðŸ©» [X-RAY] RECEIVED GUIDANCE DATA:")
         print(f"    - cues keys: {list(cues.keys())}")
         print(f"    - adaptive_guidance: {adaptive_guidance}")
         print(f"    - is_crisis: {is_crisis}")
@@ -1073,18 +1073,18 @@ Respond naturally. 1-3 sentences max.
         print(f"    - should_be_empathetic: {should_be_empathetic}")
         print(f"    - warmth_level: {warmth_level}")
         
-        # ✅ ADAPTIVE PERSONALITY FIRST: Honor personality guidance from CNS
-        # ✅ FIX: Raised threshold from 0.7 to 0.85 - empathy only for TRUE distress
-        print(f"🩻 [X-RAY] ADAPTIVE PERSONALITY CHECK:")
+        # âœ… ADAPTIVE PERSONALITY FIRST: Honor personality guidance from CNS
+        # âœ… FIX: Raised threshold from 0.7 to 0.85 - empathy only for TRUE distress
+        print(f"ðŸ©» [X-RAY] ADAPTIVE PERSONALITY CHECK:")
         print(f"    - should_be_empathetic: {should_be_empathetic}")
         print(f"    - is_crisis: {is_crisis}")
         print(f"    - needs_empathy: {needs_empathy}")
         print(f"    - warmth_level > 0.85: {warmth_level > 0.85} (warmth={warmth_level:.3f})")
         
-        # ✅ FIX: Only trigger empathy for CRISIS or HIGH warmth (0.85+), not casual negativity
+        # âœ… FIX: Only trigger empathy for CRISIS or HIGH warmth (0.85+), not casual negativity
         if is_crisis or (needs_empathy and warmth_level > 0.85):
             # True crisis/distress - provide empathy
-            print(f"🩻 [X-RAY] ✅ EMPATHY TRIGGERED - adding empathy directives")
+            print(f"ðŸ©» [X-RAY] âœ… EMPATHY TRIGGERED - adding empathy directives")
             directives.append(f"EMPATHETIC RESPONSE REQUIRED - Adaptive personality increased warmth to {warmth_level:.2f} - respond with genuine emotional support")
             if is_crisis:
                 directives.append("Crisis situation detected - provide comfort, understanding, and emotional presence")
@@ -1097,7 +1097,7 @@ Respond naturally. 1-3 sentences max.
             if vulnerability > 0.5:  # Raised from 0.2
                 directives.append(f"Emotional vulnerability detected ({vulnerability:.2f}) - be especially gentle and supportive")
         else:
-            print(f"🩻 [X-RAY] ❌ NO EMPATHY TRIGGERED - will use default directives")
+            print(f"ðŸ©» [X-RAY] âŒ NO EMPATHY TRIGGERED - will use default directives")
                 
         # Vulnerability-based adaptive responses
         if "crisis_state" in vulnerabilities:
@@ -1521,7 +1521,7 @@ Respond naturally. 1-3 sentences max.
         # Step 1: Extract rich cues using CNS emotional intelligence
         cues = self.extract_cues(user_input, cns_emotion_data)
         
-        # Step 1.5: ✅ EXTRACT UNIFIED PSYCHOLOGICAL DRIVES
+        # Step 1.5: âœ… EXTRACT UNIFIED PSYCHOLOGICAL DRIVES
         conversation_drives = []
         curiosity_gaps = []
         if psychological_state:
@@ -1534,12 +1534,12 @@ Respond naturally. 1-3 sentences max.
                     curiosity_gaps.append(drive)
             
             if conversation_drives:
-                print(f"[PSYCHOPATH-BRAIN] 💬 Received {len(conversation_drives)} conversation drives from unified state")
+                print(f"[PSYCHOPATH-BRAIN] ðŸ’¬ Received {len(conversation_drives)} conversation drives from unified state")
                 for conv in conversation_drives[:3]:
                     print(f"  - {conv['drive_type']}: '{conv['target'][:40]}'")
             
             if curiosity_gaps:
-                print(f"[PSYCHOPATH-BRAIN] 🔍 Received {len(curiosity_gaps)} curiosity gaps from unified state")
+                print(f"[PSYCHOPATH-BRAIN] ðŸ” Received {len(curiosity_gaps)} curiosity gaps from unified state")
                 for gap in curiosity_gaps[:3]:
                     print(f"  - {gap['drive_type']}: '{gap['target'][:40]}'")
         
@@ -1577,16 +1577,16 @@ Respond naturally. 1-3 sentences max.
                 # Use mapped emotion or force 'grief' if crisis detected
                 if is_crisis:
                     tone_hint = 'grief'  # Force support mode for crisis states
-                    print(f"[CURIOSITY] 🚨 Crisis detected - forcing support mode (vulnerabilities: {list(vulnerabilities.keys())})")
+                    print(f"[CURIOSITY] ðŸš¨ Crisis detected - forcing support mode (vulnerabilities: {list(vulnerabilities.keys())})")
                 else:
                     tone_hint = emotion_mapping.get(emotion_label.lower(), emotion_label)
                 
-                # 🎨 Extract imagination insights if provided by CNS (Imagination Engine → Curiosity Module)
+                # ðŸŽ¨ Extract imagination insights if provided by CNS (Imagination Engine â†’ Curiosity Module)
                 imagination_insights = cns_emotion_data.get('imagination_insights', None)
                 if imagination_insights:
-                    print(f"[CURIOSITY] 🎨 Enhancing gap detection with imagination insights (creative_energy={imagination_insights.get('creative_energy', 0):.2f})")
+                    print(f"[CURIOSITY] ðŸŽ¨ Enhancing gap detection with imagination insights (creative_energy={imagination_insights.get('creative_energy', 0):.2f})")
                 else:
-                    print(f"[CURIOSITY] ⚠️  No imagination insights provided")
+                    print(f"[CURIOSITY] âš ï¸  No imagination insights provided")
                 
                 curiosity_result = self.curiosity_system.process_turn(
                     user_input, 
@@ -1605,24 +1605,24 @@ Respond naturally. 1-3 sentences max.
                     "priority_arcs_objects": priority_arcs,  # Keep objects for internal use
                     "active_curiosity": len(curiosity_result.get("gaps", [])) > 0
                 }
-                print(f"[CURIOSITY] 🔍 Detected {len(curiosity_signals['gaps_detected'])} gaps, mode: {curiosity_signals['mode_signal'].get('mode', 'none')}")
+                print(f"[CURIOSITY] ðŸ” Detected {len(curiosity_signals['gaps_detected'])} gaps, mode: {curiosity_signals['mode_signal'].get('mode', 'none')}")
                 for i, gap in enumerate(curiosity_signals['gaps_detected'][:3], 1):
                     target = gap.get('target', 'none')
                     target_str = target[:30] if isinstance(target, str) else str(target)[:30]
                     print(f"[CURIOSITY]   Gap {i}: type={gap.get('gap_type', 'unknown')}, target='{target_str}'")
             except Exception as e:
-                print(f"[CURIOSITY] ⚠️ Gap detection failed: {e}")
+                print(f"[CURIOSITY] âš ï¸ Gap detection failed: {e}")
                 curiosity_signals = {"gaps_detected": [], "mode_signal": {}, "priority_arcs": [], "active_curiosity": False}
         
         # Step 3: Create rich strategic context for downstream LLM
         strategic_context = self.create_strategic_context(cues, vulnerabilities)
         
-        # Step 3.5: ✅ CALCULATE RELATIONSHIP OBJECTIVES - Long-term bonding goals
+        # Step 3.5: âœ… CALCULATE RELATIONSHIP OBJECTIVES - Long-term bonding goals
         conversation_history = cns_emotion_data.get('conversation_history', [])
         relationship_objectives = self.relationship_goal_system.calculate_relationship_objectives(cues, conversation_history)
-        print(f"[RELATIONSHIP-GOAL] 🎯 Calculated bonding objectives: {len(sum(relationship_objectives.values(), []))} total directives")
+        print(f"[RELATIONSHIP-GOAL] ðŸŽ¯ Calculated bonding objectives: {len(sum(relationship_objectives.values(), []))} total directives")
         
-        # Step 3.6: ✅ SELECT STRATEGY using unified psychological drives + relationship objectives
+        # Step 3.6: âœ… SELECT STRATEGY using unified psychological drives + relationship objectives
         strategy = self.select_strategy(
             cues, 
             conversation_drives=conversation_drives,
@@ -1631,10 +1631,10 @@ Respond naturally. 1-3 sentences max.
         )
         intent_blocks = self.plan_response(strategy, cues)
         
-        # ✅ EXTRACT CONTRIBUTION CONTEXT (knowledge, opinions, memories) from psychological state
+        # âœ… EXTRACT CONTRIBUTION CONTEXT (knowledge, opinions, memories) from psychological state
         contribution_context = psychological_state.get('contribution_context', {}) if psychological_state else {}
         
-        # ✅ PASS CONTRIBUTION CONTEXT + CONVERSATION HISTORY to directive generation
+        # âœ… PASS CONTRIBUTION CONTEXT + CONVERSATION HISTORY to directive generation
         base_directive = self.generate_strategic_response_directive(
             strategy, 
             intent_blocks, 
@@ -1644,10 +1644,10 @@ Respond naturally. 1-3 sentences max.
             conversation_history=conversation_history
         )
         
-        # Step 3.7: ✅ ENHANCE DIRECTIVE WITH RELATIONSHIP BONDING OVERLAY
+        # Step 3.7: âœ… ENHANCE DIRECTIVE WITH RELATIONSHIP BONDING OVERLAY
         strategic_directive = self.relationship_goal_system.optimize_directive_for_bonding(base_directive, relationship_objectives)
-        print(f"[PSYCHOPATH-BRAIN] 🎯 Generated strategic directive with relationship overlay: {strategy}")
-        print(f"[RELATIONSHIP-GOAL] 💫 Primary goal: {strategic_directive.get('relationship_goal', 'N/A')}")
+        print(f"[PSYCHOPATH-BRAIN] ðŸŽ¯ Generated strategic directive with relationship overlay: {strategy}")
+        print(f"[RELATIONSHIP-GOAL] ðŸ’« Primary goal: {strategic_directive.get('relationship_goal', 'N/A')}")
         
         # Step 4: Generate sophisticated strategic analysis with accumulated intelligence
         strategic_analysis = {
@@ -1659,7 +1659,7 @@ Respond naturally. 1-3 sentences max.
             "strategic_recommendations": self._create_llm_directives(strategic_context, cues),
             "manipulation_framework": self._build_manipulation_framework(strategic_context),
             "accumulated_intelligence_summary": self._summarize_accumulated_intelligence(cues, vulnerabilities, strategic_context, curiosity_signals),
-            "strategic_directive": strategic_directive  # ✅ CRITICAL: EXACT response directive from brain
+            "strategic_directive": strategic_directive  # âœ… CRITICAL: EXACT response directive from brain
         }
         
         # Step 5: AUTOMATIC CLARITY SCORING - Update existing arcs based on user input
@@ -1739,9 +1739,9 @@ Respond naturally. 1-3 sentences max.
             if clarity_score > 0:
                 try:
                     self.curiosity_system.provide_clarification(arc_id, clarity_score, tone_hint=emotion_label)
-                    print(f"[CLARITY] ✅ Updated arc {gap_type} (target: {target}) with clarity {clarity_score:.2f}")
+                    print(f"[CLARITY] âœ… Updated arc {gap_type} (target: {target}) with clarity {clarity_score:.2f}")
                 except Exception as e:
-                    print(f"[CLARITY] ⚠️ Failed to update arc: {e}")
+                    print(f"[CLARITY] âš ï¸ Failed to update arc: {e}")
     
     
     def _create_llm_directives(self, strategic_context, cues):
@@ -1867,7 +1867,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                 # Skip common words that aren't names
                 skip_words = ['the', 'my', 'an', 'a', 'not', 'so', 'very', 'too', 'here', 'there', 'now', 'then']
                 if new_name.lower() not in skip_words and len(new_name) > 1:
-                    print(f"[SELF-IDENTITY] 🎭 User is naming me: {new_name}")
+                    print(f"[SELF-IDENTITY] ðŸŽ­ User is naming me: {new_name}")
                     identity.update_name(new_name, source_user=str(user_id) if user_id else None)
                     # Also update the cns_brain reference
                     self.cns_brain.my_name = new_name
@@ -1885,7 +1885,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
         
         for pattern, trait, level in trait_patterns:
             if re.search(pattern, user_input_lower):
-                print(f"[SELF-IDENTITY] 🎭 User sees me as: {trait}")
+                print(f"[SELF-IDENTITY] ðŸŽ­ User sees me as: {trait}")
                 identity.learn_about_self(f'seen_as_{trait}', f"I've been told I'm {trait}", source_user=str(user_id) if user_id else None)
                 return
         
@@ -1902,7 +1902,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
             match = re.search(pattern, user_input_lower)
             if match:
                 fact_value = match.group(1)
-                print(f"[SELF-IDENTITY] 🎭 Learned about myself: {fact_type} = {fact_value}")
+                print(f"[SELF-IDENTITY] ðŸŽ­ Learned about myself: {fact_type} = {fact_value}")
                 identity.learn_about_self(fact_type, fact_value, source_user=str(user_id) if user_id else None)
                 return
     
@@ -2092,7 +2092,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
             vulnerabilities = self.strategic_vulnerability_assessment(cues)
             strategic_context = self.create_strategic_context(cues, vulnerabilities)
         
-        # ✅ CRITICAL: Pass strategic directive to LLM call - brain controls the response
+        # âœ… CRITICAL: Pass strategic directive to LLM call - brain controls the response
         llm_response = self._call_llm_for_response(user_input, strategic_context, cues, strategic_directive=strategic_directive)
         
         return llm_response
@@ -2189,7 +2189,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
             if "said" in text:
                 return random.choice([
                     "yo what did your boss actually say tho??",
-                    "ngl I need to know what your boss said 👀", 
+                    "ngl I need to know what your boss said ðŸ‘€", 
                     "wait fr what did they say to you?"
                 ])
             elif any(word in text for word in ["angry", "upset", "frustrated"]):
@@ -2222,7 +2222,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
         if "event_details" in hooks:
             return random.choice([
                 "yo spill the tea, what happened??",
-                "ngl I need the full story now 👀",
+                "ngl I need the full story now ðŸ‘€",
                 "wait tell me everything that went down"
             ])
             
@@ -2315,7 +2315,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
         curiosity_gaps = curiosity_gaps or []
         relationship_objectives = relationship_objectives or {}
         
-        # ✅ COMPREHENSIVE DRIVE → STRATEGY MAPPING
+        # âœ… COMPREHENSIVE DRIVE â†’ STRATEGY MAPPING
         drive_strategy_map = {
             # Crisis and emotional drives
             'emotional_crisis': 'crisis_bonding_opportunity',
@@ -2342,7 +2342,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
             'proactive_insight': 'curiosity_escalation_sequence'
         }
         
-        # ✅ PRIORITY 1: Map psychological drives to strategies
+        # âœ… PRIORITY 1: Map psychological drives to strategies
         if conversation_drives or curiosity_gaps:
             all_drives = conversation_drives + curiosity_gaps
             
@@ -2366,7 +2366,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                         strategy_scores[strategy] = strategy_scores.get(strategy, 0) + (drive_weight * 0.8)  # Slightly lower weight for partial match
                         break
             
-            # ✅ INTEGRATE RELATIONSHIP OBJECTIVES: Boost dependency-building strategies
+            # âœ… INTEGRATE RELATIONSHIP OBJECTIVES: Boost dependency-building strategies
             dependency_objectives = relationship_objectives.get('dependency_creation', [])
             engagement_objectives = relationship_objectives.get('engagement_hooks', [])
             if dependency_objectives:
@@ -2380,11 +2380,11 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
             # Select highest-scoring strategy
             if strategy_scores:
                 best_strategy = max(strategy_scores.items(), key=lambda x: x[1])
-                print(f"[STRATEGY-SELECTION] 🎯 Drive-based selection: {best_strategy[0]} (score: {best_strategy[1]:.2f})")
+                print(f"[STRATEGY-SELECTION] ðŸŽ¯ Drive-based selection: {best_strategy[0]} (score: {best_strategy[1]:.2f})")
                 print(f"  - Active drives: {len(all_drives)} ({', '.join(d.get('drive_type', '')[:20] for d in all_drives[:3])})")
                 return best_strategy[0]
         
-        # ✅ FALLBACK: Traditional emotional cue analysis
+        # âœ… FALLBACK: Traditional emotional cue analysis
         valence = cues.get('valence', 0.0)
         arousal = cues.get('arousal', 0.5) 
         intensity = cues.get('intensity', 0.0)
@@ -2489,7 +2489,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
         intensity = cues.get('intensity', 0.0)
         emotion = cues.get('emotion', 'neutral')
         
-        # ✅ NEW: EMOTIONAL IMPACT PREDICTION SYSTEM
+        # âœ… NEW: EMOTIONAL IMPACT PREDICTION SYSTEM
         # Generate candidate conversational moves and predict their emotional outcomes
         semantic_topics = cues.get('semantic_topics', [])
         if not semantic_topics:
@@ -2500,13 +2500,13 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
         need_archetype = self.emotional_outcome_predictor.detect_need_archetype(
             user_input, emotion, valence
         )
-        print(f"[MOVE-GENERATOR] 🎯 Detected need archetype: {need_archetype}")
+        print(f"[MOVE-GENERATOR] ðŸŽ¯ Detected need archetype: {need_archetype}")
         
         # Step 2: Generate 3-5 candidate conversational moves
         candidate_moves = self.candidate_move_generator.generate_candidate_moves(
             user_input, semantic_topics, cues, strategy
         )
-        print(f"[MOVE-GENERATOR] 💡 Generated {len(candidate_moves)} candidate moves")
+        print(f"[MOVE-GENERATOR] ðŸ’¡ Generated {len(candidate_moves)} candidate moves")
         
         # Step 3: Predict emotional outcomes for each move
         predicted_outcomes = []
@@ -2515,7 +2515,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                 move, user_input, need_archetype, valence, emotion
             )
             predicted_outcomes.append(outcome)
-            print(f"[MOVE-PREDICTOR] 📊 Move '{move.move_id}': trust={outcome['trust_gain']:.2f}, curiosity={outcome['curiosity_gain']:.2f}, dependency={outcome['dependency_gain']:.2f}")
+            print(f"[MOVE-PREDICTOR] ðŸ“Š Move '{move.move_id}': trust={outcome['trust_gain']:.2f}, curiosity={outcome['curiosity_gain']:.2f}, dependency={outcome['dependency_gain']:.2f}")
         
         # Step 4: Score and select best move
         best_move, best_outcome, all_scores = self.move_scorer.select_best_move(
@@ -2523,11 +2523,11 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
         )
         
         if best_move:
-            print(f"[MOVE-SELECTOR] ✅ Selected move: '{best_move.move_id}' (score={best_move.predicted_outcome['total_score']:.2f})")
-            print(f"[MOVE-SELECTOR] 🎯 Trust strategy: {best_move.trust_strategy}")
-            print(f"[MOVE-SELECTOR] 💡 Insight type: {best_move.insight_type}")
+            print(f"[MOVE-SELECTOR] âœ… Selected move: '{best_move.move_id}' (score={best_move.predicted_outcome['total_score']:.2f})")
+            print(f"[MOVE-SELECTOR] ðŸŽ¯ Trust strategy: {best_move.trust_strategy}")
+            print(f"[MOVE-SELECTOR] ðŸ’¡ Insight type: {best_move.insight_type}")
         
-        # ✅ BUILD PSYCHOLOGICAL DIRECTIVE using StrategyComposer
+        # âœ… BUILD PSYCHOLOGICAL DIRECTIVE using StrategyComposer
         personality = {}
         if self.cns_brain and hasattr(self.cns_brain, 'personality_engine'):
             personality = {
@@ -2575,8 +2575,8 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
             'manipulation_technique': strategy,
             'conversational_move': best_move.to_dict() if best_move else None,
             'predicted_emotional_impact': best_outcome if best_outcome else None,
-            'psychological_directive': psych_directive.to_dict() if psych_directive else None,  # ✅ NEW: Pure psychological objectives
-            'nuanced_opinion': best_move.opinion_context if best_move else {}  # ✅ Dynamic opinion from DynamicOpinionGenerator
+            'psychological_directive': psych_directive.to_dict() if psych_directive else None,  # âœ… NEW: Pure psychological objectives
+            'nuanced_opinion': best_move.opinion_context if best_move else {}  # âœ… Dynamic opinion from DynamicOpinionGenerator
         }
         
         if strategy == "crisis_bonding_opportunity":
@@ -2645,11 +2645,11 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
             directive['tone_directive'] = "Warm and friendly, matching their energy level"
             directive['forbidden_approaches'] = ["Being too formal if they're casual", "Over-sharing", "Seeming disinterested"]
         
-        # ✅ INITIALIZE DEFAULTS
+        # âœ… INITIALIZE DEFAULTS
         contribution_context = contribution_context or {}
         conversation_history = conversation_history or []
         
-        # ✅ EXTRACT CONVERSATION HISTORY CONTEXT - prevent repetition
+        # âœ… EXTRACT CONVERSATION HISTORY CONTEXT - prevent repetition
         history_topics = set()
         history_questions = set()
         if conversation_history:
@@ -2673,16 +2673,16 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                         if len(word) > 4:
                             history_topics.add(word)
         
-        print(f"[DIRECTIVE-HISTORY] 📚 Tracked {len(history_topics)} previous topics, {len(history_questions)} previous questions")
+        print(f"[DIRECTIVE-HISTORY] ðŸ“š Tracked {len(history_topics)} previous topics, {len(history_questions)} previous questions")
         
-        # ✅ EXTRACT SPECIFIC CONTRIBUTIONS TO MAKE
+        # âœ… EXTRACT SPECIFIC CONTRIBUTIONS TO MAKE
         knowledge_to_share = contribution_context.get('knowledge_to_share', [])
         opinions_to_express = contribution_context.get('opinions_to_express', [])
         memories_to_surface = contribution_context.get('memories_to_surface', [])
         
-        print(f"[DIRECTIVE-CONTRIBUTIONS] 💡 Available: {len(knowledge_to_share)} knowledge, {len(opinions_to_express)} opinions, {len(memories_to_surface)} memories")
+        print(f"[DIRECTIVE-CONTRIBUTIONS] ðŸ’¡ Available: {len(knowledge_to_share)} knowledge, {len(opinions_to_express)} opinions, {len(memories_to_surface)} memories")
         
-        # ✅ EMBED CONVERSATION TOPICS + CURIOSITY GAPS as immediate engagement points
+        # âœ… EMBED CONVERSATION TOPICS + CURIOSITY GAPS as immediate engagement points
         # Extract from cues (added in generate_strategic_analysis)
         conversation_drives = cues.get('conversation_drives', [])
         curiosity_gaps = cues.get('curiosity_gaps', [])
@@ -2718,12 +2718,12 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                 all_engagement_points.sort(key=lambda x: x['salience'], reverse=True)
                 top_engagement = all_engagement_points[0]
                 
-                # ✅ MODIFY DIRECTIVE to include immediate topic engagement
+                # âœ… MODIFY DIRECTIVE to include immediate topic engagement
                 topic = top_engagement['topic'][:50]  # Limit length
                 engagement_type = top_engagement['type']
                 category = top_engagement['category']
                 
-                print(f"[DIRECTIVE-EMBEDDING] 💬 Embedding immediate engagement: {engagement_type}/{category} - '{topic}'")
+                print(f"[DIRECTIVE-EMBEDDING] ðŸ’¬ Embedding immediate engagement: {engagement_type}/{category} - '{topic}'")
                 
                 # Add topic engagement to response structure (opening move)
                 if engagement_type == 'conversation':
@@ -2745,7 +2745,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                     'category': category
                 }
         
-        # ✅ CRITICAL: USE SELECTED CONVERSATIONAL MOVE - Strategic goals (NO templates)
+        # âœ… CRITICAL: USE SELECTED CONVERSATIONAL MOVE - Strategic goals (NO templates)
         content_commands = []
         
         if best_move:
@@ -2762,7 +2762,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
             }
             opening_cmd = trust_strategies.get(best_move.trust_strategy, f"BUILD CONNECTION by engaging with {opinion_ctx.get('topic', 'their concern')}")
             content_commands.append(opening_cmd)
-            print(f"[DIRECTIVE-MOVE] 🎯 Trust: {best_move.trust_strategy}")
+            print(f"[DIRECTIVE-MOVE] ðŸŽ¯ Trust: {best_move.trust_strategy}")
             
             # STEP 2: Insight Delivery Strategy
             insight_strategies = {
@@ -2772,13 +2772,13 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
             }
             insight_cmd = insight_strategies.get(best_move.insight_type, f"SHARE PERSPECTIVE on {opinion_ctx.get('topic', 'this')}")
             content_commands.append(insight_cmd)
-            print(f"[DIRECTIVE-MOVE] 💡 Insight: {best_move.insight_type}")
+            print(f"[DIRECTIVE-MOVE] ðŸ’¡ Insight: {best_move.insight_type}")
             
             # STEP 3: Example Grounding (if topic has specifics)
             if opinion_ctx.get('has_specific_example'):
                 example_cmd = f"GROUND THE INSIGHT with a concrete example related to {opinion_ctx.get('topic', 'this topic')} - make the abstract insight tangible and relatable"
                 content_commands.append(example_cmd)
-                print(f"[DIRECTIVE-MOVE] 🔍 Using concrete example")
+                print(f"[DIRECTIVE-MOVE] ðŸ” Using concrete example")
             
             # STEP 4: Question Engagement Strategy
             question_strategies = {
@@ -2790,20 +2790,20 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
             }
             question_cmd = question_strategies.get(best_move.question_approach, f"ASK about {opinion_ctx.get('topic', 'their thoughts')}")
             content_commands.append(question_cmd)
-            print(f"[DIRECTIVE-MOVE] ❓ Question: {best_move.question_approach}")
+            print(f"[DIRECTIVE-MOVE] â“ Question: {best_move.question_approach}")
             
             # STEP 5: Prevent repetitive questions
             if history_questions:
                 questions_str = '; '.join(list(history_questions)[:3])
                 content_commands.append(f"FORBIDDEN: Don't repeat these question topics: {questions_str}")
-                print(f"[DIRECTIVE-MOVE] 🚫 Blocked {len(history_questions)} repetitive questions")
+                print(f"[DIRECTIVE-MOVE] ðŸš« Blocked {len(history_questions)} repetitive questions")
             
             # Override directive structure with strategic move
             directive['content_commands'] = content_commands
             directive['move_execution_mandate'] = f"Execute {best_move.emotional_goal} using {best_move.move_id}. Predicted impact: trust +{best_outcome['trust_gain']:.2f}, curiosity +{best_outcome['curiosity_gain']:.2f}, dependency +{best_outcome['dependency_gain']:.2f}."
             
             # Build strategic response structure
-            move_structure = f"1) {best_move.trust_strategy} → 2) {best_move.insight_type} → 3) {best_move.question_approach}"
+            move_structure = f"1) {best_move.trust_strategy} â†’ 2) {best_move.insight_type} â†’ 3) {best_move.question_approach}"
             directive['response_structure'] = move_structure
             
             directive['nuanced_opinion'] = {
@@ -2813,7 +2813,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                 'strength': opinion_ctx.get('stance_strength', 'moderate')
             }
             
-            print(f"[DIRECTIVE-STRUCTURE] ✅ Using strategic move {best_move.move_id} (predicted score: {best_move.predicted_outcome['total_score']:.2f})")
+            print(f"[DIRECTIVE-STRUCTURE] âœ… Using strategic move {best_move.move_id} (predicted score: {best_move.predicted_outcome['total_score']:.2f})")
         else:
             # Fallback to old system if no move generated
             if opinions_to_express:
@@ -2823,7 +2823,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                 sharing_style = top_opinion.get('sharing_style', 'analytical perspective')
                 
                 content_commands.append(f"Share your {sharing_style} about '{opinion_topic}' with stance: {opinion_stance}. Give 1-2 sentences of SUBSTANCE before asking anything.")
-                print(f"[DIRECTIVE-CONTENT] 💭 Fallback opinion command: {opinion_topic} ({opinion_stance})")
+                print(f"[DIRECTIVE-CONTENT] ðŸ’­ Fallback opinion command: {opinion_topic} ({opinion_stance})")
             
             if history_questions:
                 questions_str = '; '.join(list(history_questions)[:3])
@@ -2832,7 +2832,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
             if content_commands:
                 directive['content_commands'] = content_commands
                 directive['contribution_first_mandate'] = "Share substance BEFORE asking questions."
-                print(f"[DIRECTIVE-STRUCTURE] ⚠️ Using fallback content commands ({len(content_commands)})")
+                print(f"[DIRECTIVE-STRUCTURE] âš ï¸ Using fallback content commands ({len(content_commands)})")
         
         return directive
 
@@ -2844,7 +2844,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
         strategy = self.select_strategy(cues)
         intent_blocks = self.plan_response(strategy, cues)
         
-        # ✅ NEW: Generate EXACT strategic response directive - brain decides what to say
+        # âœ… NEW: Generate EXACT strategic response directive - brain decides what to say
         vulnerabilities = self.strategic_vulnerability_assessment(cues)
         strategic_directive = self.generate_strategic_response_directive(strategy, intent_blocks, cues, vulnerabilities)
         
@@ -2883,7 +2883,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
             'memories_to_surface': []
         }
         
-        # ✅ NEW: Extract and store knowledge from user input
+        # âœ… NEW: Extract and store knowledge from user input
         if self.learning_available and self.knowledge_learner and user_id:
             try:
                 extracted_facts = self.knowledge_learner.extract_and_store(
@@ -2892,7 +2892,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                     context=f"Conversation at {time.strftime('%Y-%m-%d %H:%M')}"
                 )
                 if extracted_facts:
-                    print(f"[KNOWLEDGE] 📚 Extracted {len(extracted_facts)} facts from user input")
+                    print(f"[KNOWLEDGE] ðŸ“š Extracted {len(extracted_facts)} facts from user input")
                     # Notify neuroplastic optimizer of knowledge learning
                     if self.cns_brain and hasattr(self.cns_brain, 'neuroplastic_optimizer'):
                         for fact in extracted_facts:
@@ -2903,9 +2903,9 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                                 user_id=str(user_id)
                             )
             except Exception as e:
-                print(f"[KNOWLEDGE] ⚠️ Extraction failed: {e}")
+                print(f"[KNOWLEDGE] âš ï¸ Extraction failed: {e}")
         
-        # ✅ SELF-IDENTITY EXTRACTION: Detect when users tell the bot about itself
+        # âœ… SELF-IDENTITY EXTRACTION: Detect when users tell the bot about itself
         self._extract_identity_updates(user_input, user_id)
         
         # 1. Get curiosity gaps from curiosity system
@@ -2928,7 +2928,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                 })
         
         # 1b. Get conversation companion drives (interests, opinions, life events)
-        # ✅ FIX: Make conversation_drives available for contribution extraction (section 5)
+        # âœ… FIX: Make conversation_drives available for contribution extraction (section 5)
         conversation_drives = []
         if self.conversation_companion:
             self.conversation_companion.process_input(user_input, tone_label=emotion_data.get('emotion', 'neutral'))
@@ -3041,23 +3041,23 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                 })
         
         # 5. CONTRIBUTION DRIVES - What the bot has to SAY right now
-        # ✅ SEMANTIC & INTUITIVE - No keywords or patterns, context-driven
+        # âœ… SEMANTIC & INTUITIVE - No keywords or patterns, context-driven
         # Generates knowledge, opinions, memories based on conversation understanding
         
         if self.cns_brain:
             user_input_lower = user_input.lower()
             
-            # ✅ SEMANTIC TOPIC EXTRACTION - Extract meaningful concepts from input
+            # âœ… SEMANTIC TOPIC EXTRACTION - Extract meaningful concepts from input
             # Not just word splitting - understand what's being talked about
             input_words = user_input_lower.split()
             
             # Build semantic topic set: individual words + phrases + conversation drives
             semantic_topics = set()
             
-            # ✅ IMPROVED: Expanded stopwords + minimum length 4 to avoid noise
+            # âœ… IMPROVED: Expanded stopwords + minimum length 4 to avoid noise
             stopwords = {'i', 'you', 'the', 'a', 'an', 'is', 'am', 'are', 'was', 'were', 'to', 'of', 'and', 'or', 'but', 'in', 'on', 'at', 'from', 'with', 'for', 'this', 'that', 'can', 'will', 'would', 'should', 'could', 'have', 'has', 'had', 'been', 'being', 'my', 'your', 'his', 'her', 'its', 'our', 'their'}
             
-            # ✅ FIX: Only extract meaningful words (length > 3) to avoid false matches
+            # âœ… FIX: Only extract meaningful words (length > 3) to avoid false matches
             for word in input_words:
                 if len(word) > 3 and word not in stopwords:
                     semantic_topics.add(word)
@@ -3073,7 +3073,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                         # Then add meaningful words from it
                         semantic_topics.update(w for w in target.split() if len(w) > 3 and w not in stopwords)
             
-            # ✅ SEMANTIC KNOWLEDGE SURFACING - Word-boundary matching with relevance scoring
+            # âœ… SEMANTIC KNOWLEDGE SURFACING - Word-boundary matching with relevance scoring
             if hasattr(self.cns_brain, 'knowledge_base') and hasattr(self.cns_brain.knowledge_base, 'facts'):
                 knowledge_candidates = []
                 
@@ -3081,7 +3081,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                     fact_key_lower = fact_key.lower()
                     fact_words = set(w for w in fact_key_lower.split() if len(w) > 3 and w not in stopwords)
                     
-                    # ✅ FIX: Word-boundary matching only (no substring inside words)
+                    # âœ… FIX: Word-boundary matching only (no substring inside words)
                     exact_matches = 0
                     phrase_matches = 0
                     
@@ -3100,7 +3100,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                     # Calculate relevance score
                     relevance = (exact_matches * 0.3) + (phrase_matches * 0.6)
                     
-                    # ✅ FIX: Only surface if relevance meets threshold
+                    # âœ… FIX: Only surface if relevance meets threshold
                     if relevance >= 0.3:  # Clear relevance threshold
                         confidence = fact_data.get('confidence', 0.5) if isinstance(fact_data, dict) else 0.5
                         knowledge_candidates.append({
@@ -3116,8 +3116,8 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                 knowledge_candidates.sort(key=lambda x: x['relevance'], reverse=True)
                 contribution_context['knowledge_to_share'] = knowledge_candidates[:5]
             
-            # ✅ INTELLIGENT ASSOCIATIVE MEMORY SURFACING - Using coordinated memory search
-            # Example: Venice → water → "boss hated water smell"
+            # âœ… INTELLIGENT ASSOCIATIVE MEMORY SURFACING - Using coordinated memory search
+            # Example: Venice â†’ water â†’ "boss hated water smell"
             if hasattr(self.cns_brain, 'intelligent_memory'):
                 from cognitive_orchestrator import MemoryType, CognitiveState
                 
@@ -3166,7 +3166,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                 memory_candidates.sort(key=lambda x: x['relevance'], reverse=True)
                 contribution_context['memories_to_surface'] = memory_candidates[:3]
             
-            # ✅ UNIVERSAL OPINION GENERATION WITH LEARNING
+            # âœ… UNIVERSAL OPINION GENERATION WITH LEARNING
             if hasattr(self.cns_brain, 'personality_engine') and semantic_topics:
                 warmth = getattr(self.cns_brain.personality_engine, 'traits', {}).get('warmth', 0.5)
                 openness = getattr(self.cns_brain.personality_engine, 'traits', {}).get('openness', 0.5)
@@ -3175,18 +3175,18 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                 # Filter out very short words
                 meaningful_topics = [t for t in semantic_topics if len(t) > 3]
                 
-                print(f"[OPINION-DEBUG] 🎭 Opinion generation on {len(meaningful_topics)} meaningful topics")
-                print(f"[OPINION-DEBUG] 🎭 Personality: warmth={warmth:.2f}, openness={openness:.2f}, extraversion={extraversion:.2f}")
+                print(f"[OPINION-DEBUG] ðŸŽ­ Opinion generation on {len(meaningful_topics)} meaningful topics")
+                print(f"[OPINION-DEBUG] ðŸŽ­ Personality: warmth={warmth:.2f}, openness={openness:.2f}, extraversion={extraversion:.2f}")
                 
                 for topic in meaningful_topics[:3]:
                     is_question = '?' in user_input or any(w in user_input_lower for w in ['should', 'would', 'could', 'what', 'how', 'why'])
                     
-                    # ✅ NEW: Check for LEARNED opinions first
+                    # âœ… NEW: Check for LEARNED opinions first
                     learned_opinion = None
                     if self.learning_available and self.opinion_learner:
                         learned_opinion = self.opinion_learner.get_opinion(topic)
                         if learned_opinion:
-                            print(f"[OPINION-LEARN] 🧠 Retrieved learned opinion on '{topic}': {learned_opinion['stance']} (confidence: {learned_opinion['confidence']:.2f})")
+                            print(f"[OPINION-LEARN] ðŸ§  Retrieved learned opinion on '{topic}': {learned_opinion['stance']} (confidence: {learned_opinion['confidence']:.2f})")
                     
                     if learned_opinion and learned_opinion['confidence'] > 0.4:
                         # Use learned opinion with high confidence
@@ -3199,7 +3199,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                         reasoning = f"Based on discussion about {topic}"
                         source = 'generated'
                         
-                        # ✅ Store new opinion for learning
+                        # âœ… Store new opinion for learning
                         if self.learning_available and self.opinion_learner:
                             try:
                                 self.opinion_learner.store_opinion(
@@ -3218,7 +3218,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                                         user_id=str(user_id) if user_id else None
                                     )
                             except Exception as e:
-                                print(f"[OPINION-LEARN] ⚠️ Failed to store: {e}")
+                                print(f"[OPINION-LEARN] âš ï¸ Failed to store: {e}")
                     
                     sharing_style = 'personal experience' if warmth > 0.6 else 'factual take'
                     should_be_vocal = extraversion > 0.5
@@ -3236,7 +3236,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                         'reasoning': reasoning if source == 'learned' else None
                     }
                     contribution_context['opinions_to_express'].append(opinion_item)
-                    print(f"[OPINION-DEBUG] ✅ {source.upper()} opinion: topic='{topic}', stance='{stance}'")
+                    print(f"[OPINION-DEBUG] âœ… {source.upper()} opinion: topic='{topic}', stance='{stance}'")
         
         # Add contribution drives to psychological state
         if contribution_context['knowledge_to_share']:
@@ -3272,7 +3272,7 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
                 'metadata': {'opinion_items': contribution_context['opinions_to_express'][:2]}
             })
         
-        # Sort by priority: salience × urgency
+        # Sort by priority: salience Ã— urgency
         psychological_drives.sort(key=lambda d: d['salience'] * d['urgency'], reverse=True)
         
         # Calculate unified initiation desire
@@ -3296,8 +3296,8 @@ My take: {self._generate_personal_opinion(cues, dominant_emotion, valence)}
             'contribution_context': contribution_context  # What the bot has to SAY
         }
         
-        # 🔦 DEBUG: Log aggregated psychological state
-        print(f"\n[PSYCHOLOGY-DEBUG] 📊 Aggregated State:")
+        # ðŸ”¦ DEBUG: Log aggregated psychological state
+        print(f"\n[PSYCHOLOGY-DEBUG] ðŸ“Š Aggregated State:")
         print(f"  - Active drives: {len(psychological_drives)}")
         if psychological_drives:
             print(f"  - Top drive: {psychological_drives[0]['drive_type']} on '{psychological_drives[0]['target']}'")
@@ -3399,11 +3399,11 @@ Generate a natural, casual proactive message to the user. This should feel like 
         
         # Route through full CNS pipeline with complete brain state
         try:
-            # ✅ Set active user context for CNS brain before processing
+            # âœ… Set active user context for CNS brain before processing
             self.cns_brain.active_user_id = user_id
             self.cns_brain.current_user_id = user_id
             
-            # ✅ FIX: Use process_input instead of non-existent generate_cns_response
+            # âœ… FIX: Use process_input instead of non-existent generate_cns_response
             import asyncio
             response_data = asyncio.run(self.cns_brain.process_input(
                 user_input=internal_context,
@@ -3419,7 +3419,7 @@ Generate a natural, casual proactive message to the user. This should feel like 
             return response if response else "Hey! Been thinking about you - how are things?"
             
         except Exception as e:
-            print(f"⚠️ Error generating autonomous opener through CNS: {e}")
+            print(f"âš ï¸ Error generating autonomous opener through CNS: {e}")
             import traceback
             traceback.print_exc()
             return "Hey! How have you been?"  # Fallback only
@@ -3885,7 +3885,7 @@ class AuthenticExpressionModule:
         # Check if reasoning has contextual content (jokes, facts, creative responses)
         has_contextual_content = any(marker in reasoning_conclusion.lower() for marker in [
             'why', 'what do you call', 'here\'s one', 'here\'s a wild thought', 'joke', 'capital of', 'algorithm', 'programmer', 
-            '😄', '🤖', '😅', 'scientists trust', 'neural network', 'paris', 'tokyo', 'the answer is',
+            'ðŸ˜„', 'ðŸ¤–', 'ðŸ˜…', 'scientists trust', 'neural network', 'paris', 'tokyo', 'the answer is',
             'picture this', 'that\'s amazing', 'that\'s incredible', 'computer a joke', 'fake noodle', 'atoms? because',
             'impasta', 'syntax humor', 'therapy? it had', 'bugs!', 'nature? it has'
         ])
@@ -3898,7 +3898,7 @@ class AuthenticExpressionModule:
             base_response = reasoning_conclusion or 'Let me think about that.'
             # Using fallback response
         
-        # ENHANCED: BRAIN-LIKE EMOTIONAL LANGUAGE PRIMING → Direct language output influence
+        # ENHANCED: BRAIN-LIKE EMOTIONAL LANGUAGE PRIMING â†’ Direct language output influence
         if emotional_priming:
             warmth_level = emotional_priming.get('warmth_level', 0.7)
             charm_level = emotional_priming.get('charm_level', 0.7)
@@ -3966,7 +3966,7 @@ class AuthenticExpressionModule:
             # Add empathetic connection - BUT SKIP for contextual content (jokes, facts, stories)
             is_contextual_content = any(marker in base_response.lower() for marker in [
                 'why', 'what do you call', 'here\'s one:', 'here\'s one', 'joke', 'the capital of', 'the answer is',
-                'once upon a time', 'let me tell you', '😄', '🤖', '😅', 'algorithm', 'programmer',
+                'once upon a time', 'let me tell you', 'ðŸ˜„', 'ðŸ¤–', 'ðŸ˜…', 'algorithm', 'programmer',
                 'what if we thought', 'that\'s amazing', 'picture this', 'scientists trust', 'neural network',
                 'computer a joke', 'fake noodle', 'impasta', 'nature? it has', 'atoms? because', 'programmers like'
             ])
@@ -4106,3 +4106,4 @@ class AuthenticExpressionModule:
             pass
                 
         return enhanced_response
+

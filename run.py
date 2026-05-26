@@ -33,17 +33,17 @@ except ImportError:
     pass
 
 # ── Config ────────────────────────────────────────────────────────────────────
-USER_NAME    = os.environ.get("USER_NAME", "Mahika")
-USER_ID      = os.environ.get("USER_ID", "mahika")
-TOGETHER_KEY = os.environ.get("TOGETHER_API_KEY", "")
+USER_NAME = os.environ.get("USER_NAME", "Mahika")
+USER_ID   = os.environ.get("USER_ID", "mahika")
+GROQ_KEY  = os.environ.get("GROQ_API_KEY", "")
 
-if not TOGETHER_KEY:
-    print("\n[!] TOGETHER_API_KEY not set in .env — LLM calls will use fallback.\n")
+if not GROQ_KEY:
+    print("\n[!] GROQ_API_KEY not set in .env — LLM calls will use fallback.\n")
 
-# The codebase checks MISTRAL_API_KEY in 12+ places but calls the Together endpoint.
-# Alias it so every module picks up the key automatically.
-if TOGETHER_KEY and not os.environ.get("MISTRAL_API_KEY"):
-    os.environ["MISTRAL_API_KEY"] = TOGETHER_KEY
+# Alias GROQ_API_KEY into every env var the codebase checks for the LLM key.
+if GROQ_KEY:
+    os.environ.setdefault("TOGETHER_API_KEY", GROQ_KEY)
+    os.environ.setdefault("MISTRAL_API_KEY",  GROQ_KEY)
 
 # ── Fix memory persistence ────────────────────────────────────────────────────
 # IntelligentMemorySystem checks os.environ['DATABASE_URL'] directly.

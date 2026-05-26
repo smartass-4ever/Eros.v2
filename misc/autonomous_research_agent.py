@@ -1,4 +1,4 @@
-"""
+﻿"""
 Autonomous Research Agent - Researches solutions for user problems
 Proactively looks up answers and offers help without being asked
 """
@@ -49,7 +49,7 @@ class AutonomousResearchAgent:
     
     def __init__(self, mistral_api_key: Optional[str] = None):
         self.mistral_api_key = mistral_api_key or os.environ.get("MISTRAL_API_KEY")
-        self.mistral_api_url = "https://api.together.xyz/v1/chat/completions"
+        self.mistral_api_url = "https://api.groq.com/openai/v1/chat/completions"
         
         # Storage: {user_id: List[ResearchResult]}
         self.research_results: Dict[str, List[ResearchResult]] = {}
@@ -57,7 +57,7 @@ class AutonomousResearchAgent:
         # Track ongoing research to avoid duplicates
         self.researching: Dict[str, set] = {}  # {user_id: set of problem descriptions}
         
-        print("🔬 Autonomous research agent initialized - proactive solution finding active")
+        print("ðŸ”¬ Autonomous research agent initialized - proactive solution finding active")
     
     async def research_problem(self, user_id: str, intent: UserIntent,
                                user_context: str = "") -> Optional[ResearchResult]:
@@ -82,7 +82,7 @@ class AutonomousResearchAgent:
         # Mark as researching
         self.researching[user_id].add(problem_key)
         
-        print(f"🔬 Researching solution for: {intent.description[:60]}...")
+        print(f"ðŸ”¬ Researching solution for: {intent.description[:60]}...")
         
         try:
             # Build research prompt based on intent type
@@ -114,7 +114,7 @@ class AutonomousResearchAgent:
                 # Keep only last 20 results per user
                 self.research_results[user_id] = self.research_results[user_id][-20:]
                 
-                print(f"✅ Research complete: {len(findings)} chars, confidence: {confidence:.2f}")
+                print(f"âœ… Research complete: {len(findings)} chars, confidence: {confidence:.2f}")
                 return result
             
         except Exception as e:
@@ -204,7 +204,7 @@ Keep it concise and actionable - 3-4 sentences max."""
                     "Content-Type": "application/json"
                 },
                 json={
-                    "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+                    "model": "llama-3.3-70b-versatile",
                     "messages": [{"role": "user", "content": prompt}],
                     "temperature": 0.4,  # Balanced for quality
                     "max_tokens": 400
@@ -274,7 +274,7 @@ Keep it concise and actionable - 3-4 sentences max."""
                 result.offered = True  # Legacy
                 if channel not in result.offered_channels:
                     result.offered_channels.append(channel)
-                print(f"🔬 Marked research as offered via {channel}: {result.intent_description[:50]}")
+                print(f"ðŸ”¬ Marked research as offered via {channel}: {result.intent_description[:50]}")
                 break
     
     def get_fresh_solutions(self, user_id: str, last_check_time: float = 0, 
@@ -306,7 +306,7 @@ Keep it concise and actionable - 3-4 sentences max."""
         for result in self.research_results[user_id]:
             if intent_description.lower() in result.intent_description.lower():
                 result.user_response = response  # 'accepted', 'rejected', 'ignored'
-                print(f"📊 User response to help: {response}")
+                print(f"ðŸ“Š User response to help: {response}")
                 break
     
     def get_help_acceptance_rate(self, user_id: str) -> float:
@@ -339,3 +339,4 @@ Keep it concise and actionable - 3-4 sentences max."""
             return [r for r in results if isinstance(r, ResearchResult)]
         
         return []
+

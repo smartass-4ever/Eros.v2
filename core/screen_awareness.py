@@ -1,5 +1,5 @@
-"""
-Screen awareness — Eros can see what's on your monitor.
+﻿"""
+Screen awareness â€” Eros can see what's on your monitor.
 
 Provides:
   - Active window (app name + title)
@@ -18,7 +18,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional, Dict, Any
 
-# ── Active window ─────────────────────────────────────────────────────────────
+# â”€â”€ Active window â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def get_active_window() -> Dict[str, str]:
     """Get the currently focused window title and process name."""
@@ -78,7 +78,7 @@ def get_active_window() -> Dict[str, str]:
     return {"title": "unknown", "app": "unknown", "pid": None}
 
 
-# ── Screenshot ─────────────────────────────────────────────────────────────────
+# â”€â”€ Screenshot â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def capture_screenshot(save_path: Optional[str] = None) -> Optional[str]:
     """Capture the full screen. Returns path to saved image."""
@@ -121,7 +121,7 @@ def screenshot_to_base64(max_width: int = 1280) -> Optional[str]:
         return None
 
 
-# ── OCR text extraction ────────────────────────────────────────────────────────
+# â”€â”€ OCR text extraction â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def extract_screen_text() -> str:
     """Extract visible text from screen using OCR if available."""
@@ -137,7 +137,7 @@ def extract_screen_text() -> str:
         return ""
 
 
-# ── Vision LLM description ────────────────────────────────────────────────────
+# â”€â”€ Vision LLM description â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async def describe_screen_with_llm(api_key: str = None) -> str:
     """
@@ -166,7 +166,7 @@ async def describe_screen_with_llm(api_key: str = None) -> str:
                         "role": "user",
                         "content": [
                             {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{img_b64}"}},
-                            {"type": "text", "text": "Describe what's on this screen concisely — app, content, what the person is doing. 2-3 sentences max."}
+                            {"type": "text", "text": "Describe what's on this screen concisely â€” app, content, what the person is doing. 2-3 sentences max."}
                         ]
                     }],
                     "max_tokens": 150
@@ -184,10 +184,10 @@ async def describe_screen_with_llm(api_key: str = None) -> str:
         try:
             import requests
             resp = requests.post(
-                "https://api.together.xyz/v1/chat/completions",
+                "https://api.groq.com/openai/v1/chat/completions",
                 headers={"Authorization": f"Bearer {together_key}", "Content-Type": "application/json"},
                 json={
-                    "model": "meta-llama/Llama-Vision-Free",
+                    "model": "meta-llama/llama-4-scout-17b-16e-instruct",
                     "messages": [{
                         "role": "user",
                         "content": [
@@ -207,7 +207,7 @@ async def describe_screen_with_llm(api_key: str = None) -> str:
     return ""
 
 
-# ── Full context snapshot ─────────────────────────────────────────────────────
+# â”€â”€ Full context snapshot â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async def get_screen_context(use_vision: bool = True) -> Dict[str, Any]:
     """
@@ -231,7 +231,7 @@ async def get_screen_context(use_vision: bool = True) -> Dict[str, Any]:
 
 
 def get_screen_context_sync(use_vision: bool = False) -> Dict[str, Any]:
-    """Synchronous version — just window + OCR, no async vision call."""
+    """Synchronous version â€” just window + OCR, no async vision call."""
     window = get_active_window()
     ocr_text = extract_screen_text()
     return {
@@ -242,7 +242,7 @@ def get_screen_context_sync(use_vision: bool = False) -> Dict[str, Any]:
     }
 
 
-# ── Background monitor ────────────────────────────────────────────────────────
+# â”€â”€ Background monitor â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 class ScreenMonitor:
     """
@@ -270,7 +270,7 @@ class ScreenMonitor:
         self._thread = threading.Thread(target=self._loop, daemon=True)
         self._thread.start()
         has_key = bool(os.environ.get("TOGETHER_API_KEY") or os.environ.get("OPENAI_API_KEY"))
-        print(f"[SCREEN] Monitor started — vision: {'active' if has_key else 'waiting for API key'}")
+        print(f"[SCREEN] Monitor started â€” vision: {'active' if has_key else 'waiting for API key'}")
 
     def stop(self):
         self._running = False
@@ -310,7 +310,7 @@ class ScreenMonitor:
             time.sleep(self.WINDOW_POLL)
 
     def _run_vision(self):
-        """Synchronous wrapper — runs vision in a new event loop on this thread."""
+        """Synchronous wrapper â€” runs vision in a new event loop on this thread."""
         try:
             loop = asyncio.new_event_loop()
             desc = loop.run_until_complete(describe_screen_with_llm())
@@ -334,7 +334,7 @@ class ScreenMonitor:
             parts.append(app)
         if title and title.lower() != app.lower():
             parts.append(f'"{title}"')
-        base = " — ".join(parts) if parts else "unknown"
+        base = " â€” ".join(parts) if parts else "unknown"
 
         if vision:
             return f"{base}. {vision}"
@@ -343,7 +343,7 @@ class ScreenMonitor:
     def context_for_llm(self) -> str:
         """
         Formatted context string injected into every Eros message.
-        Eros sees this automatically — no need to ask.
+        Eros sees this automatically â€” no need to ask.
         """
         if not self.current:
             return ""
@@ -370,3 +370,4 @@ def get_monitor() -> ScreenMonitor:
     if _monitor is None:
         _monitor = ScreenMonitor()
     return _monitor
+

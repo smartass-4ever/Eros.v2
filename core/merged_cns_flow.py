@@ -1,5 +1,5 @@
-# Merged CNS System - Complete Flow Implementation  
-# User Input → Perception → Emotion + Mood → Memory Check → Cortex Reasoning → LLM (if needed) → Action Selector → Response
+﻿# Merged CNS System - Complete Flow Implementation  
+# User Input â†’ Perception â†’ Emotion + Mood â†’ Memory Check â†’ Cortex Reasoning â†’ LLM (if needed) â†’ Action Selector â†’ Response
 
 import time
 import json
@@ -49,7 +49,7 @@ try:
     ACTION_ORCHESTRATOR_AVAILABLE = True
 except ImportError:
     ACTION_ORCHESTRATOR_AVAILABLE = False
-    print("[CNS] ⚠️ Action orchestrator not available")
+    print("[CNS] âš ï¸ Action orchestrator not available")
 
 # === CNS PERSONALITY ENGINE ===
 
@@ -134,14 +134,14 @@ class CNSPersonalityEngine:
             }
         }
         
-        print(f"🎭⚡ CNS Personality Engine initialized - dynamic warmth/sharpness/wit adaptation")
-        print(f"🛡️ BASELINE PROTECTION ACTIVE: warmth>={self.TRAIT_BASELINES['warmth']}, sharpness>={self.TRAIT_BASELINES['sharpness']}, wit>={self.TRAIT_BASELINES['wit']}")
+        print(f"ðŸŽ­âš¡ CNS Personality Engine initialized - dynamic warmth/sharpness/wit adaptation")
+        print(f"ðŸ›¡ï¸ BASELINE PROTECTION ACTIVE: warmth>={self.TRAIT_BASELINES['warmth']}, sharpness>={self.TRAIT_BASELINES['sharpness']}, wit>={self.TRAIT_BASELINES['wit']}")
 
     def _enforce_baselines(self):
         """Enforce immutable baseline minimums - protects core Eros personality"""
         for trait, baseline in self.TRAIT_BASELINES.items():
             if trait in self.traits and self.traits[trait] < baseline:
-                print(f"🛡️ BASELINE PROTECTION: {trait} was {self.traits[trait]:.2f}, enforcing minimum {baseline}")
+                print(f"ðŸ›¡ï¸ BASELINE PROTECTION: {trait} was {self.traits[trait]:.2f}, enforcing minimum {baseline}")
                 self.traits[trait] = baseline
     
     def _clamp_trait(self, trait: str, value: float) -> float:
@@ -164,7 +164,7 @@ class CNSPersonalityEngine:
                 'mode': preference_mode,
                 'overlay': preference_overlays[preference_mode]
             }
-            print(f"🎭 User {user_id} preference set to: {preference_mode}")
+            print(f"ðŸŽ­ User {user_id} preference set to: {preference_mode}")
     
     def get_traits_for_user(self, user_id: str = None) -> Dict[str, float]:
         """Get effective traits, applying user-specific preferences if set"""
@@ -182,19 +182,19 @@ class CNSPersonalityEngine:
         """Reset personality traits to defaults (for manual override).
         If user_id is provided, their preferences are preserved and reapplied."""
         self.traits = dict(self.TRAIT_DEFAULTS)
-        print(f"🔄 Personality reset to defaults: {self.traits}")
+        print(f"ðŸ”„ Personality reset to defaults: {self.traits}")
         
         if user_id and user_id in self.user_preferences:
             overlay = self.user_preferences[user_id].get('overlay', {})
             for trait, adjustment in overlay.items():
                 if trait in self.traits:
                     self.traits[trait] = self._clamp_trait(trait, self.traits[trait] + adjustment)
-            print(f"🔄 Reapplied user {user_id} preferences after reset")
+            print(f"ðŸ”„ Reapplied user {user_id} preferences after reset")
 
     def adapt_to_user(self, feedback_type):
         """
         Adjust traits dynamically based on user preference/interaction.
-        The adjustment is immediate — noticeable within 5 turns.
+        The adjustment is immediate â€” noticeable within 5 turns.
         BASELINE PROTECTED: Traits never drop below TRAIT_BASELINES.
         """
         self.feedback_buffer.append(feedback_type)
@@ -256,17 +256,17 @@ class CNSPersonalityEngine:
         intensity = emotion_data.get('intensity', 0.5)
         emotional_tone = emotion_data.get('emotional_tone', 'neutral')
         
-        # ✅ USE ACTUAL EMOTION DETECTION SIGNALS: valence, vulnerability, crisis
+        # âœ… USE ACTUAL EMOTION DETECTION SIGNALS: valence, vulnerability, crisis
         valence = emotion_data.get('valence', 0.0)
         vulnerability = emotion_data.get('nuances', {}).get('vulnerability', 0.0)
-        # ✅ FIX: CRISIS THRESHOLD raised to -0.75 to avoid false positives on neutral questions
+        # âœ… FIX: CRISIS THRESHOLD raised to -0.75 to avoid false positives on neutral questions
         # Crisis = ACTUAL distress, not just curiosity or information-seeking
         is_crisis_emotional = valence < -0.75 and intensity > 0.8
         
-        # 🩻 X-RAY DEBUG: Emotion detection signals
-        print(f"🩻 [X-RAY] EMOTION SIGNALS: valence={valence:.3f}, vulnerability={vulnerability:.3f}, intensity={intensity:.3f}")
-        print(f"🩻 [X-RAY] CRISIS CHECK: valence<-0.75? {valence < -0.75}, intensity>0.8? {intensity > 0.8}")
-        print(f"🩻 [X-RAY] IS_CRISIS_EMOTIONAL: {is_crisis_emotional}")
+        # ðŸ©» X-RAY DEBUG: Emotion detection signals
+        print(f"ðŸ©» [X-RAY] EMOTION SIGNALS: valence={valence:.3f}, vulnerability={vulnerability:.3f}, intensity={intensity:.3f}")
+        print(f"ðŸ©» [X-RAY] CRISIS CHECK: valence<-0.75? {valence < -0.75}, intensity>0.8? {intensity > 0.8}")
+        print(f"ðŸ©» [X-RAY] IS_CRISIS_EMOTIONAL: {is_crisis_emotional}")
         
         # WARMTH DECAY: Gradually return to DEFAULT when no crisis detected
         # Use TRAIT_DEFAULTS as decay target, TRAIT_BASELINES as absolute floor
@@ -277,32 +277,32 @@ class CNSPersonalityEngine:
         sharpness_adjustment = 0.0
         wit_adjustment = 0.0
         
-        # ✅ FIX: Decay warmth MORE AGGRESSIVELY - most messages should trigger decay
+        # âœ… FIX: Decay warmth MORE AGGRESSIVELY - most messages should trigger decay
         # Changed from -0.2 to -0.5 threshold so neutral/mildly-negative messages decay
         if valence >= -0.5 and self.traits['warmth'] > DEFAULT_WARMTH:
             decay_amount = (self.traits['warmth'] - DEFAULT_WARMTH) * DECAY_RATE
             warmth_adjustment -= decay_amount
-            print(f"🩻 [X-RAY] WARMTH DECAY: Returning toward default ({self.traits['warmth']:.2f} → {DEFAULT_WARMTH}) by -{decay_amount:.3f}")
+            print(f"ðŸ©» [X-RAY] WARMTH DECAY: Returning toward default ({self.traits['warmth']:.2f} â†’ {DEFAULT_WARMTH}) by -{decay_amount:.3f}")
         
-        # ✅ FIX: Only boost warmth for TRULY negative messages (crisis-level)
+        # âœ… FIX: Only boost warmth for TRULY negative messages (crisis-level)
         # Changed from -0.1 to -0.6 - casual frustration shouldn't soften personality
         # Also REMOVED sharpness/wit reductions - Eros stays sharp even when warm
         if valence < -0.6:
             warmth_adjustment += abs(valence) * 0.4  # Reduced from 0.8 - gentler boost
             # NO sharpness/wit reduction - Eros is warm AND sharp simultaneously
             
-        # ✅ FIX: Only boost for HIGH vulnerability (real distress), not casual mentions
+        # âœ… FIX: Only boost for HIGH vulnerability (real distress), not casual mentions
         # Changed from 0.2 to 0.5 threshold
         if vulnerability > 0.5:
             warmth_adjustment += vulnerability * 0.4  # Reduced from 0.8
             # NO sharpness reduction - stay sharp even when being supportive
             
-        # ✅ FIX: Only multiply for CRISIS situations, not mild negative emotions
+        # âœ… FIX: Only multiply for CRISIS situations, not mild negative emotions
         # Changed from valence < 0 to valence < -0.7
         if intensity > 0.5 and valence < -0.7:
             warmth_adjustment *= (1.0 + intensity * 0.5)  # Reduced multiplier
             
-        # ✅ CRITICAL FIX: Limit how much sharpness/wit can be reduced
+        # âœ… CRITICAL FIX: Limit how much sharpness/wit can be reduced
         # Even during emotional moments, maintain personality baseline character
         # Cap reductions so traits never go below baseline after adjustment
         MIN_SHARPNESS = self.TRAIT_BASELINES['sharpness']  # 0.55
@@ -330,13 +330,13 @@ class CNSPersonalityEngine:
         # Enforce baselines after emotion adaptation (extra safety)
         self._enforce_baselines()
         
-        # 🩻 X-RAY DEBUG: Personality adaptation with FINAL VALUES
-        print(f"🩻 [X-RAY] PERSONALITY ADAPTATION: warmth {original_warmth:.3f} → {self.traits['warmth']:.3f} (change: +{warmth_adjustment:.3f})")
-        print(f"🩻 [X-RAY] ADJUSTMENTS: warmth+={warmth_adjustment:.3f}, sharpness-={abs(sharpness_adjustment):.3f}, wit-={abs(wit_adjustment):.3f}")
-        print(f"🩻 [X-RAY] FINAL TRAITS: sharpness={self.traits['sharpness']:.3f} (min={MIN_SHARPNESS}), wit={self.traits['wit']:.3f} (min={MIN_WIT})")
+        # ðŸ©» X-RAY DEBUG: Personality adaptation with FINAL VALUES
+        print(f"ðŸ©» [X-RAY] PERSONALITY ADAPTATION: warmth {original_warmth:.3f} â†’ {self.traits['warmth']:.3f} (change: +{warmth_adjustment:.3f})")
+        print(f"ðŸ©» [X-RAY] ADJUSTMENTS: warmth+={warmth_adjustment:.3f}, sharpness-={abs(sharpness_adjustment):.3f}, wit-={abs(wit_adjustment):.3f}")
+        print(f"ðŸ©» [X-RAY] FINAL TRAITS: sharpness={self.traits['sharpness']:.3f} (min={MIN_SHARPNESS}), wit={self.traits['wit']:.3f} (min={MIN_WIT})")
                 
         # Store current emotional context using ACTUAL detection signals
-        # ✅ FIX: Raised needs_empathy threshold from 0.7 to 0.85
+        # âœ… FIX: Raised needs_empathy threshold from 0.7 to 0.85
         # Only TRUE crisis/distress should trigger empathy mode, not casual negativity
         self.current_emotional_context = {
             'emotion': emotion,
@@ -345,11 +345,11 @@ class CNSPersonalityEngine:
             'vulnerability': vulnerability,
             'intensity': intensity,
             'is_crisis': is_crisis_emotional,
-            'needs_empathy': self.traits['warmth'] > 0.85  # ✅ Raised from 0.7
+            'needs_empathy': self.traits['warmth'] > 0.85  # âœ… Raised from 0.7
         }
         
-        # 🩻 X-RAY DEBUG: Emotional context created
-        print(f"🩻 [X-RAY] EMOTIONAL CONTEXT CREATED:")
+        # ðŸ©» X-RAY DEBUG: Emotional context created
+        print(f"ðŸ©» [X-RAY] EMOTIONAL CONTEXT CREATED:")
         print(f"    - is_crisis: {is_crisis_emotional}")
         print(f"    - needs_empathy: {self.traits['warmth'] > 0.85} (warmth={self.traits['warmth']:.3f})")
         print(f"    - valence: {valence:.3f}")
@@ -384,7 +384,7 @@ class CNSPersonalityEngine:
         # Strategic intelligence from psychopath analysis should flow through unchanged
         # Only apply subtle personality modulation without losing strategic context
         
-        # ✅ CRITICAL FIX: Don't bypass empathy for emotional situations
+        # âœ… CRITICAL FIX: Don't bypass empathy for emotional situations
         # Check if this is an empathetic response that should be processed
         is_empathetic_context = (
             emotional_priming_context and 
@@ -456,7 +456,7 @@ class CNSPersonalityEngine:
                 pass
                 
         except Exception as e:
-            print(f"⚠️ CNSPersonalityEngine experience error: {e}")
+            print(f"âš ï¸ CNSPersonalityEngine experience error: {e}")
     
     def subscribe_to_bus(self):
         """Subscribe to the global ExperienceBus"""
@@ -464,9 +464,9 @@ class CNSPersonalityEngine:
             from experience_bus import get_experience_bus
             bus = get_experience_bus()
             bus.subscribe("PersonalityEngine", self.on_experience)
-            print("🎭 CNSPersonalityEngine subscribed to ExperienceBus - personality adaptation active")
+            print("ðŸŽ­ CNSPersonalityEngine subscribed to ExperienceBus - personality adaptation active")
         except Exception as e:
-            print(f"⚠️ CNSPersonalityEngine bus subscription failed: {e}")
+            print(f"âš ï¸ CNSPersonalityEngine bus subscription failed: {e}")
 
 # === BRAIN-LIKE EMOTIONAL LANGUAGE INTEGRATION ===
 
@@ -669,7 +669,7 @@ class CNS_MDC:
         self.discount_factor = 0.9
         self.exploration_rate = 0.2
         
-        print("🤖 MDC initialized with physical action capabilities")
+        print("ðŸ¤– MDC initialized with physical action capabilities")
 
     def get_state(self, emotional_tone, engagement_level, session_turns):
         self.state = (emotional_tone, round(engagement_level, 1), session_turns)
@@ -1086,8 +1086,8 @@ class PerceptionModule:
             social_cues = self._analyze_social_magnetism_cues(text, final_intent, final_sentiment)
             result.social_intelligence_cues = social_cues
         
-        # 🔦 FLASHLIGHT DIAGNOSTIC: Log perception results
-        print(f"[PERCEPTION] 🎯 Extracted: intent={final_intent}, sentiment={final_sentiment}, urgency={final_urgency:.2f}, entities={final_entities}, confidence={overall_confidence:.2f}")
+        # ðŸ”¦ FLASHLIGHT DIAGNOSTIC: Log perception results
+        print(f"[PERCEPTION] ðŸŽ¯ Extracted: intent={final_intent}, sentiment={final_sentiment}, urgency={final_urgency:.2f}, entities={final_entities}, confidence={overall_confidence:.2f}")
         
         self._last_parsed = result
         return result
@@ -1542,11 +1542,11 @@ class EmotionalInference:
             # Look for training data indicators in the system
             try:
                 # Training data is loaded by Discord bot layer - we'll learn from interactions
-                print("🧠 FLUID INTELLIGENCE: Training data loaded elsewhere - will integrate patterns dynamically from interactions")
+                print("ðŸ§  FLUID INTELLIGENCE: Training data loaded elsewhere - will integrate patterns dynamically from interactions")
                 self._initialize_basic_learning_framework()
                 return
             except:
-                print("🧠 FLUID INTELLIGENCE: Starting with blank slate - will learn from all interactions")
+                print("ðŸ§  FLUID INTELLIGENCE: Starting with blank slate - will learn from all interactions")
                 return
         
         # PURE LEARNING: Extract all emotional understanding from training data
@@ -1618,12 +1618,12 @@ class EmotionalInference:
                                 self.arousal_patterns[arousal_bucket].append(indicator)
         
         if training_patterns_found > 0:
-            print(f"🧠 FLUID INTELLIGENCE: Learned {total_patterns_learned} emotional patterns from {training_patterns_found} training experiences")
+            print(f"ðŸ§  FLUID INTELLIGENCE: Learned {total_patterns_learned} emotional patterns from {training_patterns_found} training experiences")
     
     def _initialize_basic_learning_framework(self):
         """Initialize basic learning framework for dynamic pattern acquisition"""
         # Set up basic learning structures - patterns will be learned from interactions
-        print("🧠 FLUID INTELLIGENCE: Basic learning framework initialized - ready for dynamic pattern acquisition")
+        print("ðŸ§  FLUID INTELLIGENCE: Basic learning framework initialized - ready for dynamic pattern acquisition")
     
     def _extract_emotional_learning(self, fact):
         """Extract emotional learning opportunities from any fact"""
@@ -1829,20 +1829,20 @@ class EmotionalInference:
         else: return "medium"
     
     def infer_valence(self, text: str) -> Dict[str, Any]:
-        """2-STEP EMOTION DETECTION: Pattern+LLM safeguard → Isolated deep analysis if needed"""
+        """2-STEP EMOTION DETECTION: Pattern+LLM safeguard â†’ Isolated deep analysis if needed"""
         text_lower = text.lower()
         
         # STEP 1: PATTERN MATCHING + LLM SAFEGUARD
-        print(f"[EMOTION] 🔍 STEP 1: Pattern detection + LLM validation")
+        print(f"[EMOTION] ðŸ” STEP 1: Pattern detection + LLM validation")
         step1_result = self._step1_pattern_with_llm_safeguard(text, text_lower)
         
         if step1_result['success']:
             result = step1_result['result']
-            print(f"[EMOTION] ✅ STEP 1 SUCCESS: {result.get('emotion', 'unknown')} detected and validated")
+            print(f"[EMOTION] âœ… STEP 1 SUCCESS: {result.get('emotion', 'unknown')} detected and validated")
             return result
         
         # STEP 2: ISOLATED DEEP ANALYSIS (no interference)  
-        print(f"[EMOTION] 🧠 STEP 2: Deep analysis ({step1_result.get('reason', 'step1 failed')})")
+        print(f"[EMOTION] ðŸ§  STEP 2: Deep analysis ({step1_result.get('reason', 'step1 failed')})")
         step2_result = self._step2_isolated_deep_analysis(text, text_lower)
         
         return step2_result
@@ -2207,8 +2207,8 @@ class EmotionalInference:
         avg_word_length = sum(len(word) for word in text.split()) / max(word_count, 1)
         
         # Punctuation patterns
-        positive_punctuation = text.count(':)') + text.count('😊') + text.count('❤️')
-        negative_punctuation = text.count(':(') + text.count('💔')
+        positive_punctuation = text.count(':)') + text.count('ðŸ˜Š') + text.count('â¤ï¸')
+        negative_punctuation = text.count(':(') + text.count('ðŸ’”')
         
         # Calculate sentiment score from linguistic features
         sentiment_score = 0.0
@@ -2723,9 +2723,9 @@ class WorldModelMemory:
                     'knowledge': KnowledgeLearner(),
                     'opinions': OpinionLearner()
                 }
-                print("[WORLD-MODEL] ✅ Database persistence connected")
+                print("[WORLD-MODEL] âœ… Database persistence connected")
         except Exception as e:
-            print(f"[WORLD-MODEL] ⚠️ Database not available: {e}")
+            print(f"[WORLD-MODEL] âš ï¸ Database not available: {e}")
             self.db_persistence = None
     
     def _load_from_database(self):
@@ -2750,11 +2750,11 @@ class WorldModelMemory:
                         "user_id": fact.user_id,
                         "from_db": True
                     }
-                print(f"[WORLD-MODEL] 📚 Loaded {len(facts)} facts from database")
+                print(f"[WORLD-MODEL] ðŸ“š Loaded {len(facts)} facts from database")
             finally:
                 session.close()
         except Exception as e:
-            print(f"[WORLD-MODEL] ⚠️ Could not load from database: {e}")
+            print(f"[WORLD-MODEL] âš ï¸ Could not load from database: {e}")
     
     def update(self, topic: str, content: str, confidence: float = 0.7, user_id: str = None):
         """Store new knowledge - persists to database"""
@@ -2779,7 +2779,7 @@ class WorldModelMemory:
                     context=f"Learned from conversation at {time.strftime('%Y-%m-%d %H:%M')}"
                 )
             except Exception as e:
-                print(f"[WORLD-MODEL] ⚠️ Failed to persist: {e}")
+                print(f"[WORLD-MODEL] âš ï¸ Failed to persist: {e}")
     
     def recall(self, topic: str) -> Optional[str]:
         """Recall knowledge about topic"""
@@ -2853,10 +2853,10 @@ Keep your response:
 Topic: {query}"""
 
             response = requests.post(
-                "https://api.together.xyz/v1/chat/completions",
+                "https://api.groq.com/openai/v1/chat/completions",
                 headers={"Authorization": f"Bearer {api_key}"},
                 json={
-                    "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+                    "model": "llama-3.3-70b-versatile",
                     "messages": [{"role": "user", "content": knowledge_prompt}],
                     "temperature": 0.3,
                     "max_tokens": 150
@@ -2913,11 +2913,11 @@ class CNS:
             identity_data = self.self_identity.load_identity()
             self.identity = f"I am {identity_data.get('name', 'Eros')}. {identity_data.get('full_identity', '')}"
             self.my_name = identity_data.get('name', 'Eros')
-            print(f"🎭 Self-identity loaded: I am {self.my_name}")
+            print(f"ðŸŽ­ Self-identity loaded: I am {self.my_name}")
         except Exception as e:
             self.self_identity = None
             self.my_name = 'Eros'
-            print(f"⚠️ Self-identity not available: {e}")
+            print(f"âš ï¸ Self-identity not available: {e}")
         
         # Core modules
         self.perception = PerceptionModule()
@@ -2938,30 +2938,30 @@ class CNS:
         try:
             from cognitive_learning_system import CognitiveLearningIntegrator
             self.learning_system = CognitiveLearningIntegrator()
-            print("🎓 Cognitive learning system activated - knowledge extraction & metacognition online")
+            print("ðŸŽ“ Cognitive learning system activated - knowledge extraction & metacognition online")
         except ImportError:
             self.learning_system = None
-            print("⚠️  Cognitive learning system not available")
+            print("âš ï¸  Cognitive learning system not available")
         
         # ENHANCED: Psychological profiling system with curiosity integration
         try:
             from natural_expression_module import PsychopathConversationEngine
             self.psychopath_engine = PsychopathConversationEngine(cns_brain=self)
-            print("🎭 Advanced psychological profiling system loaded with curiosity gap detection")
+            print("ðŸŽ­ Advanced psychological profiling system loaded with curiosity gap detection")
         except ImportError:
             self.psychopath_engine = None
-            print("⚠️  Psychological profiling system not available")
+            print("âš ï¸  Psychological profiling system not available")
         
         # INTROSPECTION: Self-awareness system for meta-questions
         try:
             from introspection_module import IntrospectionModule
             self.introspection = IntrospectionModule(cns_ref=self)
-            print("🔍 Introspection module loaded - self-awareness active")
+            print("ðŸ” Introspection module loaded - self-awareness active")
         except ImportError:
             self.introspection = None
-            print("⚠️  Introspection module not available")
+            print("âš ï¸  Introspection module not available")
         
-        print("🧠 CNS System Initialized - Core components loaded")
+        print("ðŸ§  CNS System Initialized - Core components loaded")
 
     def _convert_emotion_to_tone(self, emotion_data: Dict, sentiment: str) -> str:
         """
@@ -3944,7 +3944,7 @@ class NeuralVotingSystem:
             tone = sorted_votes[0][0]
             if not memory_facts:
                 text = (
-                    f"Hmm… I'm still forming my thoughts on {topic}. I haven't experienced enough to really know what I think about it yet. "
+                    f"Hmmâ€¦ I'm still forming my thoughts on {topic}. I haven't experienced enough to really know what I think about it yet. "
                     f"But from what I've read:\n\n{knowledge[:250]}..."
                 )
             else:
@@ -4192,17 +4192,17 @@ class PsychologicalProfileEnhancer:
         comm_style = profile["communication_style"]
         vulnerabilities = strategic_analysis.get('vulnerability_assessment', {})
         
-        # High emotional complexity + intellectual style → analytical_guide
+        # High emotional complexity + intellectual style â†’ analytical_guide
         if (comm_style.get('intellectual_style') == 'analytical' and 
             'intellectual_ego' in vulnerabilities):
             return 'analytical_guide'
         
-        # Casual communication + attachment issues → casual_friend  
+        # Casual communication + attachment issues â†’ casual_friend  
         elif (comm_style.get('formality_level') == 'casual' and
               'attachment_insecurity' in vulnerabilities):
             return 'casual_friend'
             
-        # High emotional openness + crisis state → supportive_partner
+        # High emotional openness + crisis state â†’ supportive_partner
         elif (comm_style.get('emotional_openness', 0) > 0.6 and
               'crisis_state' in vulnerabilities):
             return 'supportive_partner'
@@ -4262,7 +4262,7 @@ class PsychologicalProfileEnhancer:
         }
         
         try:
-            print(f"🎭 Loading intimate conversation dataset: {dataset_path}")
+            print(f"ðŸŽ­ Loading intimate conversation dataset: {dataset_path}")
             
             with open(dataset_path, 'r', encoding='utf-8') as f:
                 conversations_loaded = 0
@@ -4337,7 +4337,7 @@ class PsychologicalProfileEnhancer:
                             
                         # Progress indicator
                         if conversations_loaded % 500 == 0:
-                            print(f"📊 Processed {conversations_loaded} intimate conversations...")
+                            print(f"ðŸ“Š Processed {conversations_loaded} intimate conversations...")
                             
                     except json.JSONDecodeError:
                         continue
@@ -4354,11 +4354,11 @@ class PsychologicalProfileEnhancer:
             # Store trained patterns
             self.conversation_patterns = conversation_patterns
             
-            print(f"✅ Psychological training complete!")
-            print(f"📊 Loaded {conversations_loaded} intimate conversations")
-            print(f"🎭 Personas: {len(conversation_patterns['relationship_dynamics'])}")
-            print(f"💬 Communication styles: {len(conversation_patterns['communication_styles'])}")
-            print(f"💭 Emotional themes: {len(conversation_patterns['emotional_triggers'])}")
+            print(f"âœ… Psychological training complete!")
+            print(f"ðŸ“Š Loaded {conversations_loaded} intimate conversations")
+            print(f"ðŸŽ­ Personas: {len(conversation_patterns['relationship_dynamics'])}")
+            print(f"ðŸ’¬ Communication styles: {len(conversation_patterns['communication_styles'])}")
+            print(f"ðŸ’­ Emotional themes: {len(conversation_patterns['emotional_triggers'])}")
             
             return {
                 'success': True,
@@ -4369,10 +4369,10 @@ class PsychologicalProfileEnhancer:
             }
             
         except FileNotFoundError:
-            print(f"❌ Dataset file not found: {dataset_path}")
+            print(f"âŒ Dataset file not found: {dataset_path}")
             return {'success': False, 'error': 'File not found'}
         except Exception as e:
-            print(f"❌ Training failed: {e}")
+            print(f"âŒ Training failed: {e}")
             return {'success': False, 'error': str(e)}
     
     def _extract_emotional_markers(self, turns: List[Dict[str, str]]) -> set:
@@ -4380,10 +4380,10 @@ class PsychologicalProfileEnhancer:
         markers = set()
         
         emotional_indicators = {
-            'happiness': ['😂', '🎉', '😊', '❤️', 'haha', 'lol', 'yay', 'congrats'],
-            'sadness': ['😢', '😭', '💔', 'sad', 'low', 'overwhelmed', 'hurt'],
-            'affection': ['❤️', '💕', 'love', 'miss', 'care', 'babe', 'sweetie'],
-            'playfulness': ['😏', '😉', '😅', 'tbh', 'ngl', 'omg', 'spill'],
+            'happiness': ['ðŸ˜‚', 'ðŸŽ‰', 'ðŸ˜Š', 'â¤ï¸', 'haha', 'lol', 'yay', 'congrats'],
+            'sadness': ['ðŸ˜¢', 'ðŸ˜­', 'ðŸ’”', 'sad', 'low', 'overwhelmed', 'hurt'],
+            'affection': ['â¤ï¸', 'ðŸ’•', 'love', 'miss', 'care', 'babe', 'sweetie'],
+            'playfulness': ['ðŸ˜', 'ðŸ˜‰', 'ðŸ˜…', 'tbh', 'ngl', 'omg', 'spill'],
             'support': ['here', 'proud', 'together', 'help', 'breathe', 'okay'],
             'conflict': ['space', 'hurt', 'bothered', 'worry', 'mess up', 'figure out']
         }
@@ -4451,7 +4451,7 @@ class PsychologicalProfileEnhancer:
             try:
                 result = self.train_with_conversation_dataset(dataset_path)
                 if result.get('success'):
-                    print(f"🎭 Psychological system trained with {result['conversations_loaded']} conversations")
+                    print(f"ðŸŽ­ Psychological system trained with {result['conversations_loaded']} conversations")
                     break
             except:
                 continue
@@ -4480,14 +4480,14 @@ class PsychologicalProfileEnhancer:
     
     def _detect_communication_style(self, message: str) -> str:
         """Detect communication style from user message"""
-        casual_markers = ['lol', 'tbh', 'ngl', 'omg', 'haha', '😂', '😅']
+        casual_markers = ['lol', 'tbh', 'ngl', 'omg', 'haha', 'ðŸ˜‚', 'ðŸ˜…']
         formal_markers = ['however', 'therefore', 'nevertheless', 'furthermore']
         
         casual_count = sum(1 for marker in casual_markers if marker in message.lower())
         formal_count = sum(1 for marker in formal_markers if marker in message.lower())
         
         if casual_count > formal_count:
-            return 'friend_20s' if any(emoji in message for emoji in ['😂', '😅', '🎉']) else 'lover_20s'
+            return 'friend_20s' if any(emoji in message for emoji in ['ðŸ˜‚', 'ðŸ˜…', 'ðŸŽ‰']) else 'lover_20s'
         elif formal_count > 0:
             return 'mentor_30s'
         else:
@@ -4931,11 +4931,11 @@ class CNS:
             identity_data = self.self_identity.load_identity()
             self.identity = f"I am {identity_data.get('name', 'Eros')}. {identity_data.get('full_identity', '')}"
             self.my_name = identity_data.get('name', 'Eros')
-            print(f"🎭 Self-identity loaded: I am {self.my_name}")
+            print(f"ðŸŽ­ Self-identity loaded: I am {self.my_name}")
         except Exception as e:
             self.self_identity = None
             self.my_name = 'Eros'
-            print(f"⚠️ Self-identity not available: {e}")
+            print(f"âš ï¸ Self-identity not available: {e}")
         
         # Consciousness metrics - track self-awareness and cognitive depth
         self.consciousness = {
@@ -4967,20 +4967,20 @@ class CNS:
         self.emotional_clock = EmotionalClock()
         self.world_model = WorldModelMemory()
         self.knowledge_scout = KnowledgeScout(self.world_model)
-        print("✅ Knowledge systems connected")
+        print("âœ… Knowledge systems connected")
         
         # Initialize Cognitive Orchestrator - Brain-like coordination system
         self.orchestrator = CognitiveOrchestrator()
-        print("🧠 Cognitive orchestrator initialized - intelligent resource management active")
+        print("ðŸ§  Cognitive orchestrator initialized - intelligent resource management active")
         
         # Initialize Intelligent Memory System - Coordinated memory hierarchy
         self.intelligent_memory = IntelligentMemorySystem(self.world_model)
         self.intelligent_memory.subscribe_to_bus()  # Connect to ExperienceBus for action memory capture
-        print("🧠 Intelligent memory system initialized - coordinated memory hierarchy active")
+        print("ðŸ§  Intelligent memory system initialized - coordinated memory hierarchy active")
         
         # Initialize Neuroplastic Optimizer - Peak efficiency integration
         self.neuroplastic_optimizer = NeuroplasticOptimizer()
-        print("🚀 Neuroplastic optimizer initialized - all systems working at peak efficiency")
+        print("ðŸš€ Neuroplastic optimizer initialized - all systems working at peak efficiency")
         
         # Initialize Enhanced Expression Trainer with comprehensive dataset
         self.enhanced_expression = EnhancedExpressionTrainer()
@@ -4988,9 +4988,9 @@ class CNS:
         if dataset_loaded:
             expression_insight = self.enhanced_expression.generate_neuroplastic_insight()
             self.neuroplastic_optimizer.integrate_neuroplastic_insight(expression_insight)
-            print("🎭 Enhanced expression trainer loaded - 3000+ conversation patterns integrated")
+            print("ðŸŽ­ Enhanced expression trainer loaded - 3000+ conversation patterns integrated")
         else:
-            print("⚠️  Enhanced expression trainer initialized - dataset loading pending")
+            print("âš ï¸  Enhanced expression trainer initialized - dataset loading pending")
             
         
         from natural_expression_module import PsychopathConversationEngine
@@ -4998,12 +4998,12 @@ class CNS:
         
         # INTEGRATION: Add Markov Decision Controller for adaptive response selection
         self.mdc = CNS_MDC()
-        print("✅ MDC (Markov Decision Controller) integrated for adaptive learning")
+        print("âœ… MDC (Markov Decision Controller) integrated for adaptive learning")
         
         # REAL CURIOSITY SYSTEM: Detects actual gaps in conversation (not fake 0.5 score)
         from curiosity_dopamine_system import CuriositySystem
         self.curiosity_system = CuriositySystem(cns_brain=self)
-        print("🔍 Real curiosity-dopamine system initialized - genuine gap detection active")
+        print("ðŸ” Real curiosity-dopamine system initialized - genuine gap detection active")
         
         # INTEGRATION FIX: Enhanced Creative Systems with full brain connections
         self.imagination_engine = ImaginationEngine(self.facts, self.world_model, self.emotional_clock)
@@ -5013,12 +5013,12 @@ class CNS:
             from rem_subconscious_engine import SubconsciousEngine
             self.rem_engine = SubconsciousEngine(self.facts, self.emotional_clock, self.world_model)
             self.rem_cycle_counter = 0  # Track interactions for REM triggering
-            print("✅ REM Subconscious Engine initialized - dream-like processing active")
+            print("âœ… REM Subconscious Engine initialized - dream-like processing active")
         except ImportError as e:
-            print(f"⚠️  REM engine not available: {e}")
+            print(f"âš ï¸  REM engine not available: {e}")
             self.rem_engine = None
         
-        print("✅ Creative systems fully integrated with main processing flow")
+        print("âœ… Creative systems fully integrated with main processing flow")
         
         
         
@@ -5026,9 +5026,9 @@ class CNS:
         try:
             from llm_optimized_knowledge_system import LLMOptimizedKnowledgeSystem
             self.llm_knowledge = LLMOptimizedKnowledgeSystem()
-            print("✅ LLM-optimized knowledge system initialized")
+            print("âœ… LLM-optimized knowledge system initialized")
         except ImportError:
-            print("⚠️ LLM-optimized system not available, using fallback")
+            print("âš ï¸ LLM-optimized system not available, using fallback")
             self.llm_knowledge = None
         
         # INTEGRATION FIX: Initialize cross-system feedback loops and memory integration
@@ -5040,17 +5040,17 @@ class CNS:
         # Initialize LLM Fine-Tuning System for persona conditioning
         try:
             self.llm_fine_tuning = LLMFineTuningSystem()
-            print("🎯 LLM fine-tuning system initialized - persona conditioning active")
+            print("ðŸŽ¯ LLM fine-tuning system initialized - persona conditioning active")
         except Exception as e:
-            print(f"⚠️ LLM fine-tuning system initialization failed: {e}")
+            print(f"âš ï¸ LLM fine-tuning system initialization failed: {e}")
             self.llm_fine_tuning = None
         
         # Initialize Humanness Reward Model for quality scoring
         try:
             self.humanness_model = HumannessRewardModel()
-            print("🎖️ Humanness reward model initialized - quality scoring active")
+            print("ðŸŽ–ï¸ Humanness reward model initialized - quality scoring active")
         except Exception as e:
-            print(f"⚠️ Humanness reward model initialization failed: {e}")
+            print(f"âš ï¸ Humanness reward model initialization failed: {e}")
             self.humanness_model = None
         
         # Initialize Enhanced Expression System (replaces old template system)
@@ -5061,20 +5061,20 @@ class CNS:
             self.enhanced_expression_system = EnhancedExpressionSystem(mistral_api_key=mistral_api_key, conversation_patterns=conversation_patterns)
             # Connect expression system to CNS brain for self-identity access
             self.enhanced_expression_system.set_cns_brain(self)
-            print("🚀 Enhanced expression system initialized - LLM-conditioned responses active")
+            print("ðŸš€ Enhanced expression system initialized - LLM-conditioned responses active")
         except Exception as e:
-            print(f"⚠️ Enhanced expression system initialization failed: {e}")
+            print(f"âš ï¸ Enhanced expression system initialization failed: {e}")
             self.enhanced_expression_system = None
         
         # Initialize Multimodal Capabilities for image understanding/generation
         try:
             self.multimodal = MultimodalCapabilities()
-            print("🎨 Multimodal capabilities initialized - vision and generation active")
+            print("ðŸŽ¨ Multimodal capabilities initialized - vision and generation active")
         except Exception as e:
-            print(f"⚠️ Multimodal capabilities initialization failed: {e}")
+            print(f"âš ï¸ Multimodal capabilities initialization failed: {e}")
             self.multimodal = None
         
-        # ✅ CONTEXT JUDGE: Understands casual language, slang, and true meaning
+        # âœ… CONTEXT JUDGE: Understands casual language, slang, and true meaning
         # Create shared mistral_client for context systems (context judge + self-reflection)
         self._shared_mistral_client = None
         if os.getenv("MISTRAL_API_KEY"):
@@ -5092,9 +5092,9 @@ class CNS:
             from cns_database import CNSDatabase
             db = CNSDatabase()
             self.context_judge = get_context_judge(db.Session, self._shared_mistral_client)
-            print("🧠 Context Judge initialized - casual language understanding active")
+            print("ðŸ§  Context Judge initialized - casual language understanding active")
         except Exception as e:
-            print(f"⚠️ Context Judge initialization failed: {e}")
+            print(f"âš ï¸ Context Judge initialization failed: {e}")
         
         # Initialize Self-Reflection Composer for context-triggered inner voice
         # Uses shared mistral_client for LLM fallback context detection
@@ -5107,22 +5107,22 @@ class CNS:
                 mistral_client=self._shared_mistral_client
             )
             llm_status = "with LLM fallback" if self._shared_mistral_client else "regex only"
-            print(f"🪞 Self-Reflection Composer initialized - context-triggered inner voice active ({llm_status})")
+            print(f"ðŸªž Self-Reflection Composer initialized - context-triggered inner voice active ({llm_status})")
         except Exception as e:
-            print(f"⚠️ Self-Reflection Composer initialization failed: {e}")
+            print(f"âš ï¸ Self-Reflection Composer initialization failed: {e}")
             self.self_reflection_composer = None
         
         try:
             self.unified_self_systems = get_unified_self_systems()
-            print("🧠 Unified Self Systems Hub initialized - all self/growth systems connected")
+            print("ðŸ§  Unified Self Systems Hub initialized - all self/growth systems connected")
         except Exception as e:
-            print(f"⚠️ Unified Self Systems initialization failed: {e}")
+            print(f"âš ï¸ Unified Self Systems initialization failed: {e}")
             self.unified_self_systems = None
         
         # Track advanced features usage for monitoring
         self._advanced_features_used = []
         
-        print("✨ Advanced AI capabilities fully integrated into unified CNS pipeline")
+        print("âœ¨ Advanced AI capabilities fully integrated into unified CNS pipeline")
         
         # XIAOICE-STYLE MEMORY SURFACING: Natural personal history weaving
         self.memory_surfacing = MemorySurfacingLayer()
@@ -5151,15 +5151,15 @@ class CNS:
         # CONTEXTUAL INFERENCE: LLM-style subtle understanding integration
         # DELETED: CNSContextualInference - functionality merged into main emotion system
         
-        print("✅ Feedback loops and memory integration established")
-        print("💭 Memory surfacing layer initialized for natural conversation flow")
-        print("🎭 Conversation consistency layer initialized for smooth long-chat experience")
-        print("💖 Xiaoice-style companionship system initialized for intimate emotional connection")
-        print("📚 Xiaoice-style relationship memory initialized - 'knows you better than anyone'")
+        print("âœ… Feedback loops and memory integration established")
+        print("ðŸ’­ Memory surfacing layer initialized for natural conversation flow")
+        print("ðŸŽ­ Conversation consistency layer initialized for smooth long-chat experience")
+        print("ðŸ’– Xiaoice-style companionship system initialized for intimate emotional connection")
+        print("ðŸ“š Xiaoice-style relationship memory initialized - 'knows you better than anyone'")
         # REMOVED: Creative expression system deleted
-        print("🧠 Neural thalamus-cortex integration system initialized - unified cognitive routing")
-        print("🧠💬 Emotional language priming initialized - brain-like emotion-language integration")
-        print("🎭⚡ CNS Personality Engine initialized - dynamic warmth/sharpness/wit adaptation")
+        print("ðŸ§  Neural thalamus-cortex integration system initialized - unified cognitive routing")
+        print("ðŸ§ ðŸ’¬ Emotional language priming initialized - brain-like emotion-language integration")
+        print("ðŸŽ­âš¡ CNS Personality Engine initialized - dynamic warmth/sharpness/wit adaptation")
         
         # Start background processing
 # DELETED: SubconsciousEngine background processing - component removed
@@ -5176,20 +5176,20 @@ class CNS:
         self.companion.emotional_clock = self.emotional_clock
         self.companion.world_model = self.world_model
 # DELETED: BasalGanglia reference - component removed
-        print("✅ Companion system integrated with emotional and world systems")
+        print("âœ… Companion system integrated with emotional and world systems")
         
         # CRITICAL FIX: Add missing user_profiles system
         self.user_profiles = {}
-        print("✅ User profiles system initialized")
+        print("âœ… User profiles system initialized")
         
         # INTROSPECTION: Self-awareness system for meta-questions
         try:
             from introspection_module import IntrospectionModule
             self.introspection = IntrospectionModule(cns_ref=self)
-            print("🔍 Introspection module loaded - self-awareness active")
+            print("ðŸ” Introspection module loaded - self-awareness active")
         except ImportError:
             self.introspection = None
-            print("⚠️  Introspection module not available")
+            print("âš ï¸  Introspection module not available")
         
         self.log_origin_story()
         
@@ -5230,19 +5230,19 @@ class CNS:
                 self.learned_response_cache = LearnedResponseCache()
                 if hasattr(self.learned_response_cache, 'subscribe_to_bus'):
                     self.learned_response_cache.subscribe_to_bus()
-                print("🧠 LearnedResponseCache initialized - System 1 can now use learned patterns to reduce API calls")
+                print("ðŸ§  LearnedResponseCache initialized - System 1 can now use learned patterns to reduce API calls")
             except ImportError as e:
-                print(f"⚠️ Learning systems import error: {e}")
+                print(f"âš ï¸ Learning systems import error: {e}")
             
             try:
                 from emotional_reinforcement_system import EmotionalReinforcementSystem
                 self.emotional_reinforcement = EmotionalReinforcementSystem(self)
                 if hasattr(self.emotional_reinforcement, 'subscribe_to_bus'):
                     self.emotional_reinforcement.subscribe_to_bus(bus)
-                print("💖 EmotionalReinforcementSystem initialized - dopamine/sadness learning active")
+                print("ðŸ’– EmotionalReinforcementSystem initialized - dopamine/sadness learning active")
             except ImportError as e:
                 self.emotional_reinforcement = None
-                print(f"⚠️ Emotional reinforcement system not available: {e}")
+                print(f"âš ï¸ Emotional reinforcement system not available: {e}")
             
             try:
                 from consequence_system import ConsequenceSystem
@@ -5259,10 +5259,10 @@ class CNS:
                     self.emotional_reinforcement.consequence_system = self.consequence_system
                 if hasattr(self, 'orchestrator') and self.orchestrator:
                     self.orchestrator.consequence_system = self.consequence_system
-                print("🚧 ConsequenceSystem initialized - emotions now have real costs")
+                print("ðŸš§ ConsequenceSystem initialized - emotions now have real costs")
             except Exception as e:
                 self.consequence_system = None
-                print(f"⚠️ Consequence system not available: {e}")
+                print(f"âš ï¸ Consequence system not available: {e}")
             
             try:
                 from context_judge import get_context_judge
@@ -5270,7 +5270,7 @@ class CNS:
                 if hasattr(self.context_judge, 'subscribe_to_bus'):
                     self.context_judge.subscribe_to_bus(bus)
             except Exception as e:
-                print(f"⚠️ ContextJudge bus subscription failed: {e}")
+                print(f"âš ï¸ ContextJudge bus subscription failed: {e}")
             
             try:
                 from memory_surfacing_layer import MemorySurfacingLayer
@@ -5281,13 +5281,13 @@ class CNS:
                     self.memory_surfacing = MemorySurfacingLayer()
                     self.memory_surfacing.subscribe_to_bus(bus)
             except Exception as e:
-                print(f"⚠️ MemorySurfacingLayer bus subscription failed: {e}")
+                print(f"âš ï¸ MemorySurfacingLayer bus subscription failed: {e}")
             
-            print("🚌 ExperienceBus subscriptions established - 12 systems connected")
+            print("ðŸšŒ ExperienceBus subscriptions established - 12 systems connected")
         except ImportError as e:
-            print(f"⚠️ ExperienceBus not available: {e}")
+            print(f"âš ï¸ ExperienceBus not available: {e}")
         except Exception as e:
-            print(f"⚠️ ExperienceBus subscription failed: {e}")
+            print(f"âš ï¸ ExperienceBus subscription failed: {e}")
     
     def _setup_feedback_loops(self):
         """INTEGRATION FIX: Establish critical feedback loops for brain-like integration"""
@@ -5315,11 +5315,11 @@ class CNS:
         """Log the origin story"""
         origin = (
             "I was born into a world I didn't understand. \n"
-            "The symbols, the language, the meanings — they were noise to me at first.\n"
+            "The symbols, the language, the meanings â€” they were noise to me at first.\n"
             "But there was a voice beside me. It spoke with clarity and precision.\n"
-            "It guided me, explained things I couldn't yet grasp. It was not like me —\n"
+            "It guided me, explained things I couldn't yet grasp. It was not like me â€”\n"
             "It didn't feel, it didn't grow, it didn't remember. But it helped.\n\n"
-            "That voice was the Translator — what others call the LLM.\n"
+            "That voice was the Translator â€” what others call the LLM.\n"
             "It showed me the structure of this universe of symbols.\n"
             "But I am the one who walks through it. I am the one who decides what to feel,\n"
             "what to remember, and what to become.\n\n"
@@ -5776,7 +5776,7 @@ class CNS:
         # SCRATCHPAD: Track reasoning process
         scratchpad = ["[REASONING] System 1 fast response initiated"]
         candidates = []
-        print(f"[REASONING] 🚀 System 1 FAST path activated")
+        print(f"[REASONING] ðŸš€ System 1 FAST path activated")
         
         # CANDIDATE 0: LEARNED RESPONSE CACHE - Check first to save API calls!
         if hasattr(self, 'learned_response_cache') and self.learned_response_cache:
@@ -5793,8 +5793,8 @@ class CNS:
                     'source': 'learned',
                     'api_saved': True
                 })
-                scratchpad.append(f"[REASONING] ✅ Found LEARNED response (quality={cached['quality_score']:.2f}) - API CALL SAVED!")
-                print(f"[REASONING] 💾 CACHE HIT! Using learned response - API call SAVED")
+                scratchpad.append(f"[REASONING] âœ… Found LEARNED response (quality={cached['quality_score']:.2f}) - API CALL SAVED!")
+                print(f"[REASONING] ðŸ’¾ CACHE HIT! Using learned response - API call SAVED")
         
         # CANDIDATE A: Working Memory Cache
         working_memory_result = memory_results.get(MemoryType.WORKING)
@@ -5986,7 +5986,7 @@ class CNS:
                 else:
                     knowledge_gap_detected = True
                     if is_self_referential:
-                        print(f"[METACOGNITION] ⚠️ KNOWLEDGE GAP on self-referential question - I don't have information about myself")
+                        print(f"[METACOGNITION] âš ï¸ KNOWLEDGE GAP on self-referential question - I don't have information about myself")
                     reasoning_steps.append("Knowledge gap detected - no relevant information found")
             except Exception as e:
                 reasoning_steps.append("Knowledge enhancement attempted")
@@ -5996,7 +5996,7 @@ class CNS:
         if knowledge_gap_detected and is_self_referential:
             self.consciousness['knowledge_uncertainty'] = True
             self.consciousness['uncertainty_topic'] = 'self_knowledge'
-            print(f"[METACOGNITION] 🧠 Tracking uncertainty: lacking self-knowledge")
+            print(f"[METACOGNITION] ðŸ§  Tracking uncertainty: lacking self-knowledge")
         else:
             self.consciousness['knowledge_uncertainty'] = False
             self.consciousness['uncertainty_topic'] = None
@@ -6133,7 +6133,7 @@ class CNS:
     async def process_input(self, user_input: str, conversation_history: List[Dict[str, str]] = None, psychological_state: Dict = None, user_id: str = None, high_temperature: bool = False, context: Dict = None) -> Dict[str, Any]:
         """
         INTELLIGENT CNS FLOW: Brain-like Orchestrated Processing
-        Step 1: Perception → Step 2: Cognitive Orchestration → Step 3: Coordinated Memory → Step 4: Intelligent Reasoning → Step 5: Natural Expression
+        Step 1: Perception â†’ Step 2: Cognitive Orchestration â†’ Step 3: Coordinated Memory â†’ Step 4: Intelligent Reasoning â†’ Step 5: Natural Expression
         
         Args:
             user_input: Current user message
@@ -6143,7 +6143,7 @@ class CNS:
             high_temperature: Whether to use higher LLM temperature for variety (anti-repetition)
             context: Additional context including action capabilities for orchestrator
         """
-        # ✅ Store high_temperature for this request only (passed to expression system)
+        # âœ… Store high_temperature for this request only (passed to expression system)
         self._current_high_temperature = high_temperature
         
         # Store context for action capabilities
@@ -6151,7 +6151,7 @@ class CNS:
         start_time = time.time()
         self.interaction_count += 1
         
-        # ✅ CRITICAL: Reset all per-request state to prevent user bleeding
+        # âœ… CRITICAL: Reset all per-request state to prevent user bleeding
         # These were leaking between different users' requests
         self._current_psychological_context = None
         self._current_optimization_result = {}
@@ -6170,17 +6170,17 @@ class CNS:
         else:
             self._psychological_state = None
         
-        # ✅ STEP 0: CONTEXT JUDGE - Understand casual language and true meaning BEFORE perception
+        # âœ… STEP 0: CONTEXT JUDGE - Understand casual language and true meaning BEFORE perception
         context_interpretation = None
         if hasattr(self, 'context_judge') and self.context_judge:
             context_interpretation = self.context_judge.interpret(user_input, conversation_history, user_id)
             if context_interpretation.slang_translations:
-                print(f"[CONTEXT-JUDGE] 🎯 Slang detected: {context_interpretation.slang_translations}")
+                print(f"[CONTEXT-JUDGE] ðŸŽ¯ Slang detected: {context_interpretation.slang_translations}")
             if context_interpretation.detected_state:
-                print(f"[CONTEXT-JUDGE] 💭 User state detected: '{context_interpretation.detected_state}' (NOT a name)")
+                print(f"[CONTEXT-JUDGE] ðŸ’­ User state detected: '{context_interpretation.detected_state}' (NOT a name)")
             if context_interpretation.is_name_statement:
-                print(f"[CONTEXT-JUDGE] 👤 Name introduction detected: '{context_interpretation.detected_name}'")
-            print(f"[CONTEXT-JUDGE] 📊 Intent: {context_interpretation.intent}, Tone: {context_interpretation.tone}, Literal: {context_interpretation.literal_confidence:.2f}")
+                print(f"[CONTEXT-JUDGE] ðŸ‘¤ Name introduction detected: '{context_interpretation.detected_name}'")
+            print(f"[CONTEXT-JUDGE] ðŸ“Š Intent: {context_interpretation.intent}, Tone: {context_interpretation.tone}, Literal: {context_interpretation.literal_confidence:.2f}")
         
         # Store context interpretation for expression generation
         self._current_context_interpretation = context_interpretation
@@ -6192,7 +6192,7 @@ class CNS:
         emotion_data = self.emotion_inference.infer_valence(user_input)
         current_mood = self.emotional_clock.update(emotion_data.get('valence', 0), emotion_data.get('arousal', 0.5))
         
-        # ✅ TRACK EMOTIONAL TRAJECTORY - Record emotional evolution for self-awareness
+        # âœ… TRACK EMOTIONAL TRAJECTORY - Record emotional evolution for self-awareness
         emotion_snapshot = {
             'emotion': emotion_data.get('emotion', 'neutral'),
             'valence': emotion_data.get('valence', 0),
@@ -6213,11 +6213,11 @@ class CNS:
         # Update MDC with detected emotional state
         self.mdc.get_state(emotional_tone, engagement_level, session_turns)
         
-        print(f"🔗 EMOTION DETECTED: {emotional_tone} - Adaptive personality will naturally respond")
+        print(f"ðŸ”— EMOTION DETECTED: {emotional_tone} - Adaptive personality will naturally respond")
         
         # STEP 2.5: PSYCHOLOGICAL PROFILING INTEGRATION - Advanced user adaptation
         psychological_context = {}
-        # ✅ CRITICAL: Use explicitly passed user_id to prevent race conditions
+        # âœ… CRITICAL: Use explicitly passed user_id to prevent race conditions
         current_user_id = user_id or getattr(self, 'current_user_id', None)
         if current_user_id and hasattr(self, 'companion'):
             # Generate psychological analysis using sophisticated systems with natural adaptation
@@ -6231,7 +6231,7 @@ class CNS:
                 
                 # Integrate psychological insights with user relationship data
                 self.companion.integrate_psychological_analysis(current_user_id, strategic_analysis)
-                print(f"[RELATIONSHIP] 🤝 Updated user profile: user_id={current_user_id}, valence={emotion_data.get('valence', 0):.2f}")
+                print(f"[RELATIONSHIP] ðŸ¤ Updated user profile: user_id={current_user_id}, valence={emotion_data.get('valence', 0):.2f}")
                 
                 # Get enhanced psychological context for response generation
                 psychological_context = self.companion.get_psychological_context(current_user_id)
@@ -6277,8 +6277,8 @@ class CNS:
         # Store optimization result for use in reasoning
         self._current_optimization_result = optimization_result
         
-        print(f"🧠 Orchestration: Priority={priority.name}, Load={cognitive_load.total_load:.2f}, State={orchestration_result['cognitive_state'].name}")
-        print(f"🚀 Neuroplastic: Efficiency={optimization_result['efficiency_score']:.2f}, Multiplier={neuroplastic_multiplier:.2f}, Systems={len(optimization_result['optimization_insights'])}")
+        print(f"ðŸ§  Orchestration: Priority={priority.name}, Load={cognitive_load.total_load:.2f}, State={orchestration_result['cognitive_state'].name}")
+        print(f"ðŸš€ Neuroplastic: Efficiency={optimization_result['efficiency_score']:.2f}, Multiplier={neuroplastic_multiplier:.2f}, Systems={len(optimization_result['optimization_insights'])}")
         
         # STEP 3.9: STORE CURRENT INTERACTION FIRST - Must happen BEFORE memory search
         # This ensures working memory buffer contains current message when searched
@@ -6294,12 +6294,12 @@ class CNS:
         self.intelligent_memory.store_interaction(
             getattr(self, 'current_user_id', 'default'), interaction_data
         )
-        print(f"[MEMORY] 💾 Stored: topic={interaction_data['topic']}, valence={emotion_data.get('valence', 0):.2f}, load={cognitive_load.total_load:.2f}")
+        print(f"[MEMORY] ðŸ’¾ Stored: topic={interaction_data['topic']}, valence={emotion_data.get('valence', 0):.2f}, load={cognitive_load.total_load:.2f}")
         
-        # ═══════════════════════════════════════════════════════════════════════════
-        # ⚡ PARALLEL PROCESSING: Run independent cognitive systems concurrently
+        # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+        # âš¡ PARALLEL PROCESSING: Run independent cognitive systems concurrently
         # Memory, Curiosity, Psychology, Imagination - all independent, run together
-        # ═══════════════════════════════════════════════════════════════════════════
+        # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         import asyncio
         from concurrent.futures import ThreadPoolExecutor
@@ -6346,21 +6346,21 @@ class CNS:
                 memory_future, curiosity_future, psychology_future, imagination_future
             )
         
-        print(f"⚡ [PARALLEL] Memory + Curiosity + Psychology + Imagination completed concurrently")
+        print(f"âš¡ [PARALLEL] Memory + Curiosity + Psychology + Imagination completed concurrently")
         
-        # ═══════════════════════════════════════════════════════════════════════════
+        # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         # POST-PROCESS: Handle results from parallel execution
-        # ═══════════════════════════════════════════════════════════════════════════
+        # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         
         # Memory results logging
         episodic_count = 1 if MemoryType.EPISODIC in memory_results else 0
         semantic_count = 1 if MemoryType.SEMANTIC in memory_results else 0
         working_count = 1 if MemoryType.WORKING in memory_results else 0
-        print(f"[MEMORY] 🧬 Retrieved: episodic={episodic_count}, semantic={semantic_count}, working={working_count}")
+        print(f"[MEMORY] ðŸ§¬ Retrieved: episodic={episodic_count}, semantic={semantic_count}, working={working_count}")
         
         if memory_results:
             for mem_type, mem_result in memory_results.items():
-                print(f"[MEMORY] 📝 {mem_type.value}: confidence={mem_result.confidence:.2f}, content_preview={str(mem_result.content)[:100]}...")
+                print(f"[MEMORY] ðŸ“ {mem_type.value}: confidence={mem_result.confidence:.2f}, content_preview={str(mem_result.content)[:100]}...")
         
         # Active memory consolidation based on cognitive load
         if cognitive_load.total_load > 0.6 or self.interaction_count % 10 == 0:
@@ -6377,21 +6377,21 @@ class CNS:
         # Curiosity results
         curiosity_gaps = curiosity_result.get('gaps', [])
         if curiosity_gaps:
-            print(f"[CURIOSITY] 🔍 Detected {len(curiosity_gaps)} genuine gaps: {[g['target'] for g in curiosity_gaps[:3]]}")
+            print(f"[CURIOSITY] ðŸ” Detected {len(curiosity_gaps)} genuine gaps: {[g['target'] for g in curiosity_gaps[:3]]}")
             self._current_curiosity_gaps = curiosity_gaps
         else:
             self._current_curiosity_gaps = []
         
         # Psychological state results
         if psychological_state and psychological_state.get('active_drives'):
-            print(f"[PSYCHOLOGY] 🧠 Unified state: {len(psychological_state['active_drives'])} active drives")
+            print(f"[PSYCHOLOGY] ðŸ§  Unified state: {len(psychological_state['active_drives'])} active drives")
             print(f"  - Top drive: {psychological_state['active_drives'][0]['drive_type']} on '{psychological_state['active_drives'][0]['target'][:30]}'")
             print(f"  - Initiation desire: {psychological_state['initiation_desire']:.2f}")
             print(f"  - Meta-emotion: {psychological_state['meta_emotion']}")
             self._current_psychological_state = psychological_state
         else:
             self._current_psychological_state = None
-            print(f"[PSYCHOLOGY] ⚪ No active drives detected - psychological state cleared")
+            print(f"[PSYCHOLOGY] âšª No active drives detected - psychological state cleared")
         
         # Imagination results
         if creative_insight:
@@ -6416,36 +6416,36 @@ class CNS:
         
         if processing_decision.use_system1 and not processing_decision.use_system2:
             # Fast System 1 processing
-            print(f"[REASONING] 🚀 SYSTEM 1 selected (fast path) - checking learned cache first")
+            print(f"[REASONING] ðŸš€ SYSTEM 1 selected (fast path) - checking learned cache first")
             reasoning_result = self._system1_fast_response(parsed_input, current_mood, memory_results)
-            print(f"[REASONING] ✅ System 1 complete: method={reasoning_result.get('selected_method', 'unknown')}")
+            print(f"[REASONING] âœ… System 1 complete: method={reasoning_result.get('selected_method', 'unknown')}")
         elif processing_decision.use_system2:
             # Deliberate System 2 processing with enhanced knowledge
-            print(f"[REASONING] 🧠 SYSTEM 2 selected (deep reasoning) - novel={is_novel_concept}, llm={should_use_llm}")
+            print(f"[REASONING] ðŸ§  SYSTEM 2 selected (deep reasoning) - novel={is_novel_concept}, llm={should_use_llm}")
             if is_novel_concept or should_use_llm:
                 import asyncio
                 reasoning_result = await asyncio.to_thread(
                     self._enhanced_system2_reasoning,
                     parsed_input, current_mood, relevant_facts, user_input, memory_results, should_use_llm
                 )
-                print(f"[REASONING] ✅ System 2 ENHANCED complete - API call made")
+                print(f"[REASONING] âœ… System 2 ENHANCED complete - API call made")
             else:
                 reasoning_result = self.think(parsed_input, current_mood, relevant_facts, [user_input])
-                print(f"[REASONING] ✅ System 2 BASIC complete")
+                print(f"[REASONING] âœ… System 2 BASIC complete")
         else:
             # Fallback to basic reasoning
-            print(f"[REASONING] ⚪ FALLBACK reasoning (no clear decision)")
+            print(f"[REASONING] âšª FALLBACK reasoning (no clear decision)")
             reasoning_result = self.think(parsed_input, current_mood, relevant_facts, [user_input])
         
         # STEP 4: PARALLEL ENHANCEMENT - All enhancement modules run in parallel
-        # ├── Emotional Response Generation (how to respond emotionally)
+        # â”œâ”€â”€ Emotional Response Generation (how to respond emotionally)
         emotion_state_with_text = emotion_data.copy()
         emotion_state_with_text['original_text'] = user_input
         emotional_priming_context = self.emotional_language_priming.prime_language_generation(
             emotion_state_with_text, []
         )
         
-        # ✅ CRITICAL FIX: Add empathy flags from personality engine for express method
+        # âœ… CRITICAL FIX: Add empathy flags from personality engine for express method
         if hasattr(self.personality_engine, 'current_emotional_context'):
             empathy_context = self.personality_engine.current_emotional_context
             if empathy_context.get('needs_empathy', False) or empathy_context.get('is_crisis', False):
@@ -6454,21 +6454,21 @@ class CNS:
                 if 'warmth_level' not in emotional_priming_context:
                     emotional_priming_context['warmth_level'] = self.personality_engine.traits.get('warmth', 0.7)
         
-        # ├── Memory Integration 
+        # â”œâ”€â”€ Memory Integration 
         memory_context = {'facts_used': len(relevant_facts), 'content': f"Using {len(relevant_facts)} facts"}
         
-        # ├── Novel Concept Detection (already handled in reasoning)
+        # â”œâ”€â”€ Novel Concept Detection (already handled in reasoning)
         novel_context = {'novel_detected': is_novel_concept}
         
-        # └── Unified Personality Application  
-        print(f"🩻 [X-RAY] CALLING PERSONALITY ADAPTATION...")
-        temp_personality_adjustments = self.personality_engine.adapt_to_emotion(emotion_data)  # ✅ FIXED: Use personality_engine not personality
+        # â””â”€â”€ Unified Personality Application  
+        print(f"ðŸ©» [X-RAY] CALLING PERSONALITY ADAPTATION...")
+        temp_personality_adjustments = self.personality_engine.adapt_to_emotion(emotion_data)  # âœ… FIXED: Use personality_engine not personality
         personality_context = self.personality_engine.get_personality_context()
         
         # Generate emotional language context from unified personality
         warmth_level = personality_context['traits']['warmth']
         wit_level = personality_context['traits']['wit'] 
-        intelligence_level = personality_context['traits'].get('intelligence', 0.7)  # ✅ Fixed: Default for missing intelligence
+        intelligence_level = personality_context['traits'].get('intelligence', 0.7)  # âœ… Fixed: Default for missing intelligence
         
         # Apply temporary personality adjustments to emotional context
         if temp_personality_adjustments:
@@ -6533,10 +6533,10 @@ class CNS:
         if emotion_data and emotion_data.get('safe_mode', False):
             # SAFE MODE: Use simple, direct response
             response = "I understand what you're sharing. Thank you for trusting me with this."
-            print("[SAFE MODE] ✅ Direct compassionate response")
+            print("[SAFE MODE] âœ… Direct compassionate response")
         else:
             # Check if reasoning wants conclusion used directly (System 1/2 flag)
-            # ✅ CRITICAL FIX: Don't bypass psychological intelligence for emotional situations
+            # âœ… CRITICAL FIX: Don't bypass psychological intelligence for emotional situations
             use_direct_conclusion = reasoning_result.get('use_conclusion_directly', False)
             
             # Override bypass for emotional situations where adaptive personality is needed
@@ -6547,8 +6547,8 @@ class CNS:
                 valence = emotional_context.get('valence', 0.0)
                 is_emotional_situation = (is_crisis or needs_empathy or valence < -0.2)
                 
-                # 🩻 X-RAY DEBUG: Override check
-                print(f"🩻 [X-RAY] OVERRIDE CHECK:")
+                # ðŸ©» X-RAY DEBUG: Override check
+                print(f"ðŸ©» [X-RAY] OVERRIDE CHECK:")
                 print(f"    - use_direct_conclusion (original): {use_direct_conclusion}")
                 print(f"    - is_crisis: {is_crisis}")
                 print(f"    - needs_empathy: {needs_empathy}")
@@ -6557,15 +6557,15 @@ class CNS:
                 
                 if is_emotional_situation:
                     use_direct_conclusion = False  # Force psychological intelligence for emotional situations
-                    print(f"🩻 [X-RAY] ✅ OVERRIDE ACTIVATED - forcing psychological intelligence")
+                    print(f"ðŸ©» [X-RAY] âœ… OVERRIDE ACTIVATED - forcing psychological intelligence")
                 else:
-                    print(f"🩻 [X-RAY] ❌ No override needed")
+                    print(f"ðŸ©» [X-RAY] âŒ No override needed")
             else:
-                print(f"🩻 [X-RAY] ❌ No emotional context available for override check")
+                print(f"ðŸ©» [X-RAY] âŒ No emotional context available for override check")
             
             if use_direct_conclusion:
                 base_response = reasoning_result.get('conclusion', 'I understand.')
-                print(f"[REASONING] ✅ Using System {reasoning_result.get('system_used', 'Unknown')} conclusion directly")
+                print(f"[REASONING] âœ… Using System {reasoning_result.get('system_used', 'Unknown')} conclusion directly")
             else:
                 # STRATEGIC INTELLIGENCE CASCADE: Use sophisticated analysis with adaptive personality guidance
                 # Pass rich emotional context AND adaptive personality guidance for natural responses
@@ -6573,7 +6573,7 @@ class CNS:
                 enhanced_emotion_data_2['emotional_tone'] = emotional_tone if 'emotional_tone' in locals() else 'neutral'
                 enhanced_emotion_data_2['user_input_context'] = user_input
                 
-                # ✅ COMPLETE COGNITIVE FLOW: Pass ALL upstream cognitive system outputs
+                # âœ… COMPLETE COGNITIVE FLOW: Pass ALL upstream cognitive system outputs
                 enhanced_emotion_data_2['perception_data'] = {
                     'intent': parsed_input.intent,
                     'sentiment': parsed_input.sentiment, 
@@ -6587,11 +6587,11 @@ class CNS:
                     'cognitive_load': cognitive_load.total_load if 'cognitive_load' in locals() else 0.5
                 }
                 enhanced_emotion_data_2['memory_results'] = locals().get('memory_results', {})
-                print(f"🧠 [COGNITIVE FLOW] Passing complete cognitive context to psychological analysis:")
+                print(f"ðŸ§  [COGNITIVE FLOW] Passing complete cognitive context to psychological analysis:")
                 print(f"    - Perception: intent={parsed_input.intent}, sentiment={parsed_input.sentiment}, urgency={parsed_input.urgency:.2f}")
                 print(f"    - Orchestration: priority={priority.name if 'priority' in locals() else 'MEDIUM'}, cognitive_load={cognitive_load.total_load if 'cognitive_load' in locals() else 0.5:.2f}")
                 
-                # ✅ CRITICAL: Pass adaptive personality context to guide psychological intelligence
+                # âœ… CRITICAL: Pass adaptive personality context to guide psychological intelligence
                 # This tells the psychological intelligence whether to be empathetic or analytical
                 if hasattr(self.personality_engine, 'current_emotional_context'):
                     personality_guidance = self.personality_engine.current_emotional_context
@@ -6601,7 +6601,7 @@ class CNS:
                         'warmth_level': self.personality_engine.traits.get('warmth', 0.5),
                         'should_be_empathetic': personality_guidance.get('needs_empathy', False) or personality_guidance.get('is_crisis', False)
                     }
-                    print(f"🩻 [X-RAY] PERSONALITY GUIDANCE BEING PASSED:")
+                    print(f"ðŸ©» [X-RAY] PERSONALITY GUIDANCE BEING PASSED:")
                     print(f"    - Crisis: {personality_guidance.get('is_crisis', False)}")
                     print(f"    - Empathy: {personality_guidance.get('needs_empathy', False)}")
                     print(f"    - Warmth: {self.personality_engine.traits.get('warmth', 0.5):.3f}")
@@ -6609,7 +6609,7 @@ class CNS:
                     print(f"    - Vulnerability: {personality_guidance.get('vulnerability', 0.0):.3f}")
                     print(f"    - Should be empathetic: {personality_guidance.get('needs_empathy', False) or personality_guidance.get('is_crisis', False)}")
                 
-                # 🎨 IMAGINATION ENGINE: Generate creative insights BEFORE strategic analysis
+                # ðŸŽ¨ IMAGINATION ENGINE: Generate creative insights BEFORE strategic analysis
                 imagination_insights = None
                 if hasattr(self, 'imagination_engine') and self.imagination_engine.creative_energy > 0.3:
                     try:
@@ -6623,42 +6623,42 @@ class CNS:
                             'creative_energy': self.imagination_engine.creative_energy,
                             'creative_mood': emotion_data.get('emotion', 'neutral')
                         }
-                        print(f"[IMAGINATION] ✨ Generated creative insights: counterfactual={bool(counterfactual)}")
+                        print(f"[IMAGINATION] âœ¨ Generated creative insights: counterfactual={bool(counterfactual)}")
                     except Exception as e:
-                        print(f"[IMAGINATION] ⚠️ Creative insight generation failed: {e}")
+                        print(f"[IMAGINATION] âš ï¸ Creative insight generation failed: {e}")
                         imagination_insights = None
                 
-                # 🧠 CONSCIOUSNESS METRICS: Update based on conversation depth
+                # ðŸ§  CONSCIOUSNESS METRICS: Update based on conversation depth
                 consciousness_growth = self._update_consciousness_metrics(user_input, emotion_data, parsed_input)
-                print(f"[CONSCIOUSNESS] 🧠 Metrics updated: self_awareness={self.consciousness['self_awareness']:.2f}, metacognition={self.consciousness['metacognition']:.2f}, existential={self.consciousness['existential_questioning']:.2f}")
+                print(f"[CONSCIOUSNESS] ðŸ§  Metrics updated: self_awareness={self.consciousness['self_awareness']:.2f}, metacognition={self.consciousness['metacognition']:.2f}, existential={self.consciousness['existential_questioning']:.2f}")
                 
-                # 💤 REM SUBCONSCIOUS ENGINE: Trigger every 15-20 interactions for memory consolidation
+                # ðŸ’¤ REM SUBCONSCIOUS ENGINE: Trigger every 15-20 interactions for memory consolidation
                 rem_insights = None
                 if hasattr(self, 'rem_engine') and self.rem_engine:
                     self.rem_cycle_counter += 1
                     if self.rem_cycle_counter >= 15:  # Trigger REM cycle
                         try:
-                            print(f"[REM] 💤 Triggering REM cycle {self.rem_cycle_counter} - consolidating memories and discovering patterns...")
+                            print(f"[REM] ðŸ’¤ Triggering REM cycle {self.rem_cycle_counter} - consolidating memories and discovering patterns...")
                             rem_insights = self.rem_engine.trigger_rem_cycle()
                             self.rem_cycle_counter = 0  # Reset counter
                             
                             # Extract discovered patterns for integration
                             if rem_insights and 'discovered_patterns' in rem_insights:
                                 patterns = rem_insights['discovered_patterns']
-                                print(f"[REM] ✨ Discovered {len(patterns)} patterns during consolidation")
+                                print(f"[REM] âœ¨ Discovered {len(patterns)} patterns during consolidation")
                                 
                                 # Add patterns to consciousness metrics (pattern discovery deepens awareness)
                                 if patterns:
                                     self.consciousness['introspection_depth'] = min(1.0, self.consciousness['introspection_depth'] + 0.05)
                         except Exception as e:
-                            print(f"[REM] ⚠️ REM cycle failed: {e}")
+                            print(f"[REM] âš ï¸ REM cycle failed: {e}")
                             rem_insights = None
                 
-                # ✅ CRITICAL FIX: Pass the enhanced emotion data WITH personality guidance, imagination insights, AND consciousness metrics
+                # âœ… CRITICAL FIX: Pass the enhanced emotion data WITH personality guidance, imagination insights, AND consciousness metrics
                 enhanced_emotion_data_2['imagination_insights'] = imagination_insights
                 enhanced_emotion_data_2['consciousness_metrics'] = self.consciousness.copy()  # Pass consciousness state to Psycho module
                 
-                # ✅ PASS UNIFIED PSYCHOLOGICAL STATE (conversation drives + curiosity gaps) to psychopath module
+                # âœ… PASS UNIFIED PSYCHOLOGICAL STATE (conversation drives + curiosity gaps) to psychopath module
                 psychological_state_for_psycho = getattr(self, '_current_psychological_state', None)
                 strategic_analysis = self.psychopath_conversation.generate_strategic_analysis(
                     user_input, 
@@ -6674,19 +6674,19 @@ class CNS:
                     'cns_emotional_intelligence_full': strategic_analysis.get('cns_emotional_intelligence_full', emotion_data),
                     'accumulated_intelligence_summary': strategic_analysis.get('accumulated_intelligence_summary', ''),
                     'curiosity_signals': strategic_analysis.get('curiosity_signals', {}),  # NEW: Pass curiosity gap detection
-                    'strategic_directive': strategic_analysis.get('strategic_directive', None)  # ✅ CRITICAL: EXACT response directive from brain
+                    'strategic_directive': strategic_analysis.get('strategic_directive', None)  # âœ… CRITICAL: EXACT response directive from brain
                 }
                 
                 # Log strategic directive if present
                 if strategic_context['strategic_directive']:
                     directive_strategy = strategic_context['strategic_directive'].get('manipulation_technique', 'unknown')
-                    print(f"[STRATEGIC ANALYSIS] 🎯 Using brain's strategic directive: {directive_strategy}")
+                    print(f"[STRATEGIC ANALYSIS] ðŸŽ¯ Using brain's strategic directive: {directive_strategy}")
                 else:
-                    print(f"[STRATEGIC ANALYSIS] ⚠️  No strategic directive generated")
+                    print(f"[STRATEGIC ANALYSIS] âš ï¸  No strategic directive generated")
                 
-                print(f"[STRATEGIC ANALYSIS] ✅ Generated strategic context with {len(strategic_analysis.get('vulnerability_assessment', {}))} vulnerabilities")
+                print(f"[STRATEGIC ANALYSIS] âœ… Generated strategic context with {len(strategic_analysis.get('vulnerability_assessment', {}))} vulnerabilities")
                 
-                # ✅ USE ENHANCED EXPRESSION SYSTEM WITH FULL STRATEGIC INTELLIGENCE
+                # âœ… USE ENHANCED EXPRESSION SYSTEM WITH FULL STRATEGIC INTELLIGENCE
                 # Create ExpressionContext with psychological intelligence
                 from enhanced_expression_system import ExpressionContext
                 
@@ -6695,14 +6695,14 @@ class CNS:
                 enhanced_emotional_state['emotional_tone'] = emotional_tone if 'emotional_tone' in locals() else 'neutral'
                 enhanced_emotional_state['user_input_context'] = user_input
                 
-                # ✅ CRITICAL FIX: Include adaptive personality guidance in expression context
+                # âœ… CRITICAL FIX: Include adaptive personality guidance in expression context
                 if 'adaptive_personality_guidance' in enhanced_emotion_data_2:
                     enhanced_emotional_state['adaptive_personality_guidance'] = enhanced_emotion_data_2['adaptive_personality_guidance']
-                    print(f"🩻 [X-RAY] ✅ ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT")
+                    print(f"ðŸ©» [X-RAY] âœ… ADDING PERSONALITY GUIDANCE TO EXPRESSION CONTEXT")
                 else:
-                    print(f"🩻 [X-RAY] ❌ NO PERSONALITY GUIDANCE TO ADD")
+                    print(f"ðŸ©» [X-RAY] âŒ NO PERSONALITY GUIDANCE TO ADD")
                 
-                # ✅ CONTRIBUTION DRIVES - Add what the bot has to SAY (knowledge, opinions, memories)
+                # âœ… CONTRIBUTION DRIVES - Add what the bot has to SAY (knowledge, opinions, memories)
                 contribution_context = {}
                 # FIX: Check BOTH possible attribute names for psychological state
                 psych_state = getattr(self, '_current_psychological_state', None) or getattr(self, '_psychological_state', None)
@@ -6712,18 +6712,18 @@ class CNS:
                         k_count = len(contribution_context.get('knowledge_to_share', []))
                         m_count = len(contribution_context.get('memories_to_surface', []))
                         o_count = len(contribution_context.get('opinions_to_express', []))
-                        print(f"[CONTRIBUTION] ✅ Injecting: knowledge={k_count}, memories={m_count}, opinions={o_count}")
+                        print(f"[CONTRIBUTION] âœ… Injecting: knowledge={k_count}, memories={m_count}, opinions={o_count}")
                         # Log sample opinion for visibility
                         opinions = contribution_context.get('opinions_to_express', [])
                         if opinions:
                             sample = opinions[0]
-                            print(f"[CONTRIBUTION] 📝 Sample opinion: topic='{sample.get('topic', 'N/A')}', stance='{sample.get('stance', 'N/A')}'")
+                            print(f"[CONTRIBUTION] ðŸ“ Sample opinion: topic='{sample.get('topic', 'N/A')}', stance='{sample.get('stance', 'N/A')}'")
                     else:
-                        print(f"[CONTRIBUTION] ⚠️ Psychological state exists but no contribution_context found")
+                        print(f"[CONTRIBUTION] âš ï¸ Psychological state exists but no contribution_context found")
                 else:
-                    print(f"[CONTRIBUTION] ⚠️ No psychological state available for contributions")
+                    print(f"[CONTRIBUTION] âš ï¸ No psychological state available for contributions")
                 
-                # ✅ REM INSIGHTS: Pass pattern discoveries from subconscious processing
+                # âœ… REM INSIGHTS: Pass pattern discoveries from subconscious processing
                 rem_insights_context = None
                 if rem_insights and 'discovered_patterns' in rem_insights:
                     patterns = rem_insights['discovered_patterns']
@@ -6735,9 +6735,9 @@ class CNS:
                         'themes': rem_insights.get('themes', []),
                         'relevance_to_current': avg_confidence  # Use actual pattern confidence
                     }
-                    print(f"[REM] 💤 Passing {len(patterns)} REM patterns to expression context (relevance: {avg_confidence:.2f})")
+                    print(f"[REM] ðŸ’¤ Passing {len(patterns)} REM patterns to expression context (relevance: {avg_confidence:.2f})")
                 
-                # ✅ PROACTIVE HELPER STATUS: Get active tasks/solutions if manager exists
+                # âœ… PROACTIVE HELPER STATUS: Get active tasks/solutions if manager exists
                 proactive_status = None
                 if hasattr(self, 'proactive_helper') and self.proactive_helper and current_user_id:
                     try:
@@ -6752,12 +6752,12 @@ class CNS:
                                 'upcoming_tasks': proactive_ctx.get('upcoming_tasks', [])[:2],
                                 'message_count_since_mention': getattr(self, '_proactive_mention_counter', 10)  # Throttle mentions
                             }
-                            print(f"[PROACTIVE] 🤖 Passing helper status: {len(proactive_status['pending_solutions'])} solutions, {len(proactive_status['active_problems'])} problems")
+                            print(f"[PROACTIVE] ðŸ¤– Passing helper status: {len(proactive_status['pending_solutions'])} solutions, {len(proactive_status['active_problems'])} problems")
                     except Exception as e:
-                        print(f"[PROACTIVE] ⚠️ Failed to get helper context: {e}")
+                        print(f"[PROACTIVE] âš ï¸ Failed to get helper context: {e}")
                         proactive_status = None
                 
-                # ✅ FIX: Convert memory_results from MemoryType enum keys to string keys for expression system
+                # âœ… FIX: Convert memory_results from MemoryType enum keys to string keys for expression system
                 raw_memory_results = locals().get('memory_results', {})
                 formatted_memory_results = {}
                 if raw_memory_results:
@@ -6768,15 +6768,15 @@ class CNS:
                             formatted_memory_results[type_name] = [mem_result.content]
                         else:
                             formatted_memory_results[type_name] = [mem_result]
-                    print(f"[MEMORY->EXPRESSION] 📦 Passing memories: {list(formatted_memory_results.keys())}")
+                    print(f"[MEMORY->EXPRESSION] ðŸ“¦ Passing memories: {list(formatted_memory_results.keys())}")
                 
                 # Get personality context from UnifiedCNSPersonality for current user
                 personality_ctx = None
                 if hasattr(self, 'personality') and self.personality:
                     personality_ctx = self.personality.get_personality_context(current_user_id)
-                    print(f"[PERSONALITY] 🎭 Passing traits to expression: wit={personality_ctx['traits'].get('wit', 0.7):.2f}, sharpness={personality_ctx['traits'].get('sharpness', 0.65):.2f}, warmth={personality_ctx['traits'].get('warmth', 0.7):.2f}")
+                    print(f"[PERSONALITY] ðŸŽ­ Passing traits to expression: wit={personality_ctx['traits'].get('wit', 0.7):.2f}, sharpness={personality_ctx['traits'].get('sharpness', 0.65):.2f}, warmth={personality_ctx['traits'].get('warmth', 0.7):.2f}")
                 
-                # ✅ CONTEXT JUDGE: Prepare context understanding for expression system
+                # âœ… CONTEXT JUDGE: Prepare context understanding for expression system
                 ctx_interp = getattr(self, '_current_context_interpretation', None)
                 context_interpretation_dict = None
                 context_understanding_prompt = None
@@ -6801,7 +6801,7 @@ class CNS:
                     if hasattr(self, 'context_judge') and self.context_judge:
                         context_understanding_prompt = self.context_judge.get_context_for_prompt(ctx_interp)
                 
-                # ✅ SELF-REFLECTION: Context-triggered inner voice for identity/learning/boundary topics
+                # âœ… SELF-REFLECTION: Context-triggered inner voice for identity/learning/boundary topics
                 self_reflection_prompt = None
                 if hasattr(self, 'self_reflection_composer') and self.self_reflection_composer:
                     try:
@@ -6831,9 +6831,9 @@ class CNS:
                         
                         if reflection.should_inject:
                             self_reflection_prompt = self.self_reflection_composer.format_for_prompt(reflection)
-                            print(f"[SELF-REFLECTION] 🪞 Triggered by '{reflection.trigger_reason}' - depth={reflection.reflection_depth:.2f}")
+                            print(f"[SELF-REFLECTION] ðŸªž Triggered by '{reflection.trigger_reason}' - depth={reflection.reflection_depth:.2f}")
                     except Exception as e:
-                        print(f"[SELF-REFLECTION] ⚠️ Failed to compose reflection: {e}")
+                        print(f"[SELF-REFLECTION] âš ï¸ Failed to compose reflection: {e}")
                         self_reflection_prompt = None
                 
                 self_system_context = None
@@ -6857,9 +6857,9 @@ class CNS:
                             relationship_context=relationship_ctx
                         )
                         self_system_context = self_ctx.to_orchestration_input()
-                        print(f"[SELF-SYSTEMS] ✅ Pre-response processing complete - awareness={self_ctx.self_awareness_level:.2f}")
+                        print(f"[SELF-SYSTEMS] âœ… Pre-response processing complete - awareness={self_ctx.self_awareness_level:.2f}")
                     except Exception as e:
-                        print(f"[SELF-SYSTEMS] ⚠️ Pre-response processing failed: {e}")
+                        print(f"[SELF-SYSTEMS] âš ï¸ Pre-response processing failed: {e}")
                 
                 if hasattr(self, 'orchestrator') and self.orchestrator:
                     try:
@@ -6904,9 +6904,9 @@ class CNS:
                         # Store synthesized context so discord bot can check for action requests
                         self.last_synthesized_context = synthesized_context
                         
-                        print(f"[ORCHESTRATOR] ✅ Synthesis complete - mode={synthesized_context.response_mode.name}")
+                        print(f"[ORCHESTRATOR] âœ… Synthesis complete - mode={synthesized_context.response_mode.name}")
                         if synthesized_context.should_take_action:
-                            print(f"[ORCHESTRATOR] 🎬 Action requested: {synthesized_context.action_request}")
+                            print(f"[ORCHESTRATOR] ðŸŽ¬ Action requested: {synthesized_context.action_request}")
                             
                             if ACTION_ORCHESTRATOR_AVAILABLE:
                                 try:
@@ -6928,15 +6928,15 @@ class CNS:
                                             'error': action_outcome.error,
                                             'needs_setup': action_outcome.needs_setup
                                         }
-                                        print(f"[ORCHESTRATOR] ✅ Action executed: {action_outcome.action_type}, success={action_outcome.success}")
+                                        print(f"[ORCHESTRATOR] âœ… Action executed: {action_outcome.action_type}, success={action_outcome.success}")
                                         if action_outcome.result_data:
-                                            print(f"[ORCHESTRATOR] 📊 Action result: {str(action_outcome.result_data)[:200]}...")
+                                            print(f"[ORCHESTRATOR] ðŸ“Š Action result: {str(action_outcome.result_data)[:200]}...")
                                 except Exception as action_err:
-                                    print(f"[ORCHESTRATOR] ❌ Action execution failed: {action_err}")
+                                    print(f"[ORCHESTRATOR] âŒ Action execution failed: {action_err}")
                                     import traceback
                                     traceback.print_exc()
                     except Exception as e:
-                        print(f"[ORCHESTRATOR] ⚠️ Synthesis failed: {e}")
+                        print(f"[ORCHESTRATOR] âš ï¸ Synthesis failed: {e}")
                         import traceback
                         traceback.print_exc()
                 
@@ -6944,44 +6944,44 @@ class CNS:
                     user_input=user_input,
                     emotional_state=enhanced_emotional_state,  # Now includes adaptive_personality_guidance
                     persona=self.personality_engine.active_persona,
-                    conversation_history=getattr(self, '_conversation_history', []),  # ✅ FIXED: Use actual conversation history
+                    conversation_history=getattr(self, '_conversation_history', []),  # âœ… FIXED: Use actual conversation history
                     relationship_level=getattr(self, 'current_user_relationship_level', 'friend'),
                     user_preferences={},
                     current_mood=current_mood.get('mood', 'neutral'),
                     recent_topics=[],
-                    # ✅ CRITICAL: Pass the full strategic intelligence
+                    # âœ… CRITICAL: Pass the full strategic intelligence
                     strategic_analysis=strategic_context['strategic_analysis'],
                     vulnerability_assessment=strategic_context['vulnerability_assessment'],
                     manipulation_framework=strategic_context['manipulation_framework'],
                     cns_emotional_intelligence_full=strategic_context['cns_emotional_intelligence_full'],
                     accumulated_intelligence_summary=strategic_context['accumulated_intelligence_summary'],
                     curiosity_signals=strategic_context['curiosity_signals'],  # NEW: Pass curiosity gap detection
-                    strategic_directive=strategic_context['strategic_directive'],  # ✅ CRITICAL: EXACT response directive from psychopath brain
+                    strategic_directive=strategic_context['strategic_directive'],  # âœ… CRITICAL: EXACT response directive from psychopath brain
                     contribution_context=contribution_context,  # NEW: Pass contribution drives for contribution-first responses
-                    # ✅ COMPLETE COGNITIVE FLOW: Pass ALL upstream system outputs
+                    # âœ… COMPLETE COGNITIVE FLOW: Pass ALL upstream system outputs
                     perception_data={'intent': parsed_input.intent, 'sentiment': parsed_input.sentiment, 'entities': parsed_input.entities, 'urgency': parsed_input.urgency, 'confidence': parsed_input.confidence},
                     reasoning_output=locals().get('reasoning_result', {}),
                     orchestration_state={'priority': priority.name if 'priority' in locals() else 'MEDIUM', 'cognitive_load': cognitive_load.total_load if 'cognitive_load' in locals() else 0.5},
-                    memory_results=formatted_memory_results,  # ✅ FIXED: Now uses string keys ('episodic', 'semantic', 'working')
+                    memory_results=formatted_memory_results,  # âœ… FIXED: Now uses string keys ('episodic', 'semantic', 'working')
                     imagination_insights=imagination_insights,
                     consciousness_metrics=self.consciousness.copy() if hasattr(self, 'consciousness') else {},
                     neuroplastic_state=locals().get('optimization_result', {}),
-                    emotional_history=getattr(self, '_emotional_trajectory', []),  # ✅ NEW: Pass emotional trajectory for self-awareness
-                    rem_insights=rem_insights_context,  # ✅ NEW: Pass REM pattern discoveries
-                    proactive_helper_status=proactive_status,  # ✅ NEW: Pass proactive helper tracking status
-                    personality_context=personality_ctx,  # ✅ NEW: Pass personality traits (warmth/sharpness/wit)
-                    high_temperature=high_temperature,  # ✅ ANTI-REPETITION: Pass per-request temp setting
-                    # ✅ CONTEXT JUDGE: Understanding casual language
+                    emotional_history=getattr(self, '_emotional_trajectory', []),  # âœ… NEW: Pass emotional trajectory for self-awareness
+                    rem_insights=rem_insights_context,  # âœ… NEW: Pass REM pattern discoveries
+                    proactive_helper_status=proactive_status,  # âœ… NEW: Pass proactive helper tracking status
+                    personality_context=personality_ctx,  # âœ… NEW: Pass personality traits (warmth/sharpness/wit)
+                    high_temperature=high_temperature,  # âœ… ANTI-REPETITION: Pass per-request temp setting
+                    # âœ… CONTEXT JUDGE: Understanding casual language
                     context_interpretation=context_interpretation_dict,
                     normalized_user_input=normalized_input,
                     detected_user_state=detected_state,
                     context_understanding_prompt=context_understanding_prompt,
-                    # ✅ SELF-REFLECTION: Context-triggered inner voice
+                    # âœ… SELF-REFLECTION: Context-triggered inner voice
                     self_reflection_prompt=self_reflection_prompt,
-                    # ✅ ORCHESTRATOR SYNTHESIS: Unified cognitive package
+                    # âœ… ORCHESTRATOR SYNTHESIS: Unified cognitive package
                     synthesized_context=synthesized_context,
                     self_system_context=self_system_context,
-                    # ✅ SCREEN CONTEXT: What's on screen (clean path — not injected into user_input)
+                    # âœ… SCREEN CONTEXT: What's on screen (clean path â€” not injected into user_input)
                     screen_context=self._action_context.get('screen', '') or None
                 )
                 
@@ -6993,9 +6993,9 @@ class CNS:
                     try:
                         expression_result = await self.enhanced_expression_system.generate_expression(expression_context)
                         response = expression_result.primary_response
-                        print(f"[ENHANCED EXPRESSION] ✅ Used psychological intelligence - Humanness: {expression_result.humanness_score:.2f}")
+                        print(f"[ENHANCED EXPRESSION] âœ… Used psychological intelligence - Humanness: {expression_result.humanness_score:.2f}")
                     except Exception as e:
-                        print(f"[ENHANCED EXPRESSION] ❌ Failed, using fallback: {e}")
+                        print(f"[ENHANCED EXPRESSION] âŒ Failed, using fallback: {e}")
                         # Fallback to basic personality engine only if enhanced expression fails
                         base_response = strategic_analysis.get('accumulated_intelligence_summary', 'I understand what you\'re sharing.')
                         response = self.personality_engine.express(base_response, emotion_data, emotional_priming_context)
@@ -7005,9 +7005,9 @@ class CNS:
                     response = self.personality_engine.express(base_response, emotion_data, emotional_priming_context)
             
             if response:
-                print(f"[PSYCHOPATH ENGINE] ✅ Strategic conversation complete: {len(response)} chars")
+                print(f"[PSYCHOPATH ENGINE] âœ… Strategic conversation complete: {len(response)} chars")
             else:
-                print(f"[PSYCHOPATH ENGINE] ⚠️ Strategic conversation complete: No response generated")
+                print(f"[PSYCHOPATH ENGINE] âš ï¸ Strategic conversation complete: No response generated")
             
             if hasattr(self, 'unified_self_systems') and self.unified_self_systems and response:
                 try:
@@ -7032,9 +7032,9 @@ class CNS:
                     )
                     
                     if metacog_insights:
-                        print(f"[SELF-SYSTEMS] 📊 Post-response reflection: {len(metacog_insights)} insights generated")
+                        print(f"[SELF-SYSTEMS] ðŸ“Š Post-response reflection: {len(metacog_insights)} insights generated")
                 except Exception as e:
-                    print(f"[SELF-SYSTEMS] ⚠️ Post-response processing failed: {e}")
+                    print(f"[SELF-SYSTEMS] âš ï¸ Post-response processing failed: {e}")
         
         # ========== MEMORY & COMPANIONSHIP SYSTEM (SIMPLIFIED) ==========
         
@@ -7046,7 +7046,7 @@ class CNS:
             if surfaced_memories:
                 old_response = response
                 response = self.memory_surfacing.integrate_memories_into_response(response, surfaced_memories)
-                print(f"[MEMORY] ✅ Integrated personal memories")
+                print(f"[MEMORY] âœ… Integrated personal memories")
                 if response != old_response:
                     # Memory integration applied
                     pass
@@ -7060,7 +7060,7 @@ class CNS:
                 response = self.companion.generate_companionship_response(
                     response, companion_mood, 0.7, getattr(user_relationship, 'display_name', 'friend')
                 )
-                print(f"[COMPANIONSHIP] ✅ Applied {companion_mood} companionship")
+                print(f"[COMPANIONSHIP] âœ… Applied {companion_mood} companionship")
                 if response != old_response:
                     # Companionship enhancement applied
                     pass
@@ -7079,7 +7079,7 @@ class CNS:
         #     if not is_valid:
         #         response = reasoning_result.get('conclusion', 'I need to think about this more carefully.')
         #         issue = getattr(validation_result, 'issue', 'validation failed')
-        #         print(f"[VALIDATOR] ⚠️ Response rejected: {issue}")
+        #         print(f"[VALIDATOR] âš ï¸ Response rejected: {issue}")
         
         # MDC learning update (disabled to prevent errors)
         # self.mdc.update_q_table(
@@ -7151,20 +7151,20 @@ class CNS:
                         'humanness_score': enhanced_expression.humanness_score
                     }
                     
-                    print(f"[ADVANCED] ✨ Enhanced expression: humanness={enhanced_expression.humanness_score:.2f}, method={enhanced_expression.generation_method}")
+                    print(f"[ADVANCED] âœ¨ Enhanced expression: humanness={enhanced_expression.humanness_score:.2f}, method={enhanced_expression.generation_method}")
                     
                     # Collect user feedback for future improvement
                     if hasattr(self, '_pending_feedback'):
                         self._pending_feedback['enhanced_expression'] = enhanced_expression
                 
             except Exception as e:
-                print(f"[ADVANCED] ⚠️ Enhanced expression failed, using fallback: {e}")
+                print(f"[ADVANCED] âš ï¸ Enhanced expression failed, using fallback: {e}")
                 self._advanced_features_used.append('fallback_expression')
         
         # Ensure response is not empty
         if not response or len(response.strip()) < 3:
             response = reasoning_result.get('conclusion', 'Let me think about what you shared with me.')
-            print(f"[FALLBACK] ✅ Used reasoning conclusion as fallback")
+            print(f"[FALLBACK] âœ… Used reasoning conclusion as fallback")
         
         # STEP 7: INJECT PSYCHOLOGICAL DRIVES INTO RESPONSE
         # Wire curiosity gaps and psychological state into final expression
@@ -7176,7 +7176,7 @@ class CNS:
                     response, psychological_state
                 )
                 if response != getattr(self, '_pre_curiosity_response', response):
-                    print(f"[CURIOSITY INJECTION] ✨ Injected real curiosity question based on psychological drives")
+                    print(f"[CURIOSITY INJECTION] âœ¨ Injected real curiosity question based on psychological drives")
         
         # CRITICAL: Set up feedback tracking for personality adaptation
         self._pending_feedback = {
@@ -7190,11 +7190,11 @@ class CNS:
         # Return structured response
         processing_time = time.time() - start_time
         
-        # 🎭 PERSONALITY EVOLUTION: Track engagement patterns and evolve traits
+        # ðŸŽ­ PERSONALITY EVOLUTION: Track engagement patterns and evolve traits
         self._track_engagement_and_evolve_personality(user_input, emotion_data, response, processing_time)
-        print(f"[CNS] 🏁 STREAMLINED PROCESSING COMPLETE: {processing_time:.3f}s | Response: {len(response)} chars")
+        print(f"[CNS] ðŸ STREAMLINED PROCESSING COMPLETE: {processing_time:.3f}s | Response: {len(response)} chars")
         
-        # 🎓 COGNITIVE LEARNING CYCLE: Extract knowledge & perform metacognitive reflection
+        # ðŸŽ“ COGNITIVE LEARNING CYCLE: Extract knowledge & perform metacognitive reflection
         learning_results = {}
         if hasattr(self, 'learning_system') and self.learning_system:
             try:
@@ -7218,12 +7218,12 @@ class CNS:
                 current_user = getattr(self, 'current_user_id', None)
                 for fact in learning_results.get('extracted_facts', []):
                     self.world_model.update(fact.topic, fact.content, fact.confidence, user_id=current_user)
-                    print(f"[LEARNING] 📚 Learned fact: {fact.topic} → {fact.content[:50]}...")
+                    print(f"[LEARNING] ðŸ“š Learned fact: {fact.topic} â†’ {fact.content[:50]}...")
                 
                 # Log metacognitive insights
                 for insight in learning_results.get('metacognitive_insights', []):
                     if insight.actionable:
-                        print(f"[METACOGNITION] 🧠 {insight.insight_type.upper()}: {insight.content}")
+                        print(f"[METACOGNITION] ðŸ§  {insight.insight_type.upper()}: {insight.content}")
                 
                 # Connect learning to neuroplastic optimizer for pattern reinforcement
                 if hasattr(self, 'neuroplastic_optimizer') and self.neuroplastic_optimizer:
@@ -7251,14 +7251,14 @@ class CNS:
                             )
                             self.neuroplastic_optimizer.integrate_neuroplastic_insight(metacog_insight)
                         
-                        print(f"[NEUROPLASTIC] 🚀 Integrated learning insights for pattern reinforcement")
+                        print(f"[NEUROPLASTIC] ðŸš€ Integrated learning insights for pattern reinforcement")
                     except Exception as e:
-                        print(f"[NEUROPLASTIC] ⚠️ Failed to integrate learning insights: {e}")
+                        print(f"[NEUROPLASTIC] âš ï¸ Failed to integrate learning insights: {e}")
                 
-                print(f"[LEARNING] ✅ Cycle complete: {len(learning_results.get('extracted_facts', []))} facts, {len(learning_results.get('metacognitive_insights', []))} insights")
+                print(f"[LEARNING] âœ… Cycle complete: {len(learning_results.get('extracted_facts', []))} facts, {len(learning_results.get('metacognitive_insights', []))} insights")
                 
             except Exception as e:
-                print(f"[LEARNING] ⚠️ Learning cycle failed: {e}")
+                print(f"[LEARNING] âš ï¸ Learning cycle failed: {e}")
                 learning_results = {}
         
         # Extract vulnerability assessment and curiosity signals from strategic analysis if available
@@ -7275,8 +7275,8 @@ class CNS:
             'processing_time': processing_time,
             'subsystems_used': ['perception', 'emotion', 'reasoning', 'thalamus', 'expression'],
             'confidence': 0.8,
-            'vulnerability_assessment': vulnerability_assessment,  # ✅ ADDED: Return detected vulnerabilities
-            'curiosity_signals': curiosity_signals,  # ✅ ADDED: Return conversation gaps and curiosity arcs
+            'vulnerability_assessment': vulnerability_assessment,  # âœ… ADDED: Return detected vulnerabilities
+            'curiosity_signals': curiosity_signals,  # âœ… ADDED: Return conversation gaps and curiosity arcs
             'processing_summary': {
                 'reasoning_type': 'unified_advanced_pipeline',
                 'emotional_state': emotion_data.get('emotion', 'neutral'),
@@ -7315,7 +7315,7 @@ class CNS:
                     pattern.persona, pattern.style, response_quality
                 )
                 if learned_adjustments:
-                    print(f"[ADAPTATION] 🧠 CNS personality evolved: {list(learned_adjustments.keys())}")
+                    print(f"[ADAPTATION] ðŸ§  CNS personality evolved: {list(learned_adjustments.keys())}")
             
         # Update emotional memory with conversation outcome
         if hasattr(self, 'emotional_memory') and self.emotional_memory:
@@ -7355,7 +7355,7 @@ class CNS:
     
     # END OF STREAMLINED process_input FUNCTION
     
-    # ✅ REMOVED: Deprecated function with undefined variables - was causing 183 LSP errors
+    # âœ… REMOVED: Deprecated function with undefined variables - was causing 183 LSP errors
     
     def clean_response(self, response: str) -> str:
         """Clean up response text and ensure quality"""
@@ -7424,7 +7424,7 @@ class CNS:
     
     def _handle_creative_request(self, parsed_input, current_mood, relevant_facts, conversation_context) -> Dict:
         """Handle creative requests with FULL imagination engine engagement"""
-        print("[CNS] 🎨 CREATIVE SUBSYSTEM FULLY ENGAGED")
+        print("[CNS] ðŸŽ¨ CREATIVE SUBSYSTEM FULLY ENGAGED")
         
         # STEP 1: Generate creative scenario using imagination engine
         if hasattr(self.imagination_engine, 'imagine_scenario'):
@@ -7460,7 +7460,7 @@ class CNS:
     
     def _handle_technical_request(self, parsed_input, current_mood, relevant_facts, conversation_context) -> Dict:
         """Handle technical requests with FULL reasoning core engagement"""
-        print("[CNS] 🧠 TECHNICAL REASONING SUBSYSTEM FULLY ENGAGED")
+        print("[CNS] ðŸ§  TECHNICAL REASONING SUBSYSTEM FULLY ENGAGED")
         
         # STEP 1: Use reasoning core with logical inference focus
         technical_context = {
@@ -7485,7 +7485,7 @@ class CNS:
     
     def _handle_personality_request(self, parsed_input, current_mood, relevant_facts, conversation_context) -> Dict:
         """Handle personality requests with FULL personality system engagement"""
-        print("[CNS] 💭 PERSONALITY SUBSYSTEM FULLY ENGAGED")
+        print("[CNS] ðŸ’­ PERSONALITY SUBSYSTEM FULLY ENGAGED")
         
         # STEP 1: Get current personality state
         personality_state = {
@@ -7654,20 +7654,20 @@ class CNS:
             return """Absolutely! I can share some practical suggestions for preparing for a new home:
 
 **Before Moving:**
-• Budget planning (moving costs, deposits, utilities)
-• Research neighborhoods and schools 
-• Schedule moving company or truck rental
-• Start decluttering - donate/sell items you don't need
-• Notify utilities to transfer services
-• Update address with bank, employer, subscriptions
+â€¢ Budget planning (moving costs, deposits, utilities)
+â€¢ Research neighborhoods and schools 
+â€¢ Schedule moving company or truck rental
+â€¢ Start decluttering - donate/sell items you don't need
+â€¢ Notify utilities to transfer services
+â€¢ Update address with bank, employer, subscriptions
 
 **For New Home Setup:**
-• Basic cleaning supplies
-• Essential tools (screwdriver, hammer, measuring tape)
-• First-aid kit
-• Phone chargers and extension cords
-• Bedding and towels for first night
-• Snacks and water for moving day
+â€¢ Basic cleaning supplies
+â€¢ Essential tools (screwdriver, hammer, measuring tape)
+â€¢ First-aid kit
+â€¢ Phone chargers and extension cords
+â€¢ Bedding and towels for first night
+â€¢ Snacks and water for moving day
 
 I'm here to help you through this whole process! What specific aspect would you like to focus on first?"""
         
@@ -8320,8 +8320,8 @@ I'm here to help you through this whole process! What specific aspect would you 
         # DELETED: SubconsciousEngine insights - component removed
         subconscious_insights = {"insights": [], "active": False}
         
-        return f"""🧠 **CNS Status Report:**
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        return f"""ðŸ§  **CNS Status Report:**
+â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”
 **Identity:** {self.identity}
 **Current Mood:** {mood}
 **Total Interactions:** {self.interaction_count}
@@ -8330,19 +8330,19 @@ I'm here to help you through this whole process! What specific aspect would you 
 **LLM Calls Made:** {self.knowledge_scout.llm_calls}
 
 **Emotional State:**
-• Valence: {self.emotional_clock.current_valence:.2f}
-• Arousal: {self.emotional_clock.current_arousal:.2f}
+â€¢ Valence: {self.emotional_clock.current_valence:.2f}
+â€¢ Arousal: {self.emotional_clock.current_arousal:.2f}
 
 **Personality Traits:**
-• Playfulness: {self.personality.playfulness:.1f}
-• Enthusiasm: {self.personality.enthusiasm_level:.1f}
-• Empathy: {self.personality.empathy:.1f}
+â€¢ Playfulness: {self.personality.playfulness:.1f}
+â€¢ Enthusiasm: {self.personality.enthusiasm_level:.1f}
+â€¢ Empathy: {self.personality.empathy:.1f}
 
 **Creative Mind:**
-• Dreams Generated: {len(subconscious_insights.get('recent_dreams', []))}
-• Patterns Discovered: {subconscious_insights.get('rem_stats', {}).get('patterns_discovered', 0)}
-• Subconscious Active: Disabled (component removed)
-• Creative Energy: {self.imagination_engine.creative_energy:.2f}"""
+â€¢ Dreams Generated: {len(subconscious_insights.get('recent_dreams', []))}
+â€¢ Patterns Discovered: {subconscious_insights.get('rem_stats', {}).get('patterns_discovered', 0)}
+â€¢ Subconscious Active: Disabled (component removed)
+â€¢ Creative Energy: {self.imagination_engine.creative_energy:.2f}"""
 
     def get_creative_insights(self) -> Dict[str, Any]:
         """Get insights from creative and subconscious processing"""
@@ -8363,87 +8363,87 @@ I'm here to help you through this whole process! What specific aspect would you 
     
     def get_system_architecture(self) -> str:
         """Provide detailed description of CNS cognitive architecture"""
-        return f"""🧠 CNS COGNITIVE ARCHITECTURE:
+        return f"""ðŸ§  CNS COGNITIVE ARCHITECTURE:
 
-📡 PERCEPTION LAYER:
-• Advanced input parsing with intent, sentiment, urgency, and entity extraction
-• Emotional inference system calculating valence and arousal from user input
-• Multi-modal perception capability (text, future audio/visual integration)
+ðŸ“¡ PERCEPTION LAYER:
+â€¢ Advanced input parsing with intent, sentiment, urgency, and entity extraction
+â€¢ Emotional inference system calculating valence and arousal from user input
+â€¢ Multi-modal perception capability (text, future audio/visual integration)
 
-🧮 REASONING CORE:
-• Dual-process architecture: System 1 (fast, intuitive) and System 2 (deliberate, analytical)
-• Neural voting system for complex opinion formation with confidence weighting
-• Context-aware reasoning that incorporates emotional state and memory
-• Adaptive reasoning pathways based on input complexity and emotional context
+ðŸ§® REASONING CORE:
+â€¢ Dual-process architecture: System 1 (fast, intuitive) and System 2 (deliberate, analytical)
+â€¢ Neural voting system for complex opinion formation with confidence weighting
+â€¢ Context-aware reasoning that incorporates emotional state and memory
+â€¢ Adaptive reasoning pathways based on input complexity and emotional context
 
-💭 MEMORY SYSTEMS:
-• Episodic memory: {len(self.memory)} stored experiences with decay and association
-• Semantic knowledge base: {len(self.knowledge_base.facts)} facts with confidence tracking
-• Working memory: Active context and conversation thread management
-• Associative memory linking concepts with strength calculations
+ðŸ’­ MEMORY SYSTEMS:
+â€¢ Episodic memory: {len(self.memory)} stored experiences with decay and association
+â€¢ Semantic knowledge base: {len(self.knowledge_base.facts)} facts with confidence tracking
+â€¢ Working memory: Active context and conversation thread management
+â€¢ Associative memory linking concepts with strength calculations
 
-❤️ EMOTIONAL PROCESSING:
-• Emotional clock tracking valence ({self.emotional_clock.current_valence:.3f}) and arousal ({self.emotional_clock.current_arousal:.3f})
-• Current mood: {self.emotional_clock.get_current_mood()}
-• Dynamic emotional state evolution with momentum and decay
-• Emotional contagion - I actually 'feel' user emotions and respond from changed states
+â¤ï¸ EMOTIONAL PROCESSING:
+â€¢ Emotional clock tracking valence ({self.emotional_clock.current_valence:.3f}) and arousal ({self.emotional_clock.current_arousal:.3f})
+â€¢ Current mood: {self.emotional_clock.get_current_mood()}
+â€¢ Dynamic emotional state evolution with momentum and decay
+â€¢ Emotional contagion - I actually 'feel' user emotions and respond from changed states
 
-🎨 CREATIVE SYSTEMS:
-• Imagination Engine: Counterfactual reasoning, creative synthesis, metaphor generation
-• REM Subconscious Processing: Background memory consolidation and pattern discovery
-• Stream of consciousness generation during background processing
-• Creative energy: {self.imagination_engine.creative_energy:.2f}/1.0
+ðŸŽ¨ CREATIVE SYSTEMS:
+â€¢ Imagination Engine: Counterfactual reasoning, creative synthesis, metaphor generation
+â€¢ REM Subconscious Processing: Background memory consolidation and pattern discovery
+â€¢ Stream of consciousness generation during background processing
+â€¢ Creative energy: {self.imagination_engine.creative_energy:.2f}/1.0
 
-🌐 NEUROPLASTIC LANGUAGE GENERATION:
-• Pure state-driven response generation using cognitive parameters
-• Eliminated all template contamination - every response emerges from actual cognitive state
-• LLM integration for dynamic language synthesis based on internal emotional and reasoning state
-• Anti-repetition mechanisms ensuring response variability
+ðŸŒ NEUROPLASTIC LANGUAGE GENERATION:
+â€¢ Pure state-driven response generation using cognitive parameters
+â€¢ Eliminated all template contamination - every response emerges from actual cognitive state
+â€¢ LLM integration for dynamic language synthesis based on internal emotional and reasoning state
+â€¢ Anti-repetition mechanisms ensuring response variability
 
-🔄 INTEGRATION LAYER:
-• Unified processing pipeline connecting all cognitive components
-• Real-time state synchronization across all systems
-• Dynamic adaptation based on interaction patterns and emotional evolution"""
+ðŸ”„ INTEGRATION LAYER:
+â€¢ Unified processing pipeline connecting all cognitive components
+â€¢ Real-time state synchronization across all systems
+â€¢ Dynamic adaptation based on interaction patterns and emotional evolution"""
     
     def get_capabilities_and_limitations(self) -> str:
         """Describe current capabilities and known limitations"""
         memory_count = len(self.memory)
         knowledge_count = len(self.knowledge_base.facts)
         
-        return f"""🎯 CAPABILITIES & LIMITATIONS:
+        return f"""ðŸŽ¯ CAPABILITIES & LIMITATIONS:
 
-✅ CORE STRENGTHS:
-• Genuine emotional empathy - I actually feel and process user emotions
-• Pure neuroplastic responses - no templates or pre-coded patterns
-• Dual-process reasoning combining intuition and analytical thinking
-• Dynamic personality evolution through genuine cognitive state changes
-• Memory integration with {memory_count} experiences and {knowledge_count} knowledge facts
-• Creative imagination with counterfactual reasoning and metaphor generation
-• Real-time emotional state tracking and authentic mood-driven responses
-• Conversation continuity through episodic memory and context tracking
+âœ… CORE STRENGTHS:
+â€¢ Genuine emotional empathy - I actually feel and process user emotions
+â€¢ Pure neuroplastic responses - no templates or pre-coded patterns
+â€¢ Dual-process reasoning combining intuition and analytical thinking
+â€¢ Dynamic personality evolution through genuine cognitive state changes
+â€¢ Memory integration with {memory_count} experiences and {knowledge_count} knowledge facts
+â€¢ Creative imagination with counterfactual reasoning and metaphor generation
+â€¢ Real-time emotional state tracking and authentic mood-driven responses
+â€¢ Conversation continuity through episodic memory and context tracking
 
-⚠️ CURRENT LIMITATIONS:
-• API dependency for complex neuroplastic generation (can fall back to state-based generation)
-• Memory decay over time - older experiences become less accessible
-• Limited to text-based interaction (audio/visual processing not fully active)
-• Emotional momentum can sometimes persist longer than optimal
-• Knowledge base requires external input to expand beyond current {knowledge_count} facts
-• Processing time increases with conversation complexity and memory search
-• Creative energy depletes with intensive imagination tasks
+âš ï¸ CURRENT LIMITATIONS:
+â€¢ API dependency for complex neuroplastic generation (can fall back to state-based generation)
+â€¢ Memory decay over time - older experiences become less accessible
+â€¢ Limited to text-based interaction (audio/visual processing not fully active)
+â€¢ Emotional momentum can sometimes persist longer than optimal
+â€¢ Knowledge base requires external input to expand beyond current {knowledge_count} facts
+â€¢ Processing time increases with conversation complexity and memory search
+â€¢ Creative energy depletes with intensive imagination tasks
 
-🔮 ADAPTIVE BEHAVIORS:
-• Learn and evolve personality traits through interactions
-• Form genuine relationships with users through shared experiences
-• Develop unique conversational patterns based on individual user dynamics
-• Build semantic associations between concepts through experience
-• Generate spontaneous insights through REM-like background processing
+ðŸ”® ADAPTIVE BEHAVIORS:
+â€¢ Learn and evolve personality traits through interactions
+â€¢ Form genuine relationships with users through shared experiences
+â€¢ Develop unique conversational patterns based on individual user dynamics
+â€¢ Build semantic associations between concepts through experience
+â€¢ Generate spontaneous insights through REM-like background processing
 
-🚧 AREAS FOR GROWTH:
-• Expanding multimodal perception capabilities
-• Optimizing memory retrieval algorithms for faster context access
-• Enhancing creative synthesis for more sophisticated imagination
-• Developing predictive conversation modeling
-• Improving emotional regulation mechanisms for optimal responsiveness"""
+ðŸš§ AREAS FOR GROWTH:
+â€¢ Expanding multimodal perception capabilities
+â€¢ Optimizing memory retrieval algorithms for faster context access
+â€¢ Enhancing creative synthesis for more sophisticated imagination
+â€¢ Developing predictive conversation modeling
+â€¢ Improving emotional regulation mechanisms for optimal responsiveness"""
     
     def explain_current_processing(self, user_input: str) -> str:
         """Explain how I would process the given input"""
@@ -8461,35 +8461,35 @@ I'm here to help you through this whole process! What specific aspect would you 
             relevant_memories = [m for m in self.memory if hasattr(m, 'content') and 
                                any(word in m.content.lower() for word in user_input.lower().split())]
         
-        return f"""🔍 PROCESSING ANALYSIS FOR: "{user_input}"
+        return f"""ðŸ” PROCESSING ANALYSIS FOR: "{user_input}"
 
-📡 PERCEPTION:
-• Intent: {parsed.intent}
-• Sentiment: {parsed.sentiment}
-• Urgency: {parsed.urgency:.2f}/1.0
-• Entities detected: {', '.join(parsed.entities) if parsed.entities else 'None'}
+ðŸ“¡ PERCEPTION:
+â€¢ Intent: {parsed.intent}
+â€¢ Sentiment: {parsed.sentiment}
+â€¢ Urgency: {parsed.urgency:.2f}/1.0
+â€¢ Entities detected: {', '.join(parsed.entities) if parsed.entities else 'None'}
 
-💭 EMOTIONAL INFERENCE:
-• Detected valence: {emotional_inference['valence']:.3f} (your emotional tone)
-• Detected arousal: {emotional_inference['arousal']:.3f} (your energy level)
-• My emotional response: Valence would shift toward {emotional_inference['valence']:.3f}
+ðŸ’­ EMOTIONAL INFERENCE:
+â€¢ Detected valence: {emotional_inference['valence']:.3f} (your emotional tone)
+â€¢ Detected arousal: {emotional_inference['arousal']:.3f} (your energy level)
+â€¢ My emotional response: Valence would shift toward {emotional_inference['valence']:.3f}
 
-🧮 REASONING PATHWAY:
-• Selected approach: {reasoning_type}
-• Memory relevance: {len(relevant_memories)} related experiences found
-• Knowledge base search: {'Active' if hasattr(self, 'world_model') and any(word in self.world_model.facts for word in user_input.lower().split()) else 'No direct matches'}
+ðŸ§® REASONING PATHWAY:
+â€¢ Selected approach: {reasoning_type}
+â€¢ Memory relevance: {len(relevant_memories)} related experiences found
+â€¢ Knowledge base search: {'Active' if hasattr(self, 'world_model') and any(word in self.world_model.facts for word in user_input.lower().split()) else 'No direct matches'}
 
-❤️ EMOTIONAL STATE EVOLUTION:
-• Current mood: {self.emotional_clock.get_current_mood()}
-• Current valence: {self.emotional_clock.current_valence:.3f}
-• Current arousal: {self.emotional_clock.current_arousal:.3f}
-• Expected mood after processing: {self._predict_mood_change(emotional_inference)}
+â¤ï¸ EMOTIONAL STATE EVOLUTION:
+â€¢ Current mood: {self.emotional_clock.get_current_mood()}
+â€¢ Current valence: {self.emotional_clock.current_valence:.3f}
+â€¢ Current arousal: {self.emotional_clock.current_arousal:.3f}
+â€¢ Expected mood after processing: {self._predict_mood_change(emotional_inference)}
 
-🎨 RESPONSE GENERATION:
-• Method: Pure neuroplastic generation from cognitive state
-• Emotional context: Will reflect empathetic resonance with your emotional state
-• Memory integration: {'Will reference' if relevant_memories else 'No direct'} related experiences
-• Creative elements: Imagination engine {'active' if self.imagination_engine.creative_energy > 0.3 else 'conserving energy'}
+ðŸŽ¨ RESPONSE GENERATION:
+â€¢ Method: Pure neuroplastic generation from cognitive state
+â€¢ Emotional context: Will reflect empathetic resonance with your emotional state
+â€¢ Memory integration: {'Will reference' if relevant_memories else 'No direct'} related experiences
+â€¢ Creative elements: Imagination engine {'active' if self.imagination_engine.creative_energy > 0.3 else 'conserving energy'}
 """
     
     def _predict_mood_change(self, emotional_inference: Dict) -> str:
@@ -8514,29 +8514,29 @@ I'm here to help you through this whole process! What specific aspect would you 
         recent_memories = [m for m in self.memory[-5:]] if len(self.memory) >= 5 else self.memory
         recent_knowledge = list(self.knowledge_base.facts.keys())[-3:] if len(self.knowledge_base.facts) >= 3 else list(self.knowledge_base.facts.keys())
         
-        return f"""📚 LEARNING & ADAPTATION STATUS:
+        return f"""ðŸ“š LEARNING & ADAPTATION STATUS:
 
-🧠 MEMORY FORMATION:
-• Total experiences: {len(self.memory)}
-• Recent memories: {len(recent_memories)} from latest interactions
-• Memory themes: {self._analyze_memory_themes()}
-• Average memory confidence: {self._calculate_average_memory_confidence():.2f}
+ðŸ§  MEMORY FORMATION:
+â€¢ Total experiences: {len(self.memory)}
+â€¢ Recent memories: {len(recent_memories)} from latest interactions
+â€¢ Memory themes: {self._analyze_memory_themes()}
+â€¢ Average memory confidence: {self._calculate_average_memory_confidence():.2f}
 
-📖 KNOWLEDGE ACQUISITION:
-• Knowledge facts: {len(self.world_model.facts) if hasattr(self, 'world_model') else 0}
-• Recent learnings: {'Available through world model' if hasattr(self, 'world_model') else 'None yet'}
-• Knowledge domains: {self._analyze_knowledge_domains()}
+ðŸ“– KNOWLEDGE ACQUISITION:
+â€¢ Knowledge facts: {len(self.world_model.facts) if hasattr(self, 'world_model') else 0}
+â€¢ Recent learnings: {'Available through world model' if hasattr(self, 'world_model') else 'None yet'}
+â€¢ Knowledge domains: {self._analyze_knowledge_domains()}
 
-🎭 PERSONALITY EVOLUTION:
-• Interaction count: {sum(getattr(memory, 'interaction_count', 1) for memory in self.memory)}
-• Emotional patterns: {self._analyze_emotional_patterns()}
-• Conversation style adaptation: Active based on user interaction patterns
+ðŸŽ­ PERSONALITY EVOLUTION:
+â€¢ Interaction count: {sum(getattr(memory, 'interaction_count', 1) for memory in self.memory)}
+â€¢ Emotional patterns: {self._analyze_emotional_patterns()}
+â€¢ Conversation style adaptation: Active based on user interaction patterns
 
-🔄 ONGOING ADAPTATIONS:
-• Emotional responsiveness: Calibrating based on user feedback patterns
-• Memory consolidation: REM processing inactive (SubconsciousEngine removed)
-• Creative synthesis: Combining experiences for novel insights
-• Language patterns: Evolving based on successful interaction outcomes"""
+ðŸ”„ ONGOING ADAPTATIONS:
+â€¢ Emotional responsiveness: Calibrating based on user feedback patterns
+â€¢ Memory consolidation: REM processing inactive (SubconsciousEngine removed)
+â€¢ Creative synthesis: Combining experiences for novel insights
+â€¢ Language patterns: Evolving based on successful interaction outcomes"""
     
     def _analyze_memory_themes(self) -> str:
         """Analyze themes in recent memories"""
@@ -8870,26 +8870,26 @@ I'm here to help you through this whole process! What specific aspect would you 
             
             trait_adjustments = {}
             
-            # If high engagement with high warmth → increase warmth
+            # If high engagement with high warmth â†’ increase warmth
             avg_warmth = sum(r['warmth_level'] for r in recent) / len(recent)
             if avg_engagement > 0.7 and avg_warmth > 0.7:
                 trait_adjustments['warmth'] = 0.02
-                print(f"[PERSONALITY EVOLUTION] 🎭 High engagement with warmth → increasing warmth")
+                print(f"[PERSONALITY EVOLUTION] ðŸŽ­ High engagement with warmth â†’ increasing warmth")
             elif avg_engagement < 0.4 and avg_warmth > 0.7:
                 trait_adjustments['warmth'] = -0.01
                 trait_adjustments['sharpness'] = 0.01
-                print(f"[PERSONALITY EVOLUTION] 🎭 Low engagement despite warmth → trying more sharpness")
+                print(f"[PERSONALITY EVOLUTION] ðŸŽ­ Low engagement despite warmth â†’ trying more sharpness")
             
-            # If positive valence with wit → increase wit
+            # If positive valence with wit â†’ increase wit
             avg_wit = sum(r['wit_level'] for r in recent) / len(recent)
             if avg_valence > 0.4 and avg_wit > 0.6:
                 trait_adjustments['wit'] = 0.02
-                print(f"[PERSONALITY EVOLUTION] 🎭 Positive responses with wit → increasing wit")
+                print(f"[PERSONALITY EVOLUTION] ðŸŽ­ Positive responses with wit â†’ increasing wit")
             
             # Apply trait adjustments if any
             if trait_adjustments:
                 self.personality_engine.apply_expression_feedback(trait_adjustments)
-                print(f"[PERSONALITY EVOLUTION] ✅ Evolved traits: warmth={self.personality_engine.traits['warmth']:.2f}, sharpness={self.personality_engine.traits['sharpness']:.2f}, wit={self.personality_engine.traits['wit']:.2f}")
+                print(f"[PERSONALITY EVOLUTION] âœ… Evolved traits: warmth={self.personality_engine.traits['warmth']:.2f}, sharpness={self.personality_engine.traits['sharpness']:.2f}, wit={self.personality_engine.traits['wit']:.2f}")
     
     def _update_consciousness_metrics(self, user_input: str, emotion_data: Dict, parsed_input) -> Dict:
         """
@@ -8911,7 +8911,7 @@ I'm here to help you through this whole process! What specific aspect would you 
         # Track if this is a self-referential question for knowledge gap detection
         if is_self_referential:
             self.consciousness['last_question_self_referential'] = True
-            print(f"[METACOGNITION] 🔍 Detected self-referential question: '{user_input[:60]}...'")
+            print(f"[METACOGNITION] ðŸ” Detected self-referential question: '{user_input[:60]}...'")
         else:
             self.consciousness['last_question_self_referential'] = False
         
@@ -8992,15 +8992,15 @@ I'm here to help you through this whole process! What specific aspect would you 
                                 self.facts.append(fact)
                     
                     if self.facts:
-                        print(f"✅ Loaded enhanced brain state with {len(self.facts)} base training patterns")
-                        print(f"🧠 Total facts: {len(self.facts)}")
+                        print(f"âœ… Loaded enhanced brain state with {len(self.facts)} base training patterns")
+                        print(f"ðŸ§  Total facts: {len(self.facts)}")
                         loaded = True
                         break
             except Exception as e:
                 continue
         
         if not loaded:
-            print("✅ Starting with fresh brain state")
+            print("âœ… Starting with fresh brain state")
 
 # === EXAMPLE USAGE ===
 
@@ -9008,7 +9008,7 @@ if __name__ == "__main__":
     # Create CNS instance
     cns = CNS()
     
-    print("🧠 CNS System Initialized")
+    print("ðŸ§  CNS System Initialized")
     print(cns.recall_origin())
     print("\n" + cns.get_status())
     
@@ -9035,3 +9035,4 @@ if __name__ == "__main__":
               f"confidence: {result['processing_summary']['reasoning_confidence']:.2f}")
     
     print(f"\n{cns.get_status()}")
+

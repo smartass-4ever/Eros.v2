@@ -1,4 +1,4 @@
-"""
+﻿"""
 Game Theory Decision System for Eros CNS
 
 Implements constrained utility maximization with veto system for response generation.
@@ -166,14 +166,14 @@ class ExecutableDirective:
     ARCHITECTURE SEPARATION:
     ========================
     Personality Pill (PersonalityState) = WHO Eros is
-      → James Bond character: witty, charming, confident
-      → IMMUTABLE: Wit >= 0.5, Warmth >= 0.5, Sharpness >= 0.55
-      → Source: unified_cns_personality.py
+      â†’ James Bond character: witty, charming, confident
+      â†’ IMMUTABLE: Wit >= 0.5, Warmth >= 0.5, Sharpness >= 0.55
+      â†’ Source: unified_cns_personality.py
     
     Game Theory (ExecutableDirective) = HOW Eros says it
-      → Tone intensity only: warmth level, playfulness timing, directness
-      → MODULATES intensity, never overrides character
-      → In extreme situations: can only make tone STRICTER, not softer
+      â†’ Tone intensity only: warmth level, playfulness timing, directness
+      â†’ MODULATES intensity, never overrides character
+      â†’ In extreme situations: can only make tone STRICTER, not softer
     
     The contract:
     - Game Theory: Decides focus, modes (TONE ONLY), prohibitions, contextual_guidance
@@ -454,7 +454,7 @@ class VetoSystem:
         
         # Rule 1: Vulnerability veto - ONLY in severe crisis, not mild sadness
         # Changed from 0.7 to 0.9 - wit should coexist with warmth in most cases
-        # "User seems a bit sad" ≠ veto wit. Only true crisis (suicide, abuse, trauma) vetoes wit.
+        # "User seems a bit sad" â‰  veto wit. Only true crisis (suicide, abuse, trauma) vetoes wit.
         if signals.vulnerability > 0.9:
             result.vetoed_players.append(Player.WIT)
             result.veto_reasons[Player.WIT.value] = f"SEVERE vulnerability={signals.vulnerability:.2f} > 0.9 (crisis)"
@@ -550,13 +550,13 @@ OUTPUT JSON ONLY (no explanation):
             prompt = self._get_analyzer_prompt(signals)
             
             response = requests.post(
-                "https://api.together.xyz/v1/chat/completions",
+                "https://api.groq.com/openai/v1/chat/completions",
                 headers={
                     'Authorization': f'Bearer {self.api_key}',
                     'Content-Type': 'application/json'
                 },
                 json={
-                    'model': 'meta-llama/Llama-3.3-70B-Instruct-Turbo',
+                    'model': 'llama-3.3-70b-versatile',
                     'messages': [{"role": "user", "content": prompt}],
                     'temperature': 0.1,
                     'max_tokens': 300
@@ -774,7 +774,7 @@ class GameTheoryDecisionEngine:
     
     def _log_decision(self, decision: GameDecision):
         """Log the decision for debugging"""
-        print(f"\n[GAME-THEORY] 🎲 Decision made:")
+        print(f"\n[GAME-THEORY] ðŸŽ² Decision made:")
         print(f"  Primary: {decision.primary.value if decision.primary else 'none'}")
         print(f"  Secondary: {decision.secondary.value if decision.secondary else 'none'}")
         print(f"  Mode: {decision.mode.value}")
@@ -818,7 +818,7 @@ def build_context_signals(
     belief_trigger = len(belief_data.get('conflicts', [])) > 0
     
     user_lower = user_input.lower()
-    playful_indicators = ['lol', 'haha', 'lmao', '😂', '😏', 'hehe', 'tease', 'flirt']
+    playful_indicators = ['lol', 'haha', 'lmao', 'ðŸ˜‚', 'ðŸ˜', 'hehe', 'tease', 'flirt']
     playful_context = any(ind in user_lower for ind in playful_indicators)
     
     user_asked_question = '?' in user_input
@@ -842,3 +842,4 @@ def build_context_signals(
         curiosity_gaps=curiosity_gaps,
         user_input=user_input
     )
+
