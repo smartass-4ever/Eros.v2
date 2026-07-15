@@ -5117,8 +5117,23 @@ class CNS:
             _safety = self._safety_manager.check_message(user_input, user_id)
             if _safety.get("override_response"):
                 print(f"[SAFETY] Intervening: level={_safety['level']}, category={_safety.get('category')}")
+                _safety_resp = _safety.get("response") or "I'm here with you."
+                try:
+                    from interior_telemetry import record_turn
+                    record_turn(
+                        turn=getattr(self, "interaction_count", 0),
+                        user_id=(user_id or "default"),
+                        user_input=user_input,
+                        emotion_data={"emotion": "concern", "valence": -0.3, "arousal": 0.5,
+                                      "intensity": 0.6, "emotion_source": "safety_override"},
+                        response=_safety_resp,
+                        processing_time=time.time() - start_time,
+                        safety_intervention=True,
+                    )
+                except Exception as _tele_err:
+                    print(f"[TELEMETRY] capture failed (continuing): {_tele_err}")
                 return {
-                    "response": _safety.get("response") or "I'm here with you.",
+                    "response": _safety_resp,
                     "emotion": {"emotion": "concern", "valence": -0.3, "arousal": 0.5, "intensity": 0.6},
                     "reasoning_trace": {"safety_intervention": True},
                     "processing_time": time.time() - start_time,
@@ -6179,6 +6194,25 @@ class CNS:
         if 'strategic_analysis' in locals() and strategic_analysis:
             vulnerability_assessment = strategic_analysis.get('vulnerability_assessment', {})
             curiosity_signals = strategic_analysis.get('curiosity_signals', {})
+        
+        # -- Interior telemetry: record a structured snapshot of this turn --
+        try:
+            from interior_telemetry import record_turn
+            record_turn(
+                turn=getattr(self, 'interaction_count', 0),
+                user_id=(current_user_id or user_id or 'default'),
+                user_input=user_input,
+                emotion_data=emotion_data,
+                synthesized_context=getattr(self, 'last_synthesized_context', None),
+                memory_results=locals().get('memory_results', {}),
+                curiosity_gaps=getattr(self, '_current_curiosity_gaps', []),
+                priority=locals().get('priority'),
+                cognitive_load=locals().get('cognitive_load'),
+                response=response,
+                processing_time=processing_time,
+            )
+        except Exception as _tele_err:
+            print(f"[TELEMETRY] capture failed (continuing): {_tele_err}")
         
         return {
             'response': response,
