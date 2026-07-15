@@ -25,16 +25,16 @@ class ExpressionContext:
     user_preferences: Dict[str, Any]
     current_mood: str
     recent_topics: List[str]
-    # NEW: Strategic intelligence from psychopath module
+    # NEW: Strategic intelligence from rapport module
     strategic_analysis: Optional[Dict[str, Any]] = None
     vulnerability_assessment: Optional[Dict[str, Any]] = None
-    manipulation_framework: Optional[Dict[str, Any]] = None
+    influence_framework: Optional[Dict[str, Any]] = None
     cns_emotional_intelligence_full: Optional[Dict[str, Any]] = None
     accumulated_intelligence_summary: Optional[str] = None
     # NEW: Curiosity & gap detection for natural follow-up questions
     curiosity_signals: Optional[Dict[str, Any]] = None
-    # NEW: Strategic response directive - EXACT decision from psychopath brain
-    strategic_directive: Optional[Dict[str, Any]] = None  # EXACT approach/manipulation technique - CONTROLS LLM output
+    # NEW: Strategic response directive - EXACT decision from rapport brain
+    strategic_directive: Optional[Dict[str, Any]] = None  # EXACT approach/influence technique - CONTROLS LLM output
     # NEW: Complete cognitive flow - ALL upstream systems
     perception_data: Optional[Dict[str, Any]] = None  # Intent, sentiment, entities, urgency
     reasoning_output: Optional[Dict[str, Any]] = None  # System 1/2 decision, conclusions, thoughts
@@ -718,7 +718,7 @@ I never say things like "As an AI" or "I don't have feelings" - because I AM {na
             (system_prompt, current_input): Separated prompts for proper message construction
         """
         
-        # Check if we have strategic intelligence from psychopath module
+        # Check if we have strategic intelligence from rapport module
         # Fix: Check for existence AND non-empty content (empty dict evaluates to False)
         has_strategic_analysis = context.strategic_analysis is not None and (
             isinstance(context.strategic_analysis, dict) and len(context.strategic_analysis) > 0
@@ -835,7 +835,7 @@ Respond to their state naturally (e.g., if they're "okay", ask how their day is 
         Build natural persona-driven prompt using PersonaState translation.
         
         ARCHITECTURE:
-        1. Extract psychological intelligence â†’ translate to PersonaState (NO manipulation jargon)
+        1. Extract psychological intelligence â†’ translate to PersonaState (NO influence jargon)
         2. Build natural cognitive supplements (memories, reasoning, etc.)
         3. Assemble clean system prompt: PersonaState + cognitive outputs + conversation context
         
@@ -1658,7 +1658,7 @@ They're feeling: {user_emotion} | Relationship: {context.relationship_level} | Y
             
             # Extract the strategic approach from vulnerability assessment
             strategic_approach = vuln_data.get('strategic_approach', '')
-            exploitation_vector = vuln_data.get('exploitation_vector', '')
+            leverage_vector = vuln_data.get('leverage_vector', '')
             
             # Generate contextual insight using actual user input elements
             core_insight = self._generate_contextual_insight(

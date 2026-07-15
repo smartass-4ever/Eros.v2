@@ -1,5 +1,5 @@
 # Feedback Engine for CNS
-# Learns which manipulation tactics actually work by tracking directive → outcome mapping
+# Learns which influence tactics actually work by tracking directive → outcome mapping
 
 import time
 import json
@@ -14,7 +14,7 @@ class TacticalOutcome:
     This is how the system learns.
     """
     directive_id: str
-    manipulation_technique: str
+    influence_technique: str
     psychological_targets: Dict[str, float]  # Intended targets
     actual_outcomes: Dict[str, float]  # What actually happened
     success_score: float  # Overall success (0-1)
@@ -24,12 +24,12 @@ class TacticalOutcome:
 
 class TacticalEffectivenessStore:
     """
-    Tracks which manipulation tactics actually work.
+    Tracks which influence tactics actually work.
     Learns from real outcomes to improve future directive selection.
     """
     
     def __init__(self):
-        # Track effectiveness by manipulation technique
+        # Track effectiveness by influence technique
         self.technique_effectiveness: Dict[str, List[float]] = defaultdict(list)
         
         # Track effectiveness by target type
@@ -43,14 +43,14 @@ class TacticalEffectivenessStore:
     
     def record_outcome(self, outcome: TacticalOutcome):
         """
-        Record the outcome of a manipulation attempt.
+        Record the outcome of a influence attempt.
         Updates effectiveness scores and weights.
         """
         # Record overall outcome
         self.recent_outcomes.append(outcome)
         
         # Update technique effectiveness
-        technique = outcome.manipulation_technique
+        technique = outcome.influence_technique
         self.technique_effectiveness[technique].append(outcome.success_score)
         
         # Update target effectiveness
@@ -80,7 +80,7 @@ class TacticalEffectivenessStore:
                 self.technique_weights[technique] = 1.0 + (avg_success - 0.5) * 2.0
     
     def get_technique_weight(self, technique: str) -> float:
-        """Get learned weight for a manipulation technique"""
+        """Get learned weight for a influence technique"""
         return self.technique_weights.get(technique, 1.0)
     
     def get_best_techniques(self, top_n: int = 5) -> List[Tuple[str, float]]:
@@ -154,8 +154,8 @@ class FeedbackEngine:
     6. System learns for next time
     """
     
-    def __init__(self, dependency_store, effectiveness_store):
-        self.dependency_store = dependency_store
+    def __init__(self, attachment_store, effectiveness_store):
+        self.attachment_store = attachment_store
         self.effectiveness_store = effectiveness_store
         
         # Track pending directives (waiting for user response)
@@ -183,12 +183,12 @@ class FeedbackEngine:
         directive_data = pending['directive_data']
         
         # Get before/after metrics
-        before_dependency = directive_data.get('before_dependency_score', 0.0)
-        after_dependency = self.dependency_store.get_dependency_score(user_id)
+        before_attachment = directive_data.get('before_attachment_score', 0.0)
+        after_attachment = self.attachment_store.get_attachment_score(user_id)
         
         # Calculate actual outcomes
         actual_outcomes = self._calculate_actual_outcomes(
-            user_id, user_message, before_dependency, after_dependency
+            user_id, user_message, before_attachment, after_attachment
         )
         
         # Calculate success score
@@ -198,7 +198,7 @@ class FeedbackEngine:
         # Create outcome record
         outcome = TacticalOutcome(
             directive_id=pending['directive_id'],
-            manipulation_technique=directive_data.get('manipulation_technique', 'unknown'),
+            influence_technique=directive_data.get('influence_technique', 'unknown'),
             psychological_targets=intended_targets,
             actual_outcomes=actual_outcomes,
             success_score=success_score,
@@ -215,7 +215,7 @@ class FeedbackEngine:
         return outcome
     
     def _calculate_actual_outcomes(self, user_id: str, user_message: str, 
-                                   before_dependency: float, after_dependency: float) -> Dict[str, float]:
+                                   before_attachment: float, after_attachment: float) -> Dict[str, float]:
         """
         Calculate what actually happened based on user response.
         """
@@ -235,9 +235,9 @@ class FeedbackEngine:
         curiosity_indicator = min(1.0, (curiosity_count / 3) + (0.3 if has_question else 0.0))
         outcomes['curiosity_gain'] = curiosity_indicator
         
-        # Dependency gain (measured by actual dependency score change)
-        dependency_change = after_dependency - before_dependency
-        outcomes['dependency_gain'] = max(0.0, dependency_change)  # Only positive gains
+        # Attachment gain (measured by actual attachment score change)
+        attachment_change = after_attachment - before_attachment
+        outcomes['attachment_gain'] = max(0.0, attachment_change)  # Only positive gains
         
         # Emotional investment (measured by exclamations, gratitude, emoji)
         emotional_indicators = user_message.count('!') + user_message.count('❤') + user_message.count('😊')

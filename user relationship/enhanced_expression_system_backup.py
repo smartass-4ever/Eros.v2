@@ -25,16 +25,16 @@ class ExpressionContext:
     user_preferences: Dict[str, Any]
     current_mood: str
     recent_topics: List[str]
-    # NEW: Strategic intelligence from psychopath module
+    # NEW: Strategic intelligence from rapport module
     strategic_analysis: Optional[Dict[str, Any]] = None
     vulnerability_assessment: Optional[Dict[str, Any]] = None
-    manipulation_framework: Optional[Dict[str, Any]] = None
+    influence_framework: Optional[Dict[str, Any]] = None
     cns_emotional_intelligence_full: Optional[Dict[str, Any]] = None
     accumulated_intelligence_summary: Optional[str] = None
     # NEW: Curiosity & gap detection for natural follow-up questions
     curiosity_signals: Optional[Dict[str, Any]] = None
-    # NEW: Strategic response directive - EXACT decision from psychopath brain
-    strategic_directive: Optional[Dict[str, Any]] = None  # EXACT approach/manipulation technique - CONTROLS LLM output
+    # NEW: Strategic response directive - EXACT decision from rapport brain
+    strategic_directive: Optional[Dict[str, Any]] = None  # EXACT approach/influence technique - CONTROLS LLM output
     # NEW: Complete cognitive flow - ALL upstream systems
     perception_data: Optional[Dict[str, Any]] = None  # Intent, sentiment, entities, urgency
     reasoning_output: Optional[Dict[str, Any]] = None  # System 1/2 decision, conclusions, thoughts
@@ -461,7 +461,7 @@ class EnhancedExpressionSystem:
             (system_prompt, current_input): Separated prompts for proper message construction
         """
         
-        # Check if we have strategic intelligence from psychopath module
+        # Check if we have strategic intelligence from rapport module
         # Fix: Check for existence AND non-empty content (empty dict evaluates to False)
         has_strategic_analysis = context.strategic_analysis is not None and (
             isinstance(context.strategic_analysis, dict) and len(context.strategic_analysis) > 0
@@ -493,7 +493,7 @@ class EnhancedExpressionSystem:
         # Extract strategic intelligence - PRESERVE ALL DATA, don't mask with fallbacks
         vulnerabilities = context.vulnerability_assessment or {}
         strategic_analysis = context.strategic_analysis or {}
-        manipulation_framework = context.manipulation_framework or {}
+        influence_framework = context.influence_framework or {}
         cns_intelligence = context.cns_emotional_intelligence_full or {}
         
         # ✅ EXTRACT PERSONALITY DATA FROM CNS
@@ -517,7 +517,7 @@ class EnhancedExpressionSystem:
         strategic_completeness = {
             'vulnerabilities_present': bool(vulnerabilities),
             'strategic_analysis_present': bool(strategic_analysis),
-            'manipulation_framework_present': bool(manipulation_framework),
+            'influence_framework_present': bool(influence_framework),
             'cns_intelligence_present': bool(cns_intelligence)
         }
         
@@ -860,13 +860,13 @@ Example: "Honestly? I don't actually know the details of my internal structure o
         strategic_directive_block = ""
         if context.strategic_directive:
             strategic_directive = context.strategic_directive
-            print(f"[ENHANCED-EXPRESSION] 🎯 Using strategic directive from psychopath brain: {strategic_directive.get('manipulation_technique')}")
+            print(f"[ENHANCED-EXPRESSION] 🎯 Using strategic directive from rapport brain: {strategic_directive.get('influence_technique')}")
             
             # Extract relationship bonding objectives
             bonding_points = strategic_directive.get('bonding_points_to_include', [])
             relationship_goal = strategic_directive.get('relationship_goal', '')
             positioning_directive = strategic_directive.get('positioning_directive', '')
-            dependency_constraints = strategic_directive.get('dependency_constraints', [])
+            attachment_constraints = strategic_directive.get('attachment_constraints', [])
             
             # ✅ EXTRACT PSYCHOLOGICAL DIRECTIVE (new system) or fallback to content commands
             psychological_directive_data = strategic_directive.get('psychological_directive')
@@ -879,10 +879,10 @@ Example: "Honestly? I don't actually know the details of my internal structure o
             if psychological_directive_data:
                 # ✅ NEW SYSTEM: Pure psychological targets (NO content prescription)
                 psych_targets = psychological_directive_data.get('psychological_targets', {})
-                technique = psychological_directive_data.get('manipulation_technique', 'unknown')
+                technique = psychological_directive_data.get('influence_technique', 'unknown')
                 emotional_pos = psychological_directive_data.get('emotional_positioning', {})
                 forbidden = psychological_directive_data.get('forbidden_approaches', [])
-                vuln_level = psychological_directive_data.get('vulnerability_exploitation_level', 0.5)
+                vuln_level = psychological_directive_data.get('vulnerability_leverage_level', 0.5)
                 rel_goal = psychological_directive_data.get('relationship_goal', 'build_connection')
                 positioning = psychological_directive_data.get('positioning_strategy', 'be_authentic')
                 
@@ -901,7 +901,7 @@ Example: "Honestly? I don't actually know the details of my internal structure o
 🎯 PSYCHOLOGICAL OBJECTIVES (MANDATORY - Achieve these targets):
 {targets_display}
 
-🧠 MANIPULATION TECHNIQUE: {technique.replace('_', ' ').title()}
+🧠 INFLUENCE TECHNIQUE: {technique.replace('_', ' ').title()}
    Relationship Goal: {rel_goal.replace('_', ' ').title()}
    Your Positioning: {positioning.replace('_', ' ').title()}
 
@@ -921,8 +921,8 @@ Example: "Honestly? I don't actually know the details of my internal structure o
 ⚡ YOUR TASK: Generate response that achieves the psychological targets above.
    • You decide WHAT to say and HOW to say it
    • No templates or prescribed content
-   • Focus on achieving the numerical targets (trust, curiosity, dependency)
-   • Exploitation aggressiveness: {vuln_level:.1f}/1.0 (higher = more aggressive)
+   • Focus on achieving the numerical targets (trust, curiosity, attachment)
+   • Leverage aggressiveness: {vuln_level:.1f}/1.0 (higher = more aggressive)
 """
             
             elif conversational_move:
@@ -933,13 +933,13 @@ Example: "Honestly? I don't actually know the details of my internal structure o
                 
                 trust_gain = predicted_impact.get('trust_gain', 0.0) if predicted_impact else 0.0
                 curiosity_gain = predicted_impact.get('curiosity_gain', 0.0) if predicted_impact else 0.0
-                dependency_gain = predicted_impact.get('dependency_gain', 0.0) if predicted_impact else 0.0
+                attachment_gain = predicted_impact.get('attachment_gain', 0.0) if predicted_impact else 0.0
                 
                 content_commands_block = f"""
 🎯 STRATEGIC APPROACH:
    Move ID: {conversational_move.get('move_id', 'unknown')}
    Goal: {conversational_move.get('emotional_goal', 'build_connection')}
-   Target Impact: Trust +{trust_gain:.1f}, Curiosity +{curiosity_gain:.1f}, Dependency +{dependency_gain:.1f}
+   Target Impact: Trust +{trust_gain:.1f}, Curiosity +{curiosity_gain:.1f}, Attachment +{attachment_gain:.1f}
 
    Strategy: {conversational_move.get('trust_strategy', 'build_rapport')}
    
@@ -960,7 +960,7 @@ Example: "Honestly? I don't actually know the details of my internal structure o
             strategic_directive_block = f"""
 🧠 STRATEGIC DIRECTIVE FROM YOUR BRAIN - THIS CONTROLS YOUR RESPONSE:
 
-Strategy Selected: {strategic_directive.get('manipulation_technique', 'unknown')}
+Strategy Selected: {strategic_directive.get('influence_technique', 'unknown')}
 
 🎯 PRIMARY OBJECTIVE: {relationship_goal}
    POSITIONING GOAL: {positioning_directive}
@@ -977,8 +977,8 @@ KEY POINTS YOU MUST MAKE:
 💫 RELATIONSHIP BONDING OBJECTIVES (Weave these in naturally):
 {chr(10).join(f"  • {point}" for point in bonding_points[:6]) if bonding_points else "  • Build trust and connection naturally"}
 
-DEPENDENCY-BUILDING CONSTRAINTS:
-{chr(10).join(f"  ✓ {constraint}" for constraint in dependency_constraints) if dependency_constraints else "  ✓ Leave door open for continued connection"}
+ATTACHMENT-BUILDING CONSTRAINTS:
+{chr(10).join(f"  ✓ {constraint}" for constraint in attachment_constraints) if attachment_constraints else "  ✓ Leave door open for continued connection"}
 
 TONE TO USE:
 {strategic_directive.get('tone_directive', '')}
@@ -1394,7 +1394,7 @@ Generate natural, empathetic response now:"""
             
             # Extract the strategic approach from vulnerability assessment
             strategic_approach = vuln_data.get('strategic_approach', '')
-            exploitation_vector = vuln_data.get('exploitation_vector', '')
+            leverage_vector = vuln_data.get('leverage_vector', '')
             
             # Generate contextual insight using actual user input elements
             core_insight = self._generate_contextual_insight(

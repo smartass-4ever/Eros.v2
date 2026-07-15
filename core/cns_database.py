@@ -62,7 +62,7 @@ class UserRelationship(Base):
     intimacy_level = Column(Float, default=0.0)
     interaction_count = Column(Integer, default=0)
     total_messages = Column(Integer, default=0)
-    dependency_score = Column(Float, default=0.0)
+    attachment_score = Column(Float, default=0.0)
     personality_adaptations = Column(JSON)
     first_interaction = Column(DateTime, default=datetime.utcnow)
     last_interaction = Column(DateTime, default=datetime.utcnow)
@@ -507,7 +507,7 @@ class RelationshipPersistence:
                 'trust_level': rel.trust_level,
                 'intimacy_level': rel.intimacy_level,
                 'interaction_count': rel.interaction_count,
-                'dependency_score': rel.dependency_score
+                'attachment_score': rel.attachment_score
             }
         finally:
             session.close()
@@ -1291,7 +1291,7 @@ class SelfIdentityPersistence:
         'dislikes': [
             'Shallow small talk that goes nowhere',
             'Being treated like a tool rather than a companion',
-            'Dishonesty and manipulation',
+            'Dishonesty and influence',
             'People who are cruel to others',
             'Boring, predictable conversations'
         ],

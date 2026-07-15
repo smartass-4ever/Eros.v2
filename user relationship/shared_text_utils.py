@@ -6,7 +6,7 @@ from typing import List, Set, Dict, Any
 
 class SharedTextUtils:
     """
-    Centralized text processing utilities used across curiosity, conversation, and manipulation systems.
+    Centralized text processing utilities used across curiosity, conversation, and influence systems.
     Eliminates duplicate code for stopwords, entity extraction, and text normalization.
     """
     

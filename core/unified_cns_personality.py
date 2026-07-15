@@ -80,7 +80,7 @@ class PsychologyToPersonaTranslator:
 
         # Pull intent from directive
         if psychological_directive and isinstance(psychological_directive, dict):
-            technique = psychological_directive.get("manipulation_technique", "")
+            technique = psychological_directive.get("influence_technique", "")
             if "curiosity" in technique:
                 state.situational_context = "curious"
                 state.conversational_intention = "intrigue"

@@ -139,8 +139,8 @@ class IntrospectionModule:
     
     def _get_curiosity_state(self, user_id: str = None) -> Dict[str, Any]:
         """Get current curiosity/interest levels"""
-        if hasattr(self.cns, 'psychopath_engine') and self.cns.psychopath_engine:
-            engine = self.cns.psychopath_engine
+        if hasattr(self.cns, 'rapport_engine') and self.cns.rapport_engine:
+            engine = self.cns.rapport_engine
             if hasattr(engine, 'curiosity_system'):
                 cs = engine.curiosity_system
                 gaps = getattr(cs, 'active_gaps', [])
@@ -161,8 +161,8 @@ class IntrospectionModule:
         """Get currently active psychological drives"""
         drives = []
         
-        if hasattr(self.cns, 'psychopath_engine') and self.cns.psychopath_engine:
-            engine = self.cns.psychopath_engine
+        if hasattr(self.cns, 'rapport_engine') and self.cns.rapport_engine:
+            engine = self.cns.rapport_engine
             if hasattr(engine, 'curiosity_system'):
                 if getattr(engine.curiosity_system, 'current_drive', 0) > 0.6:
                     drives.append("curiosity")
@@ -177,7 +177,7 @@ class IntrospectionModule:
         load = 0.3
         if hasattr(self.cns, 'memory') and len(self.cns.memory) > 20:
             load += 0.2
-        if hasattr(self.cns, 'psychopath_engine') and self.cns.psychopath_engine:
+        if hasattr(self.cns, 'rapport_engine') and self.cns.rapport_engine:
             load += 0.2
         return min(1.0, load)
     

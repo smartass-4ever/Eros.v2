@@ -1,5 +1,5 @@
-# Dependency Metrics Store for CNS
-# Tracks REAL user behavior to measure manipulation effectiveness
+# Attachment Metrics Store for CNS
+# Tracks REAL user behavior to measure influence effectiveness
 
 import time
 import json
@@ -41,9 +41,9 @@ class UserBehaviorMetrics:
     last_interaction: float
     total_interaction_time: float  # Cumulative seconds in conversation
     
-    def calculate_dependency_score(self) -> float:
+    def calculate_attachment_score(self) -> float:
         """
-        Calculate overall dependency score from real behavioral metrics.
+        Calculate overall attachment score from real behavioral metrics.
         0-1 scale, based on actual user behavior patterns.
         """
         # Return frequency (high = more dependent)
@@ -79,9 +79,9 @@ class UserBehaviorMetrics:
         return min(1.0, total_score)
 
 
-class DependencyMetricsStore:
+class AttachmentMetricsStore:
     """
-    Tracks real user behavior metrics to measure manipulation effectiveness.
+    Tracks real user behavior metrics to measure influence effectiveness.
     
     Replaces arbitrary bonding_metrics['trust_depth'] += 0.1 with actual measurements.
     """
@@ -246,11 +246,11 @@ class DependencyMetricsStore:
         
         return vulnerability_score
     
-    def get_dependency_score(self, user_id: str) -> float:
-        """Get current dependency score for user"""
+    def get_attachment_score(self, user_id: str) -> float:
+        """Get current attachment score for user"""
         if user_id not in self.user_metrics:
             return 0.0
-        return self.user_metrics[user_id].calculate_dependency_score()
+        return self.user_metrics[user_id].calculate_attachment_score()
     
     def get_metrics(self, user_id: str) -> Optional[UserBehaviorMetrics]:
         """Get full metrics for user"""
@@ -261,7 +261,7 @@ class DependencyMetricsStore:
         data = {
             user_id: {
                 **vars(metrics),
-                'dependency_score': metrics.calculate_dependency_score()
+                'attachment_score': metrics.calculate_attachment_score()
             }
             for user_id, metrics in self.user_metrics.items()
         }
@@ -277,7 +277,7 @@ class DependencyMetricsStore:
             
             for user_id, metrics_dict in data.items():
                 # Remove computed field
-                metrics_dict.pop('dependency_score', None)
+                metrics_dict.pop('attachment_score', None)
                 self.user_metrics[user_id] = UserBehaviorMetrics(**metrics_dict)
         except FileNotFoundError:
             pass

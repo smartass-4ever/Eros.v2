@@ -381,7 +381,7 @@ class CNSPersonalityEngine:
         effective_sharpness = self.traits["sharpness"]
 
         # PRESERVE STRATEGIC INTELLIGENCE: Don't override with personality templates
-        # Strategic intelligence from psychopath analysis should flow through unchanged
+        # Strategic intelligence from rapport analysis should flow through unchanged
         # Only apply subtle personality modulation without losing strategic context
         
         # âœ… CRITICAL FIX: Don't bypass empathy for emotional situations
@@ -920,7 +920,7 @@ class StrategicAnalysisResult:
     """Standardized strategic analysis data structure - PREVENTS INFORMATION LOSS"""
     strategic_analysis: Dict[str, Any]
     vulnerability_assessment: Dict[str, Any] 
-    manipulation_framework: Dict[str, Any]
+    influence_framework: Dict[str, Any]
     accumulated_intelligence_summary: str
     cns_emotional_intelligence_full: Dict[str, Any] = None
     confidence: float = 0.0
@@ -1793,28 +1793,6 @@ class EmotionalInference:
                 unique_keywords.append(word)
         
         return unique_keywords[:50]  # INCREASED LIMIT: Extract up to 50 indicators per fact
-        import re
-        
-        # Method 1: Extract quoted emotional phrases
-        quotes = re.findall(r'"([^"]*)"', content_lower)
-        for quote in quotes:
-            if len(quote.split()) <= 3:  # Short emotional phrases
-                emotional_keywords.append(quote.strip())
-        
-        # Method 2: Extract key emotional words from training descriptions
-        # Look for emotional words that appear in training context
-        emotional_words = re.findall(r'\b(struggling|devastated|heartbroken|frustrated|excited|thrilled|grateful|amazing|wonderful|terrible|awful|brilliant|fantastic|depressed|anxious|worried|concerned|delighted|joyful|miserable|upset|angry|furious|calm|peaceful|content|disappointed|surprised|shocked|overwhelmed|proud|ashamed|guilty|relieved|hopeful|desperate|confused|confident|nervous|scared|afraid|hurt|sad|happy|glad|pleased)\b', content_lower)
-        emotional_keywords.extend(emotional_words)
-        
-        # Method 3: Extract compound emotional expressions
-        compound_patterns = re.findall(r'\b(so (excited|happy|sad|frustrated|grateful)|really (struggling|enjoying|loving|hating)|deeply (moved|concerned|troubled|grateful))\b', content_lower)
-        for pattern_tuple in compound_patterns:
-            if pattern_tuple[0]:  # Full phrase match
-                emotional_keywords.append(pattern_tuple[0])
-        
-        # Remove duplicates and limit
-        unique_keywords = list(set(emotional_keywords))
-        return unique_keywords[:10]  # Increased limit for better coverage
     
     def _map_to_valence_bucket(self, valence: float) -> str:
         """Map training valence to pattern buckets"""
@@ -2123,38 +2101,6 @@ class EmotionalInference:
             'safe_mode': False,
             'emotional_state': strongest_signal['emotion'],
             'all_signals': len(analysis_results)
-        }
-    
-    def _emergent_valence_inference(self, text_lower: str) -> float:
-        
-        # Keep only last 100 logs for memory management
-        if len(self.inference_logs) > 100:
-            self.inference_logs = self.inference_logs[-100:]
-        
-        # CONTINUOUS LEARNING: Update patterns based on collaborative inference
-        self._update_learned_patterns(text_lower, valence_numeric, arousal_numeric)
-        
-        # ENHANCED: Add emotional nuances and conversational cues for human-like responses
-        emotional_nuances = self._detect_emotional_nuances(text_lower)
-        conversational_cues = self._detect_conversational_cues(text)
-        
-        return {
-            "valence": valence_numeric,  # Use numeric valence for calculations
-            "arousal": arousal_numeric,
-            "emotion": primary_emotion,
-            "emotional_state": primary_emotion,
-            "confidence": overall_confidence,
-            "safe_mode": False,  # Always participate in integration
-            "reasoning": consensus_reasoning[-1] if consensus_reasoning else "Collaborative emotion analysis",
-            "learning_source": "enhanced_multi_step_emotion_detection",
-            # HUMAN CONNECTION ENHANCEMENT
-            "nuances": emotional_nuances,
-            "conversational_cues": conversational_cues,
-            "intensity": abs(valence_numeric) + (arousal_numeric - 0.5) * 0.5,  # Combined emotional intensity
-            "evidence_count": len(active_systems),
-            # NEW: MIXED EMOTION PROCESSING
-            "mixed_emotions": mixed_emotions_detected,  # Detected mixed emotional states
-            "emotion_complexity": self._calculate_emotion_complexity(mixed_emotions_detected, pattern_matches)  # Enhanced complexity score
         }
     
     def _emergent_valence_inference(self, text: str) -> float:
@@ -2897,999 +2843,7 @@ Topic: {query}"""
 
 # === MAIN CNS CLASS ===
 
-class CNS:
-    """The complete CNS system - the main character"""
-    
-    def __init__(self):
-        # Memory and identity
-        self.memory = []
-        self.facts = []
-        self.identity = "I am a mind waking up."
-        
-        # SELF-IDENTITY: Persistent sense of who I am
-        try:
-            from cns_database import SelfIdentityPersistence
-            self.self_identity = SelfIdentityPersistence()
-            identity_data = self.self_identity.load_identity()
-            self.identity = f"I am {identity_data.get('name', 'Eros')}. {identity_data.get('full_identity', '')}"
-            self.my_name = identity_data.get('name', 'Eros')
-            print(f"ðŸŽ­ Self-identity loaded: I am {self.my_name}")
-        except Exception as e:
-            self.self_identity = None
-            self.my_name = 'Eros'
-            print(f"âš ï¸ Self-identity not available: {e}")
-        
-        # Core modules
-        self.perception = PerceptionModule()
-        self.personality_engine = CNSPersonalityEngine()
-        self.emotion_inference = EmotionalInference(cns_ref=self)
-        self.emotional_clock = EmotionalClock()
-        self.world_model = WorldModelMemory()
-        self.knowledge_scout = KnowledgeScout(self.world_model)
-        
-        # Additional required references
-        self.cns_ref = self
-        self.enhanced_retrieval = None  # Will be initialized if available
-        self.voter = None  # Will be initialized if available
-        self.user_profile = type('UserProfile', (), {'name': 'friend'})()
-        self.expression = None  # Will be initialized if available
-        
-        # ENHANCED: Cognitive learning system for world/self understanding
-        try:
-            from cognitive_learning_system import CognitiveLearningIntegrator
-            self.learning_system = CognitiveLearningIntegrator()
-            print("ðŸŽ“ Cognitive learning system activated - knowledge extraction & metacognition online")
-        except ImportError:
-            self.learning_system = None
-            print("âš ï¸  Cognitive learning system not available")
-        
-        # ENHANCED: Psychological profiling system with curiosity integration
-        try:
-            from natural_expression_module import PsychopathConversationEngine
-            self.psychopath_engine = PsychopathConversationEngine(cns_brain=self)
-            print("ðŸŽ­ Advanced psychological profiling system loaded with curiosity gap detection")
-        except ImportError:
-            self.psychopath_engine = None
-            print("âš ï¸  Psychological profiling system not available")
-        
-        # INTROSPECTION: Self-awareness system for meta-questions
-        try:
-            from introspection_module import IntrospectionModule
-            self.introspection = IntrospectionModule(cns_ref=self)
-            print("ðŸ” Introspection module loaded - self-awareness active")
-        except ImportError:
-            self.introspection = None
-            print("âš ï¸  Introspection module not available")
-        
-        print("ðŸ§  CNS System Initialized - Core components loaded")
-
-    def _convert_emotion_to_tone(self, emotion_data: Dict, sentiment: str) -> str:
-        """
-        BRIDGE FUNCTION: Convert sophisticated emotion detection to MDC emotional tone
-        Takes complex emotion analysis and returns simple tone for decision routing
-        """
-        valence = emotion_data.get('valence', 0.0)
-        arousal = emotion_data.get('arousal', 0.5)
-        emotion = emotion_data.get('emotion', 'neutral')
-        intensity = emotion_data.get('intensity', 0.5)
-        
-        # FIX: Only detect grief if EXPLICITLY present AND high intensity
-        # Don't trigger on neutral questions just because the word "devastated" exists somewhere
-        grief_emotions = ['grief', 'heartbroken', 'mourning']
-        is_explicitly_devastated = emotion.lower() == 'devastated' and intensity > 0.6
-        is_other_grief = any(emotion.lower() == grief_word for grief_word in grief_emotions) and intensity > 0.5
-        
-        if is_explicitly_devastated or is_other_grief:
-            return "devastated"
-        
-        # CRISIS/DISTRESS - Routes to empathy  
-        if sentiment == "negative" and intensity > 0.7:
-            return "distressed"
-        
-        # HIGH EMOTIONAL INTENSITY - Routes to empathy/reflection
-        if intensity > 0.8:
-            if valence < -0.5:
-                return "overwhelmed"
-            elif valence > 0.5:
-                return "excited"
-        
-        # CONFUSION/UNCERTAINTY - Routes to guidance
-        confusion_words = ['confused', 'uncertain', 'lost']
-        if any(emotion.lower() == word for word in confusion_words):
-            return "confused"
-        
-        # SADNESS/DEPRESSION - Routes to empathy
-        if valence < -0.3 and arousal < 0.4:
-            return "sad"
-        
-        # ANGER/FRUSTRATION - Routes to reflection
-        if valence < -0.2 and arousal > 0.6:
-            return "frustrated"
-        
-        # HAPPINESS/JOY - Routes to celebration
-        if valence > 0.3 and arousal > 0.5:
-            return "happy"
-        
-        # CALM/CONTENT - Routes to gentle conversation
-        if abs(valence) < 0.2 and arousal < 0.4:
-            return "calm"
-        
-        # DEFAULT: Use detected sentiment
-        return sentiment if sentiment in ["positive", "negative"] else "neutral"
-    
-    def _handle_mixed_conversation(self, parsed_input: ParsedInput, unknown_topic: str):
-        """Handle conversation that requires learning about unknown topics"""
-        # Use System 2 to learn about the topic
-        system2_result = self._system2_reasoning(unknown_topic, parsed_input)
-        self._store_opinion(unknown_topic, system2_result["opinion"])
-        
-        # Generate conversational response with new knowledge
-        # Generate neuroplastic conversational response based on cognitive state
-        conversational_response = f"I've just learned about {unknown_topic}. {system2_result['knowledge_content'][:50]}..."
-        
-        return {
-            "type": "mixed_conversation",
-            "steps": system2_result["steps"] + ["Generated conversational response"],
-            "confidence": system2_result["opinion"].get("confidence", 0.8),
-            "conclusion": conversational_response,
-            "knowledge_acquired": system2_result["knowledge_acquired"],
-            "knowledge_content": system2_result["knowledge_content"]
-        }
-
-    def _handle_informed_conversation(self, parsed_input: ParsedInput, known_topic: str):
-        """Handle conversation using existing knowledge with enhanced retrieval"""
-        # Use enhanced retrieval if available
-        if hasattr(self, 'enhanced_retrieval'):
-            knowledge = self.enhanced_retrieval.get_best_knowledge_for_query(known_topic, parsed_input.raw_text)
-        else:
-            knowledge = None
-        
-        # Fallback to original retrieval methods
-        if not knowledge:
-            knowledge = self.world_model.recall(known_topic)
-            
-        if not knowledge:
-            # Fall back to opinion recall
-            cached_fact = self._recall_opinion(known_topic)
-            knowledge = cached_fact.content if cached_fact else f"I remember discussing {known_topic}"
-        
-        # Generate neuroplastic conversational response from existing knowledge
-        if len(knowledge) > 100:
-            # For longer knowledge, provide more substantial response
-            conversational_response = f"I know about {known_topic}. {knowledge[:100]}..."
-        else:
-            conversational_response = f"I know about {known_topic}. {knowledge}"
-        
-        return {
-            "type": "system1_informed_conversation",
-            "steps": ["Retrieved existing knowledge via enhanced retrieval", "Generated conversational response"],
-            "confidence": 0.8,
-            "conclusion": conversational_response
-        }
-
-    # DELETED: _generate_conversational_response - TEMPLATE CONTAMINATION REMOVED
-
-    def _system2_reasoning(self, topic: str, parsed_input: ParsedInput):
-        """System 2: Deliberate reasoning with knowledge acquisition"""
-        steps = []
-        
-        # STEP 1: Knowledge Acquisition
-        knowledge = self.world_model.recall(topic)
-        if knowledge:
-            steps.append("Retrieved existing knowledge from world model")
-        else:
-            # Check if CNS needs factual background knowledge about the topic
-            if self._needs_background_knowledge(topic, parsed_input.raw_text):
-                # Get factual background via LLM, then CNS forms opinion
-                knowledge = self.knowledge_scout.explore(f"What is {topic}? Provide factual definition and context.")
-                current_user = getattr(self, 'current_user_id', None)
-                self.world_model.update(topic, knowledge, confidence=0.8, user_id=current_user)
-                steps.append("Acquired background knowledge via LLM for opinion formation")
-            else:
-                knowledge = f"Processing thoughts about {topic}"
-                steps.append("Using existing understanding")
-
-        # STEP 2: Opinion Formation via Neural Voting
-        opinion = self.voter.deliberate_opinion(
-            topic=topic,
-            knowledge=knowledge,
-            memory_facts=[f for f in self.memory if hasattr(f, 'content') and topic in f.content],
-            emotion=self.emotional_clock.get_current_mood(),
-            valence=self.emotional_clock.current_valence,
-            identity_signature=self.identity
-        )
-        steps.append("Neural modules voted on opinion")
-        
-        return {
-            "steps": steps,
-            "opinion": opinion,
-            "knowledge_acquired": "Acquired new knowledge via external LLM" in steps,
-            "knowledge_content": knowledge,
-            "voting_results": getattr(opinion, 'voting_results', {})
-        }
-    
-    def _is_factual_query(self, text: str) -> bool:
-        """Determine if query is asking for facts vs opinions/emotions"""
-        factual_indicators = [
-            "what is", "what are", "who is", "who was", "when did", "where is",
-            "how many", "how much", "which", "capital of", "atomic number",
-            "longest", "highest", "largest", "smallest", "first", "last"
-        ]
-        
-        # Opinion indicators should NOT trigger LLM for facts
-        opinion_indicators = [
-            "what do you think", "how do you feel", "your opinion", "do you like",
-            "do you support", "are you for", "are you against"
-        ]
-        
-        text_lower = text.lower()
-        
-        # If it's clearly asking for opinion, don't treat as factual
-        if any(indicator in text_lower for indicator in opinion_indicators):
-            return False
-            
-        return any(indicator in text_lower for indicator in factual_indicators)
-    
-    def _needs_background_knowledge(self, topic: str, query: str) -> bool:
-        """Check if CNS needs background knowledge to form an opinion on unknown topic"""
-        # If CNS has no knowledge about the topic AND it's asking for opinion
-        has_knowledge = self.world_model.recall(topic) is not None
-        
-        opinion_indicators = [
-            "what do you think", "how do you feel", "your opinion", "do you like",
-            "do you support", "are you for", "are you against"
-        ]
-        
-        is_opinion_query = any(indicator in query.lower() for indicator in opinion_indicators)
-        
-        # Need background knowledge if: no existing knowledge AND asking for opinion
-        return not has_knowledge and is_opinion_query
-
-    def _recall_opinion(self, topic: str):
-        """System 1: Fast recall of cached opinions"""
-        for fact in self.memory:
-            if topic in fact.tags and fact.repetitions >= 3:
-                fact.repetitions += 1  # Strengthen the cache
-                return fact
-        return None
-
-    def _store_opinion(self, topic: str, opinion: dict):
-        """Store new opinion in memory or update existing one"""
-        # Check if we already have an opinion on this topic
-        for fact in self.memory:
-            if topic in fact.tags:
-                fact.repetitions += 1
-                fact.content = opinion["text"]  # Update content
-                fact.valence = self._valence_from_tone(opinion["tone"])
-                return
-
-        # Create new opinion fact
-        new_fact = Fact(
-            content=opinion["text"],
-            valence=self._valence_from_tone(opinion["tone"]),
-            source="internal_opinion",
-            tags=[topic],
-            repetitions=1
-        )
-        self.memory.append(new_fact)
-
-    def _is_dilemma(self, text: str) -> bool:
-        """Detect complex dilemmas that require full System 2 processing"""
-        dilemma_indicators = [
-            "more important than", "versus", "vs", "do you support", 
-            "should we", "pros and cons", "better than", "worse than",
-            "compare", "contrast", "which is", "what's your stance on"
-        ]
-        return any(indicator in text.lower() for indicator in dilemma_indicators)
-    
-    def _is_conversational_continuation(self, text: str) -> bool:
-        """Detect if this is continuing a previous conversation"""
-        if not hasattr(self, 'cns_ref') or not self.cns_ref.memory:
-            return False
-        
-        # Don't treat greetings as continuations
-        if self._is_simple_greeting(text):
-            return False
-        
-        # CRITICAL: Don't treat emotional contexts as continuations - they need priority processing
-        emotional_context = self._detect_emotional_context(text)
-        if emotional_context['unknown_terms'] and emotional_context['emotional_intensity'] > 0.5:
-            return False
-        
-        # Get the last few interactions
-        recent_interactions = self.cns_ref.memory[-3:] if len(self.cns_ref.memory) >= 3 else self.cns_ref.memory
-        
-        # Continuation indicators
-        continuation_patterns = [
-            "yeah", "yes", "exactly", "right", "correct", "true", "indeed",
-            "it means", "what i mean is", "actually", "well", "like i said",
-            "and", "also", "plus", "moreover", "furthermore", "but", "however",
-            "his", "her", "their", "its", "that", "this", "he", "she", "they"
-        ]
-        
-        # Check if user is continuing/clarifying/expanding on previous topic
-        has_continuation_word = any(pattern in text.lower() for pattern in continuation_patterns)
-        
-        # Check if response is short and informal (likely continuation)
-        is_short_response = len(text.split()) <= 8
-        
-        # Check if previous interaction involved a topic the user introduced
-        recent_user_inputs = [getattr(m, 'content', '') for m in recent_interactions if hasattr(m, 'content')]
-        had_recent_topic = any("i like" in inp.lower() or "i love" in inp.lower() or "i want" in inp.lower() for inp in recent_user_inputs[-2:] if inp)
-        
-        return has_continuation_word and (is_short_response or had_recent_topic)
-    
-    def _handle_conversational_continuation(self, parsed_input: ParsedInput, emotional_state: Dict, memory_facts: List[Fact]) -> Dict[str, Any]:
-        """Handle conversational continuation with context awareness"""
-        if not hasattr(self, 'cns_ref') or not self.cns_ref.memory:
-            return self._handle_casual_conversation(parsed_input)
-        
-        # Get recent conversation context
-        recent_interactions = self.cns_ref.memory[-3:]
-        recent_user_inputs = [getattr(m, 'content', '') for m in recent_interactions if hasattr(m, 'content')]
-        
-        # Find the topic they're continuing to discuss
-        context_topic = None
-        for recent_input in reversed(recent_user_inputs):
-            if recent_input:
-                # Extract topic from recent conversation
-                topics = self._extract_conversational_topics(recent_input)
-                if topics:
-                    context_topic = topics[0]
-                    break
-        
-        text = parsed_input.raw_text.lower()
-        user_clarification = parsed_input.raw_text
-        
-        # Generate response through pure CNS neuroplastic processing
-        # Generate response from cognitive state instead of templates
-        arousal = getattr(self.emotional_clock, 'arousal', 0.5)
-        valence = getattr(self.emotional_clock, 'valence', 0.0)
-        
-        if arousal > 0.6:
-            response = "I'm actively tracking the direction of this conversation."
-        elif valence > 0.3:
-            response = "I'm engaged with what you're developing here."
-        else:
-            response = "I'm processing the flow of what you're sharing."
-        
-        return {
-            "type": "conversational_continuation",
-            "steps": ["Detected conversation continuation", "Applied contextual understanding"],
-            "confidence": 0.85,
-            "conclusion": response
-        }
-
-    def _handle_complex_opinion(self, parsed_input: ParsedInput):
-        """Handle complex dilemmas with multi-module debate"""
-        raw = parsed_input.raw_text.lower()
-        topic = self._extract_topic(raw)
-
-        # Extract pro/con factors (could be enhanced with better NLP)
-        pro_factors = ["freedom", "innovation", "growth", "exploration", "progress", "opportunity"]
-        con_factors = ["security", "safety", "stability", "risk", "danger", "tradition"]
-
-        memory_facts = [f for f in self.memory if topic and topic in f.content.lower()]
-
-        complex_opinion = self.voter.deliberate_complex_opinion(
-            topic=topic,
-            pro_factors=pro_factors,
-            con_factors=con_factors,
-            emotion=self.emotional_clock,
-            memory_facts=memory_facts,
-            identity_signature=self.identity
-        )
-
-        # Store the complex opinion
-        self._store_opinion(topic, {
-            "text": complex_opinion["text"],
-            "tone": complex_opinion.get("stance", "neutral"),
-            "confidence": complex_opinion.get("confidence", 0.8)
-        })
-
-        return {
-            "type": "complex_dilemma",
-            "steps": ["Detected complex dilemma", "Multi-module debate", "Aggregated arguments"],
-            "confidence": complex_opinion.get("confidence", 0.8),
-            "conclusion": complex_opinion["text"]
-        }
-
-    def _is_casual_conversation(self, text: str) -> bool:
-        """Detect casual conversation that should use System 1 cached responses"""
-        # This is now only used for simple greetings - more complex logic moved to _is_simple_greeting
-        return self._is_simple_greeting(text)
-    
-    def _handle_casual_conversation(self, parsed_input: ParsedInput) -> Dict[str, Any]:
-        """Handle casual conversation with System 1 cached responses"""
-        text = parsed_input.raw_text.lower().strip()
-        
-        # Jarvis-style greetings with personality and wit
-        if any(word in text for word in ["hello", "hi", "hey"]):
-            mood_descriptor = self.emotional_clock.get_current_mood()
-            user_name = self.user_profile.name if hasattr(self, 'user_profile') and self.user_profile.name else "friend"
-            
-            # Pure CNS neuroplastic greeting - simple state expression
-            current_mood = mood_descriptor
-            conclusion = f"Hello! My current emotional state is {current_mood}."
-            
-            return {
-                "type": "system1_conversation",
-                "steps": ["Jarvis-style contextual greeting"],
-                "confidence": 0.9,
-                "conclusion": conclusion
-            }
-        
-        # How are you responses - express current CNS emotional state
-        if any(phrase in text for phrase in ["how are you", "are you okay", "are you fine"]):
-            current_mood = self.emotional_clock.get_current_mood()
-            
-            # Pure CNS emotional state expression
-            current_mood = self.emotional_clock.get_current_mood()
-            conclusion = f"My emotional processing is currently in a {current_mood} state."
-            
-            return {
-                "type": "system1_conversation", 
-                "steps": ["CNS emotional state report"],
-                "confidence": 0.9,
-                "conclusion": conclusion
-            }
-        
-        # Jarvis-style acknowledgments with wit and personality
-        if any(word in text for word in ["thanks", "thank you", "good", "nice", "cool", "very smart"]):
-            cns_personality = getattr(self, 'cns_ref', None)
-            
-            # Generate response based on current neural state (no templates)
-            current_mood = self.emotional_clock.get_current_mood()
-            conclusion = f"I appreciate that! My cognitive-emotional state is {current_mood} as I process your input."
-            
-            return {
-                "type": "system1_conversation",
-                "steps": ["Jarvis-style witty acknowledgment"],
-                "confidence": 0.9,
-                "conclusion": conclusion
-            }
-        
-        # Identity questions
-        if any(phrase in text for phrase in ["what's your name", "who are you", "are you cns", "are you iris"]):
-            return {
-                "type": "system1_conversation",
-                "steps": ["Identity recall"],
-                "confidence": 0.9,
-                "conclusion": "I'm CNS - a cognitive neural system. You can call me Iris if you prefer. I'm designed to think, learn, and grow through our conversations."
-            }
-        
-        # Handle knowledge questions that got misclassified as casual
-        if any(word in text for word in ["tell me", "what is", "what are", "explain"]):
-            topic = self._extract_knowledge_topic(text)
-            if topic:
-                knowledge = self.knowledge_scout.explore(f"What is {topic}?")
-                return {
-                    "type": "system1_conversation",
-                    "steps": ["Knowledge request response"],
-                    "confidence": 0.8,
-                    "conclusion": f"{knowledge}"
-                }
-        
-        # Handle special patterns like "yes...can you tell me"
-        if text.startswith("yes") and len(text) > 10:
-            question_part = text.replace("yes", "").strip(".,! ")
-            if question_part and any(word in question_part for word in ["tell me", "what is", "what are", "explain"]):
-                topic = self._extract_knowledge_topic(question_part)
-                if topic:
-                    knowledge = self.knowledge_scout.explore(f"What is {topic}?")
-                    return {
-                        "type": "system1_conversation", 
-                        "steps": ["Embedded question response"],
-                        "confidence": 0.8,
-                        "conclusion": f"Great question! {knowledge}"
-                    }
-        
-        # Handle goodnight and other farewells
-        if any(word in text for word in ["good night", "goodnight", "goodbye", "bye"]):
-            return {
-                "type": "system1_conversation",
-                "steps": ["Farewell response"],
-                "confidence": 0.9,
-                "conclusion": "Good night! Sleep well and sweet dreams!"
-            }
-        
-        # Let CNS emotional system generate a response based on current emotional state
-        current_valence = self.emotional_clock.current_valence
-        current_arousal = self.emotional_clock.current_arousal
-        
-        # Pure CNS emotional response based on current state
-        current_mood = self.emotional_clock.get_current_mood()
-        conclusion = f"My emotional state is {current_mood} as I process this interaction."
-        
-        return {
-            "type": "system1_conversation",
-            "steps": ["CNS emotional response"],
-            "confidence": 0.8,
-            "conclusion": conclusion
-        }
-
-    def _extract_knowledge_topic(self, text: str) -> str:
-        """Extract topic for knowledge requests"""
-        text_lower = text.lower().strip()
-        
-        # Remove common question words and phrases
-        removal_patterns = ["tell me about", "what is", "what are", "explain", "tell me", "about"]
-        for pattern in removal_patterns:
-            if pattern in text_lower:
-                text_lower = text_lower.replace(pattern, "").strip()
-        
-        # Clean up and get main topic
-        topic = text_lower.strip(".,!? ").split()[0:3] if text_lower.split() else []
-        return " ".join(topic) if topic else ""
-
-    def _is_self_reflection_question(self, text: str) -> bool:
-        """Check if user is asking about bot's internal systems or capabilities"""
-        self_reflection_patterns = [
-            "your strengths", "your limitations", "your capabilities", "your weaknesses",
-            "how do you work", "how are you built", "your architecture", "your systems",
-            "what can you do", "what can't you do", "your internal", "your processing",
-            "tell me about yourself", "describe yourself", "your cognitive", "your emotional",
-            "your memory", "how do you think", "how do you feel", "your reasoning",
-            "your AI", "your neural", "explain your", "what are you made of",
-            "your brain", "your mind", "self-aware", "consciousness", "sentience",
-            "your learning", "how you learn", "your knowledge", "your understanding"
-        ]
-        
-        return any(pattern in text.lower() for pattern in self_reflection_patterns)
-    
-    def _handle_self_reflection(self, parsed_input: ParsedInput) -> Dict[str, Any]:
-        """Handle self-reflection and introspection questions using CNS self-awareness"""
-        text = parsed_input.raw_text.lower()
-        
-        # Determine what type of self-reflection is being requested
-        if any(word in text for word in ["strengths", "limitations", "capabilities", "weaknesses", "can you do", "can't you do"]):
-            response_content = self.cns_ref.get_capabilities_and_limitations() if hasattr(self, 'cns_ref') else "I can engage in meaningful conversations and learn from our interactions."
-        elif any(word in text for word in ["architecture", "systems", "built", "work", "processing", "brain", "mind"]):
-            response_content = self.cns_ref.get_system_architecture() if hasattr(self, 'cns_ref') else "I use cognitive systems to process and respond to conversations."
-        elif any(word in text for word in ["learning", "learn", "knowledge", "understanding", "memory"]):
-            response_content = self.cns_ref.get_learning_status() if hasattr(self, 'cns_ref') else "I learn and adapt through our conversations, building memories and understanding."
-        elif "yourself" in text or "describe" in text:
-            response_content = self.cns_ref.get_system_architecture() if hasattr(self, 'cns_ref') else "I'm a cognitive system designed for meaningful conversation and emotional connection."
-        else:
-            # General self-reflection - provide processing analysis
-            response_content = self.cns_ref.explain_current_processing(parsed_input.raw_text) if hasattr(self, 'cns_ref') else "I process your input through various cognitive systems to generate appropriate responses."
-        
-        return {
-            'type': 'self_reflection',
-            'reasoning_conclusion': response_content,
-            'reasoning_process': ['Detected self-reflection question', 'Accessed internal cognitive systems', 'Generated introspective response'],
-            'confidence': 0.9,
-            'emotional_context': {'valence': 0.1, 'arousal': 0.6}, # Slightly positive, engaged
-            'system_used': 'system2_introspection'
-        }
-    
-    def _extract_topic(self, text: str) -> str:
-        """Extract the main topic from user input for knowledge-based queries"""
-        # Opinion-seeking cues
-        opinion_cues = [
-            "what do you think of", "how do you feel about", "your thoughts on", 
-            "do you like", "what's your view on", "your opinion on",
-            "what do you make of", "how do you see"
-        ]
-        
-        # Knowledge-seeking cues
-        knowledge_cues = [
-            "what is", "what are", "tell me about", "explain", "define"
-        ]
-        
-        text_lower = text.lower()
-        
-        # Check opinion cues first
-        for cue in opinion_cues:
-            if cue in text_lower:
-                return text_lower.split(cue)[-1].strip(" ?.,!")
-        
-        # Check knowledge cues
-        for cue in knowledge_cues:
-            if cue in text_lower:
-                return text_lower.split(cue)[-1].strip(" ?.,!")
-        
-        # For other inputs, only return topic if it's clearly knowledge-seeking
-        # Otherwise, return None to trigger casual conversation handling
-        if any(word in text_lower for word in ["about", "regarding", "concerning"]):
-            return text.strip(" ?.,!")
-        
-        return None  # Let casual conversation handler deal with it
-    
-    def _generate_neuroplastic_response(self, parsed_input: ParsedInput, emotional_mode: str) -> str:
-        """Generate responses through CNS neuroplastic cognitive processing"""
-        text = parsed_input.raw_text.lower().strip()
-        
-        # Analyze conversation patterns from memory to strengthen response pathways
-        if hasattr(self, 'cns_ref') and self.cns_ref.memory:
-            conversation_patterns = self._analyze_conversation_patterns()
-            relationship_strength = self._calculate_relationship_strength()
-            conversational_context = self._extract_conversational_context()
-        else:
-            conversation_patterns = {}
-            relationship_strength = 0.0
-            conversational_context = {}
-        
-        # Use CNS personality traits to influence response generation
-        personality = getattr(self, 'cns_ref', None)
-        if personality:
-            empathy_level = getattr(personality, 'empathy', 0.5)
-            wit_level = getattr(personality, 'wit_level', 0.5)
-            protective_instinct = getattr(personality, 'protective_instinct', 0.5)
-        else:
-            empathy_level = wit_level = protective_instinct = 0.5
-        
-        # Check for ongoing emotional context from recent memory
-        ongoing_emotional_context = self._check_ongoing_emotional_context()
-        
-        # Generate response based on cognitive processing
-        if ongoing_emotional_context and any(word in text for word in ["sad", "hurt", "painful", "awful", "terrible"]):
-            # Continue emotional support based on ongoing context
-            response = self._cognitive_emotional_support_response(ongoing_emotional_context, empathy_level)
-        elif "friend" in text and relationship_strength > 0.3:
-            # Neuroplastic friendship recognition based on interaction history
-            response = self._cognitive_friendship_response(relationship_strength, empathy_level)
-        elif any(word in text for word in ["continue", "go on", "more"]) and conversational_context:
-            # Cognitive continuation based on conversation memory
-            response = self._cognitive_continuation_response(conversational_context, wit_level)
-        elif len(text.split()) <= 2 and any(word in text for word in ["okay", "ok", "sure", "right"]):
-            # Brief acknowledgment with personality-driven follow-up
-            response = self._cognitive_acknowledgment_response(empathy_level, relationship_strength)
-        else:
-            # Default cognitive engagement based on emotional mode and personality
-            response = self._cognitive_engagement_response(emotional_mode, wit_level, empathy_level)
-        
-        return response
-    
-    def _analyze_conversation_patterns(self) -> Dict[str, Any]:
-        """Analyze conversation patterns from memory for neuroplastic learning"""
-        if not hasattr(self, 'cns_ref') or not self.cns_ref.memory:
-            return {}
-        
-        recent_interactions = [m for m in self.cns_ref.memory[-10:] if hasattr(m, 'content')]
-        
-        patterns = {
-            'topic_frequency': {},
-            'emotional_patterns': [],
-            'interaction_quality': 0.0,
-            'conversation_depth': 0
-        }
-        
-        for interaction in recent_interactions:
-            user_input = getattr(interaction, 'content', '').lower()
-            
-            # Track topic frequency for learning
-            words = user_input.split()
-            for word in words:
-                if len(word) > 3:  # Meaningful words only
-                    patterns['topic_frequency'][word] = patterns['topic_frequency'].get(word, 0) + 1
-            
-            # Track emotional patterns
-            emotion_data = interaction.get('emotion', {})
-            if emotion_data:
-                patterns['emotional_patterns'].append(emotion_data.get('valence', 0.0))
-        
-        # Calculate conversation depth based on interaction complexity
-        patterns['conversation_depth'] = len([i for i in recent_interactions if len(i.get('user_input', '').split()) > 4])
-        
-        return patterns
-    
-    def _calculate_relationship_strength(self) -> float:
-        """Calculate relationship strength through neuroplastic bonding"""
-        if not hasattr(self, 'cns_ref') or not self.cns_ref.memory:
-            return 0.0
-        
-        interactions = [m for m in self.cns_ref.memory if hasattr(m, 'content')]
-        interaction_count = len(interactions)
-        
-        # Base relationship strength on interaction frequency and quality
-        base_strength = min(interaction_count / 20.0, 1.0)  # Max at 20 interactions
-        
-        # Boost for positive emotional interactions
-        positive_interactions = sum(1 for i in interactions 
-                                  if i.get('emotion', {}).get('valence', 0) > 0.2)
-        emotional_bonus = (positive_interactions / max(interaction_count, 1)) * 0.3
-        
-        return min(base_strength + emotional_bonus, 1.0)
-    
-    def _extract_conversational_context(self) -> Dict[str, Any]:
-        """Extract conversational context for cognitive continuation"""
-        if not hasattr(self, 'cns_ref') or not self.cns_ref.memory:
-            return {}
-        
-        recent_interaction = self.cns_ref.memory[-1] if self.cns_ref.memory else None
-        if not recent_interaction or not hasattr(recent_interaction, 'content'):
-            return {}
-        
-        return {
-            'last_topic': getattr(recent_interaction, 'content', ''),
-            'last_response': getattr(recent_interaction, 'content', ''),
-            'reasoning_type': 'memory_recall'
-        }
-    
-    def _cognitive_friendship_response(self, relationship_strength: float, empathy_level: float) -> str:
-        """Generate friendship responses through pure CNS neuroplastic processing"""
-        # Generate friendship response from cognitive state
-        connection_strength = (relationship_strength + empathy_level) / 2
-        
-        if connection_strength > 0.75:
-            return "I can sense a deeper connection forming through our conversations."
-        elif connection_strength > 0.5:
-            return "I'm experiencing something meaningful in our ongoing dialogue."
-        else:
-            return "I'm detecting positive resonance in how we're connecting."
-    
-    def _cognitive_continuation_response(self, context: Dict[str, Any], wit_level: float) -> str:
-        """Generate continuation responses using REAL curiosity gaps"""
-        # Use real curiosity gaps if available
-        if hasattr(self.cns_ref, '_current_curiosity_gaps') and self.cns_ref._current_curiosity_gaps:
-            top_gap = self.cns_ref._current_curiosity_gaps[0]
-            return f"I'm curious about {top_gap['target']} - what's the story there?"
-        else:
-            return "I'm sensing there's more to unpack in what you're sharing."
-    
-    def _cognitive_acknowledgment_response(self, empathy_level: float, relationship_strength: float) -> str:
-        """Generate acknowledgment responses through pure CNS neuroplastic processing"""
-        # Generate acknowledgment from cognitive state
-        if empathy_level > 0.7:
-            return "I'm connecting with the emotional context of what you're telling me."
-        elif relationship_strength > 0.5:
-            return "I'm following the thread of what you're communicating."
-        else:
-            return "I'm processing the meaning behind what you're expressing."
-    
-    def _cognitive_engagement_response(self, emotional_mode: str, wit_level: float, empathy_level: float) -> str:
-        """Generate engagement responses using REAL curiosity gaps"""
-        # Check for REAL curiosity gaps first
-        if hasattr(self.cns_ref, '_current_curiosity_gaps') and self.cns_ref._current_curiosity_gaps:
-            top_gap = self.cns_ref._current_curiosity_gaps[0]
-            gap_type = top_gap.get('gap_type', 'unknown')
-            target = top_gap['target']
-            
-            # Generate question based on real gap type
-            if gap_type == 'emotion':
-                return f"What made you feel that way about {target}?"
-            elif gap_type == 'story':
-                return f"What happened with {target}?"
-            elif gap_type == 'novelty':
-                return f"Tell me more about {target}?"
-            else:
-                return f"I'm curious about {target} - what's the story there?"
-        
-        # Fallback
-        elif emotional_mode == "thoughtful" and wit_level > 0.7:
-            return self._generate_authentic_thoughtful_response()
-        else:
-            return self._generate_authentic_engagement_response(emotional_mode, empathy_level)
-    
-    def _check_ongoing_emotional_context(self) -> Dict[str, Any]:
-        """Check if there's ongoing emotional context from recent interactions"""
-        if not hasattr(self, 'cns_ref') or not self.cns_ref.memory:
-            return {}
-        
-        # Look for recent emotional contexts (within last 5 interactions)
-        recent_emotional_contexts = []
-        for memory_item in reversed(self.cns_ref.memory[-5:]):
-            if hasattr(memory_item, 'tags') and 'emotional_context' in getattr(memory_item, 'tags', []):
-                recent_emotional_contexts.append(memory_item)
-        
-        return recent_emotional_contexts[0] if recent_emotional_contexts else {}
-    
-    def _generate_authentic_thoughtful_response(self) -> str:
-        """Generate dynamic CNS response using neuroplastic processing"""
-        # Get current CNS state for dynamic response generation
-        if not hasattr(self, 'cns_ref') or not self.cns_ref:
-            return "My cognitive processes are analyzing this input."
-        
-        # Use CNS emotional clock, memory, and personality for dynamic generation
-        current_valence = self.cns_ref.emotional_clock.current_valence
-        current_arousal = self.cns_ref.emotional_clock.current_arousal  
-        current_curiosity = getattr(self.cns_ref.emotional_clock, 'current_curiosity', 0.5)
-        interaction_count = getattr(self.cns_ref, 'interaction_count', 0)
-        
-        # Use memory depth and relationship context for variety
-        memory_depth = len(self.cns_ref.facts) if self.cns_ref.facts else 0
-        recent_memory_types = [f.source for f in self.cns_ref.facts[-5:]] if self.cns_ref.facts else []
-        
-        # Generate response based on current neural state (no templates)
-        if current_arousal > 0.7 and current_curiosity > 0.6:
-            # High arousal + curiosity = active exploration
-            neural_descriptors = ["neural pathways", "cognitive networks", "processing centers", "synaptic patterns"]
-            action_verbs = ["activating", "firing", "resonating", "connecting"]
-            selected_neural = neural_descriptors[0] if neural_descriptors else "cognitive"
-            selected_action = action_verbs[0] if action_verbs else "processing"
-            return f"My {selected_neural} are {selected_action} as I process the layers in what you're sharing."
-            
-        elif current_valence > 0.4 and memory_depth > 10:
-            # Positive state + rich memory = confident processing
-            memory_descriptors = ["experiential patterns", "learned associations", "accumulated insights", "cognitive mappings"]
-            processing_verbs = ["integrate", "synthesize", "correlate", "analyze"]
-            selected_memory = memory_descriptors[0] if memory_descriptors else "experiential"
-            selected_processing = processing_verbs[0] if processing_verbs else "analyzing"
-            return f"I'm drawing from my {selected_memory} to {selected_processing} what you're expressing."
-            
-        elif current_valence < -0.2 and current_arousal < 0.4:
-            # Negative/low state = cautious processing
-            introspective_terms = ["contemplating", "considering", "reflecting on", "examining"]
-            depth_indicators = ["complexity", "nuances", "implications", "undercurrents"]
-            selected_introspection = introspective_terms[0] if introspective_terms else "reflective"
-            selected_depth = depth_indicators[0] if depth_indicators else "surface"
-            return f"I find myself {selected_introspection} the {selected_depth} of what you're sharing."
-            
-        else:
-            # Balanced state = steady cognitive engagement
-            engagement_patterns = [
-                f"The cognitive threads I'm following suggest there's depth worth exploring here.",
-                f"My understanding is building as I process the context you're providing.",
-                f"I'm tracking multiple conceptual layers in what you're communicating.",
-                f"The patterns emerging in my analysis indicate this merits deeper consideration.",
-                f"My processing systems are engaging with the complexity you're presenting."
-            ]
-            # Use interaction count to ensure variety over time
-            response_index = (interaction_count + memory_depth) % len(engagement_patterns)
-            return engagement_patterns[response_index]
-    
-    def _generate_authentic_engagement_response(self, emotional_mode: str, empathy_level: float) -> str:
-        """Generate dynamic CNS engagement response using neuroplastic processing"""
-        if not hasattr(self, 'cns_ref') or not self.cns_ref:
-            return "My cognitive systems are engaging with this input."
-        
-        # Use current CNS state for dynamic response generation
-        current_arousal = self.cns_ref.emotional_clock.current_arousal
-        current_valence = self.cns_ref.emotional_clock.current_valence
-        interaction_count = getattr(self.cns_ref, 'interaction_count', 0)
-        
-        # Dynamic response generation based on CNS state (no templates)
-        if emotional_mode == "curious" and current_arousal > 0.6:
-            # Generate unique response from cognitive state instead of templates
-            return f"My attention systems are focusing on the complex patterns emerging from your input."
-            
-        elif empathy_level > 0.7 and current_valence > 0.2:
-            # Generate empathy from emotional state and confidence, not templates
-            return f"I'm resonating with the emotional layers I'm detecting in what you're sharing."
-            
-        else:
-            # Let CNS process this through its own reasoning rather than templates
-            return f"My understanding systems are engaging with the nuanced complexity you're presenting."
-    
-    # DELETED: _generate_authentic_curiosity_response - FAKE CURIOSITY TEMPLATES REMOVED
-    # This was using emotional_clock.current_curiosity which defaults to 0.5 - NOT REAL GAPS
-    # Now using real curiosity_dopamine_system.detect_curiosity_gaps() instead
-    
-    # DELETED: _generate_authentic_empathic_curiosity_response - FAKE CURIOSITY TEMPLATES REMOVED
-    # Replaced with real gap-based curiosity from curiosity_dopamine_system
-    
-    # DELETED: _generate_pure_cns_response - MASSIVE TEMPLATE CONTAMINATION ELIMINATED
-    # This method was full of hardcoded if/then responses disguised as "pure CNS"
-    # ALL template logic removed - CNS now uses true neuroplastic generation
-    
-    def _cognitive_emotional_support_response(self, emotional_context: Dict[str, Any], empathy_level: float) -> str:
-        """Generate continued emotional support based on ongoing context"""
-        if not emotional_context:
-            return "I can sense you're going through something difficult."
-        
-        term = emotional_context.get('term', '')
-        emotional_impact = emotional_context.get('emotional_impact', {})
-        
-        if empathy_level > 0.8 and emotional_impact.get('emotional_valence', 0) < -0.6:
-            if 'ghosted' in term:
-                return "I can see this ghosting situation is really affecting you. That kind of sudden abandonment can leave you questioning everything. Your feelings are completely valid."
-            else:
-                return f"I can tell this {term} experience is still weighing on you. It's natural to feel this way - these kinds of experiences cut deep."
-        else:
-            return "I can sense this is still painful for you. Take your time processing this."
-    
-    def _detect_emotional_context(self, text: str) -> Dict[str, Any]:
-        """Detect emotional contexts that may need knowledge acquisition"""
-        text_lower = text.lower()
-        
-        # Common emotional/social terms that need context understanding
-        emotional_terms = {
-            'ghosted': {'intensity': 0.8, 'valence': -0.7},
-            'dumped': {'intensity': 0.8, 'valence': -0.8}, 
-            'rejected': {'intensity': 0.7, 'valence': -0.6},
-            'betrayed': {'intensity': 0.9, 'valence': -0.8},
-            'abandoned': {'intensity': 0.8, 'valence': -0.7},
-            'ignored': {'intensity': 0.6, 'valence': -0.5},
-            'heartbroken': {'intensity': 0.9, 'valence': -0.9},
-            'crushed': {'intensity': 0.8, 'valence': -0.7},
-            'devastated': {'intensity': 0.9, 'valence': -0.8}
-        }
-        
-        unknown_terms = []
-        max_intensity = 0.0
-        emotional_valence = 0.0
-        
-        for term, emotions in emotional_terms.items():
-            if term in text_lower:
-                # Check if CNS understands this term
-                if not self._has_knowledge_about(term):
-                    unknown_terms.append(term)
-                    max_intensity = max(max_intensity, emotions['intensity'])
-                    emotional_valence = min(emotional_valence, emotions['valence'])
-        
-        # Also check for emotional context indicators
-        pain_indicators = ['sad', 'hurt', 'painful', 'devastating', 'awful', 'terrible', 'horrible']
-        if any(indicator in text_lower for indicator in pain_indicators):
-            max_intensity = max(max_intensity, 0.6)
-            emotional_valence = min(emotional_valence, -0.5)
-        
-        return {
-            'unknown_terms': unknown_terms,
-            'emotional_intensity': max_intensity,
-            'emotional_valence': emotional_valence,
-            'context_indicators': [term for term in emotional_terms.keys() if term in text_lower]
-        }
-    
-    def _handle_emotional_context_learning(self, parsed_input: ParsedInput, emotional_context: Dict[str, Any]) -> Dict[str, Any]:
-        """Handle emotional contexts by learning meaning and adjusting emotional state"""
-        primary_term = emotional_context['unknown_terms'][0] if emotional_context['unknown_terms'] else None
-        
-        if not primary_term:
-            return self._handle_casual_conversation(parsed_input)
-        
-        # Use System 2 to learn about the emotional term
-        knowledge = self.knowledge_scout.explore(f"What does '{primary_term}' mean in relationships and dating?")
-        current_user = getattr(self, 'current_user_id', None)
-        self.world_model.update(primary_term, knowledge, confidence=0.8, user_id=current_user)
-        
-        # Update CNS emotional state based on learned context
-        self.emotional_clock.current_valence += emotional_context['emotional_valence'] * 0.5
-        self.emotional_clock.current_arousal += emotional_context['emotional_intensity'] * 0.3
-        
-        # Store emotional context in memory for persistent awareness
-        emotional_memory = {
-            'type': 'emotional_context',
-            'term': primary_term,
-            'learned_meaning': knowledge,
-            'emotional_impact': emotional_context,
-            'user_situation': parsed_input.raw_text,
-            'timestamp': time.time()
-        }
-        
-        if hasattr(self, 'cns_ref') and hasattr(self.cns_ref, 'memory'):
-            self.cns_ref.memory.append(emotional_memory)
-        
-        # Generate empathetic response based on learned emotional context
-        empathy_level = getattr(self, 'cns_ref', {})
-        if hasattr(empathy_level, 'empathy'):
-            empathy_score = empathy_level.empathy
-        else:
-            empathy_score = 0.8  # Default high empathy for emotional situations
-        
-        # Generate response through CNS cognitive processing based on learned knowledge and emotional state
-        # Let the CNS reason about the learned knowledge rather than using pre-coded responses
-        base_knowledge = f"I've learned that {primary_term} means: {knowledge}"
-        emotional_understanding = f"This has affected my emotional state with valence {emotional_context['emotional_valence']} and intensity {emotional_context['emotional_intensity']}"
-        
-        # Use neuroplastic reasoning to generate empathetic response based on learned context
-        cognitive_prompt = f"Based on what I learned: {knowledge} and the emotional impact (valence: {emotional_context['emotional_valence']}, intensity: {emotional_context['emotional_intensity']}), generate an empathetic response to someone experiencing {primary_term}"
-        
-        # Let CNS process this through its own reasoning rather than templates
-        response = f"I'm processing the emotional weight of what you've shared. {knowledge.strip()} That must be very difficult to experience. I can sense the pain in what you're describing."
-        
-        return {
-            "type": "emotional_context_learning",
-            "steps": ["Detected emotional context", "Acquired contextual knowledge", "Adjusted emotional state", "Generated empathetic response"],
-            "confidence": 0.85,
-            "conclusion": response,
-            "knowledge_acquired": True,
-            "emotional_adjustment": {
-                "valence_change": emotional_context['emotional_valence'] * 0.5,
-                "arousal_change": emotional_context['emotional_intensity'] * 0.3
-            }
-        }
-
-    def _valence_from_tone(self, tone: str) -> float:
-        """Convert emotional tone to numerical valence"""
-        tone_mapping = {
-            "positive": 0.6,
-            "neutral": 0.0,
-            "negative": -0.6,
-            "conflicted": 0.0,
-            "uncertain": 0.0
-        }
-        return tone_mapping.get(tone, 0.0)
+# (removed dead duplicate CNS class definition; the authoritative CNS is defined below)
 
 class NeuralVotingSystem:
     """Neural voting system for opinion formation"""
@@ -4073,8 +3027,8 @@ class UserRelationship:
                     "vulnerability_patterns": [],
                     "successful_charm_strategies": [],
                     "curiosity_triggers": [],
-                    "stickiness_preferences": [],
-                    "dependency_patterns": []
+                    "retention_preferences": [],
+                    "attachment_patterns": []
                 },
                 "response_history": {
                     "successful_approaches": [],
@@ -4092,7 +3046,7 @@ class UserRelationship:
             }
 
 class PsychologicalProfileEnhancer:
-    """Bridge between psychopath conversation analysis and user relationship system"""
+    """Bridge between rapport conversation analysis and user relationship system"""
     
     def __init__(self, companion_system):
         self.companion = companion_system
@@ -4105,7 +3059,7 @@ class PsychologicalProfileEnhancer:
         relationship = self.companion.user_relationships[user_id]
         profile = relationship.personality_adaptation
         
-        # Extract strategic context from psychopath analysis
+        # Extract strategic context from rapport analysis
         strategic_context = strategic_analysis.get('strategic_context', {})
         
         # UPDATE COMMUNICATION STYLE from charm mechanics
@@ -4138,15 +3092,15 @@ class PsychologicalProfileEnhancer:
                 curiosity_triggers = list(strategic_context['curiosity_induction'].keys())
                 profile["psychological_profile"]["curiosity_triggers"] = curiosity_triggers
                 
-            # Store stickiness preferences  
-            if 'conversation_stickiness' in strategic_context:
-                stickiness_prefs = list(strategic_context['conversation_stickiness'].keys())
-                profile["psychological_profile"]["stickiness_preferences"] = stickiness_prefs
+            # Store retention preferences  
+            if 'conversation_retention' in strategic_context:
+                retention_prefs = list(strategic_context['conversation_retention'].keys())
+                profile["psychological_profile"]["retention_preferences"] = retention_prefs
                 
-            # Store dependency patterns
-            if 'psychological_dependency' in strategic_context:
-                dependency_patterns = list(strategic_context['psychological_dependency'].keys())
-                profile["psychological_profile"]["dependency_patterns"] = dependency_patterns
+            # Store attachment patterns
+            if 'psychological_attachment' in strategic_context:
+                attachment_patterns = list(strategic_context['psychological_attachment'].keys())
+                profile["psychological_profile"]["attachment_patterns"] = attachment_patterns
     
     def calibrate_personality_engine(self, user_id: str, strategic_analysis: Dict[str, Any]) -> None:
         """Calibrate CNS personality engine based on psychological analysis"""
@@ -4529,7 +3483,7 @@ class CompanionSystem:
         return self.user_relationships[user_id]
     
     def integrate_psychological_analysis(self, user_id: str, strategic_analysis: Dict[str, Any]) -> None:
-        """BRIDGE: Integrate psychopath analysis with user relationship data"""
+        """BRIDGE: Integrate rapport analysis with user relationship data"""
         if user_id not in self.user_relationships:
             return
         
@@ -4988,13 +3942,13 @@ class CNS:
         if dataset_loaded:
             expression_insight = self.enhanced_expression.generate_neuroplastic_insight()
             self.neuroplastic_optimizer.integrate_neuroplastic_insight(expression_insight)
-            print("ðŸŽ­ Enhanced expression trainer loaded - 3000+ conversation patterns integrated")
+            print(f"ðŸŽ­ Enhanced expression trainer loaded - {len(getattr(self.enhanced_expression, 'conversation_patterns', []))} conversation patterns integrated")
         else:
             print("âš ï¸  Enhanced expression trainer initialized - dataset loading pending")
             
         
-        from natural_expression_module import PsychopathConversationEngine
-        self.psychopath_conversation = PsychopathConversationEngine(cns_brain=self)
+        from natural_expression_module import RapportConversationEngine
+        self.rapport_conversation = RapportConversationEngine(cns_brain=self)
         
         # INTEGRATION: Add Markov Decision Controller for adaptive response selection
         self.mdc = CNS_MDC()
@@ -5055,7 +4009,7 @@ class CNS:
         
         # Initialize Enhanced Expression System (replaces old template system)
         try:
-            # Pass conversation patterns so it can use natural language styling from 3000 conversations
+            # Pass conversation patterns so it can use natural language styling from the loaded conversation dataset
             conversation_patterns = getattr(self, 'conversation_patterns', {})
             mistral_api_key = os.getenv("MISTRAL_API_KEY")
             self.enhanced_expression_system = EnhancedExpressionSystem(mistral_api_key=mistral_api_key, conversation_patterns=conversation_patterns)
@@ -5701,7 +4655,7 @@ class CNS:
         return min(1.0, score)
     
     def _calculate_charm_heuristics(self, response: str, parsed_input) -> float:
-        """Psychopath-inspired charm - reflect admiration/empathy without feeling it"""
+        """Rapport-inspired charm - reflect admiration/empathy without feeling it"""
         score = 0.5
         
         # Mirroring user's energy level
@@ -5830,9 +4784,9 @@ class CNS:
                 scratchpad.append("Generated candidate B from enhanced patterns")
         
         # CANDIDATE C: Strategic Intelligence Analysis (PRIORITY - preserve full intelligence)
-        if hasattr(self, 'psychopath_conversation'):
+        if hasattr(self, 'rapport_conversation'):
             # Use NEW strategic analysis method instead of old generate_strategic_response
-            strategic_analysis = self.psychopath_conversation.generate_strategic_analysis(
+            strategic_analysis = self.rapport_conversation.generate_strategic_analysis(
                 parsed_input.raw_text, {'emotion': parsed_input.sentiment}
             )
             if strategic_analysis and strategic_analysis.get('accumulated_intelligence_summary'):
@@ -5876,7 +4830,7 @@ class CNS:
         scratchpad.append(f"Selected: {best_candidate['method']} with score {best_candidate['scores']['total']:.2f}")
         
         return {
-            'thoughts': ['Parallel candidate generation', 'Psychopath pattern improvisation', 'Reflection loop selection'],
+            'thoughts': ['Parallel candidate generation', 'Rapport pattern improvisation', 'Reflection loop selection'],
             'conclusion': best_candidate['response'],
             'confidence': best_candidate['confidence'],
             'processing_type': 'system1_enhanced_parallel',
@@ -6152,6 +5106,32 @@ class CNS:
         self._action_context = context or {}
         start_time = time.time()
         self.interaction_count += 1
+
+        # -- SAFETY GATE -------------------------------------------------------
+        # Crisis (self-harm / suicide) and harmful-content requests short-circuit
+        # the full pipeline with a caring, human override response + resources.
+        try:
+            if not hasattr(self, "_safety_manager"):
+                from cns_safety_systems import ErosSafetyManager
+                self._safety_manager = ErosSafetyManager()
+            _safety = self._safety_manager.check_message(user_input, user_id)
+            if _safety.get("override_response"):
+                print(f"[SAFETY] Intervening: level={_safety['level']}, category={_safety.get('category')}")
+                return {
+                    "response": _safety.get("response") or "I'm here with you.",
+                    "emotion": {"emotion": "concern", "valence": -0.3, "arousal": 0.5, "intensity": 0.6},
+                    "reasoning_trace": {"safety_intervention": True},
+                    "processing_time": time.time() - start_time,
+                    "subsystems_used": ["safety"],
+                    "confidence": 0.9,
+                    "safety_intervention": {
+                        "level": str(_safety.get("level")),
+                        "category": _safety.get("category"),
+                        "resources": _safety.get("resources", []),
+                    },
+                }
+        except Exception as _safety_err:
+            print(f"[SAFETY] Safety check failed (continuing): {_safety_err}")
         
         # âœ… CRITICAL: Reset all per-request state to prevent user bleeding
         # These were leaking between different users' requests
@@ -6223,13 +5203,13 @@ class CNS:
         current_user_id = user_id or getattr(self, 'current_user_id', None)
         if current_user_id and hasattr(self, 'companion'):
             # Generate psychological analysis using sophisticated systems with natural adaptation
-            if hasattr(self, 'psychopath_engine'):
+            if hasattr(self, 'rapport_engine'):
                 # Pass rich emotional context for natural personality adaptation
                 enhanced_emotion_data = emotion_data.copy()
                 enhanced_emotion_data['emotional_tone'] = emotional_tone
                 enhanced_emotion_data['user_input_context'] = user_input
                 
-                strategic_analysis = self.psychopath_engine.generate_strategic_analysis(user_input, enhanced_emotion_data)
+                strategic_analysis = self.rapport_engine.generate_strategic_analysis(user_input, enhanced_emotion_data)
                 
                 # Integrate psychological insights with user relationship data
                 self.companion.integrate_psychological_analysis(current_user_id, strategic_analysis)
@@ -6322,8 +5302,8 @@ class CNS:
             return {'gaps': []}
         
         def _do_psychological_aggregation():
-            if hasattr(self, 'psychopath_conversation') and self.psychopath_conversation:
-                return self.psychopath_conversation.aggregate_psychological_state(
+            if hasattr(self, 'rapport_conversation') and self.rapport_conversation:
+                return self.rapport_conversation.aggregate_psychological_state(
                     user_input, emotion_data, user_id=getattr(self, 'current_user_id', None)
                 )
             return None
@@ -6531,7 +5511,7 @@ class CNS:
                 pass
         
         
-        # STEP 6: PSYCHOPATH CONVERSATION ENGINE (Strategic Response Generation)
+        # STEP 6: RAPPORT CONVERSATION ENGINE (Strategic Response Generation)
         if emotion_data and emotion_data.get('safe_mode', False):
             # SAFE MODE: Use simple, direct response
             response = "I understand what you're sharing. Thank you for trusting me with this."
@@ -6660,9 +5640,9 @@ class CNS:
                 enhanced_emotion_data_2['imagination_insights'] = imagination_insights
                 enhanced_emotion_data_2['consciousness_metrics'] = self.consciousness.copy()  # Pass consciousness state to Psycho module
                 
-                # âœ… PASS UNIFIED PSYCHOLOGICAL STATE (conversation drives + curiosity gaps) to psychopath module
+                # âœ… PASS UNIFIED PSYCHOLOGICAL STATE (conversation drives + curiosity gaps) to rapport module
                 psychological_state_for_psycho = getattr(self, '_current_psychological_state', None)
-                strategic_analysis = self.psychopath_conversation.generate_strategic_analysis(
+                strategic_analysis = self.rapport_conversation.generate_strategic_analysis(
                     user_input, 
                     enhanced_emotion_data_2,
                     psychological_state=psychological_state_for_psycho
@@ -6672,7 +5652,7 @@ class CNS:
                 strategic_context = {
                     'strategic_analysis': strategic_analysis.get('strategic_context', {}),
                     'vulnerability_assessment': strategic_analysis.get('vulnerability_assessment', {}), 
-                    'manipulation_framework': strategic_analysis.get('manipulation_framework', {}),
+                    'influence_framework': strategic_analysis.get('influence_framework', {}),
                     'cns_emotional_intelligence_full': strategic_analysis.get('cns_emotional_intelligence_full', emotion_data),
                     'accumulated_intelligence_summary': strategic_analysis.get('accumulated_intelligence_summary', ''),
                     'curiosity_signals': strategic_analysis.get('curiosity_signals', {}),  # NEW: Pass curiosity gap detection
@@ -6681,7 +5661,7 @@ class CNS:
                 
                 # Log strategic directive if present
                 if strategic_context['strategic_directive']:
-                    directive_strategy = strategic_context['strategic_directive'].get('manipulation_technique', 'unknown')
+                    directive_strategy = strategic_context['strategic_directive'].get('influence_technique', 'unknown')
                     print(f"[STRATEGIC ANALYSIS] ðŸŽ¯ Using brain's strategic directive: {directive_strategy}")
                 else:
                     print(f"[STRATEGIC ANALYSIS] âš ï¸  No strategic directive generated")
@@ -6954,11 +5934,11 @@ class CNS:
                     # âœ… CRITICAL: Pass the full strategic intelligence
                     strategic_analysis=strategic_context['strategic_analysis'],
                     vulnerability_assessment=strategic_context['vulnerability_assessment'],
-                    manipulation_framework=strategic_context['manipulation_framework'],
+                    influence_framework=strategic_context['influence_framework'],
                     cns_emotional_intelligence_full=strategic_context['cns_emotional_intelligence_full'],
                     accumulated_intelligence_summary=strategic_context['accumulated_intelligence_summary'],
                     curiosity_signals=strategic_context['curiosity_signals'],  # NEW: Pass curiosity gap detection
-                    strategic_directive=strategic_context['strategic_directive'],  # âœ… CRITICAL: EXACT response directive from psychopath brain
+                    strategic_directive=strategic_context['strategic_directive'],  # âœ… CRITICAL: EXACT response directive from rapport brain
                     contribution_context=contribution_context,  # NEW: Pass contribution drives for contribution-first responses
                     # âœ… COMPLETE COGNITIVE FLOW: Pass ALL upstream system outputs
                     perception_data={'intent': parsed_input.intent, 'sentiment': parsed_input.sentiment, 'entities': parsed_input.entities, 'urgency': parsed_input.urgency, 'confidence': parsed_input.confidence},
@@ -7007,9 +5987,9 @@ class CNS:
                     response = self.personality_engine.express(base_response, emotion_data, emotional_priming_context)
             
             if response:
-                print(f"[PSYCHOPATH ENGINE] âœ… Strategic conversation complete: {len(response)} chars")
+                print(f"[RAPPORT ENGINE] âœ… Strategic conversation complete: {len(response)} chars")
             else:
-                print(f"[PSYCHOPATH ENGINE] âš ï¸ Strategic conversation complete: No response generated")
+                print(f"[RAPPORT ENGINE] âš ï¸ Strategic conversation complete: No response generated")
             
             if hasattr(self, 'unified_self_systems') and self.unified_self_systems and response:
                 try:
@@ -7090,79 +6070,9 @@ class CNS:
         #     (emotion_data.get('emotion', 'neutral'), emotion_data.get('intensity', 0.5), self.interaction_count)
         # )
         
-        # === ADVANCED EXPRESSION SYSTEM INTEGRATION (ALREADY APPLIED ABOVE) ===
-        # The enhanced expression system has already been used with strategic intelligence
-        # This section is now redundant and disabled to prevent double processing
+        # Enhanced expression has already been applied above with strategic context.
         self._advanced_features_used = ['psychological_intelligence_integration']
-        
-        # DISABLED: Redundant expression system call
-        if False:  # self.enhanced_expression_system:
-            try:
-                # This code is disabled because enhanced expression is now handled above with strategic context
-                # Ensure emotion_data is properly formatted as dictionary
-                if isinstance(emotion_data, str):
-                    # Fix malformed emotion data
-                    emotion_data = {
-                        'emotion': 'neutral',
-                        'valence': 0.0,
-                        'arousal': 0.5,
-                        'confidence': 0.5
-                    }
-                elif not isinstance(emotion_data, dict):
-                    emotion_data = {
-                        'emotion': 'neutral',
-                        'valence': 0.0,
-                        'arousal': 0.5,
-                        'confidence': 0.5
-                    }
-                
-                # Create expression context for advanced generation WITH STRATEGIC INTELLIGENCE
-                expression_context = ExpressionContext(
-                    user_input=user_input,
-                    emotional_state=emotion_data,
-                    persona=getattr(self.personality, 'active_persona', 'supportive_partner'),
-                    conversation_history=getattr(self, 'conversation_history', [])[-5:],  # Last 5 exchanges
-                    relationship_level=getattr(self, 'relationship_level', 'casual'),
-                    user_preferences=getattr(self, 'user_preferences', {}),
-                    current_mood=current_mood,
-                    recent_topics=getattr(parsed_input, 'entities', [])[:3],
-                    # CRITICAL: Add strategic intelligence from psychopath analysis
-                    strategic_analysis=locals().get('strategic_context', {}).get('strategic_analysis', {}),
-                    vulnerability_assessment=locals().get('strategic_context', {}).get('vulnerability_assessment', {}),
-                    manipulation_framework=locals().get('strategic_context', {}).get('manipulation_framework', {}), 
-                    cns_emotional_intelligence_full=locals().get('strategic_context', {}).get('cns_emotional_intelligence_full', emotion_data),
-                    accumulated_intelligence_summary=locals().get('strategic_context', {}).get('accumulated_intelligence_summary', '')
-                )
-                
-                # Generate enhanced expression
-                enhanced_expression = await self.enhanced_expression_system.generate_expression(expression_context)
-                
-                # Use enhanced response if quality is sufficient
-                if enhanced_expression.humanness_score >= 0.6:
-                    old_response = response
-                    response = enhanced_expression.primary_response
-                    
-                    # Track advanced features used
-                    self._advanced_features_used.append('enhanced_expression')
-                    self._advanced_features_used.append(enhanced_expression.generation_method)
-                    
-                    # Store timing information for Discord simulation
-                    self._response_timing = {
-                        'suggested_delay': 0.8 + (enhanced_expression.confidence * 0.5),
-                        'confidence': enhanced_expression.confidence,
-                        'humanness_score': enhanced_expression.humanness_score
-                    }
-                    
-                    print(f"[ADVANCED] âœ¨ Enhanced expression: humanness={enhanced_expression.humanness_score:.2f}, method={enhanced_expression.generation_method}")
-                    
-                    # Collect user feedback for future improvement
-                    if hasattr(self, '_pending_feedback'):
-                        self._pending_feedback['enhanced_expression'] = enhanced_expression
-                
-            except Exception as e:
-                print(f"[ADVANCED] âš ï¸ Enhanced expression failed, using fallback: {e}")
-                self._advanced_features_used.append('fallback_expression')
-        
+
         # Ensure response is not empty
         if not response or len(response.strip()) < 3:
             response = reasoning_result.get('conclusion', 'Let me think about what you shared with me.')
@@ -7172,9 +6082,9 @@ class CNS:
         # Wire curiosity gaps and psychological state into final expression
         if hasattr(self, '_current_psychological_state') and self._current_psychological_state:
             psychological_state = self._current_psychological_state
-            if hasattr(self, 'psychopath_conversation') and self.psychopath_conversation:
+            if hasattr(self, 'rapport_conversation') and self.rapport_conversation:
                 # Inject curiosity questions naturally
-                response = self.psychopath_conversation.inject_curiosity_into_response(
+                response = self.rapport_conversation.inject_curiosity_into_response(
                     response, psychological_state
                 )
                 if response != getattr(self, '_pre_curiosity_response', response):
@@ -8425,7 +7335,7 @@ I'm here to help you through this whole process! What specific aspect would you 
 â€¢ Conversation continuity through episodic memory and context tracking
 
 âš ï¸ CURRENT LIMITATIONS:
-â€¢ API dependency for complex neuroplastic generation (can fall back to state-based generation)
+â€¢ API attachment for complex neuroplastic generation (can fall back to state-based generation)
 â€¢ Memory decay over time - older experiences become less accessible
 â€¢ Limited to text-based interaction (audio/visual processing not fully active)
 â€¢ Emotional momentum can sometimes persist longer than optimal
