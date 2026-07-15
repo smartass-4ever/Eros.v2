@@ -3942,7 +3942,7 @@ class CNS:
         if dataset_loaded:
             expression_insight = self.enhanced_expression.generate_neuroplastic_insight()
             self.neuroplastic_optimizer.integrate_neuroplastic_insight(expression_insight)
-            print("ðŸŽ­ Enhanced expression trainer loaded - 3000+ conversation patterns integrated")
+            print(f"ðŸŽ­ Enhanced expression trainer loaded - {len(getattr(self.enhanced_expression, 'conversation_patterns', []))} conversation patterns integrated")
         else:
             print("âš ï¸  Enhanced expression trainer initialized - dataset loading pending")
             
@@ -4009,7 +4009,7 @@ class CNS:
         
         # Initialize Enhanced Expression System (replaces old template system)
         try:
-            # Pass conversation patterns so it can use natural language styling from 3000 conversations
+            # Pass conversation patterns so it can use natural language styling from the loaded conversation dataset
             conversation_patterns = getattr(self, 'conversation_patterns', {})
             mistral_api_key = os.getenv("MISTRAL_API_KEY")
             self.enhanced_expression_system = EnhancedExpressionSystem(mistral_api_key=mistral_api_key, conversation_patterns=conversation_patterns)
