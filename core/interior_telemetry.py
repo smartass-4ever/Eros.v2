@@ -114,8 +114,10 @@ def capture(
     t.arousal = _f(emotion_data.get("arousal"), 0.5)
     t.intensity = _f(emotion_data.get("intensity"))
     t.emotion = str(emotion_data.get("emotion", "neutral"))
-    # Provenance: infer_valence tags its output with a learning_source.
-    t.emotion_source = str(emotion_data.get("learning_source") or emotion_data.get("emotion_source") or "heuristic")
+    # Provenance: the hybrid appraisal sets emotion_source to the path actually
+    # taken (heuristic / llm_appraisal / heuristic_fallback); prefer it over the
+    # heuristic's own learning_source tag.
+    t.emotion_source = str(emotion_data.get("emotion_source") or emotion_data.get("learning_source") or "heuristic")
 
     # Motive competition from the game-theory decision (carried on SynthesizedContext).
     if synthesized_context is not None:
