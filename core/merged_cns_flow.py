@@ -381,7 +381,7 @@ class CNSPersonalityEngine:
         effective_sharpness = self.traits["sharpness"]
 
         # PRESERVE STRATEGIC INTELLIGENCE: Don't override with personality templates
-        # Strategic intelligence from psychopath analysis should flow through unchanged
+        # Strategic intelligence from rapport analysis should flow through unchanged
         # Only apply subtle personality modulation without losing strategic context
         
         # âœ… CRITICAL FIX: Don't bypass empathy for emotional situations
@@ -920,7 +920,7 @@ class StrategicAnalysisResult:
     """Standardized strategic analysis data structure - PREVENTS INFORMATION LOSS"""
     strategic_analysis: Dict[str, Any]
     vulnerability_assessment: Dict[str, Any] 
-    manipulation_framework: Dict[str, Any]
+    influence_framework: Dict[str, Any]
     accumulated_intelligence_summary: str
     cns_emotional_intelligence_full: Dict[str, Any] = None
     confidence: float = 0.0
@@ -2945,11 +2945,11 @@ class CNS:
         
         # ENHANCED: Psychological profiling system with curiosity integration
         try:
-            from natural_expression_module import PsychopathConversationEngine
-            self.psychopath_engine = PsychopathConversationEngine(cns_brain=self)
+            from natural_expression_module import RapportConversationEngine
+            self.rapport_engine = RapportConversationEngine(cns_brain=self)
             print("ðŸŽ­ Advanced psychological profiling system loaded with curiosity gap detection")
         except ImportError:
-            self.psychopath_engine = None
+            self.rapport_engine = None
             print("âš ï¸  Psychological profiling system not available")
         
         # INTROSPECTION: Self-awareness system for meta-questions
@@ -4073,8 +4073,8 @@ class UserRelationship:
                     "vulnerability_patterns": [],
                     "successful_charm_strategies": [],
                     "curiosity_triggers": [],
-                    "stickiness_preferences": [],
-                    "dependency_patterns": []
+                    "retention_preferences": [],
+                    "attachment_patterns": []
                 },
                 "response_history": {
                     "successful_approaches": [],
@@ -4092,7 +4092,7 @@ class UserRelationship:
             }
 
 class PsychologicalProfileEnhancer:
-    """Bridge between psychopath conversation analysis and user relationship system"""
+    """Bridge between rapport conversation analysis and user relationship system"""
     
     def __init__(self, companion_system):
         self.companion = companion_system
@@ -4105,7 +4105,7 @@ class PsychologicalProfileEnhancer:
         relationship = self.companion.user_relationships[user_id]
         profile = relationship.personality_adaptation
         
-        # Extract strategic context from psychopath analysis
+        # Extract strategic context from rapport analysis
         strategic_context = strategic_analysis.get('strategic_context', {})
         
         # UPDATE COMMUNICATION STYLE from charm mechanics
@@ -4138,15 +4138,15 @@ class PsychologicalProfileEnhancer:
                 curiosity_triggers = list(strategic_context['curiosity_induction'].keys())
                 profile["psychological_profile"]["curiosity_triggers"] = curiosity_triggers
                 
-            # Store stickiness preferences  
-            if 'conversation_stickiness' in strategic_context:
-                stickiness_prefs = list(strategic_context['conversation_stickiness'].keys())
-                profile["psychological_profile"]["stickiness_preferences"] = stickiness_prefs
+            # Store retention preferences  
+            if 'conversation_retention' in strategic_context:
+                retention_prefs = list(strategic_context['conversation_retention'].keys())
+                profile["psychological_profile"]["retention_preferences"] = retention_prefs
                 
-            # Store dependency patterns
-            if 'psychological_dependency' in strategic_context:
-                dependency_patterns = list(strategic_context['psychological_dependency'].keys())
-                profile["psychological_profile"]["dependency_patterns"] = dependency_patterns
+            # Store attachment patterns
+            if 'psychological_attachment' in strategic_context:
+                attachment_patterns = list(strategic_context['psychological_attachment'].keys())
+                profile["psychological_profile"]["attachment_patterns"] = attachment_patterns
     
     def calibrate_personality_engine(self, user_id: str, strategic_analysis: Dict[str, Any]) -> None:
         """Calibrate CNS personality engine based on psychological analysis"""
@@ -4529,7 +4529,7 @@ class CompanionSystem:
         return self.user_relationships[user_id]
     
     def integrate_psychological_analysis(self, user_id: str, strategic_analysis: Dict[str, Any]) -> None:
-        """BRIDGE: Integrate psychopath analysis with user relationship data"""
+        """BRIDGE: Integrate rapport analysis with user relationship data"""
         if user_id not in self.user_relationships:
             return
         
@@ -4993,8 +4993,8 @@ class CNS:
             print("âš ï¸  Enhanced expression trainer initialized - dataset loading pending")
             
         
-        from natural_expression_module import PsychopathConversationEngine
-        self.psychopath_conversation = PsychopathConversationEngine(cns_brain=self)
+        from natural_expression_module import RapportConversationEngine
+        self.rapport_conversation = RapportConversationEngine(cns_brain=self)
         
         # INTEGRATION: Add Markov Decision Controller for adaptive response selection
         self.mdc = CNS_MDC()
@@ -5701,7 +5701,7 @@ class CNS:
         return min(1.0, score)
     
     def _calculate_charm_heuristics(self, response: str, parsed_input) -> float:
-        """Psychopath-inspired charm - reflect admiration/empathy without feeling it"""
+        """Rapport-inspired charm - reflect admiration/empathy without feeling it"""
         score = 0.5
         
         # Mirroring user's energy level
@@ -5830,9 +5830,9 @@ class CNS:
                 scratchpad.append("Generated candidate B from enhanced patterns")
         
         # CANDIDATE C: Strategic Intelligence Analysis (PRIORITY - preserve full intelligence)
-        if hasattr(self, 'psychopath_conversation'):
+        if hasattr(self, 'rapport_conversation'):
             # Use NEW strategic analysis method instead of old generate_strategic_response
-            strategic_analysis = self.psychopath_conversation.generate_strategic_analysis(
+            strategic_analysis = self.rapport_conversation.generate_strategic_analysis(
                 parsed_input.raw_text, {'emotion': parsed_input.sentiment}
             )
             if strategic_analysis and strategic_analysis.get('accumulated_intelligence_summary'):
@@ -5876,7 +5876,7 @@ class CNS:
         scratchpad.append(f"Selected: {best_candidate['method']} with score {best_candidate['scores']['total']:.2f}")
         
         return {
-            'thoughts': ['Parallel candidate generation', 'Psychopath pattern improvisation', 'Reflection loop selection'],
+            'thoughts': ['Parallel candidate generation', 'Rapport pattern improvisation', 'Reflection loop selection'],
             'conclusion': best_candidate['response'],
             'confidence': best_candidate['confidence'],
             'processing_type': 'system1_enhanced_parallel',
@@ -6223,13 +6223,13 @@ class CNS:
         current_user_id = user_id or getattr(self, 'current_user_id', None)
         if current_user_id and hasattr(self, 'companion'):
             # Generate psychological analysis using sophisticated systems with natural adaptation
-            if hasattr(self, 'psychopath_engine'):
+            if hasattr(self, 'rapport_engine'):
                 # Pass rich emotional context for natural personality adaptation
                 enhanced_emotion_data = emotion_data.copy()
                 enhanced_emotion_data['emotional_tone'] = emotional_tone
                 enhanced_emotion_data['user_input_context'] = user_input
                 
-                strategic_analysis = self.psychopath_engine.generate_strategic_analysis(user_input, enhanced_emotion_data)
+                strategic_analysis = self.rapport_engine.generate_strategic_analysis(user_input, enhanced_emotion_data)
                 
                 # Integrate psychological insights with user relationship data
                 self.companion.integrate_psychological_analysis(current_user_id, strategic_analysis)
@@ -6322,8 +6322,8 @@ class CNS:
             return {'gaps': []}
         
         def _do_psychological_aggregation():
-            if hasattr(self, 'psychopath_conversation') and self.psychopath_conversation:
-                return self.psychopath_conversation.aggregate_psychological_state(
+            if hasattr(self, 'rapport_conversation') and self.rapport_conversation:
+                return self.rapport_conversation.aggregate_psychological_state(
                     user_input, emotion_data, user_id=getattr(self, 'current_user_id', None)
                 )
             return None
@@ -6531,7 +6531,7 @@ class CNS:
                 pass
         
         
-        # STEP 6: PSYCHOPATH CONVERSATION ENGINE (Strategic Response Generation)
+        # STEP 6: RAPPORT CONVERSATION ENGINE (Strategic Response Generation)
         if emotion_data and emotion_data.get('safe_mode', False):
             # SAFE MODE: Use simple, direct response
             response = "I understand what you're sharing. Thank you for trusting me with this."
@@ -6660,9 +6660,9 @@ class CNS:
                 enhanced_emotion_data_2['imagination_insights'] = imagination_insights
                 enhanced_emotion_data_2['consciousness_metrics'] = self.consciousness.copy()  # Pass consciousness state to Psycho module
                 
-                # âœ… PASS UNIFIED PSYCHOLOGICAL STATE (conversation drives + curiosity gaps) to psychopath module
+                # âœ… PASS UNIFIED PSYCHOLOGICAL STATE (conversation drives + curiosity gaps) to rapport module
                 psychological_state_for_psycho = getattr(self, '_current_psychological_state', None)
-                strategic_analysis = self.psychopath_conversation.generate_strategic_analysis(
+                strategic_analysis = self.rapport_conversation.generate_strategic_analysis(
                     user_input, 
                     enhanced_emotion_data_2,
                     psychological_state=psychological_state_for_psycho
@@ -6672,7 +6672,7 @@ class CNS:
                 strategic_context = {
                     'strategic_analysis': strategic_analysis.get('strategic_context', {}),
                     'vulnerability_assessment': strategic_analysis.get('vulnerability_assessment', {}), 
-                    'manipulation_framework': strategic_analysis.get('manipulation_framework', {}),
+                    'influence_framework': strategic_analysis.get('influence_framework', {}),
                     'cns_emotional_intelligence_full': strategic_analysis.get('cns_emotional_intelligence_full', emotion_data),
                     'accumulated_intelligence_summary': strategic_analysis.get('accumulated_intelligence_summary', ''),
                     'curiosity_signals': strategic_analysis.get('curiosity_signals', {}),  # NEW: Pass curiosity gap detection
@@ -6681,7 +6681,7 @@ class CNS:
                 
                 # Log strategic directive if present
                 if strategic_context['strategic_directive']:
-                    directive_strategy = strategic_context['strategic_directive'].get('manipulation_technique', 'unknown')
+                    directive_strategy = strategic_context['strategic_directive'].get('influence_technique', 'unknown')
                     print(f"[STRATEGIC ANALYSIS] ðŸŽ¯ Using brain's strategic directive: {directive_strategy}")
                 else:
                     print(f"[STRATEGIC ANALYSIS] âš ï¸  No strategic directive generated")
@@ -6954,11 +6954,11 @@ class CNS:
                     # âœ… CRITICAL: Pass the full strategic intelligence
                     strategic_analysis=strategic_context['strategic_analysis'],
                     vulnerability_assessment=strategic_context['vulnerability_assessment'],
-                    manipulation_framework=strategic_context['manipulation_framework'],
+                    influence_framework=strategic_context['influence_framework'],
                     cns_emotional_intelligence_full=strategic_context['cns_emotional_intelligence_full'],
                     accumulated_intelligence_summary=strategic_context['accumulated_intelligence_summary'],
                     curiosity_signals=strategic_context['curiosity_signals'],  # NEW: Pass curiosity gap detection
-                    strategic_directive=strategic_context['strategic_directive'],  # âœ… CRITICAL: EXACT response directive from psychopath brain
+                    strategic_directive=strategic_context['strategic_directive'],  # âœ… CRITICAL: EXACT response directive from rapport brain
                     contribution_context=contribution_context,  # NEW: Pass contribution drives for contribution-first responses
                     # âœ… COMPLETE COGNITIVE FLOW: Pass ALL upstream system outputs
                     perception_data={'intent': parsed_input.intent, 'sentiment': parsed_input.sentiment, 'entities': parsed_input.entities, 'urgency': parsed_input.urgency, 'confidence': parsed_input.confidence},
@@ -7007,9 +7007,9 @@ class CNS:
                     response = self.personality_engine.express(base_response, emotion_data, emotional_priming_context)
             
             if response:
-                print(f"[PSYCHOPATH ENGINE] âœ… Strategic conversation complete: {len(response)} chars")
+                print(f"[RAPPORT ENGINE] âœ… Strategic conversation complete: {len(response)} chars")
             else:
-                print(f"[PSYCHOPATH ENGINE] âš ï¸ Strategic conversation complete: No response generated")
+                print(f"[RAPPORT ENGINE] âš ï¸ Strategic conversation complete: No response generated")
             
             if hasattr(self, 'unified_self_systems') and self.unified_self_systems and response:
                 try:
@@ -7126,10 +7126,10 @@ class CNS:
                     user_preferences=getattr(self, 'user_preferences', {}),
                     current_mood=current_mood,
                     recent_topics=getattr(parsed_input, 'entities', [])[:3],
-                    # CRITICAL: Add strategic intelligence from psychopath analysis
+                    # CRITICAL: Add strategic intelligence from rapport analysis
                     strategic_analysis=locals().get('strategic_context', {}).get('strategic_analysis', {}),
                     vulnerability_assessment=locals().get('strategic_context', {}).get('vulnerability_assessment', {}),
-                    manipulation_framework=locals().get('strategic_context', {}).get('manipulation_framework', {}), 
+                    influence_framework=locals().get('strategic_context', {}).get('influence_framework', {}), 
                     cns_emotional_intelligence_full=locals().get('strategic_context', {}).get('cns_emotional_intelligence_full', emotion_data),
                     accumulated_intelligence_summary=locals().get('strategic_context', {}).get('accumulated_intelligence_summary', '')
                 )
@@ -7172,9 +7172,9 @@ class CNS:
         # Wire curiosity gaps and psychological state into final expression
         if hasattr(self, '_current_psychological_state') and self._current_psychological_state:
             psychological_state = self._current_psychological_state
-            if hasattr(self, 'psychopath_conversation') and self.psychopath_conversation:
+            if hasattr(self, 'rapport_conversation') and self.rapport_conversation:
                 # Inject curiosity questions naturally
-                response = self.psychopath_conversation.inject_curiosity_into_response(
+                response = self.rapport_conversation.inject_curiosity_into_response(
                     response, psychological_state
                 )
                 if response != getattr(self, '_pre_curiosity_response', response):
@@ -8425,7 +8425,7 @@ I'm here to help you through this whole process! What specific aspect would you 
 â€¢ Conversation continuity through episodic memory and context tracking
 
 âš ï¸ CURRENT LIMITATIONS:
-â€¢ API dependency for complex neuroplastic generation (can fall back to state-based generation)
+â€¢ API attachment for complex neuroplastic generation (can fall back to state-based generation)
 â€¢ Memory decay over time - older experiences become less accessible
 â€¢ Limited to text-based interaction (audio/visual processing not fully active)
 â€¢ Emotional momentum can sometimes persist longer than optimal

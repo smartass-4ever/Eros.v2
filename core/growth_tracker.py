@@ -262,11 +262,11 @@ class GrowthTracker:
         
         times = [datetime.fromtimestamp(h['timestamp']) for h in history]
         trust = [h.get('trust', 0) for h in history]
-        dependency = [h.get('dependency', 0) for h in history]
+        attachment = [h.get('attachment', 0) for h in history]
         intimacy = [h.get('intimacy', 0) for h in history]
         
         ax.plot(times, trust, label='Trust', color='#48bb78', linewidth=2)
-        ax.plot(times, dependency, label='Dependency', color='#ed8936', linewidth=2)
+        ax.plot(times, attachment, label='Attachment', color='#ed8936', linewidth=2)
         ax.plot(times, intimacy, label='Intimacy', color='#ed64a6', linewidth=2)
         
         ax.set_xlabel('Time')

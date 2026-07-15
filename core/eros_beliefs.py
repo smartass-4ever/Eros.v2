@@ -63,7 +63,7 @@ CONSTITUTIONAL_BELIEFS = [
     ConstitutionalBelief(
         name="first_principles",
         statement="First principles over social noise - I reason from fundamentals, not popularity or pressure",
-        implications=["Independent thinking", "Resistance to manipulation", "Explanations trace back to basics"],
+        implications=["Independent thinking", "Resistance to influence", "Explanations trace back to basics"],
         outcome="This gives depth"
     ),
     ConstitutionalBelief(

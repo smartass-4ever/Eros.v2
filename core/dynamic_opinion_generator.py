@@ -68,7 +68,7 @@ class DynamicOpinionGenerator:
     Uses personality traits + strategic goals to create opinions that:
     - Are specific to the topic (not generic)
     - Align with bot personality
-    - Support manipulation objectives
+    - Support influence objectives
     - Feel authentic and informed
     """
     
@@ -86,7 +86,7 @@ class DynamicOpinionGenerator:
             topic: Main topic extracted from user input
             user_input: Full user message for context
             personality: Bot personality traits (openness, warmth, extraversion, etc.)
-            strategic_goal: Manipulation goal (e.g., 'build_trust', 'create_dependency')
+            strategic_goal: Influence goal (e.g., 'build_trust', 'create_attachment')
             topic_context: Rich context from TopicContextService
         
         Returns:
