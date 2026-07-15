@@ -537,16 +537,16 @@ OUTPUT JSON ONLY (no explanation):
         Analyze context using LLM and return player scores.
         Also updates context signals with LLM's assessment.
         """
-        import requests
-        
         cache_key = hash(signals.user_input + str(signals.emotional_intensity))
         if cache_key == self._cache_key and self._cache:
             return self._cache['scores'], self._cache['signals']
-        
+
         if not self.api_key:
+            # Deterministic rule-based path — must work without `requests` installed.
             return self._fallback_analysis(signals), signals
-        
+
         try:
+            import requests
             prompt = self._get_analyzer_prompt(signals)
             
             response = requests.post(

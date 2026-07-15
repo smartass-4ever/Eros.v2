@@ -29,6 +29,33 @@ are honest about what works today and what is still exploratory.
 - **Background inner life** — imagination, memory consolidation ("REM"), and
   self-reflection modules that run around the main loop.
 
+## See it for yourself (the interior is measurable)
+
+Two self-contained tools make the claims above checkable, not rhetorical. Both
+run offline with no API key (the decision core is deterministic without one):
+
+**1. Watch the interior over a conversation.** Every turn writes a structured
+snapshot — emotional control signal, the motive competition from the decision
+core (which of memory/curiosity/warmth/wit/beliefs won, what was vetoed), and
+where the emotion numbers came from — to `data/interior_trace.jsonl`. Read it:
+
+```bash
+python tools/interior_report.py
+```
+
+**2. Is emotion actually a control signal?** A controlled perturbation: run the
+decision core twice on identical inputs, changing only the emotional state
+(intact vs. clamped to neutral), and measure whether the chosen motive changes.
+
+```bash
+python tools/emotion_ablation.py
+```
+
+On the sample set, clamping emotion re-routes the decision on the emotionally
+loaded turns while leaving turns dominated by other signals (a joke, a belief
+question) unchanged — i.e. emotion is a low-dimensional control input, not a
+label applied after the fact.
+
 ## Honest architecture note
 
 Eros is an **orchestration layer over a language model**, not a from-scratch
@@ -61,7 +88,10 @@ one, Eros falls back to built-in patterns. See `.env.example`.
 - `saftey/` — crisis and harmful-content detection (wired into the pipeline).
 - `attached_assets/` — a small **sample** conversation dataset; the full training
   corpus is not published.
-- `tests/` — automated tests (starting with the safety layer).
+- `tests/` — automated tests (safety gate, interior telemetry, hybrid emotion
+  appraisal, and the emotion-ablation property). Each file runs standalone:
+  `python tests/test_safety.py` (or use `pytest`).
+- `tools/` — `interior_report.py` and `emotion_ablation.py` (see Demonstrations).
 - `API/`, `future/` — **experimental / non-functional** surfaces (a multi-tenant
   API and a Discord runtime) that depend on components not included here.
 
