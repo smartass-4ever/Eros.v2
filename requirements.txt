@@ -1,0 +1,44 @@
+# Eros — Python dependencies
+# Python 3.11 recommended.
+#
+#   pip install -r requirements.txt
+#
+# The core text-chat interface (python run.py) needs only the CORE group.
+# Voice, screen-awareness, tray, and the experimental API surfaces pull in
+# the optional groups below.
+
+# ── Core (text chat: python run.py) ──────────────────────────────────────────
+python-dotenv          # load .env
+requests               # LLM HTTP calls (Groq / Together)
+mistralai              # Mistral SDK (used when a real Mistral key is present)
+SQLAlchemy             # persistence layer
+numpy                  # vector / numeric helpers
+python-dateutil        # date parsing
+
+# ── Voice (python run.py --voice / --wake) ───────────────────────────────────
+pyttsx3                # offline text-to-speech
+gTTS                   # online text-to-speech (fallback)
+sounddevice            # microphone capture
+openai-whisper         # speech-to-text
+openwakeword           # wake-word fallback ("eros")
+pvporcupine            # wake-word ("hey eros") — optional, needs Picovoice key
+pvrecorder             # recorder for Porcupine
+keyboard               # push-to-talk key handling
+
+# ── Screen awareness (continuous vision) ─────────────────────────────────────
+pytesseract            # OCR of screen text (requires Tesseract installed)
+Pillow                 # screenshot handling
+pywin32                # active-window detection (Windows)
+pywinauto              # UI element inspection (Windows)
+psutil                 # process/app detection
+
+# ── System tray ──────────────────────────────────────────────────────────────
+pystray                # tray icon
+
+# ── Optional / experimental surfaces ─────────────────────────────────────────
+aiohttp                # experimental enterprise API server (API/)
+stripe                 # experimental billing (saftey/cns_stripe_billing.py)
+matplotlib             # diagnostics/plots
+duckduckgo-search      # web search tool
+ddgs                   # web search tool (newer client)
+pygame                 # audio playback (some voice paths)

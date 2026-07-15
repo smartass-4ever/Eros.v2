@@ -1,6 +1,10 @@
 """
-CNS Enterprise API Server
-Production-ready API for B2B integration of CNS emotional intelligence
+CNS Enterprise API Server — EXPERIMENTAL / NOT FUNCTIONAL
+
+This multi-tenant B2B server is an early scaffold. It depends on modules
+that are not part of this repository (the Discord companion runtime and the
+webhook-delivery service), so it cannot run as-is. It is kept for reference
+only. The supported entry point for Eros is `run.py` (local text/voice chat).
 """
 
 import asyncio
@@ -9,13 +13,30 @@ from aiohttp import web
 import json
 import time
 from typing import Dict
-from updated_cns_discord_bot import DiscordCNSCompanion
+
+# --- Unreleased dependencies: guarded so importing this module does not crash ---
+try:
+    from updated_cns_discord_bot import DiscordCNSCompanion
+except ImportError:
+    class DiscordCNSCompanion:  # type: ignore
+        """Stub. The real companion runtime is not part of this repository."""
+        def __init__(self, *args, **kwargs):
+            raise RuntimeError(
+                "CNSEnterpriseServer requires the Discord companion runtime "
+                "(updated_cns_discord_bot), which is not included in this repository. "
+                "Use run.py for the supported local interface."
+            )
+
+try:
+    from cns_webhook_delivery import webhook_service
+except ImportError:
+    webhook_service = None  # webhook delivery is not available in this build
+
 from cns_enterprise_api_keys import api_key_manager, APITier, create_api_key
 from cns_enterprise_middleware import create_middleware_stack
 from cns_logging_monitoring import cns_logger
 from cns_stripe_billing import billing_manager
 from cns_multiuser_memory_manager import memory_manager
-from cns_webhook_delivery import webhook_service
 
 
 class CNSEnterpriseServer:

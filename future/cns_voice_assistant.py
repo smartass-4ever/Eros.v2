@@ -9,7 +9,19 @@ import sys
 import asyncio
 from voice_input_module import VoiceInputHandler
 from voice_output_module import VoiceOutputHandler
-from updated_cns_discord_bot import DiscordCNSCompanion
+
+# Unreleased dependency: the Discord companion runtime is not part of this repo.
+try:
+    from updated_cns_discord_bot import DiscordCNSCompanion
+except ImportError:
+    class DiscordCNSCompanion:  # type: ignore
+        """Stub. The real companion runtime is not included in this repository."""
+        def __init__(self, *args, **kwargs):
+            raise RuntimeError(
+                "CNSVoiceAssistant requires the Discord companion runtime "
+                "(updated_cns_discord_bot), which is not included in this repository. "
+                "Use run.py --voice for the supported local voice interface."
+            )
 
 try:
     import keyboard
