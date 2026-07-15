@@ -56,6 +56,21 @@ loaded turns while leaving turns dominated by other signals (a joke, a belief
 question) unchanged — i.e. emotion is a low-dimensional control input, not a
 label applied after the fact.
 
+**3. One intention, broadcast to speech and action.** A common agent failure is
+saying it will do something and then not doing it — because "what to say" and
+"what to do" are decided separately. Eros forms intention once: a single
+`SynthesizedContext` object, from which both the spoken response and the action
+decision are read.
+
+```bash
+python tools/coherence_demo.py
+```
+
+It drives the real orchestrator and shows, per turn, the one intention object
+and its two projections (a weather question executes an action; "play jazz" is
+honestly blocked pending device setup; an emotional message stays speech-only) —
+so speech and action structurally cannot diverge.
+
 ## Honest architecture note
 
 Eros is an **orchestration layer over a language model**, not a from-scratch
