@@ -26,6 +26,10 @@ are honest about what works today and what is still exploratory.
   Eros is* (a stable personality) from *how it responds* in a given moment.
 - **A constitutional belief set** (`core/eros_beliefs.py`) — always-active values
   that act as a reasoning lens rather than being re-derived each turn.
+- **Drive-triggered proactivity** (`core/drive_initiation.py`) — Eros reaches out
+  unprompted when an *internal drive* crosses a threshold (an unresolved curiosity
+  arc, emotional residue from a rough conversation, or a connection drive that
+  builds with silence) — not on a clock. The dominant drive decides what it says.
 - **Background inner life** — imagination, memory consolidation ("REM"), and
   self-reflection modules that run around the main loop.
 

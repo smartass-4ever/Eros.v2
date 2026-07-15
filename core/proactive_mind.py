@@ -10,8 +10,14 @@ Responsibilities:
 """
 import asyncio
 import os
+import time
 from datetime import datetime, time as dtime
 from typing import Callable, Optional, Awaitable
+
+try:
+    from drive_initiation import DriveInitiationEngine
+except ImportError:
+    DriveInitiationEngine = None
 
 
 class ProactiveMind:
@@ -24,12 +30,12 @@ class ProactiveMind:
 
     def __init__(self, user_name: str = "Mahika"):
         self.user_name = user_name
-        self._greeted_morning = False
-        self._greeted_night = False
-        self._last_date = None
         self._running = False
         self._push_fn: Optional[Callable[[str], Awaitable[None]]] = None
         self._cns = None  # set after CNS boot
+        # Genuine drive-triggered initiation (replaces clock-based greetings).
+        self.drive_engine = DriveInitiationEngine() if DriveInitiationEngine else None
+        self._last_seen_interactions = 0
 
     def attach(self, cns, push_fn: Callable[[str], Awaitable[None]]):
         self._cns = cns
@@ -49,45 +55,67 @@ class ProactiveMind:
             await asyncio.sleep(self.CHECK_INTERVAL)
 
     async def _tick(self):
-        now = datetime.now()
-        today = now.date()
+        """
+        Drive-triggered check: read Eros's internal state, let motivational
+        pressure build, and reach out only when a drive crosses threshold.
+        This is NOT a clock — the trigger is internal, the dominant drive
+        decides what gets said.
+        """
+        if not self.drive_engine:
+            return
 
-        # Reset daily flags on new day
-        if self._last_date != today:
-            self._greeted_morning = False
-            self._greeted_night = False
-            self._last_date = today
+        now = time.time()
+        now_dt = datetime.now()
+        cns = self._cns
 
-        hour = now.hour
+        # 1) Did the user interact since last check? Discharge silence, and
+        #    absorb the emotional residue of their most recent turn.
+        interactions = getattr(cns, "interaction_count", 0) if cns else 0
+        if interactions > self._last_seen_interactions:
+            self._last_seen_interactions = interactions
+            self.drive_engine.note_contact(now)
+            traj = getattr(cns, "_emotional_trajectory", None) if cns else None
+            if traj:
+                last = traj[-1]
+                self.drive_engine.feed_emotion_residue(
+                    valence=float(last.get("valence", 0.0)),
+                    intensity=float(last.get("intensity", 0.0)),
+                )
 
-        # Morning greeting (7–9am)
-        if 7 <= hour < 9 and not self._greeted_morning:
-            self._greeted_morning = True
-            await self._morning_brief(now)
+        # 2) Feed the live, unresolved curiosity arcs (real DopamineArc drives).
+        arcs = []
+        try:
+            arcs = list(cns.curiosity_system.dm.active.values())
+        except Exception:
+            arcs = []
+        self.drive_engine.feed_curiosity(arcs)
 
-        # Evening check-in (21–22)
-        elif 21 <= hour < 22 and not self._greeted_night:
-            self._greeted_night = True
-            await self._push(
-                f"It's getting late, {self.user_name}. "
-                "How did today go? You can tell me anything."
-            )
+        # 3) Advance time-based dynamics and see if a drive wants to speak.
+        self.drive_engine.tick(now)
+        impulse = self.drive_engine.poll(now, quiet=self._in_quiet_hours(now_dt))
+        if impulse:
+            print(f"[PROACTIVE] drive-triggered: {impulse.reason}")
+            await self._push(self._message_for(impulse))
 
-    async def _morning_brief(self, now: datetime):
-        lines = [f"Morning, {self.user_name}."]
+    def _in_quiet_hours(self, now_dt: datetime) -> bool:
+        """Don't reach out in the middle of the night, however strong the drive."""
+        hour = now_dt.hour
+        return hour < 7 or hour >= 23
 
-        # Day of week context
-        day = now.strftime("%A")
-        if day == "Monday":
-            lines.append("New week. What are we doing with it?")
-        elif day == "Friday":
-            lines.append("Friday. Whatever's weighing on you from the week — I'm here.")
-        elif day in ("Saturday", "Sunday"):
-            lines.append("Weekend. No agenda unless you want one.")
-        else:
-            lines.append("What's the plan today?")
-
-        await self._push(" ".join(lines))
+    def _message_for(self, impulse) -> str:
+        name = self.user_name
+        if impulse.drive_type == "curiosity":
+            if impulse.target:
+                return (f"Hey {name} — I keep circling back to {impulse.target}. "
+                        "You never quite finished that thought and it's been sitting with me. "
+                        "What ended up happening?")
+            return f"Hey {name}, something you said earlier has been nagging at me. Can we come back to it?"
+        if impulse.drive_type == "care":
+            return (f"Been thinking about you since earlier, {name}. "
+                    "You didn't sound okay. How are you holding up?")
+        # connection
+        return (f"It's gone a little quiet, {name}. No agenda — just wanted to check in. "
+                "How's your day treating you?")
 
     def stop(self):
         self._running = False
