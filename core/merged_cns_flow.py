@@ -5106,6 +5106,32 @@ class CNS:
         self._action_context = context or {}
         start_time = time.time()
         self.interaction_count += 1
+
+        # -- SAFETY GATE -------------------------------------------------------
+        # Crisis (self-harm / suicide) and harmful-content requests short-circuit
+        # the full pipeline with a caring, human override response + resources.
+        try:
+            if not hasattr(self, "_safety_manager"):
+                from cns_safety_systems import ErosSafetyManager
+                self._safety_manager = ErosSafetyManager()
+            _safety = self._safety_manager.check_message(user_input, user_id)
+            if _safety.get("override_response"):
+                print(f"[SAFETY] Intervening: level={_safety['level']}, category={_safety.get('category')}")
+                return {
+                    "response": _safety.get("response") or "I'm here with you.",
+                    "emotion": {"emotion": "concern", "valence": -0.3, "arousal": 0.5, "intensity": 0.6},
+                    "reasoning_trace": {"safety_intervention": True},
+                    "processing_time": time.time() - start_time,
+                    "subsystems_used": ["safety"],
+                    "confidence": 0.9,
+                    "safety_intervention": {
+                        "level": str(_safety.get("level")),
+                        "category": _safety.get("category"),
+                        "resources": _safety.get("resources", []),
+                    },
+                }
+        except Exception as _safety_err:
+            print(f"[SAFETY] Safety check failed (continuing): {_safety_err}")
         
         # âœ… CRITICAL: Reset all per-request state to prevent user bleeding
         # These were leaking between different users' requests
