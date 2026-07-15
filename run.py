@@ -328,11 +328,16 @@ def main():
 
     cns = boot()
 
-    # Boot proactive mind
+    # Boot proactive mind (skipped under the 'sharp' profile)
+    proactive = None
     try:
-        from proactive_mind import ProactiveMind
-        proactive = ProactiveMind(user_name=USER_NAME)
-        proactive.attach(cns, _proactive_push)
+        from eros_profile import enabled as _profile_enabled
+        if _profile_enabled("proactive_scheduler"):
+            from proactive_mind import ProactiveMind
+            proactive = ProactiveMind(user_name=USER_NAME)
+            proactive.attach(cns, _proactive_push)
+        else:
+            print("[PROFILE] sharp — proactive scheduler disabled")
     except Exception:
         proactive = None
 

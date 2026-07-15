@@ -4148,9 +4148,29 @@ class CNS:
             print("âš ï¸  Introspection module not available")
         
         self.log_origin_story()
-        
+
         self._setup_experience_bus_subscriptions()
-    
+
+        # -- Runtime profile: 'sharp' disables non-load-bearing background modules --
+        # Reversible (EROS_PROFILE=full restores). See core/eros_profile.py.
+        try:
+            from eros_profile import sharp
+            if sharp():
+                disabled = []
+                # These are all guarded by `if self.X:` at their call sites, so
+                # setting them to None cleanly skips them without breaking consumers.
+                self.rem_engine = None;              disabled.append("rem_engine")
+                self.self_reflection_composer = None; disabled.append("self_reflection")
+                self.unified_self_systems = None;    disabled.append("unified_self_systems")
+                # Imagination guards are `creative_energy > 0.3`; zero it to disable.
+                if getattr(self, "imagination_engine", None):
+                    self.imagination_engine.creative_energy = 0.0
+                    disabled.append("imagination")
+                print(f"[PROFILE] sharp — disabled background modules: {', '.join(disabled)} "
+                      f"(+ consciousness-growth, proactive scheduler)")
+        except Exception as _profile_err:
+            print(f"[PROFILE] profile setup skipped: {_profile_err}")
+
     def _setup_experience_bus_subscriptions(self):
         """Wire up all learning systems to the unified ExperienceBus"""
         try:
@@ -5641,7 +5661,11 @@ class CNS:
                         imagination_insights = None
                 
                 # ðŸ§  CONSCIOUSNESS METRICS: Update based on conversation depth
-                consciousness_growth = self._update_consciousness_metrics(user_input, emotion_data, parsed_input)
+                from eros_profile import enabled as _profile_enabled
+                if _profile_enabled("consciousness_growth"):
+                    consciousness_growth = self._update_consciousness_metrics(user_input, emotion_data, parsed_input)
+                else:
+                    consciousness_growth = {}
                 print(f"[CONSCIOUSNESS] ðŸ§  Metrics updated: self_awareness={self.consciousness['self_awareness']:.2f}, metacognition={self.consciousness['metacognition']:.2f}, existential={self.consciousness['existential_questioning']:.2f}")
                 
                 # ðŸ’¤ REM SUBCONSCIOUS ENGINE: Trigger every 15-20 interactions for memory consolidation

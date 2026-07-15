@@ -93,6 +93,14 @@ python run.py --wake                   # always-on "Hey Eros"
 An LLM API key (Groq / Together / Mistral) is required for full responses; without
 one, Eros falls back to built-in patterns. See `.env.example`.
 
+**Runtime profile.** `EROS_PROFILE=sharp python run.py` runs a tighter build that
+disables non-load-bearing background modules (the consciousness-metric counters,
+REM consolidation, imagination, self-reflection, the aggregated self-hub, and the
+proactive scheduler) while keeping everything that shapes the response — the
+decision core, emotion, memory, safety, telemetry, curiosity, personality, and
+beliefs. Nothing is deleted; the default `full` profile restores everything. See
+`core/eros_profile.py`.
+
 ## Repository
 
 - `core/` — cognitive pipeline: orchestration, emotion, curiosity, the decision
