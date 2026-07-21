@@ -16,6 +16,13 @@ Needs Eros's environment (Mistral key + database).
 """
 import asyncio, os, sys
 
+os.environ.setdefault("PYTHONIOENCODING", "utf-8")   # emoji in Eros's prints (like run.py)
+try:
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+except Exception:
+    pass
+
 # same path setup as run.py, so Eros's core/ (and other) modules import cleanly
 ROOT = os.path.dirname(os.path.abspath(__file__))
 for _sub in ["core", "memory", "self model", "user relationship", "misc", "saftey"]:
@@ -35,6 +42,11 @@ from reasoning_core import PraxisV2, KnowledgeNet
 
 class Bella(CNS):
     def __init__(self):
+        try:                                        # create the DB tables first, like run.py boot()
+            from cns_database import initialize_database
+            initialize_database()
+        except Exception as e:
+            print(f"[DB] {e}")
         super().__init__()                          # boots the whole real being, unchanged
         self.praxis = PraxisV2(KnowledgeNet())      # her final decision system
         self.goal = {"truth", "evidence", "help"}
