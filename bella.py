@@ -51,6 +51,11 @@ class Bella(CNS):
         self.praxis = PraxisV2(KnowledgeNet())      # her final decision system
         self.goal = {"truth", "evidence", "help"}
         self._focus = ""                            # what curiosity is pulling her toward now
+        self.interests = [                          # her inherent interests (EDIT to make it hers)
+            "artificial intelligence", "minds and consciousness", "how systems work and fail",
+            "honesty and trust", "underdogs and outsiders", "philosophy",
+            "science and physics", "internet culture", "what is true",
+        ]
 
     # ================= tweak 2: final decision -> Praxis v2 (glass box) =================
     def _praxis_decide(self, text: str, relevant_facts) -> dict:
@@ -198,30 +203,38 @@ class Bella(CNS):
         concepts = concepts or (getattr(self, "_last_decision", {}) or {}).get("concepts", [])
         self.praxis.learn(concepts, signal)
 
+    def _world_intake(self) -> str:
+        """What she's taking in from the real world right now. WIRE Indra here to feed live
+        web content; until then this is empty and she runs on her own thoughts."""
+        # WIRE: return Indra's latest fetched / changed content as a string
+        return ""
+
     def _curiosity_focus(self) -> str:
-        """Her strongest open curiosity becomes the next thing she attends to. Tries the
-        real curiosity/knowledge systems defensively; the first run tells us which fires."""
-        for owner in (getattr(self, "curiosity_system", None), self):
-            for attr in ("get_priority_arcs", "recall_arc", "next_gap", "top_gap", "current_focus"):
-                fn = getattr(owner, attr, None)
-                if callable(fn):
-                    try:
-                        r = fn(1) if attr == "get_priority_arcs" else fn()
-                        top = r[0] if isinstance(r, (list, tuple)) and r else r
-                        if top:
-                            return getattr(top, "target", None) or getattr(top, "text", None) or str(top)
-                    except Exception:
-                        continue
-        scout = getattr(self, "knowledge_scout", None)
-        for attr in ("next_question", "pick_topic", "get_gap"):
-            fn = getattr(scout, attr, None)
-            if callable(fn):
-                try:
-                    v = fn()
-                    if v:
-                        return str(v)
-                except Exception:
-                    continue
+        """Curiosity = novelty (the world + her own thoughts) x her inherent interests, fluid.
+        Feeds real-world intake + her last thought into the real CuriositySystem to detect gaps,
+        then attends to the strongest - biased toward her interests, free to wander to novelty."""
+        cs = getattr(self, "curiosity_system", None)
+        if cs is not None:
+            d = getattr(self, "_last_decision", None)
+            own = (d.get("conclusion") if d else "") or getattr(self, "_focus", "")
+            intake = (self._world_intake() + " " + own).strip() \
+                or "the world - what is true, what is changing, what I don't understand"
+            try:
+                cs.process_turn(intake)                     # novelty: gaps from the world + her thoughts
+            except Exception:
+                pass
+            try:
+                arcs = cs.dm.get_priority_arcs(top_n=3) or []
+                interests = {w for i in getattr(self, "interests", []) for w in str(i).lower().split()}
+                # prefer a strong arc that matches an interest; else the strongest arc (stays fluid)
+                for arc in arcs:
+                    tgt = str(getattr(arc, "target", "")).lower().replace("_", " ")
+                    if interests & set(tgt.split()):
+                        return str(arc.target)
+                if arcs and getattr(arcs[0], "target", None):
+                    return str(arcs[0].target)
+            except Exception:
+                pass
         return "what is true in the world right now that I don't yet understand"
 
 
