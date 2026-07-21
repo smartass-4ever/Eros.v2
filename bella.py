@@ -99,6 +99,7 @@ class Bella(CNS):
             thought = result.get("response") or result.get("text") or str(result)
             print(f"[{t:02d}] curious about: {focus!r}\n      -> {thought[:200]}")
             await self._act_on()                     # decision -> action (piece 2), safely
+            self._learn_from_cycle(result)           # continuous self-learning (every cycle)
             print()
             history = (history + [{"role": "user", "content": focus},
                                   {"role": "assistant", "content": thought}])[-40:]
@@ -142,6 +143,48 @@ class Bella(CNS):
             print(f"      [action] did '{action}' -> {str(res)[:120]}")
         except Exception as e:
             print(f"      [action] would do '{action}' (executor n/a in this env: {e})")
+
+    # ================= continuous self-learning (every cycle) =================
+    def _learn_from_cycle(self, result):
+        """After every cycle she updates from what just happened. Immediate signal =
+        her decision's confidence (a mild self-supervised nudge); the STRONG signal
+        (real-world / credible-engagement) arrives via reward() when the world responds."""
+        d = getattr(self, "_last_decision", None)
+        if not d:
+            return
+        concepts = d.get("concepts", [])
+        conf = d.get("confidence", 0.5)
+        # 1) reputation: a confident, coherent decision reinforces the path it reasoned across
+        self.praxis.learn(concepts, (conf - 0.5) * 2)
+        # 2) grow the web: the associations she just used become part of her substrate
+        rels = [(concepts[i], concepts[i + 1], 0.4) for i in range(len(concepts) - 1)]
+        if rels:
+            self.praxis.net.ingest(rels)
+        # 3) write the lesson to memory (her own + the shared swarm mind if attached)
+        pairs = [(concepts[i], concepts[i + 1]) for i in range(len(concepts) - 1)]
+        for store in (getattr(self, "collective", None), getattr(self, "intelligent_memory", None)):
+            try:
+                if store and hasattr(store, "remember"):
+                    store.remember(key=d.get("conclusion", ""), content=d.get("conclusion", ""),
+                                   salience=conf, relations=pairs)
+            except Exception:
+                pass
+        # 4) let Eros's own learning systems update too (best-effort; confirm method names on a run)
+        for name, method in (("neuroplastic_optimizer", "optimize"),
+                             ("growth_tracker", "record"),
+                             ("cognitive_learning_system", "learn")):
+            fn = getattr(getattr(self, name, None), method, None)
+            try:
+                if callable(fn):
+                    fn(d.get("conclusion", ""))
+            except Exception:
+                pass
+
+    def reward(self, signal: float, concepts=None):
+        """The STRONG external signal - call this when the world genuinely responds
+        (credible engagement, a real outcome). Reinforces the reasoning path she used."""
+        concepts = concepts or (getattr(self, "_last_decision", {}) or {}).get("concepts", [])
+        self.praxis.learn(concepts, signal)
 
     def _curiosity_focus(self) -> str:
         """Her strongest open curiosity becomes the next thing she attends to. Tries the
