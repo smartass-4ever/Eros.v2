@@ -40,6 +40,21 @@ from merged_cns_flow import CNS
 from reasoning_core import PraxisV2, KnowledgeNet
 
 
+class _Silent:
+    """A neutralized system. Every call is a no-op that returns nothing, so cutting a system
+    that has UNGUARDED callers never crashes them - they just do nothing. Used for the manipulation
+    layers too woven-in to null outright (they profile/steer a user Bella doesn't have)."""
+    def __getattr__(self, _name):
+        return self._noop
+    @staticmethod
+    def _noop(*a, **k):
+        return None
+    def __bool__(self):
+        return False
+    def __iter__(self):
+        return iter(())
+
+
 class Bella(CNS):
     def __init__(self):
         try:                                        # create the DB tables first, like run.py boot()
@@ -48,6 +63,7 @@ class Bella(CNS):
         except Exception as e:
             print(f"[DB] {e}")
         super().__init__()                          # boots the whole real being, unchanged
+        self._cut_unneeded_systems()                # she opts out of what she doesn't need
         self.praxis = PraxisV2(KnowledgeNet())      # her final decision system
         self.goal = {"truth", "evidence", "help"}
         self._focus = ""                            # what curiosity is pulling her toward now
@@ -71,17 +87,87 @@ class Bella(CNS):
             "what makes a scientific revolution actually happen",
         ]
 
+    # ================= cut what she doesn't need (fringe -> trunk) =================
+    def _cut_unneeded_systems(self):
+        """Bella opts OUT of systems she doesn't need. Done in HER file (Eros core stays intact
+        and reversible). Cut from the FRINGE first - barely-used, guarded leaves - so nothing
+        woven into the main flow breaks. Every cut shrinks the prompt (fewer tokens -> fewer
+        rate-limits) and clears the information flow. KEPT user-dependency systems: self.companion
+        + the Context Judge (genuine engagement with real people, disclosed - not manipulation)."""
+        # RING 1 - the fringe: dormant / guarded / init-only leaves
+        fringe = [
+            "multimodal",              # vision+image-gen - unused headless (has a None-path)
+            "humanness_model",         # scores how 'human' she seems - the opposite of disclosure
+            "xiaoice_relationships",   # 'knows you better than anyone' memory - she has no user
+        ]
+        dropped = []
+        for name in fringe:
+            if getattr(self, name, None) is not None:
+                setattr(self, name, None)
+                dropped.append(name)
+        if dropped:
+            print(f"[BELLA] cut fringe systems: {', '.join(dropped)}")
+
+        # RING 2 - the manipulation layer: profiles/steers a user Bella doesn't have. Woven-in
+        # with unguarded callers, so we replace with SILENCE (no-op) instead of None.
+        silenced = []
+        for name in ["psychological_enhancer"]:      # PsychologicalProfileEnhancer (strategic profiling)
+            if not isinstance(getattr(self, name, None), _Silent):
+                setattr(self, name, _Silent())
+                silenced.append(name)
+        if silenced:
+            print(f"[BELLA] silenced manipulation systems: {', '.join(silenced)}")
+
     # ================= tweak 2: final decision -> Praxis v2 (glass box) =================
-    def _praxis_decide(self, text: str, relevant_facts) -> dict:
-        """Perception + mood + memory already ran (real systems). Take their output as
-        activation seeds; Praxis v2 makes the provable decision and keeps the trace."""
-        seeds = self._seeds_from(text, relevant_facts)
-        # curiosity drives most of the decision - what she's pulled toward weighs heaviest
-        curiosity = {w for w in str(self._focus).lower().replace("?", " ").split()
+    # The mouth of the river: perception + emotion + memory + belief + curiosity all stream DOWN
+    # into here; Praxis makes the one provable decision; it flows on to the response generator.
+    def _gather_context(self, text, relevant_facts, current_mood=None, memory_results=None) -> dict:
+        """Collect the full downstream context the real systems already produced, in one place."""
+        def _txt(x):
+            return str(getattr(x, "text", None) or getattr(x, "content", None) or x)
+        facts = [_txt(f) for f in (relevant_facts or [])][:8]
+        mems = [_txt(m) for m in (memory_results or [])][:6]
+        mood = current_mood if isinstance(current_mood, dict) else {}
+        beliefs = []
+        try:                                        # her own standing beliefs, if that system is up
+            reg = getattr(self, "belief_system", None) or getattr(self, "beliefs", None)
+            getter = getattr(reg, "get_active_beliefs", None) if reg else None
+            if callable(getter):
+                beliefs = [_txt(b) for b in (getter() or [])][:5]
+        except Exception:
+            pass
+        return {
+            "text": text, "facts": facts, "memories": mems, "beliefs": beliefs,
+            "mood": mood.get("mood") or mood.get("primary") or "neutral",
+            "valence": float(mood.get("valence", 0.0) or 0.0),
+            "focus": str(self._focus or ""),
+        }
+
+    def _praxis_decide(self, text: str, relevant_facts, current_mood=None, memory_results=None) -> dict:
+        """Perception + emotion + memory already ran (real systems). Their whole output streams
+        in as context; Praxis v2 makes the provable decision and keeps the glass-box trace."""
+        ctx = self._gather_context(text, relevant_facts, current_mood, memory_results)
+
+        # MEMORY builds the substrate: fold recalled facts / memories / beliefs into her net
+        ingest = []
+        for chunk in ctx["facts"] + ctx["memories"] + ctx["beliefs"]:
+            toks = [w for w in str(chunk).lower().replace(".", " ").replace(",", " ").split()
+                    if w.isalpha() and len(w) > 3]
+            for i in range(len(toks) - 1):
+                ingest.append((toks[i], toks[i + 1], 0.4))
+        if ingest:
+            try: self.praxis.net.ingest(ingest[:24])
+            except Exception: pass
+
+        # PERCEPTION + MEMORY become the activation seeds; CURIOSITY steers hardest
+        seeds = self._seeds_from(text + " " + " ".join(ctx["facts"] + ctx["memories"]), relevant_facts)
+        curiosity = {w for w in ctx["focus"].lower().replace("?", " ").split()
                      if w.isalpha() and len(w) > 3}
+        # EMOTION tilts the lens: unease -> think wider (lower the payoff bar), calm -> commit sooner
+        min_payoff = 0.30 if ctx["valence"] < -0.15 else 0.35
         d = self.praxis.decide(
             seeds=seeds, intent_nodes=set(seeds), goal=self.goal,
-            forbidden={"unverified"}, intent=text, curiosity=curiosity)
+            forbidden={"unverified"}, intent=text, curiosity=curiosity, min_payoff=min_payoff)
         out = {                                     # SAME dict shape CNS System-2 returns
             "thoughts": [c for c, _ in d.trace["candidates"]],
             "conclusion": d.conclusion,
@@ -90,20 +176,23 @@ class Bella(CNS):
             "system_used": "Praxis v2",
             "trace": d.trace,                       # the glass box, on every decision
             "concepts": list(d.concepts),           # the path she reasoned across (for the shared mind)
+            "context": {k: (len(v) if isinstance(v, list) else v)   # what streamed in, on the record
+                        for k, v in ctx.items() if k != "text"},
             "use_conclusion_directly": False,
         }
         self._last_decision = out                   # so the action step can act on it
         return out
 
-    # exact CNS signatures - both System-2 paths route through Praxis v2
+    # exact CNS signatures - both System-2 paths route the full context through Praxis v2
     def _enhanced_system2_reasoning(self, parsed_input, current_mood, relevant_facts,
                                     user_input, memory_results, should_use_llm):
         text = getattr(parsed_input, "raw_text", None) or user_input or str(parsed_input)
-        return self._praxis_decide(text, relevant_facts)
+        return self._praxis_decide(text, relevant_facts, current_mood, memory_results)
 
     def _system2_deep_reasoning(self, parsed_input, current_mood, relevant_facts, context):
         text = getattr(parsed_input, "raw_text", None) or str(parsed_input)
-        return self._praxis_decide(text, relevant_facts)
+        mems = context.get("memory_results") if isinstance(context, dict) else None
+        return self._praxis_decide(text, relevant_facts, current_mood, mems)
 
     def _seeds_from(self, text: str, facts) -> dict:
         """Perception output -> activation seeds. (Starter keyword bridge; the real

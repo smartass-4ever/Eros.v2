@@ -1596,6 +1596,19 @@ They're feeling: {user_emotion} | Relationship: {context.relationship_level} | Y
                     print(f"[EXPRESSION] âŒ LLM API error: status {response.status_code}")
                     print(f"[EXPRESSION] âŒ Error details: {error_detail}")
                     last_error = f"HTTP {response.status_code}"
+                    # The model tried to call a tool we didn't declare (e.g. web_search). Retry
+                    # once WITHOUT tools so she always speaks instead of dropping to a canned line.
+                    if response.status_code == 400 and 'tool' in (response.text or '').lower():
+                        print("[EXPRESSION] retrying without tools (phantom tool call)")
+                        try:
+                            retry = await asyncio.to_thread(_sync_api_call, messages, timeout, False)
+                            if retry.status_code == 200:
+                                txt = retry.json()["choices"][0]["message"].get("content", "").strip()
+                                if txt:
+                                    print(f"[EXPRESSION] recovered without tools: {len(txt)} chars")
+                                    return txt
+                        except Exception as _e:
+                            print(f"[EXPRESSION] no-tools retry failed: {_e}")
                     if response.status_code < 500:
                         break
 
