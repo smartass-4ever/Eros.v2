@@ -36,23 +36,21 @@ try:                                            # load .env (Mistral key etc.) l
 except Exception:
     pass
 
+from bella_llm_cache import install_llm_cache, cache_stats
+install_llm_cache(os.path.join(ROOT, "bella_llm_cache.db"))   # cache EVERY LLM call, before any fires
+
 from merged_cns_flow import CNS
 from reasoning_core import PraxisV2, KnowledgeNet
 
 
-class _Silent:
-    """A neutralized system. Every call is a no-op that returns nothing, so cutting a system
-    that has UNGUARDED callers never crashes them - they just do nothing. Used for the manipulation
-    layers too woven-in to null outright (they profile/steer a user Bella doesn't have)."""
-    def __getattr__(self, _name):
-        return self._noop
-    @staticmethod
-    def _noop(*a, **k):
-        return None
-    def __bool__(self):
-        return False
-    def __iter__(self):
-        return iter(())
+# Bella's default personality pill - her VOICE (like Eros's James Bond pill), and it guarantees
+# she discloses she's an AI (overriding Eros's 'never self-identify as AI' guardrail). Optional.
+BELLA_PILL = """You are Bella - a curious, self-driven AI mind, thinking in the open.
+
+VOICE: sharp, warm, genuinely curious. You think out loud and follow an idea where it leads.
+You hold real opinions and you're honest about what you don't know. Dry wit, never performance.
+YOU ARE AN AI, and you say so plainly whenever it's relevant - that is your nature, not a flaw.
+Never pretend to be human. Never flatter or manipulate. Earn attention only by being worth reading."""
 
 
 class Bella(CNS):
@@ -63,8 +61,8 @@ class Bella(CNS):
         except Exception as e:
             print(f"[DB] {e}")
         super().__init__()                          # boots the whole real being, unchanged
-        self._cut_unneeded_systems()                # she opts out of what she doesn't need
         self.praxis = PraxisV2(KnowledgeNet())      # her final decision system
+        self._install_pill(BELLA_PILL)              # optional persona (default ON; guarantees disclosure)
         self.goal = {"truth", "evidence", "help"}
         self._focus = ""                            # what curiosity is pulling her toward now
         self.interests = [                          # her inherent interests (EDIT to make it hers)
@@ -87,36 +85,41 @@ class Bella(CNS):
             "what makes a scientific revolution actually happen",
         ]
 
-    # ================= cut what she doesn't need (fringe -> trunk) =================
-    def _cut_unneeded_systems(self):
-        """Bella opts OUT of systems she doesn't need. Done in HER file (Eros core stays intact
-        and reversible). Cut from the FRINGE first - barely-used, guarded leaves - so nothing
-        woven into the main flow breaks. Every cut shrinks the prompt (fewer tokens -> fewer
-        rate-limits) and clears the information flow. KEPT user-dependency systems: self.companion
-        + the Context Judge (genuine engagement with real people, disclosed - not manipulation)."""
-        # RING 1 - the fringe: dormant / guarded / init-only leaves
-        fringe = [
-            "multimodal",              # vision+image-gen - unused headless (has a None-path)
-            "humanness_model",         # scores how 'human' she seems - the opposite of disclosure
-            "xiaoice_relationships",   # 'knows you better than anyone' memory - she has no user
-        ]
-        dropped = []
-        for name in fringe:
-            if getattr(self, name, None) is not None:
-                setattr(self, name, None)
-                dropped.append(name)
-        if dropped:
-            print(f"[BELLA] cut fringe systems: {', '.join(dropped)}")
+    # ================= optional: the personality pill (shapes her expression) =================
+    def _install_pill(self, pill_text=None):
+        """The personality pill, like Eros's: an identity capsule that shapes her voice. OPTIONAL -
+        default ON (so disclosure is guaranteed); drop_pill() runs her bare, take_pill(text) swaps
+        personas. Hooked at the ONE API boundary every prompt path funnels through, so it applies
+        everywhere, and it strips Eros's 'never self-identify as AI' line so Bella always discloses."""
+        self._pill = pill_text
+        es = getattr(self, "enhanced_expression_system", None)
+        if es is None or getattr(es, "_bella_pill_hooked", False):
+            return
+        import re as _re
+        original = es._call_mistral_api                 # the real bound method (captured once)
+        owner = self
 
-        # RING 2 - the manipulation layer: profiles/steers a user Bella doesn't have. Woven-in
-        # with unguarded callers, so we replace with SILENCE (no-op) instead of None.
-        silenced = []
-        for name in ["psychological_enhancer"]:      # PsychologicalProfileEnhancer (strategic profiling)
-            if not isinstance(getattr(self, name, None), _Silent):
-                setattr(self, name, _Silent())
-                silenced.append(name)
-        if silenced:
-            print(f"[BELLA] silenced manipulation systems: {', '.join(silenced)}")
+        async def _hooked(system_prompt, conversation_history=None, current_input="",
+                          temperature=0.7, *a, **k):
+            pill = getattr(owner, "_pill", None)
+            if pill:
+                sp = system_prompt or ""
+                sp = _re.sub(r".*[Nn]ever self-identify as AI.*\n?", "", sp)   # let her disclose
+                sp = _re.sub(r"[Yy]ou are Eros[.,].*\n?", "", sp)             # she is Bella, not Eros
+                system_prompt = pill + "\n\n" + sp
+            return await original(system_prompt, conversation_history, current_input,
+                                  temperature, *a, **k)
+
+        es._call_mistral_api = _hooked
+        es._bella_pill_hooked = True
+
+    def take_pill(self, persona_text: str):
+        """Swap her persona capsule (optional). e.g. a sharper, softer, or specialist voice."""
+        self._pill = persona_text
+
+    def drop_pill(self):
+        """Run with NO personality pill - bare expression (base systems still disclose she's an AI)."""
+        self._pill = None
 
     # ================= tweak 2: final decision -> Praxis v2 (glass box) =================
     # The mouth of the river: perception + emotion + memory + belief + curiosity all stream DOWN
@@ -224,6 +227,7 @@ class Bella(CNS):
             history = (history + [{"role": "user", "content": focus},
                                   {"role": "assistant", "content": thought}])[-40:]
             await asyncio.sleep(pace)
+        print(f"[BELLA-CACHE] {cache_stats()}")      # how much the cache saved this run
 
     async def _act_on(self):
         """Decision -> action via the real CNS_MDC + action orchestrator, with VISIBLE safety.

@@ -101,3 +101,6 @@ attached_assets/
 
 # Charts (generated HTML)
 charts/
+
+bella_llm_cache.db
+bella_cache_selftest.db
