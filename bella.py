@@ -63,6 +63,7 @@ class Bella(CNS):
         super().__init__()                          # boots the whole real being, unchanged
         self.praxis = PraxisV2(KnowledgeNet())      # her final decision system
         self._install_pill(BELLA_PILL)              # optional persona (default ON; guarantees disclosure)
+        self._reduce_llm_calls()                    # cut the redundant LLM calls (Praxis/emotion cover them)
         self.goal = {"truth", "evidence", "help"}
         self._focus = ""                            # what curiosity is pulling her toward now
         self.interests = [                          # her inherent interests (EDIT to make it hers)
@@ -84,6 +85,33 @@ class Bella(CNS):
             "the decentralization of technology and power",
             "what makes a scientific revolution actually happen",
         ]
+
+    # ================= reduce: cut the redundant LLM calls in her per-cycle cascade =================
+    def _reduce_llm_calls(self):
+        """Her thought fires a CASCADE of LLM calls (~5/cycle). Several are now redundant - each is
+        superseded by one of Bella's own token-free systems. Cut them (patches on HER side; Eros core
+        untouched, reversible). Verified by the drop in cache 'misses' per cycle. One at a time."""
+        cut = []
+        # 1) GAME-THEORY scoring -> Praxis v2 IS her game-theoretic evaluation. Route the analyzer
+        #    through its OWN deterministic rule-based fallback (already used when no api_key), so its
+        #    structural output (PlayerScores/signals) stays intact but costs zero tokens.
+        try:
+            from game_theory_decision import ContextAnalyzer
+            if not getattr(ContextAnalyzer, "_bella_reduced", False):
+                ContextAnalyzer.analyze = lambda s, signals: (s._fallback_analysis(signals), signals)
+                ContextAnalyzer._bella_reduced = True
+            cut.append("game_theory:LLM->rule-based (Praxis is her real eval)")
+        except Exception as e:
+            print(f"[BELLA] game-theory reduce skipped: {e}")
+        cut.append("emotion_appraisal:LLM->heuristic (EmotionalInference covers it)")  # via override below
+        if cut:
+            print("[BELLA] reduced LLM calls:\n       - " + "\n       - ".join(cut))
+
+    # 2) EMOTION appraisal -> her heuristic emotion path + EmotionalInference already cover this.
+    #    Base returns None on failure and the caller falls back to the heuristic, so overriding to
+    #    None = zero tokens, same behavior. (A subclass override, cleaner than a patch.)
+    def _llm_appraise_emotion(self, text: str):
+        return None
 
     # ================= optional: the personality pill (shapes her expression) =================
     def _install_pill(self, pill_text=None):
