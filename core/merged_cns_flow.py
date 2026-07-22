@@ -2782,7 +2782,7 @@ class KnowledgeScout:
     
     def _call_llm_sync(self, query: str) -> str:
         """Synchronous LLM call - use _call_llm_async in async contexts"""
-        api_key = os.getenv("MISTRAL_API_KEY")
+        api_key = os.getenv("GROQ_API_KEY")
         
         if not api_key:
             return f"Knowledge unavailable: {query} (API key missing)"
@@ -4011,7 +4011,7 @@ class CNS:
         try:
             # Pass conversation patterns so it can use natural language styling from the loaded conversation dataset
             conversation_patterns = getattr(self, 'conversation_patterns', {})
-            mistral_api_key = os.getenv("MISTRAL_API_KEY")
+            mistral_api_key = os.getenv("GROQ_API_KEY")
             self.enhanced_expression_system = EnhancedExpressionSystem(mistral_api_key=mistral_api_key, conversation_patterns=conversation_patterns)
             # Connect expression system to CNS brain for self-identity access
             self.enhanced_expression_system.set_cns_brain(self)
@@ -4032,7 +4032,7 @@ class CNS:
         # Create shared mistral_client ONLY for a real Mistral key.
         # Groq keys (gsk_...) are rejected by api.mistral.ai with a 120s timeout hang.
         self._shared_mistral_client = None
-        _llm_key = os.getenv('MISTRAL_API_KEY', '')
+        _llm_key = os.getenv('GROQ_API_KEY', '')
         if _llm_key and not _llm_key.startswith('gsk_'):
             try:
                 from mistralai import Mistral
@@ -6285,7 +6285,7 @@ class CNS:
         Uses the same Groq OpenAI-compatible endpoint the rest of the codebase
         uses; the key is aliased across TOGETHER/MISTRAL/GROQ by run.py.
         """
-        api_key = os.getenv("GROQ_API_KEY") or os.getenv("TOGETHER_API_KEY") or os.getenv("MISTRAL_API_KEY")
+        api_key = os.getenv("GROQ_API_KEY") or os.getenv("TOGETHER_API_KEY") or os.getenv("GROQ_API_KEY")
         if not api_key or not text or not text.strip():
             return None
         try:

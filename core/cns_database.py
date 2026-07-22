@@ -953,7 +953,7 @@ class KnowledgeLearner:
     
     def __init__(self):
         self.db = CNSDatabase()
-        self.llm_api_key = os.environ.get('MISTRAL_API_KEY') or os.environ.get('TOGETHER_API_KEY')
+        self.llm_api_key = os.environ.get('GROQ_API_KEY') or os.environ.get('TOGETHER_API_KEY')
         self.llm_available = bool(self.llm_api_key)
         if self.llm_available:
             print("[KNOWLEDGE-LEARN] ðŸ§  LLM-powered fact extraction enabled")

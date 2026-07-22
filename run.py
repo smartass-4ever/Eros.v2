@@ -43,7 +43,7 @@ if not GROQ_KEY:
 # Alias GROQ_API_KEY into every env var the codebase checks for the LLM key.
 if GROQ_KEY:
     os.environ.setdefault("TOGETHER_API_KEY", GROQ_KEY)
-    os.environ.setdefault("MISTRAL_API_KEY",  GROQ_KEY)
+    os.environ.setdefault("GROQ_API_KEY",  GROQ_KEY)
 
 # ── Fix memory persistence ────────────────────────────────────────────────────
 # IntelligentMemorySystem checks os.environ['DATABASE_URL'] directly.

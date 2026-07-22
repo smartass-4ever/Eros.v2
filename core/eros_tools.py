@@ -204,7 +204,7 @@ def run_tool_pass(
         (action_summary, updated_history)
         action_summary is None if no tool was called.
     """
-    key = api_key or os.environ.get("TOGETHER_API_KEY") or os.environ.get("MISTRAL_API_KEY")
+    key = api_key or os.environ.get("TOGETHER_API_KEY") or os.environ.get("GROQ_API_KEY")
     if not key:
         return None, conversation_history
 

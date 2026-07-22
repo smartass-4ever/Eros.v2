@@ -73,7 +73,7 @@ class DynamicOpinionGenerator:
     """
     
     def __init__(self, mistral_api_key: Optional[str] = None):
-        self.mistral_api_key = mistral_api_key or os.environ.get('MISTRAL_API_KEY')
+        self.mistral_api_key = mistral_api_key or os.environ.get('GROQ_API_KEY')
         self.opinion_cache = {}  # Cache opinions per topic
         self.cache_ttl = 300  # 5 minutes
     

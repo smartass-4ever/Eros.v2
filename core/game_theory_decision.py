@@ -493,7 +493,7 @@ class ContextAnalyzer:
     
     def __init__(self, mistral_client=None, api_key: str = None):
         self.mistral_client = mistral_client
-        self.api_key = api_key or os.getenv("MISTRAL_API_KEY")  # Actually Together API key
+        self.api_key = api_key or os.getenv("GROQ_API_KEY")  # Actually Together API key
         self._cache = {}
         self._cache_key = None
     

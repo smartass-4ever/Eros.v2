@@ -34,7 +34,7 @@ class MultimodalCapabilities:
     """Advanced multimodal capabilities for visual understanding and generation"""
     
     def __init__(self, mistral_api_key: Optional[str] = None):
-        self.mistral_api_key = mistral_api_key or os.getenv('MISTRAL_API_KEY')
+        self.mistral_api_key = mistral_api_key or os.getenv('GROQ_API_KEY')
         self.vision_enabled = True
         self.generation_enabled = True
         

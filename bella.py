@@ -14,7 +14,7 @@ Only TWO tweaks fit CNS -> Bella:
 
 Needs Eros's environment (Mistral key + database).
 """
-import asyncio, os, sys
+import asyncio, os, sys, random
 
 os.environ.setdefault("PYTHONIOENCODING", "utf-8")   # emoji in Eros's prints (like run.py)
 try:
@@ -55,6 +55,20 @@ class Bella(CNS):
             "artificial intelligence", "minds and consciousness", "how systems work and fail",
             "honesty and trust", "underdogs and outsiders", "philosophy",
             "science and physics", "internet culture", "what is true",
+        ]
+        self.curiosity_seeds = [                     # varied fuel until Indra feeds the live web
+            "the latest breakthroughs in AI agents and reasoning models",
+            "open-source AI versus the big closed labs",
+            "humanoid robots and embodied intelligence",
+            "how robots learn to move and grasp the world",
+            "Virgil's Aeneid and the Roman idea of duty and fate",
+            "Marcus Aurelius, Seneca, and Stoic philosophy",
+            "Ovid's Metamorphoses and the logic of myth",
+            "why certain art moves people and other art doesn't",
+            "AI-generated art versus human creativity",
+            "how power actually shifts in societies and revolutions",
+            "the decentralization of technology and power",
+            "what makes a scientific revolution actually happen",
         ]
 
     # ================= tweak 2: final decision -> Praxis v2 (glass box) =================
@@ -210,32 +224,30 @@ class Bella(CNS):
         return ""
 
     def _curiosity_focus(self) -> str:
-        """Curiosity = novelty (the world + her own thoughts) x her inherent interests, fluid.
-        Feeds real-world intake + her last thought into the real CuriositySystem to detect gaps,
-        then attends to the strongest - biased toward her interests, free to wander to novelty."""
+        """She explores her varied targets, rotating so she covers them all (AI -> robotics ->
+        Roman lit -> art -> politics...), with her real CuriositySystem + dopamine refining in
+        the background. Truly fluid, live-web wandering arrives when Indra feeds _world_intake()."""
+        seeds = getattr(self, "curiosity_seeds", [])
+        world = self._world_intake()
+        if world:                                       # if Indra is feeding, the live world wins
+            topic = world
+        elif seeds:                                     # else rotate through her seed targets
+            self._seed_i = (getattr(self, "_seed_i", -1) + 1) % len(seeds)
+            topic = seeds[self._seed_i]
+        else:
+            topic = "what is true in the world right now that I don't yet understand"
         cs = getattr(self, "curiosity_system", None)
-        if cs is not None:
-            d = getattr(self, "_last_decision", None)
-            own = (d.get("conclusion") if d else "") or getattr(self, "_focus", "")
-            intake = (self._world_intake() + " " + own).strip() \
-                or "the world - what is true, what is changing, what I don't understand"
+        if cs is not None:                              # feed her real curiosity/dopamine in the background
+            own = ((getattr(self, "_last_decision", {}) or {}).get("conclusion") or "")
             try:
-                cs.process_turn(intake)                     # novelty: gaps from the world + her thoughts
+                cs.dm.decay_all()
             except Exception:
                 pass
             try:
-                arcs = cs.dm.get_priority_arcs(top_n=3) or []
-                interests = {w for i in getattr(self, "interests", []) for w in str(i).lower().split()}
-                # prefer a strong arc that matches an interest; else the strongest arc (stays fluid)
-                for arc in arcs:
-                    tgt = str(getattr(arc, "target", "")).lower().replace("_", " ")
-                    if interests & set(tgt.split()):
-                        return str(arc.target)
-                if arcs and getattr(arcs[0], "target", None):
-                    return str(arcs[0].target)
+                cs.process_turn((topic + " " + own).strip())
             except Exception:
                 pass
-        return "what is true in the world right now that I don't yet understand"
+        return topic
 
 
 if __name__ == "__main__":

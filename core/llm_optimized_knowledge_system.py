@@ -210,7 +210,7 @@ Answer:"""
     
     def _call_llm_sync(self, prompt: str) -> Optional[str]:
         """Synchronous LLM call - use _call_llm_async in async contexts"""
-        together_api_key = os.getenv("TOGETHER_API_KEY") or os.getenv("MISTRAL_API_KEY")
+        together_api_key = os.getenv("TOGETHER_API_KEY") or os.getenv("GROQ_API_KEY")
         
         if not together_api_key:
             return None
