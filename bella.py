@@ -41,6 +41,7 @@ install_llm_cache(os.path.join(ROOT, "bella_llm_cache.db"))   # cache EVERY LLM 
 
 from merged_cns_flow import CNS
 from reasoning_core import PraxisV2, KnowledgeNet
+from bella_knowledge import seed_bella_mind
 
 
 # Bella's default personality pill - her VOICE (like Eros's James Bond pill), and it guarantees
@@ -62,6 +63,7 @@ class Bella(CNS):
             print(f"[DB] {e}")
         super().__init__()                          # boots the whole real being, unchanged
         self.praxis = PraxisV2(KnowledgeNet())      # her final decision system
+        seed_bella_mind(self.praxis.net)            # give her a mind to think WITH (not an empty net)
         self._install_pill(BELLA_PILL)              # optional persona (default ON; guarantees disclosure)
         self._reduce_llm_calls()                    # cut the redundant LLM calls (Praxis/emotion cover them)
         self.goal = {"truth", "evidence", "help"}
