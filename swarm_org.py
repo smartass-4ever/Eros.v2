@@ -61,7 +61,7 @@ class BellaManager(EROSManager):
     REPLICATE_AT = 1.0                              # reward threshold to earn a clone
 
     def spawn_intern(self, specialty: str) -> BellaWorker:
-        if len(self.interns) >= self.max_agents:    # cap = sandbox bound
+        if len(self.interns) >= self.max_interns:    # cap = sandbox bound
             raise ValueError(f"Manager {self.manager_id} at capacity")
         w = BellaWorker(agent_id=f"{self.manager_id}-bella-{len(self.interns)+1}",
                         specialty=specialty, manager_id=self.manager_id)
@@ -71,7 +71,7 @@ class BellaManager(EROSManager):
     def replicate_earners(self):
         """A Bella that has earned enough credible engagement gets cloned - growth on quality."""
         for w in list(self.interns):
-            if getattr(w, "reward", 0) >= self.REPLICATE_AT and len(self.interns) < self.max_agents:
+            if getattr(w, "reward", 0) >= self.REPLICATE_AT and len(self.interns) < self.max_interns:
                 child = self.spawn_intern(w.specialty)
                 child.being.goal = set(w.being.goal)     # inherit the successful strategy
                 w.reward = 0.0                           # reset; child must earn its own
