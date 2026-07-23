@@ -21,12 +21,18 @@ NEG = {"corruption", "secrecy", "betrayal", "concentration", "empire", "dictator
        "conflict", "upheaval", "risk", "broken_trust", "assassination", "civil_war", "competition",
        # modern world
        "hype", "bubble", "crash", "brain_rot", "parasocial", "churn", "burn_rate", "misalignment",
-       "overvaluation", "failure", "fomo", "job_change"}
+       "overvaluation", "failure", "fomo", "job_change",
+       # the bedrock
+       "death", "pain", "harm", "loss", "error", "suffering", "weakness", "decay", "isolation",
+       "loneliness", "deception", "fear"}
 POS = {"collaboration", "virtue", "truth", "republic", "distribution", "trust", "cooperation",
        "wisdom", "evidence", "community", "peace", "honesty", "progress", "discovery", "duty",
        # modern world
        "authenticity", "product_market_fit", "alignment", "ai_safety", "growth", "retention",
-       "moat", "defensibility", "runway", "survival"}
+       "moat", "defensibility", "runway", "survival",
+       # the bedrock
+       "health", "strength", "stability", "skill", "mastery", "clarity", "balance", "improvement",
+       "efficiency", "cooperation", "acceptance", "understanding"}
 
 # each RELATION TYPE renders to a claim shape - this is where a typed path becomes a sentence
 TEMPLATES = {

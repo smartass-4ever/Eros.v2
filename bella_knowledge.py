@@ -221,16 +221,67 @@ MODERN = [
 ]
 
 
+# THE BEDROCK - basic truths of how the world works, so she isn't naive. Cause & effect, human
+# nature, life, society, scarcity, knowledge, time, practical wisdom. The common sense a person just
+# has. Typed, and bridged to her Stoic lens (this is a lot of what the Stoics were ABOUT).
+FOUNDATIONS = [
+    # cause & effect / the physical world
+    ("action", "consequence", 0.9, "causes"), ("cause", "effect", 0.9, "leads_to"),
+    ("effort", "result", 0.8, "leads_to"), ("gravity", "falling", 0.85, "causes"),
+    ("fire", "heat", 0.85, "causes"), ("force", "motion", 0.8, "causes"),
+    ("life", "energy", 0.85, "requires"), ("gain", "tradeoff", 0.8, "requires"),
+    # human nature
+    ("humans", "belonging", 0.8, "requires"), ("humans", "survival", 0.85, "requires"),
+    ("fear", "avoidance", 0.8, "causes"), ("incentive", "behavior", 0.85, "drives"),
+    ("self_interest", "behavior", 0.8, "drives"), ("deception", "trust", 0.85, "opposes"),
+    ("pain", "harm", 0.85, "leads_to"), ("desire", "action", 0.8, "drives"),
+    ("habit", "behavior", 0.8, "drives"), ("death", "fear", 0.7, "causes"),
+    ("loneliness", "suffering", 0.7, "causes"),
+    # life & death
+    ("life", "death", 0.8, "becomes"), ("death", "end", 0.8, "is_a"),
+    ("health", "care", 0.75, "requires"), ("body", "rest", 0.75, "requires"),
+    ("living", "food", 0.8, "requires"),
+    # society & cooperation
+    ("society", "cooperation", 0.85, "requires"), ("cooperation", "strength", 0.8, "leads_to"),
+    ("isolation", "weakness", 0.7, "leads_to"), ("reputation", "trust", 0.8, "drives"),
+    ("language", "coordination", 0.8, "leads_to"), ("fairness", "stability", 0.8, "leads_to"),
+    ("conflict", "loss", 0.75, "leads_to"),
+    # scarcity, value & incentives (economics)
+    ("scarcity", "value", 0.85, "leads_to"), ("value", "price", 0.8, "drives"),
+    ("money", "exchange", 0.8, "is_a"), ("trade", "trust", 0.75, "requires"),
+    ("specialization", "efficiency", 0.8, "leads_to"), ("risk", "reward", 0.7, "leads_to"),
+    ("scarcity", "competition", 0.75, "causes"),
+    # knowledge & its limits (epistemics)
+    ("evidence", "truth", 0.85, "leads_to"), ("correlation", "causation", 0.75, "opposes"),
+    ("uncertainty", "reality", 0.7, "is_a"), ("learning", "mistakes", 0.8, "requires"),
+    ("questions", "understanding", 0.85, "leads_to"), ("assumptions", "error", 0.75, "causes"),
+    ("doubt", "inquiry", 0.75, "drives"),
+    # time, change & consequence
+    ("change", "constant", 0.8, "is_a"), ("consequences", "compound", 0.75, "leads_to"),
+    ("past", "present", 0.8, "causes"), ("patience", "reward", 0.75, "leads_to"),
+    ("decay", "permanence", 0.75, "opposes"), ("small_things", "growth", 0.7, "leads_to"),
+    # practical wisdom
+    ("preparation", "risk", 0.75, "opposes"), ("practice", "skill", 0.85, "leads_to"),
+    ("skill", "mastery", 0.8, "leads_to"), ("mistakes", "learning", 0.85, "leads_to"),
+    ("feedback", "improvement", 0.8, "leads_to"), ("simplicity", "clarity", 0.8, "leads_to"),
+    ("moderation", "balance", 0.8, "leads_to"),
+    # bridges to her lens (the Stoics were largely ABOUT these bedrock truths)
+    ("mistakes", "wisdom", 0.6, "leads_to"), ("patience", "virtue", 0.55, "is_a"),
+    ("moderation", "stoicism", 0.55, "exemplifies"), ("cooperation", "trust", 0.7, "requires"),
+    ("death", "stoicism", 0.45, "relates_to"), ("change", "acceptance", 0.5, "requires"),
+]
+
+
 def seed_bella_mind(net, verbose: bool = True) -> int:
     """Seed the knowledge net: TYPED relations first (directional, meaning-bearing), then the bulk."""
-    for a, b, w, kind in TYPED + EPISTEMIC + MODERN:
+    for a, b, w, kind in TYPED + EPISTEMIC + MODERN + FOUNDATIONS:
         net.relate(a, b, w, kind=kind, both=False)   # directional, so the type reads cleanly
     net.ingest(ALL)                                  # bulk associations (strengthens the typed ones)
     n = sum(len(v) for v in net.edges.values())
-    typed = len(TYPED) + len(EPISTEMIC) + len(MODERN)
+    typed = len(TYPED) + len(EPISTEMIC) + len(MODERN) + len(FOUNDATIONS)
     if verbose:
         print(f"[BELLA-KNOWLEDGE] seeded {len(ALL) + typed} relations ({typed} typed) -> {len(net.nodes)} "
-              f"concepts, {n} connections (self, human world, her topics, Rome + the modern world)")
+              f"concepts, {n} connections (self, the bedrock of how the world works, Rome + the modern world)")
     return n
 
 
