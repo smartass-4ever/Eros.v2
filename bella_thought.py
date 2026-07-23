@@ -18,9 +18,15 @@ ROMAN = {"rome", "caesar", "republic", "empire", "rubicon", "augustus", "brutus"
 
 # concepts that carry a charge - her stance comes from which ones the path runs through
 NEG = {"corruption", "secrecy", "betrayal", "concentration", "empire", "dictator", "control",
-       "conflict", "upheaval", "risk", "broken_trust", "assassination", "civil_war", "competition"}
+       "conflict", "upheaval", "risk", "broken_trust", "assassination", "civil_war", "competition",
+       # modern world
+       "hype", "bubble", "crash", "brain_rot", "parasocial", "churn", "burn_rate", "misalignment",
+       "overvaluation", "failure", "fomo", "job_change"}
 POS = {"collaboration", "virtue", "truth", "republic", "distribution", "trust", "cooperation",
-       "wisdom", "evidence", "community", "peace", "honesty", "progress", "discovery", "duty"}
+       "wisdom", "evidence", "community", "peace", "honesty", "progress", "discovery", "duty",
+       # modern world
+       "authenticity", "product_market_fit", "alignment", "ai_safety", "growth", "retention",
+       "moat", "defensibility", "runway", "survival"}
 
 # each RELATION TYPE renders to a claim shape - this is where a typed path becomes a sentence
 TEMPLATES = {

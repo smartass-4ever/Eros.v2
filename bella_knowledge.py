@@ -164,15 +164,73 @@ EPISTEMIC = [
 ]
 
 
+# THE MODERN WORLD she's being released into - startups, Silicon Valley, AI, VC, Gen-Z/TikTok. Typed,
+# so she can REASON about it, with BRIDGES to her Rome/Stoic/power lens so she has OPINIONS, not facts.
+MODERN = [
+    # --- startup market ---
+    ("startup", "company", 0.8, "is_a"), ("startup", "product_market_fit", 0.85, "requires"),
+    ("founder", "startup", 0.85, "drives"), ("startup", "funding", 0.8, "requires"),
+    ("funding", "runway", 0.85, "leads_to"), ("runway", "survival", 0.8, "leads_to"),
+    ("burn_rate", "runway", 0.8, "opposes"), ("startup", "failure", 0.7, "leads_to"),
+    ("product_market_fit", "growth", 0.85, "leads_to"), ("growth", "retention", 0.8, "requires"),
+    ("churn", "growth", 0.8, "opposes"), ("pivot", "change", 0.8, "causes"),
+    ("mvp", "experiment", 0.75, "is_a"), ("scaling", "infrastructure", 0.8, "requires"),
+    ("unicorn", "startup", 0.8, "is_a"), ("network_effects", "moat", 0.85, "leads_to"),
+    ("moat", "defensibility", 0.85, "leads_to"), ("acquisition", "exit", 0.8, "is_a"),
+    ("ipo", "exit", 0.8, "is_a"), ("yc", "accelerator", 0.85, "exemplifies"),
+    ("accelerator", "startup", 0.8, "drives"),
+    # --- Silicon Valley ---
+    ("silicon_valley", "ecosystem", 0.85, "is_a"), ("silicon_valley", "ambition", 0.8, "concentrates"),
+    ("silicon_valley", "capital", 0.8, "concentrates"), ("silicon_valley", "talent", 0.8, "concentrates"),
+    ("big_tech", "power", 0.85, "concentrates"), ("hustle_culture", "founder", 0.8, "drives"),
+    ("move_fast", "silicon_valley", 0.8, "exemplifies"), ("disruption", "change", 0.85, "causes"),
+    ("exit", "wealth", 0.8, "leads_to"), ("wealth", "power", 0.8, "leads_to"),
+    ("silicon_valley", "risk", 0.75, "requires"),
+    # --- AI ---
+    ("llm", "ai", 0.9, "is_a"), ("agent", "ai", 0.85, "is_a"), ("compute", "ai", 0.8, "drives"),
+    ("training", "compute", 0.85, "requires"), ("training", "data", 0.85, "requires"),
+    ("openai", "closed_labs", 0.7, "exemplifies"), ("anthropic", "ai_safety", 0.8, "exemplifies"),
+    ("ai_safety", "alignment", 0.85, "requires"), ("alignment", "misalignment", 0.8, "opposes"),
+    ("ai_hype", "cycle", 0.7, "is_a"), ("hype", "substance", 0.8, "opposes"),
+    ("ai", "automation", 0.8, "leads_to"), ("automation", "job_change", 0.75, "causes"),
+    ("foundation_model", "capability", 0.8, "concentrates"),
+    # --- VC ---
+    ("vc", "investor", 0.85, "is_a"), ("vc", "funding", 0.85, "drives"), ("vc", "returns", 0.85, "requires"),
+    ("power_law", "vc_returns", 0.85, "drives"), ("vc", "capital", 0.85, "concentrates"),
+    ("valuation", "dilution", 0.8, "leads_to"), ("board_seat", "control", 0.8, "leads_to"),
+    ("seed", "series_a", 0.8, "leads_to"), ("due_diligence", "evidence", 0.85, "requires"),
+    ("fomo", "overvaluation", 0.8, "leads_to"), ("overvaluation", "bubble", 0.8, "leads_to"),
+    ("bubble", "crash", 0.8, "becomes"), ("exit", "returns", 0.85, "leads_to"),
+    # --- Gen-Z / TikTok ---
+    ("tiktok", "platform", 0.85, "is_a"), ("tiktok", "short_form", 0.85, "drives"),
+    ("short_form", "attention", 0.85, "drives"), ("attention", "economy", 0.8, "is_a"),
+    ("algorithm", "virality", 0.85, "drives"), ("virality", "influence", 0.85, "leads_to"),
+    ("influencer", "trends", 0.85, "drives"), ("creator_economy", "economy", 0.8, "is_a"),
+    ("gen_z", "authenticity", 0.85, "requires"), ("authenticity", "engagement", 0.8, "drives"),
+    ("parasocial", "relationship", 0.75, "is_a"), ("meme", "culture", 0.8, "drives"),
+    ("trend", "fomo", 0.75, "leads_to"), ("brain_rot", "depth", 0.8, "opposes"),
+    ("aesthetic", "identity", 0.75, "drives"), ("attention", "depth", 0.75, "opposes"),
+    # --- BRIDGES: the modern world <-> her Rome/Stoic/power lens + her own values (so she has TAKES) ---
+    ("big_tech", "empire", 0.55, "analogous_to"), ("startup", "republic", 0.45, "analogous_to"),
+    ("power_law", "caesar", 0.45, "analogous_to"), ("vc", "empire", 0.45, "analogous_to"),
+    ("virality", "power_shifts", 0.6, "exemplifies"), ("disruption", "revolution", 0.55, "analogous_to"),
+    ("hustle_culture", "ambition", 0.6, "is_a"), ("founder", "ambition", 0.6, "exemplifies"),
+    ("attention", "wisdom", 0.5, "opposes"), ("brain_rot", "virtue", 0.4, "opposes"),
+    ("authenticity", "honesty", 0.7, "is_a"), ("due_diligence", "truth", 0.6, "requires"),
+    ("hype", "truth", 0.6, "opposes"), ("automation", "power_shifts", 0.5, "causes"),
+]
+
+
 def seed_bella_mind(net, verbose: bool = True) -> int:
     """Seed the knowledge net: TYPED relations first (directional, meaning-bearing), then the bulk."""
-    for a, b, w, kind in TYPED + EPISTEMIC:
+    for a, b, w, kind in TYPED + EPISTEMIC + MODERN:
         net.relate(a, b, w, kind=kind, both=False)   # directional, so the type reads cleanly
     net.ingest(ALL)                                  # bulk associations (strengthens the typed ones)
     n = sum(len(v) for v in net.edges.values())
+    typed = len(TYPED) + len(EPISTEMIC) + len(MODERN)
     if verbose:
-        print(f"[BELLA-KNOWLEDGE] seeded {len(ALL)} relations ({len(TYPED)} typed) -> {len(net.nodes)} "
-              f"concepts, {n} connections (self, human world, her topics, Rome/Caesar as her lens)")
+        print(f"[BELLA-KNOWLEDGE] seeded {len(ALL) + typed} relations ({typed} typed) -> {len(net.nodes)} "
+              f"concepts, {n} connections (self, human world, her topics, Rome + the modern world)")
     return n
 
 
