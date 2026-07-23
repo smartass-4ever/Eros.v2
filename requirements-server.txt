@@ -1,0 +1,12 @@
+# Bella on a Linux server — ONLY what her mind + web reading + the surface need.
+# The Windows / voice / screen / tray / experimental packages from requirements.txt are
+# intentionally excluded (they can't install on Linux and she doesn't use them).
+python-dotenv
+requests
+SQLAlchemy
+numpy
+python-dateutil
+mistralai
+aiohttp
+Pillow
+psutil
