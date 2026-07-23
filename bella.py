@@ -195,8 +195,9 @@ class Bella(CNS):
 
         # PERCEPTION + MEMORY become the activation seeds; CURIOSITY steers hardest
         seeds = self._seeds_from(text + " " + " ".join(ctx["facts"] + ctx["memories"]), relevant_facts)
-        curiosity = {w for w in ctx["focus"].lower().replace("?", " ").split()
-                     if w.isalpha() and len(w) > 3}
+        # curiosity FORCE = her REAL CuriositySystem's gaps + live dopamine arcs (what she is
+        # GENUINELY curious about), NOT tokenized focus words. Her real curiosity finally DRIVES.
+        curiosity = self._curiosity_force(text, ctx["focus"])
         # EMOTION tilts the lens: unease -> think wider (lower the payoff bar), calm -> commit sooner
         min_payoff = 0.30 if ctx["valence"] < -0.15 else 0.35
         d = self.praxis.decide(                      # the game ranks structural candidates, provably
@@ -454,6 +455,58 @@ class Bella(CNS):
             self._seed_i = (getattr(self, "_seed_i", -1) + 1) % len(seeds)
             return self._register(seeds[self._seed_i])
         return self._register("what is true in the world right now that I don't yet understand")
+
+    @staticmethod
+    def _words(text) -> set:
+        return {w for w in str(text).lower().replace("?", " ").replace(".", " ").split()
+                if w.isalpha() and len(w) > 3}
+
+    def _curiosity_force(self, text, focus="") -> set:
+        """Praxis's strongest term, sourced from her REAL curiosity system: the GAPS her gap-detector
+        finds in this input + the live dopamine ARCS (what she's already curious about). That is her
+        genuine curiosity, as concepts, driving the decision. Falls back to focus tokens if absent."""
+        cs = getattr(self, "curiosity_system", None)
+        concepts = set()
+        if cs is not None:
+            try:                                    # gaps this input opens (works on a single sentence)
+                for g in (cs.detector.detect(text, None) or []):
+                    concepts |= self._words(g.get("target", ""))
+            except Exception:
+                pass
+            try:                                    # what she's already burning to know (dopamine arcs)
+                for arc in (cs.dm.get_priority_arcs(top_n=3) or []):
+                    concepts |= self._words(getattr(arc, "target", ""))
+            except Exception:
+                pass
+        return concepts or self._words(focus or text)
+
+    def _relevance(self, text) -> float:
+        """How connected this is to what she already KNOWS and CARES about - read straight off her
+        real knowledge graph (her memory) + her interests. This is the dimension her conversational
+        curiosity system lacks (it scores novelty, not 'is this in my wheelhouse'). 0..1."""
+        words = self._words(text)
+        if not words:
+            return 0.0
+        interests_l = " ".join(getattr(self, "interests", [])).lower()
+        net = self.praxis.net
+        hits = sum(1 for w in words if w in net.nodes or w in interests_l)
+        return round(min(1.0, hits / max(3, len(words))), 3)
+
+    def curious_about(self, text) -> float:
+        """Genuine reading-curiosity = BOTH her real systems: her gap-detector (is something
+        interesting here - novelty/contradiction/story) WEIGHTED by relevance to what she knows and
+        cares about (her knowledge graph). A gap about AI grips her; the same gap about Emacs doesn't.
+        0..1. Not a keyword hack - the combination of her two real signals."""
+        cs = getattr(self, "curiosity_system", None)
+        gap = 0.0
+        if cs is not None:
+            try:
+                gaps = cs.detector.detect(text, None) or []
+                gap = max([g.get("salience", 0.0) * g.get("confidence", 1.0) for g in gaps] + [0.0])
+            except Exception:
+                pass
+        rel = self._relevance(text)
+        return round(min(1.0, gap * (0.35 + 0.65 * rel)), 3)   # a gap she CARES about beats one she doesn't
 
     def _interest_level(self, concepts) -> float:
         """How hard her curiosity/dopamine is pulling (0..1): her real arcs if present, else the

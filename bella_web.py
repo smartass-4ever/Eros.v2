@@ -93,7 +93,7 @@ async def bella_reads_selectively(scan=14, threshold=0.28, ticks=6):
     print(f"[WEB] scanning {len(heads)} live headlines - reading deeply only what grips her:\n")
     read = 0
     for h in heads:
-        c = curiosity_about(b.praxis.net, b.interests, h["title"])
+        c = b.curious_about(h["title"])              # HER real curiosity system judges the headline
         if c >= threshold:
             article = fetch_article(h["url"]) or h["title"]
             b.feed(article)
