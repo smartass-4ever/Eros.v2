@@ -68,6 +68,16 @@ class BellaHead:
         self.nalanda.broadcast(self.hid, d.concepts, reward, d.conclusion)  # share to the collective
         return d, reward
 
+    def read(self, text):
+        """This head reads a piece of the live web: perceives it and INGESTS the typed relations it
+        extracts into its own net (reading -> knowledge), then it can broadcast to Nalanda."""
+        from bella_perception import perceive
+        p = perceive(text, known_net=self.praxis.net)
+        for a, b, w, kind in p["relations"]:
+            try: self.praxis.net.relate(a, b, w, kind=kind, both=False)
+            except Exception: pass
+        return p
+
     def study(self):
         self._studied = self.nalanda.teach(self.praxis.net, since=0)
 
