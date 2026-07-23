@@ -348,6 +348,14 @@ class Bella(CNS):
         conf = d.get("confidence", 0.5)
         # 1) reputation: a confident, coherent decision reinforces the path it reasoned across
         self.praxis.learn(concepts, (conf - 0.5) * 2)
+        # 1b) STRONG loop: reward the ACTION she chose to get here, so her exploration policy sharpens
+        act = getattr(self, "_last_action", None)
+        if act:
+            try:
+                from bella_curiosity import learn_from_action
+                learn_from_action(self.praxis, act, max(-1.0, min(1.0, (conf - 0.5) * 2)))
+            except Exception:
+                pass
         # 2) grow the web: the associations she just used become part of her substrate
         rels = [(concepts[i], concepts[i + 1], 0.4) for i in range(len(concepts) - 1)]
         if rels:
@@ -404,9 +412,9 @@ class Bella(CNS):
             depth = (getattr(self, "_thread_depth", 0) + 1) if same else 0
             if depth < 3:                                 # dive ~3 levels, then get bored and wander
                 self._thread_key, self._thread_depth = key, depth
-                from bella_curiosity import reason_to_action, action_to_focus
+                from bella_curiosity import decide_next_action, action_to_focus
                 markers = tuple(getattr(self, "_markers", ()))   # author/claim/unknown (from perception, later)
-                action, _ad = reason_to_action(self.praxis, interest, markers, dope)
+                action, _scores = decide_next_action(self.praxis, interest, markers, dope)  # STRONG: weighed + learns
                 self._last_action = action
                 topic = " and ".join(w.replace("_", " ") for w in interest[:2])
                 return self._register(action_to_focus(action, topic, getattr(self, "_entities", {})))

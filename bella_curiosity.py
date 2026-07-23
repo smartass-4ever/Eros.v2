@@ -14,8 +14,71 @@ provable and it's hers.
 Curiosity is seeded strongest, so the more something grips her, the harder she pursues it.
 """
 from bella_knowledge import ACTIONS
+from reasoning_core import _edge
 
 DEEPEN_GOAL = {"understanding", "truth", "explore", "read_more", "follow_source", "find_evidence"}
+
+# rough intrinsic cost of each action (cheap to do here vs expensive to go fetch/verify)
+ACTION_COST = {"read_more": 0.2, "explore": 0.2, "compare": 0.3, "find_evidence": 0.5,
+               "follow_source": 0.5, "search_author": 0.6, "trace_origin": 0.6}
+
+
+def expected_gain(net, concepts) -> float:
+    """Information hunger: she expects to learn MOST where she knows LEAST. High for sparse concepts,
+    low for ones she's already saturated (this is what makes curiosity seek, not loop)."""
+    if not concepts:
+        return 0.5
+    known = sum(len(net.edges.get(c, [])) for c in concepts) / len(concepts)
+    return round(1.0 / (1.0 + 0.12 * known), 3)
+
+
+def _drive_strength(net, markers, dopamine, action) -> float:
+    """How strongly her current state (what gripped her + curiosity) calls for THIS action."""
+    best = 0.0
+    drivers = {m: 0.95 for m in markers}
+    drivers["curiosity"] = max(0.5, dopamine)
+    drivers["interesting"] = 0.8 * dopamine
+    for drv, dw in drivers.items():
+        for dst, w, kind in net.edges.get(drv, []):
+            if kind == "drives" and dst == action:
+                best = max(best, dw * w)
+    return round(best, 3)
+
+
+def _action_value(net, action) -> float:
+    """Learned reputation of this action - does it lead to understanding? Seeded ~0.8, then refined
+    by outcomes (learn_from_action). This is how her POLICY sharpens with experience."""
+    return max(_edge(net, action, "understanding"), _edge(net, action, "truth"))
+
+
+def decide_next_action(praxis, interest, markers=(), dopamine=1.0):
+    """The STRONG decision: score EVERY candidate action and pick the best - not a reflex.
+        score = curiosity(expected gain x drive)  +  learned value  -  cost
+    Curiosity is weighted highest (her guiding angle). Every score is decomposed = glass-box.
+    Returns (action, scored) where scored[a] shows the breakdown, provable."""
+    net = praxis.net
+    gain = expected_gain(net, interest)
+    scored = {}
+    for a in ACTIONS:
+        drive = _drive_strength(net, markers, dopamine, a)
+        if drive <= 0 and a not in ("explore", "read_more"):
+            continue                                   # she can't currently justify this action
+        value = _action_value(net, a)
+        cost = ACTION_COST.get(a, 0.4)
+        score = round(0.50 * gain * max(drive, 0.15) + 0.35 * value - 0.15 * cost, 3)
+        scored[a] = {"score": score, "curiosity": round(gain * max(drive, 0.15), 3),
+                     "value": round(value, 3), "cost": cost}
+    if not scored:
+        scored["explore"] = {"score": 0.3, "curiosity": gain, "value": 0.5, "cost": 0.2}
+    action = max(scored, key=lambda a: scored[a]["score"])
+    return action, scored
+
+
+def learn_from_action(praxis, action, reward):
+    """After she acts: did it pay off (novel / interesting / true)? Reinforce or weaken this action's
+    VALUE so she gets better at choosing. reward in [-1, 1]. This is the loop getting STRONGER."""
+    if action:
+        praxis.learn([action, "understanding"], reward)
 
 
 def reason_to_action(praxis, interest_concepts, markers=(), dopamine=1.0):
