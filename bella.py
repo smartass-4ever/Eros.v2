@@ -67,6 +67,7 @@ class Bella(CNS):
         seed_bella_mind(self.praxis.net)            # give her a mind to think WITH (not an empty net)
         self._install_pill(BELLA_PILL)              # optional persona (default ON; guarantees disclosure)
         self._reduce_llm_calls()                    # cut the redundant LLM calls (Praxis/emotion cover them)
+        self._route_voice_through_praxis()          # her voice = her Praxis thought, NOT the 9.7k-tok expression
         self.goal = {"truth", "evidence", "help"}
         self._focus = ""                            # what curiosity is pulling her toward now
         self.interests = [                          # her inherent interests (EDIT to make it hers)
@@ -151,6 +152,24 @@ class Bella(CNS):
     def drop_pill(self):
         """Run with NO personality pill - bare expression (base systems still disclose she's an AI)."""
         self._pill = None
+
+    def _route_voice_through_praxis(self):
+        """Remove ONLY the expensive expression performance. The FULL pipeline still runs every cycle
+        (perception, emotion, memory, curiosity, the psychology/rapport path - all of it feeds Praxis);
+        we just stop the ~9.7k-token strategic expression LLM call and let her SPEAK her own Praxis
+        thought (already in her voice via _translate). Kills the token burn; keeps the architecture."""
+        es = getattr(self, "enhanced_expression_system", None)
+        if es is None:
+            return
+        owner = self
+
+        async def _voice(system_prompt=None, conversation_history=None, current_input="",
+                         temperature=0.7, *a, **k):
+            d = getattr(owner, "_last_decision", {}) or {}     # her Praxis thought, her own words
+            return d.get("conclusion") or d.get("thought") or None
+
+        es._call_mistral_api = _voice                          # the expression now voices Praxis, no big call
+        es._bella_voice_routed = True
 
     # ================= tweak 2: final decision -> Praxis v2 (glass box) =================
     # The mouth of the river: perception + emotion + memory + belief + curiosity all stream DOWN

@@ -29,7 +29,6 @@ def _serve(port=8080):
 async def main():
     from bella import Bella
     from bella_web import fetch_hn_headlines, fetch_article
-    from bella_state import emit
     b = Bella()
     b._surface_path = STATE
     print("[LIVE] Bella opening her eyes to the web...")
@@ -43,20 +42,9 @@ async def main():
             print(f"[LIVE] read {fed} of {len(heads)} live stories; thinking...")
         except Exception as e:
             print(f"[LIVE] web hiccup: {e}")
-
-        # CLEAN BELLA: her own cognition ONLY - perceive -> curiosity -> Praxis glass-box -> thought.
-        # NOT the full Eros pipeline (no rapport / attachment-seeking / 9.7k-token expression call).
-        for _ in range(20):
-            focus = b._curiosity_focus()               # her real curiosity picks what to attend to
-            b._focus = focus
-            try:
-                b._praxis_decide(focus, relevant_facts=[])   # her provable reasoning + her own words
-            except Exception as e:
-                print(f"[LIVE] think hiccup: {e}")
-            emit(b, STATE)                             # stream it to the surface
-            d = getattr(b, "_last_decision", {}) or {}
-            print(f"[{focus[:40]!r}] -> {str(d.get('conclusion',''))[:90]}")
-            await asyncio.sleep(6)
+        # her FULL integrated being thinks across it (all organs -> Praxis). The only thing removed
+        # is the 9.7k-token expression performance (see Bella._route_voice_through_praxis).
+        await b.live(ticks=20, pace=6)
 
 
 if __name__ == "__main__":
