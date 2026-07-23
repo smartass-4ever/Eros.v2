@@ -1,0 +1,18 @@
+# Bella on Fly.io.  Rename `app` to whatever you like (must be globally unique).
+app = "bella-mind"
+primary_region = "iad"   # change to your nearest: iad(US-east) sjc(US-west) lhr(London) fra(Frankfurt) sin(Singapore)
+
+[build]
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  # she's a continuous mind, not a request/response app - keep her always on
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+# the full Eros cognitive stack is RAM-heavy on boot - give her room
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "2gb"

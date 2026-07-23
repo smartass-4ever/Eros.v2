@@ -1,0 +1,12 @@
+.git
+__pycache__
+*.pyc
+*.db
+*.sqlite
+.env
+.venv
+venv
+surface/state.json
+surface/state.json.tmp
+node_modules
+*.log
