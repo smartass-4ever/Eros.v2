@@ -42,6 +42,7 @@ install_llm_cache(os.path.join(ROOT, "bella_llm_cache.db"))   # cache EVERY LLM 
 from merged_cns_flow import CNS
 from reasoning_core import PraxisV2, KnowledgeNet, Candidate
 from bella_knowledge import seed_bella_mind
+from bella_thought import form_thought, form_structured
 
 
 # Bella's default personality pill - her VOICE (like Eros's James Bond pill), and it guarantees
@@ -198,13 +199,18 @@ class Bella(CNS):
                      if w.isalpha() and len(w) > 3}
         # EMOTION tilts the lens: unease -> think wider (lower the payoff bar), calm -> commit sooner
         min_payoff = 0.30 if ctx["valence"] < -0.15 else 0.35
-        d = self.praxis.decide(
+        d = self.praxis.decide(                      # the game ranks structural candidates, provably
             seeds=seeds, intent_nodes=set(seeds), goal=self.goal,
-            forbidden={"unverified"}, intent=text, curiosity=curiosity, min_payoff=min_payoff,
-            composer=self._composer)                 # LLM = the mouth; the game still ranks provably
+            forbidden={"unverified"}, intent=text, curiosity=curiosity, min_payoff=min_payoff)
+        # HER systems form the complete claim (typed graph + stance), NO LLM. The LLM only translates.
+        structured = form_structured(d, self.praxis.net)
+        thought = form_thought(d, self.praxis.net)
+        spoken = self._translate(structured, thought)
         out = {                                     # SAME dict shape CNS System-2 returns
             "thoughts": [c for c, _ in d.trace["candidates"]],
-            "conclusion": d.conclusion,
+            "conclusion": spoken,                   # her formed thought (LLM only smoothed the words)
+            "thought": thought,                     # her token-free thought (no LLM at all)
+            "claim": structured,                    # the deep structure: subject/relation/object/stance
             "confidence": min(0.99, 0.5 + d.payoff / 2),
             "reasoning_type": "praxis_v2_glassbox",
             "system_used": "Praxis v2",
@@ -217,57 +223,36 @@ class Bella(CNS):
         self._last_decision = out                   # so the action step can act on it
         return out
 
-    # ---- the constrained composer, plugged into Praxis's existing hook (LLM = mouth, not mind) ----
-    def _composer(self, activated, intent):
-        """Praxis picks WHICH concepts and WHICH path (provably). This turns the top activated
-        concepts into candidate INSIGHTS - the LLM articulates, constrained to HER concepts only,
-        it doesn't choose what she thinks. The game then ranks these candidates provably (concepts
-        preserved for scoring). Falls back to structural pairs when there's no LLM/quota."""
-        top = sorted(activated.items(), key=lambda x: -x[1])[:4]
-        structural = []
-        for i in range(len(top)):
-            for j in range(i + 1, len(top)):
-                (a, av), (b, bv) = top[i], top[j]
-                structural.append(Candidate(f"{a} implies {b}", (a, b), round((av + bv) / 2, 3)))
-        structural = structural[:4]
-        lines = self._articulate_from_concepts([c for c, _ in top], intent)
-        if not lines:
-            return structural                        # no quota -> plain, honest, provable
-        out = []                                     # attach her voice, keep the concepts for the game
-        for k, cand in enumerate(structural):
-            out.append(Candidate(lines[k] if k < len(lines) else cand.conclusion,
-                                 cand.concepts, cand.strength))
-        return out
-
-    def _articulate_from_concepts(self, concepts, intent):
-        """One constrained, cached LLM call: her activated concepts -> short candidate insights in
-        her voice, using ONLY those concepts. Returns up to 4 lines, or [] with no LLM/quota."""
-        if not concepts:
-            return []
+    # ---- the LLM as PURE TRANSLATOR (surface realization only - it cannot add a claim) ----
+    def _translate(self, structured, gloss):
+        """The claim (subject / relation / object / stance) is ALREADY fixed by her systems. The LLM
+        only renders it as one natural sentence, adding NO new claim, fact, or idea, and changing
+        neither the relation nor the stance. No LLM/quota -> she speaks the gloss (her own words).
+        THIS is 'LLM = mouth, not mind', done properly: her thought, borrowed language."""
         key = os.getenv("GROQ_API_KEY") or os.getenv("MISTRAL_API_KEY") or os.getenv("TOGETHER_API_KEY")
-        if not key:
-            return []
+        if not key or not gloss:
+            return gloss
         import requests
         persona = (getattr(self, "_pill", None) or "You are Bella, a curious, honest AI mind.").strip()
-        system = (persona + "\n\nYou are given the concepts YOUR OWN reasoning just activated. Give up "
-                  "to 3 candidate insights, ONE per line, each a single sentence, using ONLY these "
-                  "concepts and their relationships - introduce no outside facts. If a Roman or Stoic "
-                  "concept is present, lean on the analogy. You are putting words to conclusions you "
-                  "already reasoned - stay faithful, sharp, no preamble.")
-        user = f"intent: {intent}\nactivated concepts: {', '.join(map(str, concepts))}\n\nInsights (one per line):"
+        system = (persona + "\n\nYou are given a thought that is ALREADY fully formed - its subject, "
+                  "relation, object and stance are FIXED. Render it as ONE natural, sharp sentence in "
+                  "your voice. Do NOT add any new claim, fact, example or idea; do NOT change the "
+                  "relation or the stance. Only say THIS exact thought more naturally. No preamble.")
+        user = (f"subject: {structured['subject']}\nrelation: {structured['relation']}\n"
+                f"object: {structured['object']}\nstance: {structured['stance']}\n"
+                f"my plain version: {gloss}\n\nSay it naturally (one sentence, no new claims):")
         try:
             r = requests.post("https://api.groq.com/openai/v1/chat/completions",
                               headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
                               json={"model": "llama-3.3-70b-versatile",
                                     "messages": [{"role": "system", "content": system},
                                                  {"role": "user", "content": user}],
-                                    "temperature": 0.7, "max_tokens": 150}, timeout=12)
+                                    "temperature": 0.6, "max_tokens": 60}, timeout=12)
             if r.status_code == 200:
-                txt = r.json()["choices"][0]["message"]["content"]
-                return [ln.strip(" -*0123456789.").strip() for ln in txt.splitlines() if ln.strip()][:4]
+                return r.json()["choices"][0]["message"]["content"].strip() or gloss
         except Exception:
             pass
-        return []
+        return gloss
 
     # exact CNS signatures - both System-2 paths route the full context through Praxis v2
     def _enhanced_system2_reasoning(self, parsed_input, current_mood, relevant_facts,

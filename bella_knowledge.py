@@ -114,14 +114,40 @@ BRIDGES = [
 
 ALL = SELF + WORLD + TOPICS + ROME + BRIDGES
 
+# TYPED relations - the edges that carry MEANING, so a path becomes a real claim (not just adjacency).
+# (subject, object, weight, relation_type). These are related FIRST + directionally, so the
+# thought-former reads the relation type off the winning edge. Everything else stays generic.
+TYPED = [
+    # analogies (historical parallels - the object is a Roman political form)
+    ("open_source", "republic", 0.5, "analogous_to"), ("closed_labs", "empire", 0.5, "analogous_to"),
+    ("decentralization", "republic", 0.5, "analogous_to"), ("agi", "rubicon", 0.5, "analogous_to"),
+    ("ai_race", "rubicon", 0.5, "analogous_to"),
+    # concentration / distribution of power
+    ("closed_labs", "power", 0.75, "concentrates"), ("empire", "power", 0.8, "concentrates"),
+    ("open_source", "power", 0.7, "distributes"), ("decentralization", "power", 0.7, "distributes"),
+    # causal
+    ("power", "corruption", 0.7, "leads_to"), ("ambition", "power", 0.8, "leads_to"),
+    ("rubicon", "point_of_no_return", 0.85, "leads_to"), ("secrecy", "control", 0.8, "leads_to"),
+    ("revolution", "change", 0.85, "causes"),
+    # exemplification
+    ("caesar", "ambition", 0.85, "exemplifies"), ("marcus_aurelius", "stoicism", 0.85, "exemplifies"),
+    ("brutus", "betrayal", 0.8, "exemplifies"),
+    # transformation / opposition / dependency
+    ("republic", "empire", 0.6, "becomes"), ("open_source", "closed_labs", 0.5, "opposes"),
+    ("trust", "honesty", 0.8, "requires"), ("virtue", "self_control", 0.8, "requires"),
+    ("stoicism", "virtue", 0.85, "is_a"), ("robots", "embodiment", 0.8, "requires"),
+]
+
 
 def seed_bella_mind(net, verbose: bool = True) -> int:
-    """Ingest the base knowledge into a KnowledgeNet. Returns the edge count."""
-    net.ingest(ALL)
+    """Seed the knowledge net: TYPED relations first (directional, meaning-bearing), then the bulk."""
+    for a, b, w, kind in TYPED:
+        net.relate(a, b, w, kind=kind, both=False)   # directional, so the type reads cleanly
+    net.ingest(ALL)                                  # bulk associations (strengthens the typed ones)
     n = sum(len(v) for v in net.edges.values())
     if verbose:
-        print(f"[BELLA-KNOWLEDGE] seeded {len(ALL)} relations -> {len(net.nodes)} concepts, {n} connections "
-              f"(self, human world, her topics, and Rome/Caesar as her lens)")
+        print(f"[BELLA-KNOWLEDGE] seeded {len(ALL)} relations ({len(TYPED)} typed) -> {len(net.nodes)} "
+              f"concepts, {n} connections (self, human world, her topics, Rome/Caesar as her lens)")
     return n
 
 
