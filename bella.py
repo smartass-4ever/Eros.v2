@@ -387,10 +387,31 @@ class Bella(CNS):
         concepts = concepts or (getattr(self, "_last_decision", {}) or {}).get("concepts", [])
         self.praxis.learn(concepts, signal)
 
+    def feed(self, text: str):
+        """Put real content in front of her to read (Indra/a fetcher fills this queue at release)."""
+        self._inbox = getattr(self, "_inbox", [])
+        self._inbox.append(text)
+
+    def read(self, text: str) -> str:
+        """She READS: perceives the content for what it is, remembers the markers/entities for her
+        next action, and INGESTS the typed relations she extracted - this is reading GROWING her
+        knowledge (and her curiosity->action loop now has REAL markers to reason from)."""
+        from bella_perception import perceive
+        p = perceive(text, known_net=self.praxis.net)
+        self._markers = p["markers"]
+        self._entities = p["entities"]
+        self._read_concepts = p["concepts"][:4]         # so she can pursue it even if it's new to her
+        for a, b, w, kind in p["relations"]:            # learn from what she just read
+            try: self.praxis.net.relate(a, b, w, kind=kind, both=False)
+            except Exception: pass
+        return " ".join(p["concepts"][:3]) or "what I just read"
+
     def _world_intake(self) -> str:
-        """What she's taking in from the real world right now. WIRE Indra here to feed live
-        web content; until then this is empty and she runs on her own thoughts."""
-        # WIRE: return Indra's latest fetched / changed content as a string
+        """What she's taking in from the real world right now. Reads the next queued content (Indra
+        feeds the queue at release); empty -> she runs on her own thoughts/threads."""
+        inbox = getattr(self, "_inbox", None)
+        if inbox:
+            return self.read(inbox.pop(0))
         return ""
 
     def _curiosity_focus(self) -> str:
@@ -405,8 +426,13 @@ class Bella(CNS):
 
         # FOLLOW THE THREAD - pursue what just gripped her, but only while it's still FRESH.
         last = getattr(self, "_last_decision", {}) or {}
-        interest = [c for c in last.get("concepts", []) if c]
+        # what gripped her = the decision's concepts, or what she just READ (even if new to her graph)
+        interest = [c for c in last.get("concepts", []) if c] or list(getattr(self, "_read_concepts", []))
+        markers = tuple(getattr(self, "_markers", ()))
+        pursue_worthy = bool(set(markers) & {"author", "claim", "unknown", "source", "contradiction"})
         dope = self._interest_level(interest)
+        if pursue_worthy:
+            dope = max(dope, 0.7)                          # perception flagged something worth chasing
         if interest and dope >= 0.55:
             key = frozenset(interest[:3])                 # habituation: same thread N times -> satisfied
             same = key == getattr(self, "_thread_key", None)
@@ -414,10 +440,10 @@ class Bella(CNS):
             if depth < 3:                                 # dive ~3 levels, then get bored and wander
                 self._thread_key, self._thread_depth = key, depth
                 from bella_curiosity import decide_next_action, action_to_focus
-                markers = tuple(getattr(self, "_markers", ()))   # author/claim/unknown (from perception, later)
                 action, _scores = decide_next_action(self.praxis, interest, markers, dope)  # Praxis's game chooses
                 self._last_action = action
                 self._action_context = markers + tuple(interest[:3])   # so she LEARNS situation->action
+                self._markers = ()                        # consume the markers (fresh perception resets them)
                 topic = " and ".join(w.replace("_", " ") for w in interest[:2])
                 return self._register(action_to_focus(action, topic, getattr(self, "_entities", {})))
             self._thread_key, self._thread_depth = None, 0    # thread exhausted -> seek something new

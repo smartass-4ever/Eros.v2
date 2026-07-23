@@ -23,33 +23,58 @@ ACTION_COST = {"read_more": 0.2, "explore": 0.2, "compare": 0.3, "find_evidence"
                "follow_source": 0.5, "search_author": 0.6, "trace_origin": 0.6}
 
 
-def gain_of(net):
-    """Information hunger as a function Praxis's game can call: she expects to learn MOST where she
-    knows LEAST (few edges -> high). This is what makes curiosity SEEK, not loop."""
-    return lambda c: round(1.0 / (1.0 + 0.12 * len(net.edges.get(c, []))), 3)
+def gain_of(net, action_counts=None):
+    """Information hunger, as a function Praxis's game can call. Two kinds of 'least known':
+      - CONCEPTS she has few edges about -> lots to learn (she seeks the frontier, doesn't loop)
+      - ACTIONS she's rarely tried -> OPTIMISM: she can't know an action pays off without trying it,
+        so untried actions get a curiosity bonus. That's curiosity about her OWN actions - it's what
+        makes her dare an expensive move (chase an author) the first time, then keep it if it pays."""
+    counts = action_counts or {}
+    def g(c):
+        base = 1.0 / (1.0 + 0.12 * len(net.edges.get(c, [])))
+        if c in ACTIONS:                                 # optimism under uncertainty (UCB-ish)
+            base = max(base, 1.0 / (1.0 + counts.get(c, 0)))
+        return round(base, 3)
+    return g
+
+
+STRONG_MARKERS = {"author", "source", "claim", "contradiction", "origin"}   # specific, actionable signals
 
 
 def decide_next_action(praxis, interest, markers=(), dopamine=1.0):
-    """NO separate scorer. This just SETS UP the action decision and lets PRAXIS'S OWN GAME choose:
-    actions are nodes, reached via the 'drives' edges; the game now scores them with gain+cost folded
-    in (curiosity highest, trust = learned action-value, gain = information hunger, cost = effort).
-    The winning candidate's ACTION node is her move. Fully glass-box - the payoff decomposition is
-    in d.trace. Returns (action, decision)."""
+    """Praxis's JUDGMENT (its decomposed payoff) applied to the discrete ACTION candidates directly -
+    because choosing an action is an argmax over options, not a diffusion. Each candidate action is
+    scored:  payoff = DRIVE (how much her state calls for it, via the 'drives' edges - curiosity is
+    her guiding angle) + GAIN (info hunger + optimism about untried actions) + VALUE (learned
+    reputation) - COST. Argmax. Every score decomposed = glass-box. It LEARNS (value + drive edges)
+    and EXPLORES (optimism). Returns (action, scored)."""
     net = praxis.net
-    seeds = {"curiosity": max(0.5, dopamine), "interesting": 0.8 * dopamine}
-    for c in interest:
-        seeds[c] = 0.7
-    for m in markers:                                # what KIND of thing gripped her (from perception)
-        seeds[m] = 0.95
-    d = praxis.decide(
-        seeds=seeds, intent_nodes=set(interest) | set(markers) | {"curiosity"},
-        goal=DEEPEN_GOAL | ACTIONS,                  # actions are legitimate destinations of reasoning
-        curiosity=set(interest) | {"curiosity"}, intent="what should I do to explore this deeper?",
-        gain_fn=gain_of(net), cost_map=ACTION_COST)
-    action = next((c for c in d.concepts if c in ACTIONS), None)   # the action the game landed on
-    if not action:                                    # else the top-activated action in her reasoning
-        action = next((c for c in d.trace.get("activated_subgraph", {}) if c in ACTIONS), "explore")
-    return action, d
+    counts = getattr(praxis, "_action_counts", {})
+    gain = gain_of(net, counts)
+
+    # how strongly her current state calls up each action (drives edges). A specific marker (author,
+    # claim) is a strong actionable signal; curiosity/interesting are the general drive.
+    drivers = {m: (0.98 if m in STRONG_MARKERS else 0.7) for m in markers}
+    drivers["curiosity"] = max(0.5, dopamine)
+    drivers["interesting"] = 0.6 * dopamine
+    drive = {"explore": 0.35, "read_more": 0.4}         # always available, quietly
+    for drv, dw in drivers.items():
+        for dst, w, kind in net.edges.get(drv, []):
+            if kind == "drives" and dst in ACTIONS:
+                drive[dst] = max(drive.get(dst, 0.0), round(dw * w, 3))
+
+    scored = {}
+    for a, dr in drive.items():
+        value = max(_edge(net, a, "understanding"), _edge(net, a, "truth"))   # learned reputation
+        g = gain(a)                                                            # info hunger + optimism
+        cost = ACTION_COST.get(a, 0.4)
+        payoff = round(0.45 * dr + 0.20 * g + 0.25 * value - 0.10 * cost, 3)
+        scored[a] = {"payoff": payoff, "drive": round(dr, 2), "gain": g,
+                     "value": round(value, 2), "cost": cost}
+    action = max(scored, key=lambda a: scored[a]["payoff"])
+    counts[action] = counts.get(action, 0) + 1          # tried it (optimism fades with use)
+    praxis._action_counts = counts
+    return action, scored
 
 
 def learn_from_action(praxis, action, reward, context=()):
@@ -105,8 +130,8 @@ if __name__ == "__main__":
         ("Caesar's ambition gripped her", ["caesar", "ambition"], ("interesting",), {}),
     ]
     for desc, interest, markers, ents in cases:
-        action, d = decide_next_action(px, interest, markers, dopamine=1.0)
+        action, scored = decide_next_action(px, interest, markers, dopamine=1.0)
         focus = action_to_focus(action, " and ".join(interest).replace("_", " "), ents)
         print(f"  she {desc}")
-        print(f"     -> Praxis's game chose the action: {action}   (payoff {d.payoff})")
+        print(f"     -> chose action: {action}   (payoff {scored[action]['payoff']}, decomposed = glass-box)")
         print(f"     -> goes to explore  : \"{focus}\"\n")
