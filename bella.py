@@ -292,6 +292,12 @@ class Bella(CNS):
             print(f"[{t:02d}] curious about: {focus!r}\n      -> {thought[:200]}")
             await self._act_on()                     # decision -> action (piece 2), safely
             self._learn_from_cycle(result)           # continuous self-learning (every cycle)
+            if getattr(self, "_surface_path", None):  # stream her live cognition to the public surface
+                try:
+                    from bella_state import emit
+                    emit(self, self._surface_path)
+                except Exception:
+                    pass
             print()
             history = (history + [{"role": "user", "content": focus},
                                   {"role": "assistant", "content": thought}])[-40:]
@@ -524,6 +530,7 @@ class Bella(CNS):
 
     def _register(self, topic: str) -> str:
         """Feed the chosen focus into her real curiosity/dopamine system so the arcs stay alive."""
+        self._trail = (getattr(self, "_trail", []) + [topic])[-8:]   # her curiosity trail (for the surface)
         cs = getattr(self, "curiosity_system", None)
         if cs is not None:
             try: cs.dm.decay_all()

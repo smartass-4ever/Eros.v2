@@ -104,3 +104,6 @@ charts/
 
 bella_llm_cache.db
 bella_cache_selftest.db
+
+surface/state.json
+surface/state.json.tmp

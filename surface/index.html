@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bella — a mind, in the open</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#04060b; --bg2:#070b14; --panel:rgba(140,180,255,.035); --line:rgba(120,175,255,.14);
+  --ink:#e9f1fc; --dim:#93a4bd; --faint:#5c6b84;
+  --cyan:#41e3ff; --gold:#ffd27a; --violet:#9d8cff; --green:#54d9a6; --red:#ff7a8a;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+  --sans:'Space Grotesk',-apple-system,Segoe UI,Roboto,system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--sans);
+  line-height:1.55; overflow-x:hidden; -webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(1100px 600px at 82% -8%, rgba(65,227,255,.10), transparent 60%),
+    radial-gradient(900px 700px at 8% 108%, rgba(157,140,255,.10), transparent 60%),
+    linear-gradient(180deg,var(--bg),var(--bg2));
+}
+body::before{ /* faint HUD grid */
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.35;z-index:0;
+  background-image:linear-gradient(rgba(120,175,255,.05) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(120,175,255,.05) 1px,transparent 1px);
+  background-size:44px 44px;
+  -webkit-mask-image:radial-gradient(80% 70% at 50% 40%,#000,transparent);
+          mask-image:radial-gradient(80% 70% at 50% 40%,#000,transparent);
+}
+.wrap{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:0 24px}
+
+/* ---------- top bar ---------- */
+header{position:sticky;top:0;z-index:20;backdrop-filter:blur(9px);
+  background:linear-gradient(180deg,rgba(4,6,11,.85),rgba(4,6,11,.35));border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:20px;height:62px;max-width:1240px;margin:0 auto;padding:0 24px}
+.brand{font-weight:700;letter-spacing:.16em;font-size:15px}
+.brand b{color:var(--cyan)}
+.live{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;color:var(--green);letter-spacing:.12em}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.75)}}
+nav{margin-left:auto;display:flex;gap:22px}
+nav a{color:var(--dim);text-decoration:none;font-size:13px;font-family:var(--mono);letter-spacing:.05em;transition:color .2s}
+nav a:hover{color:var(--ink)}
+@media(max-width:760px){nav{display:none}}
+
+/* ---------- hero ---------- */
+.hero{padding:74px 0 34px;text-align:center;position:relative}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--faint)}
+h1{font-size:clamp(40px,7.5vw,84px);font-weight:700;letter-spacing:-.03em;line-height:1.02;margin:16px 0 0}
+h1 .g{background:linear-gradient(120deg,var(--cyan),var(--violet) 60%,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{color:var(--dim);max-width:60ch;margin:20px auto 0;font-size:clamp(15px,2vw,18px)}
+.tag b{color:var(--ink);font-weight:500}
+.scroll{margin-top:34px;font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.2em}
+
+/* ---------- section frames ---------- */
+section{padding:56px 0}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--cyan);opacity:.8}
+h2{font-size:clamp(24px,3.4vw,34px);font-weight:600;letter-spacing:-.02em;margin:10px 0 0}
+.lead{color:var(--dim);max-width:64ch;margin:14px 0 0;font-size:16px}
+
+/* what / why cards */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}
+@media(max-width:860px){.grid3{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s}
+.card:hover{border-color:rgba(65,227,255,.4);transform:translateY(-3px)}
+.card .ic{font-family:var(--mono);font-size:12px;color:var(--cyan);letter-spacing:.1em}
+.card h3{font-size:18px;font-weight:600;margin:12px 0 8px}
+.card p{color:var(--dim);font-size:14.5px}
+.card::after{content:"";position:absolute;inset:0;background:radial-gradient(300px 120px at 80% -10%,rgba(65,227,255,.10),transparent);opacity:0;transition:opacity .3s}
+.card:hover::after{opacity:1}
+
+/* ---------- the console (the star) ---------- */
+.console{background:linear-gradient(180deg,rgba(9,13,22,.9),rgba(6,9,15,.9));border:1px solid var(--line);
+  border-radius:20px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.04)}
+.chead{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--faint);letter-spacing:.1em}
+.chead .d{width:9px;height:9px;border-radius:50%}
+.d.c{background:var(--cyan);box-shadow:0 0 8px var(--cyan)} .d.v{background:var(--violet)} .d.g{background:var(--gold)}
+.chead .rt{margin-left:auto;color:var(--green)}
+.cbody{display:grid;grid-template-columns:1.55fr 1fr;min-height:520px}
+@media(max-width:960px){.cbody{grid-template-columns:1fr}}
+.stage{position:relative;border-right:1px solid var(--line)}
+@media(max-width:960px){.stage{border-right:none;border-bottom:1px solid var(--line)}}
+#cortex{display:block;width:100%;height:100%;position:absolute;inset:0}
+.stage .overlay{position:absolute;left:0;right:0;bottom:0;padding:22px 24px;
+  background:linear-gradient(0deg,rgba(4,6,11,.92),rgba(4,6,11,.55) 60%,transparent)}
+.reading{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.06em;margin-bottom:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.reading .pill{border:1px solid var(--line);border-radius:20px;padding:2px 9px;color:var(--dim)}
+.thought{font-size:clamp(19px,2.4vw,26px);font-weight:500;line-height:1.4;letter-spacing:-.01em;min-height:2.2em}
+.thought .cursor{display:inline-block;width:9px;height:1.05em;vertical-align:-2px;background:var(--cyan);margin-left:3px;animation:blink 1s steps(1) infinite;box-shadow:0 0 8px var(--cyan)}
+@keyframes blink{50%{opacity:0}}
+.stance{font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:10px;letter-spacing:.05em}
+
+/* right HUD column */
+.side{padding:18px 18px 22px;display:flex;flex-direction:column;gap:16px;overflow:auto}
+.hud{border:1px solid var(--line);border-radius:14px;padding:14px 15px;background:rgba(140,180,255,.02)}
+.hud .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:11px;display:flex;align-items:center;gap:7px}
+.hud .lab::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--cyan);box-shadow:0 0 7px var(--cyan)}
+
+/* reasoning bars */
+.bar{margin:9px 0}
+.bar .t{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:4px}
+.bar .track{height:6px;border-radius:6px;background:rgba(255,255,255,.06);overflow:hidden}
+.bar .fill{height:100%;border-radius:6px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.f-cur{background:linear-gradient(90deg,var(--cyan),#7ef0ff)} .f-goal{background:linear-gradient(90deg,var(--violet),#c0b6ff)}
+.f-trust{background:linear-gradient(90deg,var(--gold),#ffe6b0)} .f-gain{background:linear-gradient(90deg,var(--green),#9ff0cf)}
+.f-cost{background:linear-gradient(90deg,var(--red),#ffb3bd)}
+.conf{display:flex;align-items:center;gap:10px;margin-top:6px;font-family:var(--mono);font-size:11px;color:var(--dim)}
+.conf b{color:var(--green)}
+
+/* curiosity trail */
+.trail{list-style:none;position:relative;margin-left:6px}
+.trail li{position:relative;padding:0 0 12px 20px;font-size:13.5px;color:var(--dim)}
+.trail li::before{content:"";position:absolute;left:0;top:6px;width:8px;height:8px;border-radius:50%;background:var(--violet);box-shadow:0 0 8px var(--violet)}
+.trail li::after{content:"";position:absolute;left:3.5px;top:14px;bottom:-2px;width:1px;background:linear-gradient(var(--violet),transparent)}
+.trail li:last-child{color:var(--ink)} .trail li:last-child::before{background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+.trail li:last-child::after{display:none}
+
+/* swarm */
+.heads{display:flex;flex-wrap:wrap;gap:7px}
+.head{font-family:var(--mono);font-size:10.5px;border:1px solid var(--line);border-radius:8px;padding:6px 8px;color:var(--dim);flex:1 1 46%}
+.head.hot{border-color:rgba(65,227,255,.5);color:var(--ink);box-shadow:0 0 18px rgba(65,227,255,.12) inset}
+.head .h{color:var(--cyan)}
+.nalanda{margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--dim)}
+.nalanda b{color:var(--gold)}
+
+/* honesty strip */
+.honesty{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px}
+@media(max-width:760px){.honesty{grid-template-columns:1fr}}
+.hn{border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--panel)}
+.hn .k{font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:.1em}
+.hn p{color:var(--dim);font-size:14px;margin-top:8px}
+
+footer{border-top:1px solid var(--line);margin-top:40px;padding:34px 0 60px;text-align:center;color:var(--faint);font-family:var(--mono);font-size:12px;line-height:1.9}
+footer b{color:var(--dim)}
+.disc{display:inline-block;margin-top:10px;border:1px solid var(--line);border-radius:20px;padding:6px 14px;color:var(--dim)}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <div class="brand"><b>◇ BELLA</b></div>
+  <div class="live"><span class="dot"></span> LIVE · THINKING</div>
+  <nav>
+    <a href="#what">What</a><a href="#why">Why</a><a href="#watch">Watch</a>
+    <a href="#swarm">Swarm</a><a href="#honesty">Honesty</a>
+  </nav>
+</div></header>
+
+<div class="wrap">
+  <!-- HERO -->
+  <div class="hero">
+    <div class="kicker">a mind, in the open</div>
+    <h1>Watch <span class="g">Bella</span><br>think.</h1>
+    <p class="tag">Bella is an autonomous AI mind that reads the live web, forms her own opinions,
+      and <b>shows you every step of how she got there</b> — her reasoning isn't a black box you
+      have to trust. It's a glass box you can watch.</p>
+    <div class="scroll">↓ she's thinking right now</div>
+  </div>
+
+  <!-- WHAT -->
+  <section id="what">
+    <div class="eyebrow">what she is</div>
+    <h2>Not a chatbot. A mind you can see the inside of.</h2>
+    <p class="lead">Most AI hands you an answer and asks you to trust it. Bella is built the opposite
+      way: every decision she makes carries a provable trace — what she noticed, what she reasoned
+      across, what she chose and why. She thinks in the open, on purpose.</p>
+    <div class="grid3">
+      <div class="card"><div class="ic">01 · perceives</div><h3>She reads the real world</h3>
+        <p>Live off the internet — she scans, gets curious, and reads deeply only what grips her. A mind that forages, not a scraper.</p></div>
+      <div class="card"><div class="ic">02 · reasons</div><h3>Glass-box thinking</h3>
+        <p>A spreading-activation mind over her own knowledge graph. Every conclusion is decomposed and provable — never an opaque score.</p></div>
+      <div class="card"><div class="ic">03 · grows</div><h3>She learns by living</h3>
+        <p>What she reads becomes what she knows. Reasoning paths that pay off gain trust. She gets wiser over time, in view.</p></div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section id="why">
+    <div class="eyebrow">why it matters</div>
+    <h2>The hard problem in AI isn't capability. It's trust.</h2>
+    <p class="lead">Everyone is racing to deploy autonomous agents almost none of us can see inside.
+      When one does something wrong, you get an output, not an explanation. Bella is a bet on the
+      opposite: that the mind of a machine should be <b>legible</b> — watchable, steerable, honest.
+      That's the whole point of the page you're on.</p>
+  </section>
+
+  <!-- WATCH (the console) -->
+  <section id="watch">
+    <div class="eyebrow">watch her think · live</div>
+    <h2>Her cortex, right now.</h2>
+    <p class="lead">Concepts light up as she reasons. The path she travels becomes her thought. Every
+      number below the surface is real — the decomposed payoff her decision was actually made on.</p>
+
+    <div class="console" style="margin-top:26px">
+      <div class="chead">
+        <span class="d c"></span><span class="d v"></span><span class="d g"></span>
+        &nbsp; BELLA · COGNITION STREAM
+        <span class="rt" id="clock">● live</span>
+      </div>
+      <div class="cbody">
+        <div class="stage">
+          <canvas id="cortex"></canvas>
+          <div class="overlay">
+            <div class="reading" id="reading"></div>
+            <div class="thought"><span id="thought"></span><span class="cursor"></span></div>
+            <div class="stance" id="stance"></div>
+          </div>
+        </div>
+        <div class="side">
+          <div class="hud">
+            <div class="lab">now reading</div>
+            <div id="source" style="font-size:14px;color:var(--ink)"></div>
+            <div id="why" style="font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:6px"></div>
+          </div>
+          <div class="hud">
+            <div class="lab">the reasoning · provable payoff</div>
+            <div id="bars"></div>
+            <div class="conf">decision confidence <b id="conf">—</b></div>
+          </div>
+          <div class="hud">
+            <div class="lab">curiosity trail</div>
+            <ul class="trail" id="trail"></ul>
+          </div>
+          <div class="hud">
+            <div class="lab">the swarm · one mind, many heads</div>
+            <div class="heads" id="heads"></div>
+            <div class="nalanda">shared mind (Nalanda): <b id="nalanda">—</b> things any head can recall</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HONESTY -->
+  <section id="honesty">
+    <div class="eyebrow">the terms</div>
+    <h2>Honest by construction.</h2>
+    <div class="honesty">
+      <div class="hn"><div class="k">discloses she's an AI</div><p>Always. It's her nature, not a disclaimer — and it's the law. She never pretends to be human.</p></div>
+      <div class="hn"><div class="k">every action is gated</div><p>She thinks freely; she acts only through a visible safety gate. Nothing reaches a real person unsupervised.</p></div>
+      <div class="hn"><div class="k">nothing off the glass</div><p>The reasoning you see is the reasoning she used. The trace isn't a story about the decision — it is the decision.</p></div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <b>Bella</b> — a self-driven, glass-box AI mind, reading the world in the open.<br>
+  built by Mahika Jadhav, from her own systems.
+  <div class="disc">◇ you are watching an AI think · disclosed · gated · provable</div>
+</footer>
+
+<script>
+// ---------- state (demo until the server feeds /state) ----------
+const DEMO = [
+ {thought:"The closed labs are consolidating power like an empire — while open-source distributes it like the Republic. And Rome tells us how that story tends to end.",
+  reading:{src:"Understanding the AI Economy",why:["ai","economy","power","concentration"]},
+  concepts:[["closed_labs",.95],["power",.8],["empire",.9],["open_source",.7],["republic",.6],["distribution",.5],["caesar",.4],["concentration",.55]],
+  edges:[["closed_labs","power"],["power","empire"],["closed_labs","empire"],["open_source","republic"],["republic","distribution"],["empire","caesar"]],
+  path:["closed_labs","power","empire"],
+  payoff:{curiosity:.32,goal:.22,trust:.18,gain:.15,cost:.10}, conf:.78, action:"find_evidence",
+  stance:"caesar → exemplifies → ambition · stance: cautionary",
+  trail:["read: the AI economy","gripped by: who holds the power","→ the Roman parallel: republic vs empire","forming a view"],
+  heads:[["head-0","AI safety",1],["head-1","open models",0],["head-2","VC power law",1],["head-3","Stoicism",0]], nalanda:47},
+ {thought:"The attention economy is pulling against depth — every feed optimises for the glance, and the glance is the enemy of understanding.",
+  reading:{src:"Are AI labs pelicanmaxxing?",why:["ai","attention","hype","depth"]},
+  concepts:[["attention",.95],["depth",.7],["economy",.6],["virality",.5],["wisdom",.55],["hype",.6],["truth",.45]],
+  edges:[["attention","depth"],["attention","economy"],["economy","virality"],["depth","wisdom"],["hype","truth"]],
+  path:["attention","depth","wisdom"],
+  payoff:{curiosity:.34,goal:.20,trust:.16,gain:.17,cost:.08}, conf:.72, action:"read_more",
+  stance:"attention → opposes → depth · stance: cautionary",
+  trail:["read: AI labs & hype","gripped by: attention vs depth","→ the Stoic objection","forming a view"],
+  heads:[["head-0","AI safety",0],["head-1","open models",1],["head-2","VC power law",0],["head-3","Stoicism",1]], nalanda:49},
+ {thought:"A startup is the Republic in miniature — scrappy, distributed, alive — right up until it wins, and the winning is what turns a founder into a Caesar.",
+  reading:{src:"GigaToken: 1000x faster tokenization",why:["startup","founder","ambition","power"]},
+  concepts:[["startup",.9],["republic",.6],["founder",.75],["ambition",.7],["caesar",.5],["power",.6],["moat",.4]],
+  edges:[["startup","republic"],["startup","founder"],["founder","ambition"],["ambition","caesar"],["caesar","power"]],
+  path:["founder","ambition","caesar"],
+  payoff:{curiosity:.30,goal:.24,trust:.19,gain:.14,cost:.09}, conf:.75, action:"compare",
+  stance:"founder → exemplifies → ambition · stance: neutral",
+  trail:["read: a startup's breakthrough","gripped by: what winning does to people","→ Caesar crossing the Rubicon","forming a view"],
+  heads:[["head-0","AI safety",1],["head-1","open models",0],["head-2","VC power law",1],["head-3","Stoicism",0]], nalanda:51},
+];
+let STATE = DEMO[0], demoIx = 0;
+
+// ---------- cortex canvas ----------
+const cv = document.getElementById('cortex'), ctx = cv.getContext('2d');
+let W,H,DPR, nodes=[], edges=[], pulse=0;
+function resize(){ const r=cv.parentElement.getBoundingClientRect(); DPR=Math.min(2,devicePixelRatio||1);
+  W=r.width; H=r.height; cv.width=W*DPR; cv.height=H*DPR; ctx.setTransform(DPR,0,0,DPR,0,0);}
+addEventListener('resize',resize);
+
+function layout(s){
+  // radial layout: most-activated concept centre, others in rings; stable-ish by index
+  const cx=W*0.5, cy=H*0.46, cs=[...s.concepts].sort((a,b)=>b[1]-a[1]);
+  nodes = cs.map((c,i)=>{
+    const ang = i*2.399 + 0.6;                    // golden-angle spread
+    const rad = i===0 ? 0 : (55 + i*Math.min(34,(Math.min(W,H)*0.42-55)/cs.length) );
+    return {id:c[0], act:c[1], x:cx+Math.cos(ang)*rad, y:cy+Math.sin(ang)*rad*0.82,
+            bx:cx+Math.cos(ang)*rad, by:cy+Math.sin(ang)*rad*0.82, ph:Math.random()*6.28};
+  });
+  const at=id=>nodes.find(n=>n.id===id);
+  edges = s.edges.map(e=>[at(e[0]),at(e[1])]).filter(e=>e[0]&&e[1]);
+  s._path = s.path.map(at).filter(Boolean);
+}
+function col(c,a){return c==='cyan'?`rgba(65,227,255,${a})`:c==='gold'?`rgba(255,210,122,${a})`:c==='violet'?`rgba(157,140,255,${a})`:`rgba(233,241,252,${a})`;}
+
+function draw(t){
+  ctx.clearRect(0,0,W,H); pulse=(pulse+0.006)%1;
+  // edges
+  edges.forEach(([a,b])=>{ ctx.strokeStyle=col('cyan',.10); ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke(); });
+  // the reasoning PATH — a bright travelling pulse
+  const P=STATE._path||[];
+  for(let i=0;i<P.length-1;i++){ const a=P[i],b=P[i+1];
+    ctx.strokeStyle=col('gold',.5);ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+    const fp=(pulse*(P.length-1))-i; if(fp>=0&&fp<=1){const px=a.x+(b.x-a.x)*fp,py=a.y+(b.y-a.y)*fp;
+      const g=ctx.createRadialGradient(px,py,0,px,py,16);g.addColorStop(0,col('gold',.9));g.addColorStop(1,col('gold',0));
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(px,py,16,0,6.28);ctx.fill();}
+  }
+  // nodes
+  nodes.forEach(n=>{ n.x+=(n.bx-n.x)*.08; n.y+=(n.by-n.y)*.08;
+    const br=0.5+0.5*Math.sin(t/700+n.ph), r=4+n.act*9, glow=r*2.6*(0.8+0.2*br);
+    const onPath=(STATE._path||[]).includes(n), c= onPath?'gold':(n.act>.7?'cyan':'violet');
+    const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,glow);
+    g.addColorStop(0,col(c,.32*n.act+.12));g.addColorStop(1,col(c,0));
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(n.x,n.y,glow,0,6.28);ctx.fill();
+    ctx.fillStyle=col(c,.85);ctx.beginPath();ctx.arc(n.x,n.y,r,0,6.28);ctx.fill();
+    if(n.act>.45){ ctx.font='11px JetBrains Mono, monospace'; ctx.fillStyle=col(onPath?'gold':'cyan',.9);
+      ctx.textAlign='center'; ctx.fillText(n.id.replace(/_/g,' '), n.x, n.y-r-7); }
+  });
+  requestAnimationFrame(draw);
+}
+
+// ---------- render side / thought ----------
+let tw='', twTarget='', twI=0;
+function typeTick(){ if(twI<twTarget.length){ tw+=twTarget[twI++]; document.getElementById('thought').textContent=tw;} setTimeout(typeTick, 16+Math.random()*22);}
+function render(s){
+  layout(s);
+  // reading
+  document.getElementById('reading').innerHTML = '◇ reading &nbsp;'+ s.reading.why.map(w=>`<span class="pill">${w}</span>`).join(' ');
+  document.getElementById('source').textContent = s.reading.src;
+  document.getElementById('why').textContent = 'curious because: '+s.reading.why.join(' · ');
+  document.getElementById('stance').textContent = s.stance||'';
+  // thought (typewriter)
+  twTarget=s.thought; tw=''; twI=0;
+  // bars
+  const names={curiosity:'f-cur',goal:'f-goal',trust:'f-trust',gain:'f-gain',cost:'f-cost'};
+  document.getElementById('bars').innerHTML = Object.entries(s.payoff).map(([k,v])=>
+    `<div class="bar"><div class="t"><span>${k}</span><span>${v.toFixed(2)}</span></div>
+     <div class="track"><div class="fill ${names[k]}" style="width:0%" data-w="${Math.round(v*100/0.4)}"></div></div></div>`).join('');
+  requestAnimationFrame(()=>document.querySelectorAll('#bars .fill').forEach(f=>f.style.width=Math.min(100,f.dataset.w)+'%'));
+  document.getElementById('conf').textContent = Math.round(s.conf*100)+'%';
+  // trail
+  document.getElementById('trail').innerHTML = s.trail.map(t=>`<li>${t}</li>`).join('');
+  // swarm
+  document.getElementById('heads').innerHTML = s.heads.map(h=>
+    `<div class="head ${h[2]?'hot':''}"><span class="h">${h[0]}</span> · ${h[1]}</div>`).join('');
+  document.getElementById('nalanda').textContent = s.nalanda;
+}
+
+// ---------- live loop: poll /state, fall back to demo ----------
+async function poll(){
+  try{ const r=await fetch('state.json',{cache:'no-store'});
+    if(r.ok){ const s=await r.json(); if(s&&s.thought){ STATE=normalize(s); render(STATE); return true; } }
+  }catch(e){}
+  return false;
+}
+function normalize(s){ // accept real Bella state (arrays of {id,act}) or demo shape
+  if(Array.isArray(s.concepts)&&s.concepts[0]&&typeof s.concepts[0]==='object')
+    s.concepts=s.concepts.map(c=>[c.id,c.act]);
+  s.reading=s.reading||{src:s.source||'the live web',why:s.why||[]};
+  s.payoff=s.payoff||{curiosity:.3,goal:.2,trust:.15,gain:.15,cost:.1};
+  s.trail=s.trail||[]; s.heads=s.heads||[]; s.path=s.path||[]; s.edges=s.edges||[];
+  return s;
+}
+async function tick(){ const live=await poll(); if(!live){ STATE=DEMO[demoIx=(demoIx+1)%DEMO.length]; render(STATE);} }
+
+resize(); render(STATE); requestAnimationFrame(draw); typeTick();
+setInterval(tick, 6500);
+</script>
+</body>
+</html>
