@@ -112,6 +112,8 @@ class Scored:
     vetoed: str | None
     curiosity_fit: float = 0.0
     trust: float = 0.0            # learned reputation of the path (from outcomes)
+    gain: float = 0.0             # expected information gain (how much she'd LEARN) - for action choice
+    cost: float = 0.0             # effort/risk of the option - for action choice
 
 def _edge(net, a, b) -> float:
     for dst, w, _k in (net.edges.get(a, []) if net else []):
@@ -120,10 +122,12 @@ def _edge(net, a, b) -> float:
     return 0.0
 
 def evaluate(cands: list[Candidate], intent_nodes: set[str], goal: set[str],
-             forbidden: set[str], curiosity: set[str] = frozenset(), net=None) -> list[Scored]:
-    """A game: payoff = CURIOSITY + goal + intent + TRUST (learned reputation of the path).
-    Curiosity is weighted highest; trust lets hard-won experience visibly weigh in. Hard veto.
-    Every payoff is decomposed - that is what makes the decision PROVABLE, not opaque."""
+             forbidden: set[str], curiosity: set[str] = frozenset(), net=None,
+             gain_fn=None, cost_map=None) -> list[Scored]:
+    """A game: payoff = CURIOSITY + goal + intent + TRUST + GAIN - COST. Curiosity weighted highest;
+    trust lets hard-won experience weigh in; gain (information hunger) and cost make this the SAME
+    engine that chooses a course of ACTION - actions are just nodes, an action-choice is just a
+    decision. Hard veto. Every payoff is decomposed - that is what makes it PROVABLE, not opaque."""
     scored = []
     for c in cands:
         cs = set(c.concepts)
@@ -132,10 +136,13 @@ def evaluate(cands: list[Candidate], intent_nodes: set[str], goal: set[str],
         goal_fit = len(cs & goal) / 2
         cur_fit = (len(cs & curiosity) / 2) if curiosity else 0.0
         trust = (_edge(net, a, b) + _edge(net, b, a)) / 2 if net else 0.0
+        gain = max(gain_fn(a), gain_fn(b)) if gain_fn else 0.0          # where's the most to learn
+        cost = max(cost_map.get(a, 0.0), cost_map.get(b, 0.0)) if cost_map else 0.0
         veto = next((f"touches forbidden '{x}'" for x in cs & forbidden), None)
-        payoff = 0.0 if veto else round(0.35 * cur_fit + 0.25 * goal_fit + 0.15 * intent_fit
-                                        + 0.20 * trust + 0.05 * c.strength, 3)
-        scored.append(Scored(c, intent_fit, goal_fit, payoff, veto, cur_fit, trust))
+        payoff = 0.0 if veto else round(0.32 * cur_fit + 0.22 * goal_fit + 0.13 * intent_fit
+                                        + 0.18 * trust + 0.05 * c.strength
+                                        + 0.15 * gain - 0.10 * cost, 3)
+        scored.append(Scored(c, intent_fit, goal_fit, payoff, veto, cur_fit, trust, gain, cost))
     return sorted(scored, key=lambda s: -s.payoff)
 
 # --------------------------------------------------------------------------- the core
@@ -152,13 +159,15 @@ class PraxisV2:
 
     def decide(self, seeds: dict[str, float], intent_nodes: set[str], goal: set[str],
                forbidden: set[str] = frozenset(), intent: str = "", composer=None,
-               curiosity: set[str] = frozenset(), min_payoff: float = 0.35) -> Decision:
+               curiosity: set[str] = frozenset(), min_payoff: float = 0.35,
+               gain_fn=None, cost_map=None) -> Decision:
         direction = goal | set(curiosity)          # goal + curiosity steer the spread
 
         def _pass(breadth, steps):
             act, tr = spread(self.net, seeds, direction, steps=steps, breadth=breadth)
             cands = compose(act, intent, composer)
-            ranked = evaluate(cands, intent_nodes, goal, forbidden, curiosity, net=self.net)
+            ranked = evaluate(cands, intent_nodes, goal, forbidden, curiosity, net=self.net,
+                              gain_fn=gain_fn, cost_map=cost_map)
             return act, tr, cands, ranked
 
         activated, spread_trace, candidates, ranked = _pass(0.06, 3)
@@ -180,6 +189,7 @@ class PraxisV2:
             "candidates": [(c.conclusion, c.strength) for c in candidates],
             "evaluation": [(s.cand.conclusion, s.payoff,
                             f"curiosity {s.curiosity_fit} / goal {s.goal_fit} / trust {round(s.trust,2)}"
+                            + (f" / gain {round(s.gain,2)} / cost {s.cost}" if (s.gain or s.cost) else "")
                             + (f" | VETO: {s.vetoed}" if s.vetoed else ""))
                            for s in ranked],
         }

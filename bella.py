@@ -353,7 +353,8 @@ class Bella(CNS):
         if act:
             try:
                 from bella_curiosity import learn_from_action
-                learn_from_action(self.praxis, act, max(-1.0, min(1.0, (conf - 0.5) * 2)))
+                learn_from_action(self.praxis, act, max(-1.0, min(1.0, (conf - 0.5) * 2)),
+                                  context=getattr(self, "_action_context", ()))
             except Exception:
                 pass
         # 2) grow the web: the associations she just used become part of her substrate
@@ -414,8 +415,9 @@ class Bella(CNS):
                 self._thread_key, self._thread_depth = key, depth
                 from bella_curiosity import decide_next_action, action_to_focus
                 markers = tuple(getattr(self, "_markers", ()))   # author/claim/unknown (from perception, later)
-                action, _scores = decide_next_action(self.praxis, interest, markers, dope)  # STRONG: weighed + learns
+                action, _scores = decide_next_action(self.praxis, interest, markers, dope)  # Praxis's game chooses
                 self._last_action = action
+                self._action_context = markers + tuple(interest[:3])   # so she LEARNS situation->action
                 topic = " and ".join(w.replace("_", " ") for w in interest[:2])
                 return self._register(action_to_focus(action, topic, getattr(self, "_entities", {})))
             self._thread_key, self._thread_depth = None, 0    # thread exhausted -> seek something new

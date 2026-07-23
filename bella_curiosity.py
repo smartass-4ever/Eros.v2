@@ -23,86 +23,55 @@ ACTION_COST = {"read_more": 0.2, "explore": 0.2, "compare": 0.3, "find_evidence"
                "follow_source": 0.5, "search_author": 0.6, "trace_origin": 0.6}
 
 
-def expected_gain(net, concepts) -> float:
-    """Information hunger: she expects to learn MOST where she knows LEAST. High for sparse concepts,
-    low for ones she's already saturated (this is what makes curiosity seek, not loop)."""
-    if not concepts:
-        return 0.5
-    known = sum(len(net.edges.get(c, [])) for c in concepts) / len(concepts)
-    return round(1.0 / (1.0 + 0.12 * known), 3)
-
-
-def _drive_strength(net, markers, dopamine, action) -> float:
-    """How strongly her current state (what gripped her + curiosity) calls for THIS action."""
-    best = 0.0
-    drivers = {m: 0.95 for m in markers}
-    drivers["curiosity"] = max(0.5, dopamine)
-    drivers["interesting"] = 0.8 * dopamine
-    for drv, dw in drivers.items():
-        for dst, w, kind in net.edges.get(drv, []):
-            if kind == "drives" and dst == action:
-                best = max(best, dw * w)
-    return round(best, 3)
-
-
-def _action_value(net, action) -> float:
-    """Learned reputation of this action - does it lead to understanding? Seeded ~0.8, then refined
-    by outcomes (learn_from_action). This is how her POLICY sharpens with experience."""
-    return max(_edge(net, action, "understanding"), _edge(net, action, "truth"))
+def gain_of(net):
+    """Information hunger as a function Praxis's game can call: she expects to learn MOST where she
+    knows LEAST (few edges -> high). This is what makes curiosity SEEK, not loop."""
+    return lambda c: round(1.0 / (1.0 + 0.12 * len(net.edges.get(c, []))), 3)
 
 
 def decide_next_action(praxis, interest, markers=(), dopamine=1.0):
-    """The STRONG decision: score EVERY candidate action and pick the best - not a reflex.
-        score = curiosity(expected gain x drive)  +  learned value  -  cost
-    Curiosity is weighted highest (her guiding angle). Every score is decomposed = glass-box.
-    Returns (action, scored) where scored[a] shows the breakdown, provable."""
+    """NO separate scorer. This just SETS UP the action decision and lets PRAXIS'S OWN GAME choose:
+    actions are nodes, reached via the 'drives' edges; the game now scores them with gain+cost folded
+    in (curiosity highest, trust = learned action-value, gain = information hunger, cost = effort).
+    The winning candidate's ACTION node is her move. Fully glass-box - the payoff decomposition is
+    in d.trace. Returns (action, decision)."""
     net = praxis.net
-    gain = expected_gain(net, interest)
-    scored = {}
-    for a in ACTIONS:
-        drive = _drive_strength(net, markers, dopamine, a)
-        if drive <= 0 and a not in ("explore", "read_more"):
-            continue                                   # she can't currently justify this action
-        value = _action_value(net, a)
-        cost = ACTION_COST.get(a, 0.4)
-        score = round(0.50 * gain * max(drive, 0.15) + 0.35 * value - 0.15 * cost, 3)
-        scored[a] = {"score": score, "curiosity": round(gain * max(drive, 0.15), 3),
-                     "value": round(value, 3), "cost": cost}
-    if not scored:
-        scored["explore"] = {"score": 0.3, "curiosity": gain, "value": 0.5, "cost": 0.2}
-    action = max(scored, key=lambda a: scored[a]["score"])
-    return action, scored
-
-
-def learn_from_action(praxis, action, reward):
-    """After she acts: did it pay off (novel / interesting / true)? Reinforce or weaken this action's
-    VALUE so she gets better at choosing. reward in [-1, 1]. This is the loop getting STRONGER."""
-    if action:
-        praxis.learn([action, "understanding"], reward)
-
-
-def reason_to_action(praxis, interest_concepts, markers=(), dopamine=1.0):
-    """Curiosity -> ACTION, by HER reasoning over her OWN procedural knowledge (the 'drives' edges).
-    A practical syllogism: 'I encountered an author; author DRIVES search_author; so I search.' The
-    MARKER (what kind of thing gripped her) selects the action; curiosity supplies the drive. Praxis
-    still runs for the glass-box trace + provable payoff of the pursuit. No LLM."""
-    net = praxis.net
-    # weight each active epistemic driver: a concrete marker is strong; curiosity is the drive
-    drivers = {m: 0.95 for m in markers}
-    drivers["curiosity"] = max(0.5, dopamine)
-    drivers["interesting"] = 0.8 * dopamine
-    scores = {}                                      # action -> best (driver_weight * edge_weight)
-    for drv, dw in drivers.items():
-        for dst, w, kind in net.edges.get(drv, []):
-            if kind == "drives" and dst in ACTIONS:
-                scores[dst] = max(scores.get(dst, 0.0), round(dw * w, 3))
-    action = max(scores, key=scores.get) if scores else "explore"
-    # run Praxis on the pursuit itself, so the decision to go deeper carries a provable trace
-    d = praxis.decide(seeds={**{c: 0.7 for c in interest_concepts}, "curiosity": dopamine},
-                      intent_nodes=set(interest_concepts) | {"curiosity"}, goal=DEEPEN_GOAL,
-                      curiosity=set(interest_concepts) | {"curiosity"}, intent="explore this deeper")
-    d.trace["action_scores"] = dict(sorted(scores.items(), key=lambda x: -x[1]))   # on the record
+    seeds = {"curiosity": max(0.5, dopamine), "interesting": 0.8 * dopamine}
+    for c in interest:
+        seeds[c] = 0.7
+    for m in markers:                                # what KIND of thing gripped her (from perception)
+        seeds[m] = 0.95
+    d = praxis.decide(
+        seeds=seeds, intent_nodes=set(interest) | set(markers) | {"curiosity"},
+        goal=DEEPEN_GOAL | ACTIONS,                  # actions are legitimate destinations of reasoning
+        curiosity=set(interest) | {"curiosity"}, intent="what should I do to explore this deeper?",
+        gain_fn=gain_of(net), cost_map=ACTION_COST)
+    action = next((c for c in d.concepts if c in ACTIONS), None)   # the action the game landed on
+    if not action:                                    # else the top-activated action in her reasoning
+        action = next((c for c in d.trace.get("activated_subgraph", {}) if c in ACTIONS), "explore")
     return action, d
+
+
+def learn_from_action(praxis, action, reward, context=()):
+    """After she acts, reinforce TWO things so the general engine gets SHARP by experience:
+      (1) the action's VALUE  - its trust edge to understanding (weighs in evaluation), and
+      (2) the SITUATION->action edge - so next time this kind of situation ACTIVATES this action
+          MORE (value feeds back into salience, like dopamine in a brain).
+    This is how her 'drives' edges become LEARNED - the hand-seeded ones are just priors she refines."""
+    if not action:
+        return
+    net = praxis.net
+    praxis.learn([action, "understanding"], reward)                 # (1) value
+    for c in context:                                               # (2) learned situation->action
+        if c == action:
+            continue
+        has = any(dst == action for dst, _w, _k in net.edges.get(c, []))
+        if reward >= 0 and has:
+            net.strengthen(c, action, reward * 0.12)
+        elif reward >= 0:
+            net.relate(c, action, max(0.3, reward * 0.5), kind="drives", both=False)
+        elif has:
+            net.weaken(c, action, abs(reward) * 0.12)
 
 
 def action_to_focus(action, interest_text, entities=None):
@@ -136,8 +105,8 @@ if __name__ == "__main__":
         ("Caesar's ambition gripped her", ["caesar", "ambition"], ("interesting",), {}),
     ]
     for desc, interest, markers, ents in cases:
-        action, d = reason_to_action(px, interest, markers, dopamine=1.0)
+        action, d = decide_next_action(px, interest, markers, dopamine=1.0)
         focus = action_to_focus(action, " and ".join(interest).replace("_", " "), ents)
         print(f"  she {desc}")
-        print(f"     -> reasons the action: {action}   (provable, payoff {d.payoff})")
+        print(f"     -> Praxis's game chose the action: {action}   (payoff {d.payoff})")
         print(f"     -> goes to explore  : \"{focus}\"\n")
