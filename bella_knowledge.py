@@ -139,9 +139,34 @@ TYPED = [
 ]
 
 
+# EPISTEMIC / ACTION knowledge - how curiosity + what she encounters turn into an ACTION to explore
+# DEEPER. This is her PROCEDURAL knowledge - knowing HOW to find out. Reasoning over these (Praxis,
+# NO LLM) is what converts a question into a deed: curiosity -> explore, interesting source -> follow
+# it, unknown -> read more, a claim -> find evidence. The action nodes are where the reasoning lands.
+ACTIONS = {"explore", "read_more", "follow_source", "search_author", "find_evidence",
+           "trace_origin", "compare"}
+EPISTEMIC = [
+    # what she encounters (the MARKER) selects the action; curiosity supplies the DRIVE, not the choice.
+    # so curiosity's own edge is a weak generic fallback; the specific markers win when present.
+    ("curiosity", "explore", 0.55, "drives"),        # generic fallback only
+    ("interesting", "read_more", 0.85, "drives"),     # an interesting topic -> go deeper on it
+    ("unknown", "read_more", 0.9, "drives"), ("gap", "explore", 0.8, "drives"),
+    ("question", "explore", 0.7, "drives"),
+    ("author", "search_author", 0.95, "drives"), ("author", "follow_source", 0.9, "drives"),
+    ("source", "follow_source", 0.92, "drives"),
+    ("claim", "find_evidence", 0.95, "drives"), ("contradiction", "find_evidence", 0.95, "drives"),
+    ("origin", "trace_origin", 0.9, "drives"),
+    # the actions serve DEEPENING, so goal-biased spread (goal = deepen/understand) flows to them
+    ("explore", "understanding", 0.8, "leads_to"), ("read_more", "understanding", 0.85, "leads_to"),
+    ("follow_source", "understanding", 0.8, "leads_to"), ("search_author", "understanding", 0.8, "leads_to"),
+    ("find_evidence", "truth", 0.85, "leads_to"), ("trace_origin", "understanding", 0.75, "leads_to"),
+    ("compare", "understanding", 0.75, "leads_to"),
+]
+
+
 def seed_bella_mind(net, verbose: bool = True) -> int:
     """Seed the knowledge net: TYPED relations first (directional, meaning-bearing), then the bulk."""
-    for a, b, w, kind in TYPED:
+    for a, b, w, kind in TYPED + EPISTEMIC:
         net.relate(a, b, w, kind=kind, both=False)   # directional, so the type reads cleanly
     net.ingest(ALL)                                  # bulk associations (strengthens the typed ones)
     n = sum(len(v) for v in net.edges.values())

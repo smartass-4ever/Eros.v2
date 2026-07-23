@@ -385,29 +385,62 @@ class Bella(CNS):
         return ""
 
     def _curiosity_focus(self) -> str:
-        """She explores her varied targets, rotating so she covers them all (AI -> robotics ->
-        Roman lit -> art -> politics...), with her real CuriositySystem + dopamine refining in
-        the background. Truly fluid, live-web wandering arrives when Indra feeds _world_intake()."""
-        seeds = getattr(self, "curiosity_seeds", [])
+        """Genuine curiosity FOLLOWS THREADS. If the last thing gripped her, she REASONS an action
+        (Praxis over her procedural knowledge, no LLM) to go DEEPER - chase the author, hunt the
+        evidence, read more - and that becomes her next focus. Only when nothing pulls her does she
+        fall back to a fresh seed (the seed-list is now the FALLBACK, not the plan). Live web (Indra)
+        wins when wired into _world_intake()."""
         world = self._world_intake()
-        if world:                                       # if Indra is feeding, the live world wins
-            topic = world
-        elif seeds:                                     # else rotate through her seed targets
+        if world:                                       # the live world, when Indra feeds it
+            return self._register(world)
+
+        # FOLLOW THE THREAD - pursue what just gripped her, but only while it's still FRESH.
+        last = getattr(self, "_last_decision", {}) or {}
+        interest = [c for c in last.get("concepts", []) if c]
+        dope = self._interest_level(interest)
+        if interest and dope >= 0.55:
+            key = frozenset(interest[:3])                 # habituation: same thread N times -> satisfied
+            same = key == getattr(self, "_thread_key", None)
+            depth = (getattr(self, "_thread_depth", 0) + 1) if same else 0
+            if depth < 3:                                 # dive ~3 levels, then get bored and wander
+                self._thread_key, self._thread_depth = key, depth
+                from bella_curiosity import reason_to_action, action_to_focus
+                markers = tuple(getattr(self, "_markers", ()))   # author/claim/unknown (from perception, later)
+                action, _ad = reason_to_action(self.praxis, interest, markers, dope)
+                self._last_action = action
+                topic = " and ".join(w.replace("_", " ") for w in interest[:2])
+                return self._register(action_to_focus(action, topic, getattr(self, "_entities", {})))
+            self._thread_key, self._thread_depth = None, 0    # thread exhausted -> seek something new
+
+        # nothing pulls her (or a thread just satisfied) -> a fresh seed
+        seeds = getattr(self, "curiosity_seeds", [])
+        if seeds:
             self._seed_i = (getattr(self, "_seed_i", -1) + 1) % len(seeds)
-            topic = seeds[self._seed_i]
-        else:
-            topic = "what is true in the world right now that I don't yet understand"
+            return self._register(seeds[self._seed_i])
+        return self._register("what is true in the world right now that I don't yet understand")
+
+    def _interest_level(self, concepts) -> float:
+        """How hard her curiosity/dopamine is pulling (0..1): her real arcs if present, else the
+        last decision's confidence as a proxy. This is what makes curiosity her STRONGEST drive."""
         cs = getattr(self, "curiosity_system", None)
-        if cs is not None:                              # feed her real curiosity/dopamine in the background
-            own = ((getattr(self, "_last_decision", {}) or {}).get("conclusion") or "")
-            try:
-                cs.dm.decay_all()
-            except Exception:
-                pass
-            try:
-                cs.process_turn((topic + " " + own).strip())
-            except Exception:
-                pass
+        try:
+            dm = getattr(cs, "dm", None)
+            arcs = dm.get_priority_arcs() if dm is not None else None
+            if arcs:
+                top = arcs[0]
+                return min(1.0, float(getattr(top, "intensity", getattr(top, "strength", 0.6))))
+        except Exception:
+            pass
+        return float((getattr(self, "_last_decision", {}) or {}).get("confidence", 0.6))
+
+    def _register(self, topic: str) -> str:
+        """Feed the chosen focus into her real curiosity/dopamine system so the arcs stay alive."""
+        cs = getattr(self, "curiosity_system", None)
+        if cs is not None:
+            try: cs.dm.decay_all()
+            except Exception: pass
+            try: cs.process_turn(topic)
+            except Exception: pass
         return topic
 
 
