@@ -15,6 +15,14 @@ same idea as Eros's PerceptionModule.parse_input (intent + entities), extended f
 """
 import re
 
+# important short terms the 4-char filter would drop, + light aliases so she reads MEANING not tokens
+SHORT_TERMS = {"ai", "vc", "ml", "llm", "gpt", "api", "agi", "ux", "ceo", "ipo", "ar", "vr", "eu"}
+ALIAS = {"chatgpt": "ai", "gpt": "ai", "openai": "ai", "claude": "ai", "anthropic": "ai",
+         "gemini": "ai", "llm": "ai", "model": "ai", "models": "ai", "agent": "ai", "agents": "ai",
+         "tokenization": "ai", "token": "ai", "neural": "ai", "labs": "closed_labs", "lab": "closed_labs",
+         "slop": "hype", "greed": "corruption", "corporate": "big_tech", "google": "big_tech",
+         "meta": "big_tech", "microsoft": "big_tech", "startup": "startup", "nonfiction": "wisdom"}
+
 STOP = {"the", "and", "that", "this", "with", "from", "have", "has", "was", "were", "are", "for",
         "but", "not", "you", "your", "they", "their", "them", "then", "than", "into", "over", "some",
         "what", "when", "which", "while", "will", "would", "could", "should", "about", "also", "more",
@@ -46,13 +54,14 @@ def perceive(text: str, known_net=None) -> dict:
     if m:
         entities["author"] = m.group(1).strip()
 
-    # CONCEPTS - content words she can reason over
-    seen, concepts = set(), []
+    # CONCEPTS - content words she can reason over (+ important SHORT terms the 4-char filter drops)
+    shorts = [s for s in SHORT_TERMS if re.search(rf"\b{s}\b", low)]
+    seen, concepts = set(shorts), list(shorts)
     for w in re.findall(r"[a-zA-Z][a-zA-Z-]{3,}", low):
         w = _word(w)
         if w and w not in STOP and w not in seen:
             seen.add(w); concepts.append(w)
-    concepts = concepts[:12]
+    concepts = concepts[:14]
 
     # MARKERS - what KIND of thing gripped her (drives which action she'll reason to)
     markers = []

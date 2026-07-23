@@ -37,6 +37,74 @@ def fetch_hn(n=6):
     return out
 
 
+def fetch_hn_headlines(n=15):
+    """Cheap scan: just titles + links (she reads these fast, then dives only into what grips her)."""
+    out = []
+    try:
+        ids = requests.get(HN_TOP, timeout=15).json() or []
+    except Exception as e:
+        print(f"[WEB] could not reach Hacker News: {e}")
+        return out
+    for i in ids[:n]:
+        try:
+            it = requests.get(HN_ITEM.format(i), timeout=15).json() or {}
+        except Exception:
+            continue
+        if it.get("title"):
+            out.append({"title": it["title"], "url": it.get("url", ""), "by": it.get("by", "")})
+    return out
+
+
+def curiosity_about(net, interests, headline) -> float:
+    """Does this ONE sentence grip her? She judges it against her OWN mind: how many of its concepts
+    connect to what she knows (her graph) or cares about (her interests). High = worth reading fully;
+    low = skip it. This is what stops her being a donkey that reads everything."""
+    from bella_perception import perceive, ALIAS
+    concepts = perceive(headline).get("concepts", [])
+    if not concepts:
+        return 0.0
+    expanded = [ALIAS.get(c, c) for c in concepts]           # read MEANING, not the literal token
+    interests_l = " ".join(interests).lower()
+    interest_hits = sum(1 for c in expanded if c in interests_l or c == "ai")
+    known_hits = sum(1 for c in expanded if c in net.nodes)
+    score = (2 * interest_hits + known_hits) / (len(concepts) + 1)
+    return round(min(1.0, score), 3)
+
+
+def fetch_article(url, max_chars=3500):
+    """Fetch the full article behind a headline and strip it to readable text (best-effort)."""
+    if not url:
+        return None
+    try:
+        html = requests.get(url, timeout=15, headers={"User-Agent": "Mozilla/5.0 (BellaBot; read-only)"}).text
+    except Exception:
+        return None
+    text = re.sub(r"<script.*?</script>|<style.*?</style>", " ", html, flags=re.S | re.I)
+    text = re.sub(r"<[^>]+>", " ", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text[:max_chars] if len(text) > 250 else None
+
+
+async def bella_reads_selectively(scan=14, threshold=0.28, ticks=6):
+    """She SCANS the live web's headlines, and reads the FULL article ONLY for the ones that grip her."""
+    from bella import Bella
+    b = Bella()
+    heads = fetch_hn_headlines(scan)
+    print(f"[WEB] scanning {len(heads)} live headlines - reading deeply only what grips her:\n")
+    read = 0
+    for h in heads:
+        c = curiosity_about(b.praxis.net, b.interests, h["title"])
+        if c >= threshold:
+            article = fetch_article(h["url"]) or h["title"]
+            b.feed(article)
+            read += 1
+            print(f"   CURIOUS {c}  -> reads in full: {h['title'][:70]}")
+        else:
+            print(f"   skip    {c}     : {h['title'][:70]}")
+    print(f"\n[WEB] she chose to read {read} of {len(heads)} (foraging, not gorging)\n")
+    await b.live(ticks=max(ticks, read + 2))
+
+
 async def bella_reads_the_web(ticks=6):
     """One Bella, reading the live internet."""
     from bella import Bella
