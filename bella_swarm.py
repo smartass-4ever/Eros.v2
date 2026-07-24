@@ -14,21 +14,22 @@ swarm brought back at once. What ONE agent finds, the whole swarm - and the mind
 Agents are cheap (fetch + perceive, no brain) so many run at once; scale up with the machine.
 """
 import asyncio
+import aiohttp
 from collective_memory import CollectiveMemory        # this IS Nalanda
-from bella_legs import dispatch
+from bella_legs import search_web_async, _query_for, UA
 from bella_perception import perceive
 
 
 class Swarm:
-    def __init__(self, size: int = 8):
+    def __init__(self, size: int = 30):
         self.size = size
         self.nalanda = CollectiveMemory()              # the shared mind - every agent writes here
         self.last = []                                 # what each agent explored last (for the surface)
         self.discovered = 0
 
-    async def _agent(self, aid: str, target: str):
-        """One explorer: go to the world for `target`, perceive it, deposit into Nalanda. Token-free."""
-        text = await asyncio.to_thread(dispatch, "explore", target, "")
+    async def _agent(self, aid: str, target: str, session):
+        """One explorer: go to the world for `target` (async), perceive it, deposit into Nalanda."""
+        text = await search_web_async(session, _query_for("explore", target, ""))
         if not text:
             return None
         p = perceive(text)
@@ -43,9 +44,12 @@ class Swarm:
                 "relations": rels, "concepts": p.get("concepts", [])}
 
     async def explore(self, targets):
-        """Dispatch the swarm to explore `targets` IN PARALLEL. Returns discoveries; Nalanda is updated."""
-        tasks = [self._agent(f"agent-{i}", t) for i, t in enumerate(targets[:self.size]) if t]
-        found = [d for d in await asyncio.gather(*tasks) if d]
+        """Dispatch the swarm to explore `targets` IN PARALLEL (true async - hundreds at once on one CPU).
+        Returns discoveries; Nalanda is updated."""
+        timeout = aiohttp.ClientTimeout(total=20)
+        async with aiohttp.ClientSession(headers=UA, timeout=timeout) as session:
+            tasks = [self._agent(f"agent-{i}", t, session) for i, t in enumerate(targets[:self.size]) if t]
+            found = [d for d in await asyncio.gather(*tasks, return_exceptions=False) if d]
         self.last = [(d["agent"], d["target"]) for d in found]
         return found
 

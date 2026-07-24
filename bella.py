@@ -71,7 +71,7 @@ class Bella(CNS):
         self._route_voice_through_praxis()          # her voice = her Praxis thought, NOT the 9.7k-tok expression
         try:                                        # her SWARM: lightweight agents that explore the world in parallel
             from bella_swarm import Swarm
-            self.swarm = Swarm(size=int(os.environ.get("BELLA_SWARM_SIZE", "8")))
+            self.swarm = Swarm(size=int(os.environ.get("BELLA_SWARM_SIZE", "30")))
         except Exception:
             self.swarm = None
         # Praxis <-> Nalanda BOTH WAYS: the mind reads the swarm's substrate (in _give_legs), and her

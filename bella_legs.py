@@ -58,12 +58,47 @@ def _query_for(action, target, topic=""):
 
 
 def dispatch(action, target, topic=""):
-    """LEGS: her decision -> a real-world task -> the discovery it brings back. Returns text or None.
-    (One fetcher now; the Ravana swarm slots in here later with the same signature.)"""
+    """LEGS: her decision -> a real-world task -> the discovery it brings back. Returns text or None."""
     q = _query_for(action, target, topic)
     if not q:
         return None
     return _search_web(q)
+
+
+# ------------------------------------------------------------------ ASYNC (true parallelism for the swarm)
+_CACHE = {}          # query -> text, so 30 agents don't re-fetch or hammer the source (politeness)
+
+
+async def search_web_async(session, query, chars=1600):
+    """Async fetch - no thread limit, so hundreds can run at once on one CPU. Cached to stay polite."""
+    if query in _CACHE:
+        return _CACHE[query]
+    try:
+        async with session.get(WIKI, params={"action": "query", "list": "search", "srsearch": query,
+                                             "format": "json", "srlimit": 1}) as r:
+            s = await r.json(content_type=None)
+        hits = s.get("query", {}).get("search", [])
+        if not hits:
+            return None
+        title = hits[0]["title"]
+        async with session.get(WIKI, params={"action": "query", "prop": "extracts", "exintro": 1,
+                                             "explaintext": 1, "titles": title, "format": "json"}) as r:
+            e = await r.json(content_type=None)
+        for p in e.get("query", {}).get("pages", {}).values():
+            txt = p.get("extract", "")
+            if txt and len(txt) > 120:
+                out = f"{title}. {txt[:chars]}"
+                if len(_CACHE) < 800:
+                    _CACHE[query] = out
+                return out
+    except Exception:
+        pass
+    return None
+
+
+async def dispatch_async(session, action, target, topic=""):
+    q = _query_for(action, target, topic)
+    return await search_web_async(session, q) if q else None
 
 
 if __name__ == "__main__":
