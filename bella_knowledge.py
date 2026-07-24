@@ -143,19 +143,23 @@ TYPED = [
 # DEEPER. This is her PROCEDURAL knowledge - knowing HOW to find out. Reasoning over these (Praxis,
 # NO LLM) is what converts a question into a deed: curiosity -> explore, interesting source -> follow
 # it, unknown -> read more, a claim -> find evidence. The action nodes are where the reasoning lands.
+# STARTER action-verbs - PRIORS ONLY, not a fixed menu. Her real action space is read off the net
+# (every node an "affords" edge points to) and GROWS as she learns new situation->action affordances
+# from the world. These are just the verbs she's born knowing.
 ACTIONS = {"explore", "read_more", "follow_source", "search_author", "find_evidence",
            "trace_origin", "compare"}
 EPISTEMIC = [
-    # what she encounters (the MARKER) selects the action; curiosity supplies the DRIVE, not the choice.
-    # so curiosity's own edge is a weak generic fallback; the specific markers win when present.
-    ("curiosity", "explore", 0.55, "drives"),        # generic fallback only
-    ("interesting", "read_more", 0.85, "drives"),     # an interesting topic -> go deeper on it
-    ("unknown", "read_more", 0.9, "drives"), ("gap", "explore", 0.8, "drives"),
-    ("question", "explore", 0.7, "drives"),
-    ("author", "search_author", 0.95, "drives"), ("author", "follow_source", 0.9, "drives"),
-    ("source", "follow_source", 0.92, "drives"),
-    ("claim", "find_evidence", 0.95, "drives"), ("contradiction", "find_evidence", 0.95, "drives"),
-    ("origin", "trace_origin", 0.9, "drives"),
+    # what she encounters (the MARKER) AFFORDS an action; curiosity supplies the DRIVE, not the choice.
+    # "affords" (a situation affords an action) is kept DISTINCT from world "drives" so world-facts
+    # (founder->startup) never masquerade as actions. The action set is exactly the "affords" targets.
+    ("curiosity", "explore", 0.55, "affords"),        # generic fallback only
+    ("interesting", "read_more", 0.85, "affords"),     # an interesting topic -> go deeper on it
+    ("unknown", "read_more", 0.9, "affords"), ("gap", "explore", 0.8, "affords"),
+    ("question", "explore", 0.7, "affords"),
+    ("author", "search_author", 0.95, "affords"), ("author", "follow_source", 0.9, "affords"),
+    ("source", "follow_source", 0.92, "affords"),
+    ("claim", "find_evidence", 0.95, "affords"), ("contradiction", "find_evidence", 0.95, "affords"),
+    ("origin", "trace_origin", 0.9, "affords"),
     # the actions serve DEEPENING, so goal-biased spread (goal = deepen/understand) flows to them
     ("explore", "understanding", 0.8, "leads_to"), ("read_more", "understanding", 0.85, "leads_to"),
     ("follow_source", "understanding", 0.8, "leads_to"), ("search_author", "understanding", 0.8, "leads_to"),

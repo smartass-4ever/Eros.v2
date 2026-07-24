@@ -354,6 +354,35 @@ class Bella(CNS):
                 pass
         print(f"[BELLA-CACHE] {cache_stats()}")      # how much the cache saved this run
 
+    def _next_step(self):
+        """A decision here is not a verb + object and not a menu pick - it is a DIRECTION OF ATTENTION:
+        the one thing her curiosity pulls her toward and knows LEAST. It's read off the SAME Praxis
+        decision that formed her thought (curiosity was the force in that spread); the activated subgraph
+        IS what she's drawn to. She returns that thing and simply goes to find out about it - like a baby
+        orienting to the salient new object. As her net grows from what the swarm brings back, the things
+        she can reach for grow with it. (The 'how' isn't a separate choice - a richer pursuit is just a
+        more specific thing to go toward, e.g. 'the evidence against X' is itself a node.)"""
+        from bella_curiosity import action_nodes
+        net = self.praxis.net
+        d = getattr(self, "_last_decision", {}) or {}
+        lit = dict((d.get("trace", {}) or {}).get("activated_subgraph", {}))   # what curiosity lit up
+        if not lit:                                          # no fresh thought yet -> what she just read
+            lit = {c: 1.0 for c in getattr(self, "_read_concepts", [])}
+        fetched = getattr(self, "_fetched", set())
+        skip = action_nodes(net)                             # her own epistemic verbs are not world-things
+        ents = getattr(self, "_entities", {}) or {}          # a person/source she just met IS a thing
+        for role in ("author", "source"):
+            e = ents.get(role)
+            if e and str(e) not in fetched:
+                lit[str(e)] = max(lit.get(str(e), 0.0), 0.9)
+        cand = [(n, a) for n, a in lit.items()
+                if isinstance(n, str) and n not in skip and n not in fetched
+                and n.replace("_", "").replace(" ", "").isalpha()]
+        target = (min(cand, key=lambda na: (len(net.edges.get(na[0], [])), -na[1]))[0]   # frontier: lit + least-known
+                  if cand else next((n for n in lit if n not in skip), None))
+        self._last_action = target                           # what she's going toward (for the surface)
+        return target
+
     async def _give_legs(self):
         """LEGS = dispatch her SWARM. The mind names the frontier (the lit concepts + seeds she knows
         LEAST), a pool of agents explores them ALL IN PARALLEL, deposits into NALANDA, and the mind
@@ -368,41 +397,32 @@ class Bella(CNS):
             return
         net = self.praxis.net
         fetched = getattr(self, "_fetched", set())
-        d = getattr(self, "_last_decision", {}) or {}
-        interest = [c for c in d.get("concepts", []) if c] or list(getattr(self, "_read_concepts", []))
-        markers = tuple(getattr(self, "_markers", ()))
         tasks = []
-        # 1) FOLLOW HER DECISION: Praxis concludes the action, on its specific target (author/claim/concept)
-        if interest:
-            try:
-                from bella_curiosity import decide_next_action
-                action, _sc = decide_next_action(self.praxis, interest, markers,
-                                                  max(self._interest_level(interest), 0.6))
-                self._last_action = action
-                ents = getattr(self, "_entities", {}) or {}
-                tasks.append((action, ents.get("author") or ents.get("source") or interest[0]))
-            except Exception:
-                pass
-        # 2) EXPLORE HER FRONTIER: concepts across her WHOLE net she knows LEAST (real info-hunger), + seeds
+        # 1) FOLLOW HER DECISION: the ONE thing Praxis itself landed on this cycle. Curiosity was the
+        #    force in that very spread, so the thing she's most pulled toward IS her next move - the lead
+        #    agent goes to find out about it. No verb, no menu: a decision is just the thing to go toward.
+        target = self._next_step()
+        if target:
+            tasks.append(target)
+        # 2) EXPLORE HER FRONTIER: things across her WHOLE net she knows LEAST (real info-hunger), + seeds
         frontier = [c for c in net.nodes
                     if isinstance(c, str) and c.replace("_", "").isalpha()
                     and c not in fetched and len(net.edges.get(c, [])) <= 3]
         frontier.sort(key=lambda c: len(net.edges.get(c, [])))
         frontier += [s for s in getattr(self, "curiosity_seeds", []) if s not in fetched]
-        for c in frontier:
-            tasks.append(("explore", c))
+        tasks += frontier
         seen, final = set(), []                              # dedup by target, cap at swarm size
-        for a, t in tasks:
+        for t in tasks:
             tl = str(t)
             if tl and tl not in seen:
-                seen.add(tl); final.append((a, t))
+                seen.add(tl); final.append(t)
             if len(final) >= swarm.size:
                 break
         if not final:
             return
         try:
-            found = await swarm.explore(final)               # each agent executes its (action, target)
-            for _a, t in final:
+            found = await swarm.explore(final)               # each agent goes to find out about its thing
+            for t in final:
                 fetched = fetched | {str(t)}
             self._fetched = set(list(fetched)[-200:]) if len(fetched) > 300 else fetched
             for a, b, w in swarm.substrate():                # the mind ingests what the SWARM learned (Nalanda)
@@ -411,8 +431,8 @@ class Bella(CNS):
             for dsc in found[:3]:                            # top discoveries enter her own perception
                 self.feed(dsc["text"])
             if found:
-                acts = sorted({a for a, _ in final[:len(found)]})
-                print(f"      [swarm] {len(found)} agents, actions={acts} -> Nalanda holds {len(swarm.nalanda.store)}")
+                print(f"      [swarm] {len(found)} agents explored {len(set(final[:len(found)]))} things"
+                      f" -> Nalanda holds {len(swarm.nalanda.store)}")
         except Exception as e:
             print(f"      [swarm] dispatch failed: {e}")
 
@@ -465,17 +485,9 @@ class Bella(CNS):
             return
         concepts = d.get("concepts", [])
         conf = d.get("confidence", 0.5)
-        # 1) reputation: a confident, coherent decision reinforces the path it reasoned across
+        # reputation: a confident, coherent decision reinforces the path it reasoned across, so good
+        # reasoning gains trust and bad reasoning fades. THIS is how she gets wiser - not a verb-policy.
         self.praxis.learn(concepts, (conf - 0.5) * 2)
-        # 1b) STRONG loop: reward the ACTION she chose to get here, so her exploration policy sharpens
-        act = getattr(self, "_last_action", None)
-        if act:
-            try:
-                from bella_curiosity import learn_from_action
-                learn_from_action(self.praxis, act, max(-1.0, min(1.0, (conf - 0.5) * 2)),
-                                  context=getattr(self, "_action_context", ()))
-            except Exception:
-                pass
         # 2) grow the web: the associations she just used become part of her substrate
         rels = [(concepts[i], concepts[i + 1], 0.4) for i in range(len(concepts) - 1)]
         if rels:
@@ -561,13 +573,11 @@ class Bella(CNS):
             depth = (getattr(self, "_thread_depth", 0) + 1) if same else 0
             if depth < 3:                                 # dive ~3 levels, then get bored and wander
                 self._thread_key, self._thread_depth = key, depth
-                from bella_curiosity import decide_next_action, action_to_focus
-                action, _scores = decide_next_action(self.praxis, interest, markers, dope)  # Praxis's game chooses
-                self._last_action = action
-                self._action_context = markers + tuple(interest[:3])   # so she LEARNS situation->action
+                target = self._next_step()                # the thing her Praxis decision landed on
                 self._markers = ()                        # consume the markers (fresh perception resets them)
-                topic = " and ".join(w.replace("_", " ") for w in interest[:2])
-                return self._register(action_to_focus(action, topic, getattr(self, "_entities", {})))
+                topic = (str(target).replace("_", " ") if target
+                         else " and ".join(w.replace("_", " ") for w in interest[:2]))
+                return self._register(f"a deeper understanding of {topic}")
             self._thread_key, self._thread_depth = None, 0    # thread exhausted -> seek something new
 
         # nothing pulls her (or a thread just satisfied) -> a fresh seed
