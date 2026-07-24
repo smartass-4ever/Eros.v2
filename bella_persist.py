@@ -21,6 +21,11 @@ def save_mind(bella, path) -> int:
             "fetched": list(getattr(bella, "_fetched", set()))[-200:],
             "trail": getattr(bella, "_trail", [])[-20:],
         }
+        sw = getattr(bella, "swarm", None)             # the swarm's shared memory (Nalanda)
+        if sw is not None:
+            data["nalanda"] = [{"key": tr.key, "content": tr.content, "tier": tr.tier, "hits": tr.hits,
+                                "salience": tr.salience, "relations": tr.relations}
+                               for tr in list(sw.nalanda.store.values())[-500:]]
         os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
         tmp = path + ".tmp"
         with open(tmp, "w", encoding="utf-8") as f:
@@ -46,6 +51,13 @@ def load_mind(bella, path) -> int:
         bella.praxis._action_counts = data.get("action_counts", {}) or {}
         bella._fetched = set(data.get("fetched", []))
         bella._trail = data.get("trail", [])
+        sw = getattr(bella, "swarm", None)             # restore the swarm's shared memory (Nalanda)
+        if sw is not None and data.get("nalanda"):
+            from collective_memory import Trace
+            for dd in data["nalanda"]:
+                sw.nalanda.store[dd["key"]] = Trace(
+                    dd["key"], dd["content"], tier=dd.get("tier", "working"), hits=dd.get("hits", 1),
+                    salience=dd.get("salience", 0.5), relations=[tuple(r) for r in dd.get("relations", [])])
         return sum(len(v) for v in net.edges.values())
     except Exception as e:
         print(f"[PERSIST] load failed: {e}")

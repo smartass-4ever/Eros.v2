@@ -65,18 +65,23 @@ class Bella(CNS):
         super().__init__()                          # boots the whole real being, unchanged
         self.praxis = PraxisV2(KnowledgeNet())      # her final decision system
         seed_bella_mind(self.praxis.net)            # the baseline mind (bootstrap)
-        self._mind_path = os.environ.get("BELLA_MIND_PATH")   # persistent volume path on the host
-        if self._mind_path:                          # she REMEMBERS what she learned before the reboot
+        self._mind_path = os.environ.get("BELLA_MIND_PATH")   # persistent volume path (restore after swarm exists)
+        self._install_pill(BELLA_PILL)              # optional persona (default ON; guarantees disclosure)
+        self._reduce_llm_calls()                    # cut the redundant LLM calls (Praxis/emotion cover them)
+        self._route_voice_through_praxis()          # her voice = her Praxis thought, NOT the 9.7k-tok expression
+        try:                                        # her SWARM: lightweight agents that explore the world in parallel
+            from bella_swarm import Swarm
+            self.swarm = Swarm(size=int(os.environ.get("BELLA_SWARM_SIZE", "8")))
+        except Exception:
+            self.swarm = None
+        if self._mind_path:                          # NOW restore her mind (net + Nalanda) - yesterday is still hers
             try:
                 from bella_persist import load_mind
                 n = load_mind(self, self._mind_path)
                 if n:
-                    print(f"[PERSIST] restored her mind: {n} connections - yesterday is still hers")
+                    print(f"[PERSIST] restored her mind: {n} connections + Nalanda - yesterday is still hers")
             except Exception:
                 pass
-        self._install_pill(BELLA_PILL)              # optional persona (default ON; guarantees disclosure)
-        self._reduce_llm_calls()                    # cut the redundant LLM calls (Praxis/emotion cover them)
-        self._route_voice_through_praxis()          # her voice = her Praxis thought, NOT the 9.7k-tok expression
         self.goal = {"truth", "evidence", "help"}
         self._focus = ""                            # what curiosity is pulling her toward now
         self.interests = [                          # her inherent interests (EDIT to make it hers)
@@ -338,39 +343,52 @@ class Bella(CNS):
             history = (history + [{"role": "user", "content": focus},
                                   {"role": "assistant", "content": thought}])[-40:]
             await asyncio.sleep(pace)
+        if getattr(self, "_mind_path", None):        # persist at the end of every batch (belt + braces)
+            try:
+                from bella_persist import save_mind
+                save_mind(self, self._mind_path)
+            except Exception:
+                pass
         print(f"[BELLA-CACHE] {cache_stats()}")      # how much the cache saved this run
 
     async def _give_legs(self):
-        """LEGS: turn her concluded action into a real-world dispatch (one fetcher now; the Ravana swarm
-        later). She follows her curiosity OUTWARD - the target is the concept that just lit up that she
-        knows LEAST (highest info-hunger), and she never re-fetches what she's already read. So she moves
-        stoicism -> virtue -> Zeno -> ... instead of re-reading the same page. This CLOSES the loop."""
+        """LEGS = dispatch her SWARM. The mind names the frontier (the lit concepts + seeds she knows
+        LEAST), a pool of agents explores them ALL IN PARALLEL, deposits into NALANDA, and the mind
+        ingests everything they brought back + perceives the top discoveries. What one agent finds, the
+        whole mind knows. Curiosity outward, never re-fetching what she's read. This closes the loop."""
         if not getattr(self, "_legs_on", False):
             return
         if len(getattr(self, "_inbox", []) or []) >= 2:      # she still has fresh material to read
             return
+        swarm = getattr(self, "swarm", None)
+        if swarm is None:
+            return
+        # the mind names the frontier: lit concepts + fresh seeds she hasn't explored, least-known first
         d = getattr(self, "_last_decision", {}) or {}
-        trace = d.get("trace", {}) or {}
-        lit = list(trace.get("activated_subgraph", {}).keys()) or [c for c in d.get("concepts", []) if c]
+        lit = list(d.get("trace", {}).get("activated_subgraph", {}).keys())
         fetched = getattr(self, "_fetched", set())
         net = self.praxis.net
-        cands = [c for c in lit if isinstance(c, str) and c.replace("_", "").isalpha() and c not in fetched]
-        if not cands:                                        # exhausted this neighbourhood -> wander to a fresh seed
-            cands = [s for s in getattr(self, "curiosity_seeds", []) if s not in fetched]
-        if not cands:
+        pool = [c for c in lit if isinstance(c, str) and c.replace("_", "").isalpha() and c not in fetched]
+        pool += [s for s in getattr(self, "curiosity_seeds", []) if s not in fetched]
+        pool = sorted(dict.fromkeys(pool), key=lambda c: len(net.edges.get(c, [])))   # least-known first
+        targets = pool[:swarm.size]
+        if not targets:
             return
-        target = min(cands, key=lambda c: len(net.edges.get(c, [])))   # what she knows LEAST -> curiosity pulls out
-        action = getattr(self, "_last_action", "explore")
         try:
-            from bella_legs import dispatch
-            discovery = await asyncio.to_thread(dispatch, action, target, "")
-            if discovery:
-                fetched = fetched | {target}
-                self._fetched = set(list(fetched)[-24:]) if len(fetched) > 40 else fetched   # forget old, can revisit
-                self.feed(discovery)                         # the swarm returns -> perception next cycle
-                print(f"      [legs] {action} '{target}' -> brought back {len(discovery)} chars from the world")
+            found = await swarm.explore(targets)             # THE SWARM explores the world in parallel
+            for t in targets:
+                fetched = fetched | {t}
+            self._fetched = set(list(fetched)[-60:]) if len(fetched) > 80 else fetched
+            for a, b, w in swarm.substrate():                # the mind ingests what the SWARM learned (Nalanda)
+                try: self.praxis.net.ingest([(a, b, w)])
+                except Exception: pass
+            for dsc in found[:3]:                            # top discoveries enter her own perception
+                self.feed(dsc["text"])
+            if found:
+                print(f"      [swarm] {len(found)} agents explored "
+                      f"{[str(t)[:16] for t in targets[:len(found)]]} -> Nalanda holds {len(swarm.nalanda.store)}")
         except Exception as e:
-            print(f"      [legs] dispatch failed: {e}")
+            print(f"      [swarm] dispatch failed: {e}")
 
     async def _act_on(self):
         """Decision -> action via the real CNS_MDC + action orchestrator, with VISIBLE safety.
