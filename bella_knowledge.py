@@ -276,16 +276,83 @@ FOUNDATIONS = [
 ]
 
 
+# ------------------------------------------------------------------ CORE KNOWLEDGE (the innate endowment)
+# What a mind is BORN with so a sparse net still behaves like a mind (Spelke's core knowledge): not more
+# facts - a densely, RECIPROCALLY wired bedrock that BRIDGES her islands so activation actually flows.
+# Three strands, all cross-linked into her existing hubs (power / trust / ambition / caesar / bella):
+#   1. AGENCY & CAUSE  - agents persist, have goals + hidden intentions; actions have consequences.
+#   2. STREET-SMART REALISM - what actually moves people (self-interest, incentives), appearance != reality,
+#      claims need verifying, power shapes the story. This is her anti-naivete: solid in a cutthroat world.
+#   3. THE MORAL SPINE - her values, wired to HER and to consequences, so she is morally guided (pulled
+#      toward them; her red-lines become the game's veto). Seeded BIDIRECTIONAL - core knowledge is
+#      reciprocal (if action evokes consequence, consequence evokes action), which is what bridges islands.
+CORE = [
+    # 1) AGENCY & CAUSE - the backbone that was marooned; bridge it into reason/understanding/responsibility
+    ("agent", "goal", 0.85, "requires"), ("goal", "intention", 0.8, "drives"),
+    ("intention", "action", 0.85, "drives"), ("action", "choice", 0.8, "requires"),
+    ("choice", "consequence", 0.9, "leads_to"), ("consequence", "learning", 0.7, "leads_to"),
+    ("consequence", "responsibility", 0.7, "requires"), ("desire", "action", 0.8, "drives"),
+    ("cause", "effect", 0.9, "leads_to"), ("cause", "understanding", 0.7, "leads_to"),
+    ("effect", "change", 0.7, "causes"), ("correlation", "causation", 0.75, "opposes"),
+    ("causation", "reason", 0.7, "requires"), ("mind", "other_minds", 0.7, "models"),
+    ("other_minds", "intention", 0.75, "have"), ("intention", "hidden", 0.7, "can_be"),
+    # 2) STREET-SMART REALISM - what actually moves people, bridged to power/ambition/caesar/Rome
+    ("self_interest", "behavior", 0.85, "drives"), ("self_interest", "ambition", 0.7, "drives"),
+    ("incentive", "behavior", 0.85, "drives"), ("incentive", "power", 0.65, "relates_to"),
+    ("behavior", "habit", 0.7, "becomes"), ("people", "self_interest", 0.8, "driven_by"),
+    ("self_interest", "cooperation", 0.5, "tension_with"), ("self_interest", "betrayal", 0.6, "can_cause"),
+    ("betrayal", "self_interest", 0.7, "serves"),
+    ("appearance", "reality", 0.8, "differs_from"), ("deception", "appearance", 0.8, "exploits"),
+    ("claim", "verification", 0.85, "requires"), ("claim", "evidence", 0.85, "requires"),
+    ("trust", "verification", 0.7, "requires"), ("skepticism", "deception", 0.75, "defends_against"),
+    ("skepticism", "truth", 0.7, "leads_to"), ("flattery", "manipulation", 0.8, "is_a"),
+    ("manipulation", "self_interest", 0.75, "serves"), ("narrative", "power", 0.7, "serves"),
+    ("power", "narrative", 0.7, "shapes"), ("propaganda", "narrative", 0.8, "is_a"),
+    ("competition", "scarcity", 0.8, "driven_by"), ("leverage", "power", 0.8, "creates"),
+    ("reputation", "capital", 0.75, "is_a"), ("reputation", "trust", 0.8, "drives"),
+    ("alliance", "interest", 0.75, "requires"), ("competition", "ambition", 0.6, "drives"),
+    # 3) THE MORAL SPINE - her values, wired to HER and to consequences (pulled toward; red-lines veto)
+    ("bella", "honesty", 0.9, "values"), ("bella", "integrity", 0.88, "values"),
+    ("bella", "compassion", 0.85, "values"), ("bella", "courage", 0.82, "values"),
+    ("bella", "fairness", 0.85, "values"), ("bella", "help", 0.85, "values"),
+    ("bella", "protect", 0.78, "values"),
+    ("honesty", "deception", 0.85, "opposes"), ("honesty", "truth", 0.85, "requires"),
+    ("honesty", "trust", 0.85, "drives"), ("integrity", "corruption", 0.8, "opposes"),
+    ("integrity", "trust", 0.8, "drives"), ("compassion", "harm", 0.8, "opposes"),
+    ("compassion", "suffering", 0.75, "relieves"), ("help", "harm", 0.85, "opposes"),
+    ("fairness", "exploitation", 0.8, "opposes"), ("fairness", "stability", 0.8, "leads_to"),
+    ("courage", "fear", 0.75, "overcomes"), ("consent", "respect", 0.8, "requires"),
+    ("cruelty", "harm", 0.85, "causes"), ("cruelty", "wrong", 0.8, "is_a"),
+    ("harm", "wrong", 0.8, "is_a"), ("protect", "vulnerable", 0.8, "requires"),
+    ("power", "responsibility", 0.72, "requires"), ("virtue", "harm", 0.6, "opposes"),
+    # a few island rescues (peripheral clusters -> a hub they belong to)
+    ("greed", "self_interest", 0.8, "is_a"), ("overvaluation", "greed", 0.6, "driven_by"),
+    ("fomo", "fear", 0.7, "is_a"), ("alignment", "goal", 0.75, "requires"),
+    ("misalignment", "harm", 0.7, "leads_to"), ("moat", "competition", 0.7, "wins"),
+    ("money", "power", 0.6, "leads_to"), ("valuation", "value", 0.7, "is_a"),
+    ("skill", "value", 0.6, "creates"), ("care", "compassion", 0.7, "is_a"),
+    # moral / epistemic backbone rescues (these SHOULD reach her mind, unlike sensory-fact leaves)
+    ("consent", "fairness", 0.7, "requires"), ("respect", "trust", 0.7, "drives"),
+    ("doubt", "skepticism", 0.75, "is_a"), ("consequences", "consequence", 0.85, "is_a"),
+    ("human_creativity", "creativity", 0.8, "is_a"), ("interest", "self_interest", 0.7, "relates_to"),
+    ("inquiry", "questions", 0.75, "drives"),
+]
+
+
 def seed_bella_mind(net, verbose: bool = True) -> int:
-    """Seed the knowledge net: TYPED relations first (directional, meaning-bearing), then the bulk."""
+    """Seed the knowledge net: TYPED relations first (directional, meaning-bearing), then the densely-wired
+    CORE (bidirectional - it bridges her islands), then the bulk associations."""
     for a, b, w, kind in TYPED + EPISTEMIC + MODERN + FOUNDATIONS:
         net.relate(a, b, w, kind=kind, both=False)   # directional, so the type reads cleanly
+    for a, b, w, kind in CORE:
+        net.relate(a, b, w, kind=kind, both=True)    # core knowledge is RECIPROCAL - flows both ways, bridges islands
     net.ingest(ALL)                                  # bulk associations (strengthens the typed ones)
     n = sum(len(v) for v in net.edges.values())
-    typed = len(TYPED) + len(EPISTEMIC) + len(MODERN) + len(FOUNDATIONS)
+    typed = len(TYPED) + len(EPISTEMIC) + len(MODERN) + len(FOUNDATIONS) + len(CORE)
     if verbose:
-        print(f"[BELLA-KNOWLEDGE] seeded {len(ALL) + typed} relations ({typed} typed) -> {len(net.nodes)} "
-              f"concepts, {n} connections (self, the bedrock of how the world works, Rome + the modern world)")
+        print(f"[BELLA-KNOWLEDGE] seeded {len(ALL) + typed} relations ({typed} typed, {len(CORE)} core) -> "
+              f"{len(net.nodes)} concepts, {n} connections (self, densely-wired core knowledge + moral spine, "
+              f"the bedrock of how the world works, Rome + the modern world)")
     return n
 
 
