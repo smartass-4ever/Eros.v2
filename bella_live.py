@@ -31,6 +31,7 @@ async def main():
     from bella_web import fetch_hn_headlines, fetch_article
     b = Bella()
     b._surface_path = STATE
+    b._legs_on = True                                  # her decisions reach the world: dispatch -> fetch -> perceive
     print("[LIVE] Bella opening her eyes to the web...")
     while True:                                        # forever: forage the web, then think across it
         try:

@@ -311,6 +311,7 @@ class Bella(CNS):
             print(f"[{t:02d}] curious about: {focus!r}\n      -> {thought[:200]}")
             await self._act_on()                     # decision -> action (piece 2), safely
             self._learn_from_cycle(result)           # continuous self-learning (every cycle)
+            await self._give_legs()                  # decision -> LEGS: dispatch to the world for NEW material
             if getattr(self, "_surface_path", None):  # stream her live cognition to the public surface
                 try:
                     from bella_state import emit
@@ -322,6 +323,38 @@ class Bella(CNS):
                                   {"role": "assistant", "content": thought}])[-40:]
             await asyncio.sleep(pace)
         print(f"[BELLA-CACHE] {cache_stats()}")      # how much the cache saved this run
+
+    async def _give_legs(self):
+        """LEGS: turn her concluded action into a real-world dispatch (one fetcher now; the Ravana swarm
+        later). She follows her curiosity OUTWARD - the target is the concept that just lit up that she
+        knows LEAST (highest info-hunger), and she never re-fetches what she's already read. So she moves
+        stoicism -> virtue -> Zeno -> ... instead of re-reading the same page. This CLOSES the loop."""
+        if not getattr(self, "_legs_on", False):
+            return
+        if len(getattr(self, "_inbox", []) or []) >= 2:      # she still has fresh material to read
+            return
+        d = getattr(self, "_last_decision", {}) or {}
+        trace = d.get("trace", {}) or {}
+        lit = list(trace.get("activated_subgraph", {}).keys()) or [c for c in d.get("concepts", []) if c]
+        fetched = getattr(self, "_fetched", set())
+        net = self.praxis.net
+        cands = [c for c in lit if isinstance(c, str) and c.replace("_", "").isalpha() and c not in fetched]
+        if not cands:                                        # exhausted this neighbourhood -> wander to a fresh seed
+            cands = [s for s in getattr(self, "curiosity_seeds", []) if s not in fetched]
+        if not cands:
+            return
+        target = min(cands, key=lambda c: len(net.edges.get(c, [])))   # what she knows LEAST -> curiosity pulls out
+        action = getattr(self, "_last_action", "explore")
+        try:
+            from bella_legs import dispatch
+            discovery = await asyncio.to_thread(dispatch, action, target, "")
+            if discovery:
+                fetched = fetched | {target}
+                self._fetched = set(list(fetched)[-24:]) if len(fetched) > 40 else fetched   # forget old, can revisit
+                self.feed(discovery)                         # the swarm returns -> perception next cycle
+                print(f"      [legs] {action} '{target}' -> brought back {len(discovery)} chars from the world")
+        except Exception as e:
+            print(f"      [legs] dispatch failed: {e}")
 
     async def _act_on(self):
         """Decision -> action via the real CNS_MDC + action orchestrator, with VISIBLE safety.
