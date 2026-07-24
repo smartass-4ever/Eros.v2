@@ -361,35 +361,58 @@ class Bella(CNS):
         whole mind knows. Curiosity outward, never re-fetching what she's read. This closes the loop."""
         if not getattr(self, "_legs_on", False):
             return
-        if len(getattr(self, "_inbox", []) or []) >= 2:      # she still has fresh material to read
+        if len(getattr(self, "_inbox", []) or []) >= 10:     # only skip if she has a big backlog to read
             return
         swarm = getattr(self, "swarm", None)
         if swarm is None:
             return
-        # the mind names the frontier: lit concepts + fresh seeds she hasn't explored, least-known first
-        d = getattr(self, "_last_decision", {}) or {}
-        lit = list(d.get("trace", {}).get("activated_subgraph", {}).keys())
-        fetched = getattr(self, "_fetched", set())
         net = self.praxis.net
-        pool = [c for c in lit if isinstance(c, str) and c.replace("_", "").isalpha() and c not in fetched]
-        pool += [s for s in getattr(self, "curiosity_seeds", []) if s not in fetched]
-        pool = sorted(dict.fromkeys(pool), key=lambda c: len(net.edges.get(c, [])))   # least-known first
-        targets = pool[:swarm.size]
-        if not targets:
+        fetched = getattr(self, "_fetched", set())
+        d = getattr(self, "_last_decision", {}) or {}
+        interest = [c for c in d.get("concepts", []) if c] or list(getattr(self, "_read_concepts", []))
+        markers = tuple(getattr(self, "_markers", ()))
+        tasks = []
+        # 1) FOLLOW HER DECISION: Praxis concludes the action, on its specific target (author/claim/concept)
+        if interest:
+            try:
+                from bella_curiosity import decide_next_action
+                action, _sc = decide_next_action(self.praxis, interest, markers,
+                                                  max(self._interest_level(interest), 0.6))
+                self._last_action = action
+                ents = getattr(self, "_entities", {}) or {}
+                tasks.append((action, ents.get("author") or ents.get("source") or interest[0]))
+            except Exception:
+                pass
+        # 2) EXPLORE HER FRONTIER: concepts across her WHOLE net she knows LEAST (real info-hunger), + seeds
+        frontier = [c for c in net.nodes
+                    if isinstance(c, str) and c.replace("_", "").isalpha()
+                    and c not in fetched and len(net.edges.get(c, [])) <= 3]
+        frontier.sort(key=lambda c: len(net.edges.get(c, [])))
+        frontier += [s for s in getattr(self, "curiosity_seeds", []) if s not in fetched]
+        for c in frontier:
+            tasks.append(("explore", c))
+        seen, final = set(), []                              # dedup by target, cap at swarm size
+        for a, t in tasks:
+            tl = str(t)
+            if tl and tl not in seen:
+                seen.add(tl); final.append((a, t))
+            if len(final) >= swarm.size:
+                break
+        if not final:
             return
         try:
-            found = await swarm.explore(targets)             # THE SWARM explores the world in parallel
-            for t in targets:
-                fetched = fetched | {t}
-            self._fetched = set(list(fetched)[-60:]) if len(fetched) > 80 else fetched
+            found = await swarm.explore(final)               # each agent executes its (action, target)
+            for _a, t in final:
+                fetched = fetched | {str(t)}
+            self._fetched = set(list(fetched)[-200:]) if len(fetched) > 300 else fetched
             for a, b, w in swarm.substrate():                # the mind ingests what the SWARM learned (Nalanda)
                 try: self.praxis.net.ingest([(a, b, w)])
                 except Exception: pass
             for dsc in found[:3]:                            # top discoveries enter her own perception
                 self.feed(dsc["text"])
             if found:
-                print(f"      [swarm] {len(found)} agents explored "
-                      f"{[str(t)[:16] for t in targets[:len(found)]]} -> Nalanda holds {len(swarm.nalanda.store)}")
+                acts = sorted({a for a, _ in final[:len(found)]})
+                print(f"      [swarm] {len(found)} agents, actions={acts} -> Nalanda holds {len(swarm.nalanda.store)}")
         except Exception as e:
             print(f"      [swarm] dispatch failed: {e}")
 

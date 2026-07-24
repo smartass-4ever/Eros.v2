@@ -27,9 +27,11 @@ class Swarm:
         self.last = []                                 # what each agent explored last (for the surface)
         self.discovered = 0
 
-    async def _agent(self, aid: str, target: str, session):
-        """One explorer: go to the world for `target` (async), perceive it, deposit into Nalanda."""
-        text = await search_web_async(session, _query_for("explore", target, ""))
+    async def _agent(self, aid: str, task, session):
+        """One explorer executing HER decision: task = (action, target). It runs the action Praxis
+        concluded (search_author / find_evidence / explore ...) on the target, perceives, deposits."""
+        action, target = task
+        text = await search_web_async(session, _query_for(action, target, ""))
         if not text:
             return None
         p = perceive(text)
@@ -43,13 +45,14 @@ class Swarm:
         return {"agent": aid, "target": target, "text": text,
                 "relations": rels, "concepts": p.get("concepts", [])}
 
-    async def explore(self, targets):
-        """Dispatch the swarm to explore `targets` IN PARALLEL (true async - hundreds at once on one CPU).
-        Returns discoveries; Nalanda is updated."""
+    async def explore(self, tasks):
+        """tasks = [(action, target), ...] - HER decisions. Dispatch the swarm to execute them IN
+        PARALLEL (true async - hundreds at once on one CPU). Returns discoveries; Nalanda updated."""
         timeout = aiohttp.ClientTimeout(total=20)
         async with aiohttp.ClientSession(headers=UA, timeout=timeout) as session:
-            tasks = [self._agent(f"agent-{i}", t, session) for i, t in enumerate(targets[:self.size]) if t]
-            found = [d for d in await asyncio.gather(*tasks, return_exceptions=False) if d]
+            jobs = [self._agent(f"agent-{i}", t, session)
+                    for i, t in enumerate(tasks[:self.size]) if t and t[1]]
+            found = [d for d in await asyncio.gather(*jobs, return_exceptions=False) if d]
         self.last = [(d["agent"], d["target"]) for d in found]
         return found
 
