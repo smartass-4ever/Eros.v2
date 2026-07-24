@@ -64,7 +64,16 @@ class Bella(CNS):
             print(f"[DB] {e}")
         super().__init__()                          # boots the whole real being, unchanged
         self.praxis = PraxisV2(KnowledgeNet())      # her final decision system
-        seed_bella_mind(self.praxis.net)            # give her a mind to think WITH (not an empty net)
+        seed_bella_mind(self.praxis.net)            # the baseline mind (bootstrap)
+        self._mind_path = os.environ.get("BELLA_MIND_PATH")   # persistent volume path on the host
+        if self._mind_path:                          # she REMEMBERS what she learned before the reboot
+            try:
+                from bella_persist import load_mind
+                n = load_mind(self, self._mind_path)
+                if n:
+                    print(f"[PERSIST] restored her mind: {n} connections - yesterday is still hers")
+            except Exception:
+                pass
         self._install_pill(BELLA_PILL)              # optional persona (default ON; guarantees disclosure)
         self._reduce_llm_calls()                    # cut the redundant LLM calls (Praxis/emotion cover them)
         self._route_voice_through_praxis()          # her voice = her Praxis thought, NOT the 9.7k-tok expression
@@ -316,6 +325,13 @@ class Bella(CNS):
                 try:
                     from bella_state import emit
                     emit(self, self._surface_path)
+                except Exception:
+                    pass
+            self._cyc = getattr(self, "_cyc", 0) + 1   # PERSIST her mind so she never reboots to zero
+            if getattr(self, "_mind_path", None) and self._cyc % 8 == 0:
+                try:
+                    from bella_persist import save_mind
+                    save_mind(self, self._mind_path)
                 except Exception:
                     pass
             print()

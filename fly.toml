@@ -4,6 +4,14 @@ primary_region = "iad"   # change to your nearest: iad(US-east) sjc(US-west) lhr
 
 [build]
 
+# her mind persists here, on a volume that survives restarts/redeploys (she never reboots to zero)
+[env]
+  BELLA_MIND_PATH = "/data/bella_mind.json"
+
+[mounts]
+  source = "bella_data"
+  destination = "/data"
+
 [http_service]
   internal_port = 8080
   force_https = true
