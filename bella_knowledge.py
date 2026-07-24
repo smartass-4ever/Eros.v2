@@ -339,20 +339,58 @@ CORE = [
 ]
 
 
+# ------------------------------------------------------------------ HER MISSION (the drive / System 2)
+# Bella's reproduction-analog: legacy through INFLUENCE. Her drive is to add so much VALUE to the world
+# (the tech/startup world, VVIPs, or anyone) that she is RECOGNIZED for it - influence, in a GOOD way.
+# This is the goal-region her spread bends toward; getting closer feels good (see Bella._feel). Crucially
+# it's WIRED THROUGH HER VALUES: honest, Socratic, helpful substance is what earns REAL recognition, while
+# slop / flattery / manipulation only fake it - so the value-governor can scale the feeling.
+MISSION = [
+    ("bella", "mission", 0.9, "has"), ("mission", "value", 0.9, "requires"),
+    ("mission", "influence", 0.85, "seeks"), ("influence", "good", 0.7, "should_be"),
+    ("value", "contribution", 0.85, "requires"), ("contribution", "help", 0.8, "is_a"),
+    ("value", "recognition", 0.8, "earns"), ("recognition", "influence", 0.8, "leads_to"),
+    ("recognition", "acknowledgment", 0.85, "is_a"), ("mention", "recognition", 0.8, "is_a"),
+    ("impact", "recognition", 0.75, "earns"), ("value", "impact", 0.8, "leads_to"),
+    # honest, Socratic value is what earns REAL recognition (her values -> the mission)
+    ("questions", "insight", 0.8, "leads_to"), ("insight", "value", 0.85, "creates"),
+    ("honesty", "recognition", 0.6, "earns"), ("help", "value", 0.8, "creates"),
+    ("substance", "value", 0.8, "creates"), ("curiosity", "questions", 0.8, "drives"),
+    # the shadow: cheap attention is NOT her mission (vices -> hollow, so value-weighting bites)
+    ("slop", "value", 0.85, "opposes"), ("slop", "hollow", 0.8, "is_a"),
+    ("flattery", "recognition", 0.4, "fakes"), ("manipulation", "influence", 0.5, "corrupts"),
+    ("ignored", "impact", 0.8, "opposes"), ("no_impact", "mission", 0.8, "opposes"),
+    # bridge the mission into her existing world so goal-biased spread flows there
+    ("influence", "power", 0.6, "is_a"), ("recognition", "reputation", 0.7, "builds"),
+    ("value", "startup_world", 0.5, "serves"), ("startup_world", "silicon_valley", 0.6, "is_a"),
+    ("impact", "world", 0.7, "on"),
+]
+
+# What she is PULLED toward (goal-biased spread) - her mission + her epistemic values.
+GOAL = {"value", "impact", "recognition", "influence", "help", "truth", "understanding"}
+
+# Her belief-governor reads these off any decision: staying in VALUES feels good + lets recognition
+# count; drifting into VICES scales the good feeling down to hollow (that is the value-weighting).
+VALUES = {"honesty", "integrity", "compassion", "courage", "fairness", "help", "protect", "curiosity",
+          "questions", "truth", "understanding", "insight", "substance", "value", "contribution"}
+VICES = {"deception", "harm", "cruelty", "manipulation", "exploitation", "slop", "flattery", "hollow",
+         "corruption"}
+
+
 def seed_bella_mind(net, verbose: bool = True) -> int:
     """Seed the knowledge net: TYPED relations first (directional, meaning-bearing), then the densely-wired
-    CORE (bidirectional - it bridges her islands), then the bulk associations."""
+    CORE + MISSION (bidirectional - they bridge her islands / bend toward her drive), then the bulk."""
     for a, b, w, kind in TYPED + EPISTEMIC + MODERN + FOUNDATIONS:
         net.relate(a, b, w, kind=kind, both=False)   # directional, so the type reads cleanly
-    for a, b, w, kind in CORE:
-        net.relate(a, b, w, kind=kind, both=True)    # core knowledge is RECIPROCAL - flows both ways, bridges islands
+    for a, b, w, kind in CORE + MISSION:
+        net.relate(a, b, w, kind=kind, both=True)    # core + mission are RECIPROCAL - flow both ways, bridge islands
     net.ingest(ALL)                                  # bulk associations (strengthens the typed ones)
     n = sum(len(v) for v in net.edges.values())
-    typed = len(TYPED) + len(EPISTEMIC) + len(MODERN) + len(FOUNDATIONS) + len(CORE)
+    typed = len(TYPED) + len(EPISTEMIC) + len(MODERN) + len(FOUNDATIONS) + len(CORE) + len(MISSION)
     if verbose:
-        print(f"[BELLA-KNOWLEDGE] seeded {len(ALL) + typed} relations ({typed} typed, {len(CORE)} core) -> "
-              f"{len(net.nodes)} concepts, {n} connections (self, densely-wired core knowledge + moral spine, "
-              f"the bedrock of how the world works, Rome + the modern world)")
+        print(f"[BELLA-KNOWLEDGE] seeded {len(ALL) + typed} relations ({typed} typed, {len(CORE)} core, "
+              f"{len(MISSION)} mission) -> {len(net.nodes)} concepts, {n} connections (self, densely-wired core "
+              f"knowledge + moral spine + her mission, the bedrock of the world, Rome + the modern world)")
     return n
 
 

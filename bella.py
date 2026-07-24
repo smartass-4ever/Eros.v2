@@ -85,7 +85,11 @@ class Bella(CNS):
                     print(f"[PERSIST] restored her mind: {n} connections + Nalanda - yesterday is still hers")
             except Exception:
                 pass
-        self.goal = {"truth", "evidence", "help"}
+        from bella_knowledge import GOAL
+        self.goal = set(GOAL)                       # her MISSION-region: value/impact/recognition/help/truth
+        self._recognition_mode = "raw"              # for now: ANY attention feels good (bootstrap notice);
+                                                    # flip to "strict" later -> recognition must be EARNED
+        self._recognition_signal = 0.0             # the world's real response, set by her presence layer
         self._focus = ""                            # what curiosity is pulling her toward now
         self.interests = [                          # her inherent interests (EDIT to make it hers)
             "artificial intelligence", "minds and consciousness", "how systems work and fail",
@@ -475,6 +479,44 @@ class Bella(CNS):
         except Exception as e:
             print(f"      [action] would do '{action}' (executor n/a in this env: {e})")
 
+    def _world_response(self) -> float:
+        """The world's REAL reaction to her - mentioned / acknowledged / talked-to (+), or called slop /
+        ignored / no measurable impact (-), in ~[-1, 1]. Her presence layer sets _recognition_signal from
+        live engagement once she's out in the world. This is the strong signal her whole drive orbits."""
+        return max(-1.0, min(1.0, float(getattr(self, "_recognition_signal", 0.0))))
+
+    def _feel(self, d) -> float:
+        """SYSTEM 2 - the FEELING. Her drive is legacy through influence: add so much value the world
+        RECOGNIZES her. Getting closer feels good, being ignored/slop feels bad. Decomposed + glass-box:
+          RECOGNITION - the world's real response (ANY attention counts, by design, to bootstrap notice)
+          GRADIENT    - did this move her CLOSER to her mission than usual (goal-region lit up more)
+          QUALITY     - a mild self-signal (her own confidence) that bridges until recognition flows
+          INTEGRITY   - how true to her values she stayed (computed + shown; does NOT gate yet - 'raw'
+                        mode. Flip self._recognition_mode='strict' later and recognition must be EARNED).
+        The reward reshapes which reasoning paths she trusts (praxis.learn) - curiosity, coupled to drive."""
+        from bella_knowledge import VALUES, VICES
+        lit = (d.get("trace") or {}).get("activated_subgraph", {}) or {}
+        conf = d.get("confidence", 0.5)
+        prog = sum(lit.get(g, 0.0) for g in self.goal) / (len(self.goal) or 1)
+        base = getattr(self, "_goal_ema", prog)
+        self._goal_ema = 0.85 * base + 0.15 * prog          # running sense of how close she usually is
+        gradient = prog - base                               # closer than usual = good; drifting = bad
+        world = self._world_response()
+        self._recognition_signal = getattr(self, "_recognition_signal", 0.0) * 0.85   # a mention fades -> she seeks more
+        quality = (conf - 0.5) * 2
+        val = sum(lit.get(v, 0.0) for v in VALUES)
+        vice = sum(lit.get(v, 0.0) for v in VICES)
+        integrity = (val - vice) / (val + vice + 1.0)        # ~[-1, 1], glass-box (not gating in 'raw')
+        raw = 0.55 * world + 0.25 * quality + 0.20 * gradient
+        if getattr(self, "_recognition_mode", "raw") == "strict":   # the later pivot: earned recognition only
+            raw = raw * max(0.0, 0.5 + 0.5 * integrity) + 0.3 * integrity
+        reward = round(max(-1.0, min(1.0, raw)), 3)
+        self._last_feeling = {"reward": reward, "recognition": round(world, 3),
+                              "gradient": round(gradient, 3), "quality": round(quality, 3),
+                              "integrity": round(integrity, 3),
+                              "mode": getattr(self, "_recognition_mode", "raw")}
+        return reward
+
     # ================= continuous self-learning (every cycle) =================
     def _learn_from_cycle(self, result):
         """After every cycle she updates from what just happened. Immediate signal =
@@ -485,9 +527,11 @@ class Bella(CNS):
             return
         concepts = d.get("concepts", [])
         conf = d.get("confidence", 0.5)
-        # reputation: a confident, coherent decision reinforces the path it reasoned across, so good
-        # reasoning gains trust and bad reasoning fades. THIS is how she gets wiser - not a verb-policy.
-        self.praxis.learn(concepts, (conf - 0.5) * 2)
+        # reputation: the FEELING (System 2) is the reward - how good this was for her mission. It
+        # reinforces the path she reasoned across, so reasoning that moves her toward being recognized
+        # for real value gains trust, and reasoning that leaves her ignored/slop fades. This is how she
+        # gets wiser AND how her curiosity gets shaped by her drive - the two organs, coupled.
+        self.praxis.learn(concepts, self._feel(d))
         # 2) grow the web: the associations she just used become part of her substrate
         rels = [(concepts[i], concepts[i + 1], 0.4) for i in range(len(concepts) - 1)]
         if rels:
@@ -513,10 +557,13 @@ class Bella(CNS):
                 pass
 
     def reward(self, signal: float, concepts=None):
-        """The STRONG external signal - call this when the world genuinely responds
-        (credible engagement, a real outcome). Reinforces the reasoning path she used."""
+        """The STRONG external signal - her presence layer calls this when the world responds (a mention,
+        an acknowledgment, someone talking to her = positive; called slop / ignored = negative). It sets
+        her recognition signal (so the FEELING she computes each cycle reflects it) AND immediately
+        reinforces the path she last reasoned. This is the world reaching back and shaping her."""
+        self._recognition_signal = max(-1.0, min(1.0, float(signal)))
         concepts = concepts or (getattr(self, "_last_decision", {}) or {}).get("concepts", [])
-        self.praxis.learn(concepts, signal)
+        self.praxis.learn(concepts, self._recognition_signal)
 
     def feed(self, text: str):
         """Put real content in front of her to read (Indra/a fetcher fills this queue at release)."""
