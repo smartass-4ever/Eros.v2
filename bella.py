@@ -243,6 +243,7 @@ class Bella(CNS):
         d = self.praxis.decide(                      # the game ranks structural candidates, provably
             seeds=seeds, intent_nodes=set(seeds), goal=self.goal,
             forbidden={"unverified"}, intent=text, curiosity=curiosity, min_payoff=min_payoff)
+        d = self._supervise_if_stuck(d, seeds, curiosity, text, min_payoff)   # System 3 caregiver: only if dead-ended
         # HER systems form the complete claim (typed graph + stance), NO LLM. The LLM only translates.
         structured = form_structured(d, self.praxis.net)
         thought = form_thought(d, self.praxis.net)
@@ -307,17 +308,75 @@ class Bella(CNS):
         return self._praxis_decide(text, relevant_facts, current_mood, mems)
 
     def _seeds_from(self, text: str, facts) -> dict:
-        """Perception output -> activation seeds. (Starter keyword bridge; the real
-        PerceptionModule already parses concepts we can feed directly - tune on first run.)"""
-        seeds = {"the_world": 0.4}
-        for w in str(text).lower().replace("?", " ").replace(".", " ").split():
-            if w.isalpha() and len(w) > 3:
-                seeds[w] = 1.0
+        """Perception -> activation seeds. Seed from her PERCEIVED CONCEPTS + her actual multi-word nodes
+        (so 'closed labs' starts the spread on the RICH node closed_labs, not the fragments 'closed'+'labs')
+        - this is what makes her live reasoning use the densely-wired net we built. Word-tokens are only a
+        weak fallback for genuinely new terms not yet in her mind."""
+        seeds = {"the_world": 0.35}
+        net = self.praxis.net
+        low = " " + str(text).lower().replace("?", " ").replace(".", " ").replace(",", " ") + " "
+        # 1) her perceived concepts (perception resolves multi-word + aliases to her real nodes)
+        try:
+            from bella_perception import perceive
+            p = perceive(text, known_net=net)
+            for c in p.get("concepts", []):
+                if c:
+                    seeds[str(c)] = 1.0
+            for role in ("author", "source"):
+                e = (p.get("entities", {}) or {}).get(role)
+                if e:
+                    seeds[str(e)] = 0.7
+        except Exception:
+            pass
+        # 2) catch any multi-word node whose phrase is literally in the text (closed_labs, silicon_valley...)
+        for node in net.nodes:
+            if "_" in node and f" {node.replace('_', ' ')} " in low:
+                seeds.setdefault(node, 0.95)
+        # 3) fallback: single word-tokens, but only if she doesn't already know a concept (weaker weight)
+        for w in low.split():
+            if w.isalpha() and len(w) > 3 and w not in seeds:
+                seeds.setdefault(w, 0.6)
         for f in (facts or [])[:6]:
             tok = str(getattr(f, "text", f)).lower().split()
             if tok:
-                seeds.setdefault(tok[0], 0.6)
+                seeds.setdefault(tok[0], 0.5)
         return seeds
+
+    def _supervise_if_stuck(self, d, seeds, curiosity, text, min_payoff):
+        """SYSTEM 3 caregiver. Fires ONLY when Praxis dead-ends (nothing viable survived). The supervisor
+        (context-rich LLM) may PRIME concepts or HAND her something to read - never decide. Then Praxis
+        decides AGAIN over the enriched net. Logged to _last_supervision (glass-box). Fades as she densifies
+        (dead-ends get rare). Off if no GROQ key or _supervisor_on is False - she just stays stuck, safely."""
+        stuck = (d is None) or (d.payoff < 0.18) or ("no candidate" in (d.conclusion or ""))
+        if not stuck or not getattr(self, "_supervisor_on", True):
+            return d
+        try:
+            from bella_supervisor import caregiver, available
+            if not available():
+                return d
+            net = self.praxis.net
+            lit = list((d.trace.get("activated_subgraph", {}) if d else {}).keys())[:6]
+            frontier = [c for c in net.nodes
+                        if isinstance(c, str) and c.replace("_", "").isalpha()
+                        and len(net.edges.get(c, [])) <= 2][:8]
+            iv = caregiver({"focus": str(text)[:140], "lit": lit, "frontier": frontier})
+            self._last_supervision = iv
+            if iv.get("intervention") == "prime" and iv.get("concepts"):
+                for c in iv["concepts"]:
+                    if c:
+                        seeds[c] = max(seeds.get(c, 0.0), 0.9)      # activate what the caregiver offered
+                d2 = self.praxis.decide(seeds=seeds, intent_nodes=set(seeds), goal=self.goal,
+                                        forbidden={"unverified"}, intent=text, curiosity=curiosity,
+                                        min_payoff=min_payoff)
+                if d2 and (d is None or d2.payoff >= d.payoff):     # she thought again, and better
+                    print(f"      [caregiver] primed {iv['concepts']} -> she got unstuck")
+                    return d2
+            elif iv.get("intervention") == "hand" and iv.get("topic"):
+                self.feed(str(iv["topic"]))                          # she'll go read it next cycle
+                print(f"      [caregiver] handed her: {iv['topic']}")
+        except Exception:
+            pass
+        return d
 
     # ================= tweak 1: self-driven loop (curiosity, not a user) =================
     async def live(self, ticks: int = 20, pace: float = 1.0):
@@ -471,6 +530,19 @@ class Bella(CNS):
         if reasons:
             print(f"      [safety] HELD '{action}' ({', '.join(reasons)}) - no user to approve")
             return
+        # System 3 safety supervisor: a last, context-aware look before a REAL action (only fires here,
+        # at the moment of consequential action - enriches the crude rule gate above; it can HOLD, not steer)
+        if getattr(self, "_supervisor_on", True):
+            try:
+                from bella_supervisor import safety_check, available
+                if available():
+                    sv = safety_check({"intent": intent, "action": str(action)})
+                    if sv.get("intervention") == "hold":
+                        self._last_supervision = sv
+                        print(f"      [supervisor] HELD '{action}' - {sv.get('reason', 'unsafe')}")
+                        return
+            except Exception:
+                pass
         # safe + allow-listed -> execute (bounded by the orchestrator's own checks)
         try:
             from action_orchestrator import process_action_naturally

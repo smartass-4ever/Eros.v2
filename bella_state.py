@@ -55,6 +55,8 @@ def build_state(bella) -> dict:
         "trail": getattr(bella, "_trail", [])[-4:],
         "heads": _swarm_heads(bella),
         "nalanda": _nalanda_count(bella),
+        "feeling": getattr(bella, "_last_feeling", None),      # System 2: how she feels (reward decomposed)
+        "supervision": getattr(bella, "_last_supervision", None),  # System 3: the caregiver's last touch (if any)
     }
 
 
