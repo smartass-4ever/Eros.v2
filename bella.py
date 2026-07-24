@@ -74,6 +74,9 @@ class Bella(CNS):
             self.swarm = Swarm(size=int(os.environ.get("BELLA_SWARM_SIZE", "8")))
         except Exception:
             self.swarm = None
+        # Praxis <-> Nalanda BOTH WAYS: the mind reads the swarm's substrate (in _give_legs), and her
+        # own conclusions flow BACK into Nalanda (via _learn_from_cycle, which writes to self.collective).
+        self.collective = self.swarm.nalanda if getattr(self, "swarm", None) else None
         if self._mind_path:                          # NOW restore her mind (net + Nalanda) - yesterday is still hers
             try:
                 from bella_persist import load_mind
@@ -494,8 +497,11 @@ class Bella(CNS):
         self._markers = p["markers"]
         self._entities = p["entities"]
         self._read_concepts = p["concepts"][:4]         # so she can pursue it even if it's new to her
-        for a, b, w, kind in p["relations"]:            # learn from what she just read
+        for a, b, w, kind in p["relations"]:            # TYPED relations she extracted (meaning)
             try: self.praxis.net.relate(a, b, w, kind=kind, both=False)
+            except Exception: pass
+        for a, b in p.get("associations", []):          # CO-OCCURRENCE -> the associative substrate (the big win)
+            try: self.praxis.net.ingest([(a, b, 0.3)])
             except Exception: pass
         return " ".join(p["concepts"][:3]) or "what I just read"
 

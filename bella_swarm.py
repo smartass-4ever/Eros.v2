@@ -33,10 +33,11 @@ class Swarm:
             return None
         p = perceive(text)
         rels = p.get("relations", [])
-        if rels:                                       # deposit what it learned into the shared mind
+        assoc = p.get("associations", [])
+        if rels or assoc:                              # deposit what it learned into the shared mind (Nalanda)
             key = (p["concepts"][0] if p.get("concepts") else target)
             self.nalanda.remember(key=str(key), content=text[:220], salience=0.6,
-                                  relations=[(a, b) for a, b, _w, _k in rels])
+                                  relations=[(a, b) for a, b, _w, _k in rels] + assoc)
         self.discovered += 1
         return {"agent": aid, "target": target, "text": text,
                 "relations": rels, "concepts": p.get("concepts", [])}
