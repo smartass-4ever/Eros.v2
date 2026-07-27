@@ -110,6 +110,19 @@ class Bella(CNS):
             "the decentralization of technology and power",
             "what makes a scientific revolution actually happen",
         ]
+        # replace Eros's conversation-focused gap detector with Bella's web-aware version.
+        # the dopamine arc system (AdvancedDopamineManager) is completely unchanged —
+        # arcs, drive/satisfaction/decay, merging, recall all stay intact. only the
+        # detector (which was tuned for personal conversation nouns) is swapped.
+        try:
+            from bella_curiosity import BellaGapDetector
+            cs = getattr(self, "curiosity_system", None)
+            if cs is not None:
+                cs.detector = BellaGapDetector(self, net=self.praxis.net,
+                                               interests=self.interests)
+                print("[BELLA] web-aware gap detector installed (dopamine arcs unchanged)")
+        except Exception as e:
+            print(f"[BELLA] web gap detector install skipped: {e}")
 
     # ================= reduce: cut the redundant LLM calls in her per-cycle cascade =================
     def _reduce_llm_calls(self):
@@ -777,12 +790,19 @@ class Bella(CNS):
     def _curiosity_force(self, text, focus="") -> set:
         """Praxis's strongest term, sourced from her REAL curiosity system: the GAPS her gap-detector
         finds in this input + the live dopamine ARCS (what she's already curious about). That is her
-        genuine curiosity, as concepts, driving the decision. Falls back to focus tokens if absent."""
+        genuine curiosity, as concepts, driving the decision. Falls back to focus tokens if absent.
+
+        For article-length text (>200 chars) uses detect_web() which chunks into sentences — the
+        gap detector was designed for single sentences and works correctly at that granularity."""
         cs = getattr(self, "curiosity_system", None)
         concepts = set()
         if cs is not None:
-            try:                                    # gaps this input opens (works on a single sentence)
-                for g in (cs.detector.detect(text, None) or []):
+            try:
+                # detect_web() for articles (sentence-chunked); detect() for short inputs
+                det = cs.detector
+                detect_fn = (getattr(det, "detect_web", None)
+                             if len(text) > 200 else None) or det.detect
+                for g in (detect_fn(text, None) or []):
                     concepts |= self._words(g.get("target", ""))
             except Exception:
                 pass
