@@ -97,19 +97,140 @@ class Candidate:
     conclusion: str
     concepts: tuple[str, str]
     strength: float
+    kind: str = "assoc"      # the typed relation that produced this inference
+    stance: str = "neutral"  # affirm / oppose / concern / complex / question / neutral
 
-def compose(activated: dict[str, float], intent: str, composer=None) -> list[Candidate]:
-    """Activated pieces -> candidate conclusions. THE opaque core (LLM in prod). Heuristic
-    default pairs the most-activated concepts (the guppy-effect emergent combination)."""
-    if composer:                                        # pluggable LLM hook
+
+# how each edge type renders as an inference (text template, stance)
+_RELATION: dict[str, tuple[str, str]] = {
+    "leads_to":    ("{a} enables {b}",                        "affirm"),
+    "causes":      ("{a} drives {b}",                         "affirm"),
+    "opposes":     ("{a} undermines {b}",                     "oppose"),
+    "requires":    ("{b} depends on {a}",                     "affirm"),
+    "is_a":        ("{a} is a form of {b}",                   "affirm"),
+    "exemplifies": ("{a} demonstrates {b}",                   "affirm"),
+    "becomes":     ("{a} transforms into {b}",                "affirm"),
+    "concentrates":("{a} concentrates {b}",                   "concern"),
+    "distributes": ("{a} distributes {b}",                    "affirm"),
+    "is":          ("{a} is {b}",                             "neutral"),
+    "analogous_to":("{a} mirrors {b}",                        "neutral"),
+    "assoc":       ("{a} connects to {b}",                    "neutral"),
+}
+
+
+def _rel(tmpl: tuple[str, str], a: str, b: str) -> tuple[str, str]:
+    text, stance = tmpl
+    return text.format(a=a.replace("_", " "), b=b.replace("_", " ")), stance
+
+
+def compose(activated: dict[str, float], intent: str, composer=None,
+            net: "KnowledgeNet | None" = None) -> list[Candidate]:
+    """Activated pieces -> candidate conclusions built from the TYPED knowledge net.
+
+    Three tiers of inference, in priority order:
+    1. Direct typed edges between top-activated nodes — the clearest single-step inference
+    2. Two-hop chains (A→B→C) where the intermediate is also lit — this is real reasoning:
+       going THROUGH a concept to reach a conclusion, not just pairing endpoints
+    3. Contested paths — when A both enables AND undermines B, surface the tension explicitly
+
+    Fallback: old "{a} implies {b}" when net is absent (backward compatible).
+    The pluggable composer hook (LLM in prod) bypasses all of this when provided.
+    """
+    if composer:
         return composer(activated, intent)
-    top = sorted(activated.items(), key=lambda x: -x[1])[:4]
-    out = []
-    for i in range(len(top)):
-        for j in range(i + 1, len(top)):
-            (a, av), (b, bv) = top[i], top[j]
-            out.append(Candidate(f"{a} implies {b}", (a, b), round((av + bv) / 2, 3)))
-    return out[:4]
+
+    top = sorted(activated.items(), key=lambda x: -x[1])[:6]
+    top_set = {n for n, _ in top}
+    top_dict = dict(top)
+    out: list[Candidate] = []
+
+    if net is None:
+        for i in range(len(top)):
+            for j in range(i + 1, len(top)):
+                (a, av), (b, bv) = top[i], top[j]
+                out.append(Candidate(f"{a} implies {b}", (a, b), round((av + bv) / 2, 3)))
+        return out[:4]
+
+    seen: set = set()
+
+    # TIER 1 — direct typed edges between top-activated nodes
+    for a, av in top:
+        for dst, w, kind in net.edges.get(a, []):
+            if dst not in top_set or dst == a:
+                continue
+            tmpl = _RELATION.get(kind)
+            if tmpl is None:
+                continue
+            dv = top_dict[dst]
+            text, stance = _rel(tmpl, a, dst)
+            key = tuple(sorted((a, dst))) + (kind,)
+            if key not in seen:
+                seen.add(key)
+                out.append(Candidate(text, (a, dst),
+                                     round((av + dv) / 2 * w, 3), kind=kind, stance=stance))
+
+    # TIER 2 — two-hop chains A → mid → C, where mid is lit in the activation field
+    for a, av in top[:4]:
+        for mid, w1, kind1 in net.edges.get(a, [])[:8]:
+            mv = activated.get(mid, 0.0)
+            if mv < 0.06:           # mid must be genuinely lit, not just adjacent
+                continue
+            for dst, w2, kind2 in net.edges.get(mid, [])[:6]:
+                if dst not in top_set or dst == a or dst == mid:
+                    continue
+                dv = top_dict[dst]
+                ac, mc, dc = (n.replace("_", " ") for n in (a, mid, dst))
+                # specific chain templates cover the most meaningful combinations
+                if (kind1, kind2) == ("leads_to", "leads_to"):
+                    text, stance = f"{ac} enables {dc} through {mc}", "affirm"
+                elif (kind1, kind2) == ("leads_to", "opposes"):
+                    text, stance = f"{ac} undermines {dc} via {mc}", "concern"
+                elif (kind1, kind2) == ("opposes", "leads_to"):
+                    text, stance = f"opposing {ac} opens the path to {dc} through {mc}", "complex"
+                elif (kind1, kind2) == ("causes", "leads_to"):
+                    text, stance = f"{ac} drives {dc} via {mc}", "affirm"
+                elif kind2 == "opposes":
+                    text, stance = f"{ac} reaches {mc}, which undermines {dc}", "concern"
+                else:
+                    k1 = kind1.replace("_", " "); k2 = kind2.replace("_", " ")
+                    text, stance = f"{ac} {k1} {mc}, which {k2} {dc}", "neutral"
+                strength = round((av + mv + dv) / 3 * (w1 * w2) ** 0.5, 3)
+                key = tuple(sorted((a, dst))) + (kind1, kind2)
+                if key not in seen:
+                    seen.add(key)
+                    out.append(Candidate(text, (a, dst), strength,
+                                         kind=f"{kind1}:{kind2}", stance=stance))
+
+    # TIER 3 — contested: A both enables AND undermines the same top node (a real tension)
+    for a, av in top[:4]:
+        enables = {dst for dst, _, k in net.edges.get(a, [])
+                   if k in ("leads_to", "causes") and dst in top_set}
+        undermines = {dst for dst, _, k in net.edges.get(a, [])
+                      if k == "opposes" and dst in top_set}
+        for c in enables & undermines:
+            cv = top_dict[c]
+            text = (f"{a.replace('_',' ')} both enables and undermines "
+                    f"{c.replace('_',' ')} — a genuine tension")
+            key = tuple(sorted((a, c))) + ("contested",)
+            if key not in seen:
+                seen.add(key)
+                out.append(Candidate(text, (a, c), round((av + cv) / 2, 3),
+                                      kind="contested", stance="question"))
+
+    # fallback: if the graph had no typed connections between activated nodes
+    if not out and len(top) >= 2:
+        (a, av), (b, bv) = top[0], top[1]
+        out.append(Candidate(
+            f"{a.replace('_',' ')} implies {b.replace('_',' ')}",
+            (a, b), round((av + bv) / 2, 3)))
+
+    # deduplicate by concept pair (keep strongest per pair), sort by strength
+    best: dict = {}
+    for c in out:
+        k = tuple(sorted(c.concepts))
+        if k not in best or c.strength > best[k].strength:
+            best[k] = c
+    return sorted(best.values(), key=lambda c: -c.strength)[:6]
 
 # --------------------------------------------------------------------------- stage 2b: evaluation (the game)
 @dataclass
@@ -161,6 +282,8 @@ class Decision:
     payoff: float
     trace: dict
     concepts: tuple = ()          # the path she reasoned across, so she can learn from the outcome
+    kind: str = "assoc"           # the typed relation of the winning inference
+    stance: str = "neutral"       # the stance of the winning inference
 
 class PraxisV2:
     def __init__(self, net: KnowledgeNet):
@@ -175,7 +298,7 @@ class PraxisV2:
 
         def _pass(breadth, steps):
             act, tr = spread(self.net, seeds, direction, steps=steps, breadth=breadth, focal=_focal)
-            cands = compose(act, intent, composer)
+            cands = compose(act, intent, composer, net=self.net)
             ranked = evaluate(cands, intent_nodes, goal, forbidden, curiosity, net=self.net,
                               gain_fn=gain_fn, cost_map=cost_map)
             return act, tr, cands, ranked
@@ -205,7 +328,9 @@ class PraxisV2:
         }
         return Decision(winner.cand.conclusion if winner else "(no candidate survived)",
                         winner.payoff if winner else 0.0, trace,
-                        winner.cand.concepts if winner else ())
+                        winner.cand.concepts if winner else (),
+                        kind=winner.cand.kind if winner else "assoc",
+                        stance=winner.cand.stance if winner else "neutral")
 
     def learn(self, concepts, reward: float):
         """Ex-post: the world responded. reward > 0 strengthens the path she reasoned across

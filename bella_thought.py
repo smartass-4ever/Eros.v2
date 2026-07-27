@@ -69,13 +69,27 @@ def _typed_edge(net, a, b):
 
 def form_structured(decision, net) -> dict:
     """The DEEP STRUCTURE of her thought - the claim itself, fully hers, no LLM. subject + typed
-    relation + object + stance. The LLM (surface realization) can add nothing to this."""
+    relation + object + stance. The LLM (surface realization) can add nothing to this.
+
+    When compose() traced a real typed path, decision.kind carries the relation directly — use it.
+    When it's a fallback (assoc / chain / contested), look up the edge in the net as before."""
     pair = [c for c in decision.concepts if c] or ["the_world"]
     a = pair[0]; b = pair[1] if len(pair) > 1 else pair[0]
-    relation, subj, obj = _typed_edge(net, a, b)
-    # stance comes from the charge of the two concepts the CLAIM is about (not the whole path)
+    # prefer the kind compose() traced (a real typed edge) over a net lookup
+    kind = getattr(decision, "kind", "assoc")
+    if kind and kind in TEMPLATES and ":" not in kind and kind not in ("assoc", "contested"):
+        relation, subj, obj = kind, a, b
+    else:
+        relation, subj, obj = _typed_edge(net, a, b)
+    # stance: blend compose()'s stance with the valence lexicon
+    compose_stance = getattr(decision, "stance", "neutral")
     charge = (1 if subj in POS else -1 if subj in NEG else 0) + (1 if obj in POS else -1 if obj in NEG else 0)
-    stance = "cautionary" if charge < 0 else "affirming" if charge > 0 else "neutral"
+    if compose_stance in ("oppose", "concern", "question") or charge < 0:
+        stance = "cautionary"
+    elif compose_stance == "affirm" or charge > 0:
+        stance = "affirming"
+    else:
+        stance = "neutral"
     return {"subject": subj, "relation": relation, "object": obj, "stance": stance,
             "roman": subj in ROMAN or obj in ROMAN}
 
