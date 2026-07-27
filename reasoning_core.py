@@ -60,12 +60,18 @@ class KnowledgeNet:
 # --------------------------------------------------------------------------- stage 1: activation
 def spread(net: KnowledgeNet, seeds: dict[str, float], goal: set[str],
            steps: int = 3, decay: float = 0.6, goal_bias: float = 0.5,
-           breadth: float = 0.06):
+           breadth: float = 0.06, focal: set = None):
     """
     Spreading activation with decay, goal-directed (edges toward goal get a boost) and a
     breadth knob (lower threshold = more distant/creative concepts survive). Returns the
     activated subgraph plus a per-step trace (the visualization).
+
+    focal: set of perceived concepts from the current input. These stay lit longer (higher
+    retention) so the input steers the reasoning rather than the graph's topology. Hub nodes
+    that aren't in the focal set decay normally and can't dominate the output. When focal is
+    None the behaviour is identical to before.
     """
+    focal = set(focal) if focal else set()
     act: dict[str, float] = defaultdict(float, seeds)
     trace = [dict(sorted(act.items(), key=lambda x: -x[1]))]
     for _ in range(steps):
@@ -73,7 +79,10 @@ def spread(net: KnowledgeNet, seeds: dict[str, float], goal: set[str],
         for node, a in act.items():
             if a < breadth:
                 continue
-            nxt[node] += a * 0.5                       # retention
+            # focal nodes (what she just perceived) stay lit longer so they steer the spread;
+            # hub nodes that aren't in the input decay at the normal rate and can't crowd them out
+            retention = 0.5 + (0.15 if node in focal else 0.0)
+            nxt[node] += a * retention
             for dst, w, _kind in net.edges.get(node, []):
                 boost = 1.0 + (goal_bias if dst in goal else 0.0)
                 nxt[dst] += a * w * decay * boost      # goal-directed spread
@@ -160,11 +169,12 @@ class PraxisV2:
     def decide(self, seeds: dict[str, float], intent_nodes: set[str], goal: set[str],
                forbidden: set[str] = frozenset(), intent: str = "", composer=None,
                curiosity: set[str] = frozenset(), min_payoff: float = 0.35,
-               gain_fn=None, cost_map=None) -> Decision:
+               gain_fn=None, cost_map=None, focal: set = None) -> Decision:
         direction = goal | set(curiosity)          # goal + curiosity steer the spread
+        _focal = set(focal) if focal else set()
 
         def _pass(breadth, steps):
-            act, tr = spread(self.net, seeds, direction, steps=steps, breadth=breadth)
+            act, tr = spread(self.net, seeds, direction, steps=steps, breadth=breadth, focal=_focal)
             cands = compose(act, intent, composer)
             ranked = evaluate(cands, intent_nodes, goal, forbidden, curiosity, net=self.net,
                               gain_fn=gain_fn, cost_map=cost_map)

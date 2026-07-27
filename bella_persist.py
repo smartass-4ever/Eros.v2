@@ -20,6 +20,9 @@ def save_mind(bella, path) -> int:
             "action_counts": getattr(bella.praxis, "_action_counts", {}),
             "fetched": list(getattr(bella, "_fetched", set()))[-200:],
             "trail": getattr(bella, "_trail", [])[-20:],
+            "positions": {t: {"concepts": list(p["concepts"]), "confidence": round(p["confidence"], 4),
+                              "depth": p["depth"]}
+                          for t, p in (getattr(bella, "_positions", None) or {}).items()},
         }
         sw = getattr(bella, "swarm", None)             # the swarm's shared memory (Nalanda)
         if sw is not None:
@@ -51,6 +54,7 @@ def load_mind(bella, path) -> int:
         bella.praxis._action_counts = data.get("action_counts", {}) or {}
         bella._fetched = set(data.get("fetched", []))
         bella._trail = data.get("trail", [])
+        bella._positions = data.get("positions", {})
         sw = getattr(bella, "swarm", None)             # restore the swarm's shared memory (Nalanda)
         if sw is not None and data.get("nalanda"):
             from collective_memory import Trace

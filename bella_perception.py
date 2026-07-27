@@ -86,8 +86,13 @@ def perceive(text: str, known_net=None) -> dict:
     # (the substrate); outcomes/reputation strengthen the trusted ones later. This is the big learning gain.
     associations = _associations(low)
 
+    # GROUNDINGS - for concepts she's never encountered (not in the net), wire them to co-occurring
+    # known nodes. Next time she reads about this term, activation can actually spread somewhere rather
+    # than falling back to hub nodes. This is the dynamic alias: context grounds meaning, not a hardcoded table.
+    groundings = _ground_new_concepts(concepts, associations, known_net)
+
     return {"concepts": concepts, "entities": entities, "markers": tuple(dict.fromkeys(markers)),
-            "relations": relations[:12], "associations": associations}
+            "relations": relations[:12], "associations": associations, "groundings": groundings}
 
 
 def _associations(low, window=3, cap=45):
@@ -108,6 +113,30 @@ def _associations(low, window=3, cap=45):
                 if key not in seen:
                     seen.add(key); pairs.append((ws[i], ws[j]))
     return pairs[:cap]
+
+
+def _ground_new_concepts(concepts, associations, known_net):
+    """For concepts she just perceived that aren't in the net yet, find what known net nodes they
+    co-occur with in the same text — and propose those as grounding edges. This is the dynamic
+    alias: context grounds meaning, not a hardcoded table. 'Mistral' co-occurs with 'open_source'
+    and 'model' (->ai) -> wires there. Next cycle, activation can actually spread on this term."""
+    if known_net is None:
+        return []
+    known = known_net.nodes
+    new_concepts = {c for c in concepts if c not in known}
+    if not new_concepts:
+        return []
+    groundings, seen = [], set()
+    for a, b in associations:
+        if a in new_concepts and b in known:
+            key = (a, b)
+            if key not in seen:
+                seen.add(key); groundings.append((a, b, 0.35))
+        elif b in new_concepts and a in known:
+            key = (b, a)
+            if key not in seen:
+                seen.add(key); groundings.append((b, a, 0.35))
+    return groundings[:12]
 
 
 if __name__ == "__main__":

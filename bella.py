@@ -235,6 +235,16 @@ class Bella(CNS):
 
         # PERCEPTION + MEMORY become the activation seeds; CURIOSITY steers hardest
         seeds = self._seeds_from(text + " " + " ".join(ctx["facts"] + ctx["memories"]), relevant_facts)
+        # focal = what she actually perceived right now; these stay lit through the spread so the
+        # input steers the reasoning rather than the graph's hub topology
+        focal = getattr(self, "_last_perceived_concepts", set())
+        # ACCUMULATED POSITIONS: if she's reasoned about this topic before (depth > 1), her prior
+        # conclusion's concepts become strong seeds so her understanding compounds across cycles
+        positions = getattr(self, "_positions", {})
+        for topic, pos in positions.items():
+            if topic in seeds and pos.get("depth", 1) > 1:
+                for c in pos.get("concepts", []):
+                    seeds[c] = max(seeds.get(c, 0.0), 0.75 * pos["confidence"])
         # curiosity FORCE = her REAL CuriositySystem's gaps + live dopamine arcs (what she is
         # GENUINELY curious about), NOT tokenized focus words. Her real curiosity finally DRIVES.
         curiosity = self._curiosity_force(text, ctx["focus"])
@@ -242,7 +252,8 @@ class Bella(CNS):
         min_payoff = 0.30 if ctx["valence"] < -0.15 else 0.35
         d = self.praxis.decide(                      # the game ranks structural candidates, provably
             seeds=seeds, intent_nodes=set(seeds), goal=self.goal,
-            forbidden={"unverified"}, intent=text, curiosity=curiosity, min_payoff=min_payoff)
+            forbidden={"unverified"}, intent=text, curiosity=curiosity, min_payoff=min_payoff,
+            focal=focal)
         d = self._supervise_if_stuck(d, seeds, curiosity, text, min_payoff)   # System 3 caregiver: only if dead-ended
         # HER systems form the complete claim (typed graph + stance), NO LLM. The LLM only translates.
         structured = form_structured(d, self.praxis.net)
@@ -263,6 +274,7 @@ class Bella(CNS):
             "use_conclusion_directly": False,
         }
         self._last_decision = out                   # so the action step can act on it
+        self._update_position(out)                  # accumulate her position on this topic
         return out
 
     # ---- the LLM as PURE TRANSLATOR (surface realization only - it cannot add a claim) ----
@@ -319,13 +331,16 @@ class Bella(CNS):
         try:
             from bella_perception import perceive
             p = perceive(text, known_net=net)
+            perceived = set()
             for c in p.get("concepts", []):
                 if c:
                     seeds[str(c)] = 1.0
+                    perceived.add(str(c))
             for role in ("author", "source"):
                 e = (p.get("entities", {}) or {}).get(role)
                 if e:
                     seeds[str(e)] = 0.7
+            self._last_perceived_concepts = perceived  # used by _praxis_decide for focal steering
         except Exception:
             pass
         # 2) catch any multi-word node whose phrase is literally in the text (closed_labs, silicon_valley...)
@@ -377,6 +392,28 @@ class Bella(CNS):
         except Exception:
             pass
         return d
+
+    def _update_position(self, d: dict):
+        """After each cycle, store her concluded position on this topic. Next time she reads about
+        the same topic the prior claim's concepts become strong seeds, so understanding compounds
+        across cycles instead of restarting from scratch each time."""
+        concepts = list(d.get("concepts", ()))
+        if not concepts or d.get("confidence", 0) < 0.40:
+            return
+        net = self.praxis.net
+        # topic = the most specific concept she reasoned across (fewest edges = least generic)
+        topic = min(concepts, key=lambda c: len(net.edges.get(c, [])), default=concepts[0])
+        positions = getattr(self, "_positions", {})
+        prev = positions.get(topic)
+        if prev:
+            positions[topic] = {
+                "concepts": concepts,
+                "confidence": min(0.95, prev["confidence"] * 0.6 + d["confidence"] * 0.4),
+                "depth": prev.get("depth", 1) + 1,
+            }
+        else:
+            positions[topic] = {"concepts": concepts, "confidence": d.get("confidence", 0.5), "depth": 1}
+        self._positions = positions
 
     # ================= tweak 1: self-driven loop (curiosity, not a user) =================
     async def live(self, ticks: int = 20, pace: float = 1.0):
@@ -656,6 +693,9 @@ class Bella(CNS):
             except Exception: pass
         for a, b in p.get("associations", []):          # CO-OCCURRENCE -> the associative substrate (the big win)
             try: self.praxis.net.ingest([(a, b, 0.3)])
+            except Exception: pass
+        for new_c, known_c, w in p.get("groundings", []):  # dynamic grounding: new terms wired from context
+            try: self.praxis.net.relate(new_c, known_c, w, kind="assoc", both=False)
             except Exception: pass
         return " ".join(p["concepts"][:3]) or "what I just read"
 
