@@ -484,12 +484,35 @@ class Bella(CNS):
         return target
 
     async def _give_legs(self):
-        """LEGS = dispatch her SWARM. The mind names the frontier (the lit concepts + seeds she knows
-        LEAST), a pool of agents explores them ALL IN PARALLEL, deposits into NALANDA, and the mind
-        ingests everything they brought back + perceives the top discoveries. What one agent finds, the
-        whole mind knows. Curiosity outward, never re-fetching what she's read. This closes the loop."""
+        """LEGS = dispatch her SWARM + publish when she's earned it.
+
+        The mind names the frontier (the lit concepts + seeds she knows LEAST), a pool of agents
+        explores them ALL IN PARALLEL, deposits into NALANDA, and the mind ingests everything they
+        brought back + perceives the top discoveries. What one agent finds, the whole mind knows.
+        Curiosity outward, never re-fetching what she's read. This closes the loop.
+
+        Publishing is also a leg action: when confidence >= 0.70 AND she's revisited this topic
+        (depth > 1 in _positions), she pushes to her Atom feed and pings the webmention network.
+        Quality is the filter - not every thought, only real deepened positions."""
         if not getattr(self, "_legs_on", False):
             return
+        # PUBLISH: a leg action, independent of the swarm. Fires when she's formed a real position.
+        d = getattr(self, "_last_decision", {}) or {}
+        if d.get("confidence", 0) >= 0.70:
+            concepts = d.get("concepts", [])
+            if concepts:
+                net = self.praxis.net
+                topic = min(concepts, key=lambda c: len(net.edges.get(c, [])), default=concepts[0])
+                pos = (getattr(self, "_positions", {}) or {}).get(topic, {})
+                if pos.get("depth", 0) > 1:
+                    try:
+                        from bella_legs import publish_thought
+                        feed_path = os.path.join(os.path.dirname(__file__), "surface", "feed.xml")
+                        base_url = os.environ.get("BELLA_BASE_URL", "https://bella-mind.fly.dev")
+                        url = publish_thought(d, feed_path, base_url)
+                        print(f"      [voice] published: {url}")
+                    except Exception as e:
+                        print(f"      [voice] publish failed: {e}")
         if len(getattr(self, "_inbox", []) or []) >= 10:     # only skip if she has a big backlog to read
             return
         swarm = getattr(self, "swarm", None)
