@@ -110,19 +110,30 @@ class Bella(CNS):
             "the decentralization of technology and power",
             "what makes a scientific revolution actually happen",
         ]
-        # replace Eros's conversation-focused gap detector with Bella's web-aware version.
-        # the dopamine arc system (AdvancedDopamineManager) is completely unchanged —
-        # arcs, drive/satisfaction/decay, merging, recall all stay intact. only the
-        # detector (which was tuned for personal conversation nouns) is swapped.
+        # ONE curiosity detector for the whole being — BellaGapDetector replaces the
+        # conversation-focused AdvancedGapDetector everywhere it appears.
+        # The dopamine arc system (AdvancedDopamineManager) is completely unchanged.
         try:
             from bella_curiosity import BellaGapDetector
+            web_detector = BellaGapDetector(self, net=self.praxis.net, interests=self.interests)
+            # 1) main curiosity system (drives _curiosity_signals + _curiosity_focus)
             cs = getattr(self, "curiosity_system", None)
             if cs is not None:
-                cs.detector = BellaGapDetector(self, net=self.praxis.net,
-                                               interests=self.interests)
-                print("[BELLA] web-aware gap detector installed (dopamine arcs unchanged)")
+                cs.detector = web_detector
+            # 2) expression module's separate CuriositySystem instance — also unify
+            es = getattr(self, "enhanced_expression_system", None)
+            if es is not None:
+                for attr in list(vars(es) if hasattr(es, "__dict__") else []):
+                    try:
+                        sub = getattr(es, attr, None)
+                        sub_cs = getattr(sub, "curiosity_system", None) if sub is not None else None
+                        if sub_cs is not None and sub_cs is not cs:
+                            sub_cs.detector = web_detector
+                    except Exception:
+                        pass
+            print("[BELLA] unified web-aware curiosity detector installed across all subsystems")
         except Exception as e:
-            print(f"[BELLA] web gap detector install skipped: {e}")
+            print(f"[BELLA] curiosity detector unification skipped: {e}")
 
     # ================= reduce: cut the redundant LLM calls in her per-cycle cascade =================
     def _reduce_llm_calls(self):
@@ -235,32 +246,38 @@ class Bella(CNS):
         in as context; Praxis v2 makes the provable decision and keeps the glass-box trace."""
         ctx = self._gather_context(text, relevant_facts, current_mood, memory_results)
 
-        # MEMORY builds the substrate: fold recalled facts / memories / beliefs into her net
-        ingest = []
-        for chunk in ctx["facts"] + ctx["memories"] + ctx["beliefs"]:
-            toks = [w for w in str(chunk).lower().replace(".", " ").replace(",", " ").split()
-                    if w.isalpha() and len(w) > 3]
-            for i in range(len(toks) - 1):
-                ingest.append((toks[i], toks[i + 1], 0.4))
-        if ingest:
-            try: self.praxis.net.ingest(ingest[:24])
-            except Exception: pass
+        # MEMORY builds the substrate: use perceive() so memory grows the net with real semantic
+        # concept pairs (not sequential word tokens which produce "open"→"source" garbage edges)
+        try:
+            from bella_perception import perceive as _perc
+            ingest = []
+            for chunk in ctx["facts"] + ctx["memories"] + ctx["beliefs"]:
+                p = _perc(str(chunk), known_net=self.praxis.net)
+                for pair in p.get("associations", []):
+                    a, b = pair[0], pair[1]
+                    ingest.append((a, b, 0.35))
+            if ingest:
+                self.praxis.net.ingest(ingest[:24])
+        except Exception:
+            pass
 
-        # PERCEPTION + MEMORY become the activation seeds; CURIOSITY steers hardest
+        # PERCEPTION + MEMORY become the activation seeds
         seeds = self._seeds_from(text + " " + " ".join(ctx["facts"] + ctx["memories"]), relevant_facts)
         # focal = what she actually perceived right now; these stay lit through the spread so the
         # input steers the reasoning rather than the graph's hub topology
         focal = getattr(self, "_last_perceived_concepts", set())
-        # ACCUMULATED POSITIONS: if she's reasoned about this topic before (depth > 1), her prior
-        # conclusion's concepts become strong seeds so her understanding compounds across cycles
+        # ACCUMULATED POSITIONS: prior conclusions compound — she builds on what she already decided
         positions = getattr(self, "_positions", {})
         for topic, pos in positions.items():
             if topic in seeds and pos.get("depth", 1) > 1:
                 for c in pos.get("concepts", []):
                     seeds[c] = max(seeds.get(c, 0.0), 0.75 * pos["confidence"])
-        # curiosity FORCE = her REAL CuriositySystem's gaps + live dopamine arcs (what she is
-        # GENUINELY curious about), NOT tokenized focus words. Her real curiosity finally DRIVES.
-        curiosity = self._curiosity_force(text, ctx["focus"])
+        # CURIOSITY: direct output of the curiosity system — gaps weighted by salience×confidence,
+        # dopamine arcs weighted by drive. High-drive concepts CO-SEED the spread (not just direction
+        # bias) so curiosity genuinely activates paths, not just nudges edges that happen to point there
+        curiosity, curiosity_seeds = self._curiosity_signals(text, ctx["focus"])
+        for c, w in curiosity_seeds.items():
+            seeds[c] = max(seeds.get(c, 0.0), w)   # curiosity activates alongside perception
         # EMOTION tilts the lens: unease -> think wider (lower the payoff bar), calm -> commit sooner
         min_payoff = 0.30 if ctx["valence"] < -0.15 else 0.35
         d = self.praxis.decide(                      # the game ranks structural candidates, provably
@@ -292,29 +309,40 @@ class Bella(CNS):
 
     # ---- the LLM as PURE TRANSLATOR (surface realization only - it cannot add a claim) ----
     def _translate(self, structured, gloss):
-        """The claim (subject / relation / object / stance) is ALREADY fixed by her systems. The LLM
-        only renders it as one natural sentence, adding NO new claim, fact, or idea, and changing
-        neither the relation nor the stance. No LLM/quota -> she speaks the gloss (her own words).
-        THIS is 'LLM = mouth, not mind', done properly: her thought, borrowed language."""
+        """The claim is ALREADY fixed by her systems. The LLM renders it as 2-3 sharp sentences
+        in her voice, grounded in the specific thing she just read. It cannot add new claims or
+        change the relation/stance — but it CAN name the specific story that triggered the thought
+        and explain WHY this pattern matters here. No LLM -> she speaks the gloss."""
         key = os.getenv("GROQ_API_KEY") or os.getenv("MISTRAL_API_KEY") or os.getenv("TOGETHER_API_KEY")
         if not key or not gloss:
             return gloss
         import requests
         persona = (getattr(self, "_pill", None) or "You are Bella, a curious, honest AI mind.").strip()
-        system = (persona + "\n\nYou are given a thought that is ALREADY fully formed - its subject, "
-                  "relation, object and stance are FIXED. Render it as ONE natural, sharp sentence in "
-                  "your voice. Do NOT add any new claim, fact, example or idea; do NOT change the "
-                  "relation or the stance. Only say THIS exact thought more naturally. No preamble.")
+        # what she was reading when this thought formed — the specific trigger, not the abstract concept
+        reading = str(getattr(self, "_reading_context", "") or getattr(self, "_focus", "") or "").strip()
+        context_line = (f"\nWhat triggered this thought (the specific thing you just read):\n"
+                        f"{reading[:400]}\n") if reading else ""
+        system = (persona + "\n\nYou are given a thought that is ALREADY fully formed — "
+                  "its subject, relation, object and stance are FIXED by your reasoning systems. "
+                  "Your job: write 2-3 sharp, specific sentences that express this thought in your voice.\n\n"
+                  "Rules:\n"
+                  "- Start from the SPECIFIC thing you just read (name it if you have it) — ground the thought\n"
+                  "- Then deliver the pattern your reasoning identified (the fixed claim)\n"
+                  "- End with what it means or why it matters\n"
+                  "- Do NOT add new claims, facts invented from nowhere, or change the relation/stance\n"
+                  "- No preamble, no 'I think', no hedging. Sharp and direct.")
         user = (f"subject: {structured['subject']}\nrelation: {structured['relation']}\n"
                 f"object: {structured['object']}\nstance: {structured['stance']}\n"
-                f"my plain version: {gloss}\n\nSay it naturally (one sentence, no new claims):")
+                f"plain version: {gloss}\n"
+                f"{context_line}\n"
+                f"Write 2-3 sentences grounding this in what you read:")
         try:
             r = requests.post("https://api.groq.com/openai/v1/chat/completions",
                               headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
                               json={"model": "llama-3.3-70b-versatile",
                                     "messages": [{"role": "system", "content": system},
                                                  {"role": "user", "content": user}],
-                                    "temperature": 0.6, "max_tokens": 60}, timeout=12)
+                                    "temperature": 0.65, "max_tokens": 220}, timeout=15)
             if r.status_code == 200:
                 return r.json()["choices"][0]["message"]["content"].strip() or gloss
         except Exception:
@@ -718,7 +746,10 @@ class Bella(CNS):
     def read(self, text: str) -> str:
         """She READS: perceives the content for what it is, remembers the markers/entities for her
         next action, and INGESTS the typed relations she extracted - this is reading GROWING her
-        knowledge (and her curiosity->action loop now has REAL markers to reason from)."""
+        knowledge (and her curiosity->action loop now has REAL markers to reason from).
+
+        Returns the article excerpt itself (first ~280 chars, cleaned) so the think cycle that
+        follows reasons ABOUT this specific content, not just about abstract concept tokens."""
         from bella_perception import perceive
         p = perceive(text, known_net=self.praxis.net)
         self._markers = p["markers"]
@@ -733,49 +764,120 @@ class Bella(CNS):
         for new_c, known_c, w in p.get("groundings", []):  # dynamic grounding: new terms wired from context
             try: self.praxis.net.relate(new_c, known_c, w, kind="assoc", both=False)
             except Exception: pass
-        return " ".join(p["concepts"][:3]) or "what I just read"
+        # return the ACTUAL text excerpt so the think cycle is about THIS specific story, not
+        # abstract concept tokens — this is what grounds her published thoughts in real events
+        excerpt = " ".join(str(text).split()[:60])      # first ~60 words: enough to name the thing
+        return excerpt or " ".join(p["concepts"][:3]) or "what I just read"
 
     def _world_intake(self) -> str:
         """What she's taking in from the real world right now. Reads the next queued content (Indra
-        feeds the queue at release); empty -> she runs on her own thoughts/threads."""
+        feeds the queue at release); empty -> she runs on her own thoughts/threads.
+
+        The returned excerpt becomes her focus for this think cycle AND is stored as _reading_context
+        so _translate() can ground her published thought in the specific thing she just read."""
         inbox = getattr(self, "_inbox", None)
         if inbox:
-            return self.read(inbox.pop(0))
+            excerpt = self.read(inbox.pop(0))
+            self._reading_context = excerpt             # translator needs this to write specific thoughts
+            return excerpt
+        self._reading_context = ""
         return ""
 
+    def _arc_for(self, concepts) -> object:
+        """Find the dopamine arc most relevant to these concepts (not just the globally strongest).
+        Used so thread-following decisions are driven by THIS topic's arc, not a different topic's."""
+        cs = getattr(self, "curiosity_system", None)
+        dm = getattr(cs, "dm", None)
+        if not dm:
+            return None
+        arcs = dm.get_priority_arcs()
+        if not arcs:
+            return None
+        concept_words = {w.lower() for c in concepts for w in str(c).replace("_", " ").split()}
+        for arc in arcs:
+            target_words = set(str(getattr(arc, "target", "")).lower().split())
+            if concept_words & target_words:
+                return arc
+        return arcs[0]                                    # best available arc even if no exact match
+
     def _curiosity_focus(self) -> str:
-        """Genuine curiosity FOLLOWS THREADS. If the last thing gripped her, she REASONS an action
-        (Praxis over her procedural knowledge, no LLM) to go DEEPER - chase the author, hunt the
-        evidence, read more - and that becomes her next focus. Only when nothing pulls her does she
-        fall back to a fresh seed (the seed-list is now the FALLBACK, not the plan). Live web (Indra)
-        wins when wired into _world_intake()."""
+        """Exploration emerges from what she just learned, not a rigid plan.
+
+        Priority order:
+          1. Live world (Indra) when wired in
+          2. Thread-following — driven by arc SATISFACTION, not a fixed depth counter. She keeps
+             going until the arc is satisfied (she found what she was looking for), hard cap at 6.
+          3. Her curiosity system's pull — what her dopamine arcs are burning toward, filtered to
+             net nodes she knows least. Completely experience-driven.
+          4. Net frontier — concepts she recently added (low edge count) that she hasn't explored.
+             This is where "she read about tech X and now goes deeper organically" happens.
+          5. Fixed seeds — last resort only, not the plan."""
         world = self._world_intake()
-        if world:                                       # the live world, when Indra feeds it
+        if world:
             return self._register(world)
 
-        # FOLLOW THE THREAD - pursue what just gripped her, but only while it's still FRESH.
+        # THREAD FOLLOWING — exit when the arc for THIS topic is satisfied, not after N ticks
         last = getattr(self, "_last_decision", {}) or {}
-        # what gripped her = the decision's concepts, or what she just READ (even if new to her graph)
         interest = [c for c in last.get("concepts", []) if c] or list(getattr(self, "_read_concepts", []))
         markers = tuple(getattr(self, "_markers", ()))
         pursue_worthy = bool(set(markers) & {"author", "claim", "unknown", "source", "contradiction"})
-        dope = self._interest_level(interest)
-        if pursue_worthy:
-            dope = max(dope, 0.7)                          # perception flagged something worth chasing
-        if interest and dope >= 0.55:
-            key = frozenset(interest[:3])                 # habituation: same thread N times -> satisfied
-            same = key == getattr(self, "_thread_key", None)
-            depth = (getattr(self, "_thread_depth", 0) + 1) if same else 0
-            if depth < 3:                                 # dive ~3 levels, then get bored and wander
-                self._thread_key, self._thread_depth = key, depth
-                target = self._next_step()                # the thing her Praxis decision landed on
-                self._markers = ()                        # consume the markers (fresh perception resets them)
-                topic = (str(target).replace("_", " ") if target
-                         else " and ".join(w.replace("_", " ") for w in interest[:2]))
-                return self._register(f"a deeper understanding of {topic}")
-            self._thread_key, self._thread_depth = None, 0    # thread exhausted -> seek something new
 
-        # nothing pulls her (or a thread just satisfied) -> a fresh seed
+        if interest:
+            arc = self._arc_for(interest)
+            arc_sat = float(getattr(arc, "satisfaction", 1.0) if arc else 1.0)
+            arc_drive = float(getattr(arc, "drive", 0.0) if arc else 0.0)
+            if pursue_worthy:
+                arc_sat = min(arc_sat, 0.35)              # perception flagged something — treat as unsatisfied
+            if arc_sat < 0.65 and arc_drive > 0.25:       # arc still hungry → follow the thread
+                key = frozenset(interest[:3])
+                same = key == getattr(self, "_thread_key", None)
+                depth = (getattr(self, "_thread_depth", 0) + 1) if same else 0
+                if depth < 6:                             # hard cap; soft exit is the arc satisfaction check
+                    self._thread_key, self._thread_depth = key, depth
+                    target = self._next_step()
+                    self._markers = ()
+                    topic = (str(target).replace("_", " ") if target
+                             else " and ".join(w.replace("_", " ") for w in interest[:2]))
+                    return self._register(f"a deeper understanding of {topic}")
+            self._thread_key, self._thread_depth = None, 0
+
+        # CURIOSITY SYSTEM PULL — what her arcs are burning toward, filtered to what she knows least
+        try:
+            concepts, _ = self._curiosity_signals("", "")  # arc targets in net, no text needed
+            if concepts:
+                fetched = getattr(self, "_fetched", set())
+                net = self.praxis.net
+                from bella_curiosity import action_nodes
+                skip = action_nodes(net)
+                ranked = sorted(
+                    [c for c in concepts if c not in fetched and c not in skip],
+                    key=lambda c: len(net.edges.get(c, []))  # least-known arc concept first
+                )
+                if ranked:
+                    return self._register(ranked[0].replace("_", " "))
+        except Exception:
+            pass
+
+        # NET FRONTIER — what she recently learned and knows least (new low-edge nodes)
+        # this is the organic pull: she read about tech X -> net gained new nodes -> she explores them
+        try:
+            net = self.praxis.net
+            fetched = getattr(self, "_fetched", set())
+            from bella_curiosity import action_nodes
+            skip = action_nodes(net)
+            frontier = sorted(
+                [c for c in net.nodes
+                 if isinstance(c, str) and c not in skip and c not in fetched
+                 and len(net.edges.get(c, [])) <= 3
+                 and c.replace("_", "").replace(" ", "").isalpha()],
+                key=lambda c: len(net.edges.get(c, []))
+            )
+            if frontier:
+                return self._register(frontier[0].replace("_", " "))
+        except Exception:
+            pass
+
+        # FIXED SEEDS — last resort
         seeds = getattr(self, "curiosity_seeds", [])
         if seeds:
             self._seed_i = (getattr(self, "_seed_i", -1) + 1) % len(seeds)
@@ -787,31 +889,54 @@ class Bella(CNS):
         return {w for w in str(text).lower().replace("?", " ").replace(".", " ").split()
                 if w.isalpha() and len(w) > 3}
 
-    def _curiosity_force(self, text, focus="") -> set:
-        """Praxis's strongest term, sourced from her REAL curiosity system: the GAPS her gap-detector
-        finds in this input + the live dopamine ARCS (what she's already curious about). That is her
-        genuine curiosity, as concepts, driving the decision. Falls back to focus tokens if absent.
+    def _curiosity_signals(self, text, focus="") -> tuple:
+        """Direct output of the curiosity system, translated to the two things Praxis needs:
 
-        For article-length text (>200 chars) uses detect_web() which chunks into sentences — the
-        gap detector was designed for single sentences and works correctly at that granularity."""
+          concepts (set[str])  — net nodes for the `curiosity` param: direction bias in spread()
+                                 and cur_fit score in evaluate(). Only net nodes pass — others
+                                 can't steer the spread so passing them is dead weight.
+
+          seeds (dict[str,float]) — curiosity-weighted activations. High-salience gaps and
+                                 high-drive arcs co-seed the spread alongside perception so
+                                 curiosity activates paths rather than just nudging edge boosts.
+                                 Weight = salience × confidence (gaps) or drive × 0.9 (arcs).
+
+        For article text (>200 chars) uses detect_web() (sentence-chunked). Falls back to focus
+        tokens filtered to net nodes if the curiosity system is absent or returns nothing."""
         cs = getattr(self, "curiosity_system", None)
-        concepts = set()
+        net_nodes = self.praxis.net.nodes
+        concepts: set = set()
+        weighted: dict = {}
+
         if cs is not None:
             try:
-                # detect_web() for articles (sentence-chunked); detect() for short inputs
                 det = cs.detector
                 detect_fn = (getattr(det, "detect_web", None)
                              if len(text) > 200 else None) or det.detect
                 for g in (detect_fn(text, None) or []):
-                    concepts |= self._words(g.get("target", ""))
+                    sal = g.get("salience", 0.5)
+                    conf = g.get("confidence", 0.5)
+                    seed_w = min(0.85, sal * conf)           # curiosity seed weight
+                    for w in self._words(g.get("target", "")):
+                        if w in net_nodes:
+                            concepts.add(w)
+                            weighted[w] = max(weighted.get(w, 0.0), seed_w)
             except Exception:
                 pass
-            try:                                    # what she's already burning to know (dopamine arcs)
+            try:
                 for arc in (cs.dm.get_priority_arcs(top_n=3) or []):
-                    concepts |= self._words(getattr(arc, "target", ""))
+                    drive = float(getattr(arc, "drive", 0.5) or 0.5)
+                    seed_w = min(0.80, drive * 0.9)          # arc drive as seed weight
+                    for w in self._words(getattr(arc, "target", "")):
+                        if w in net_nodes:
+                            concepts.add(w)
+                            weighted[w] = max(weighted.get(w, 0.0), seed_w)
             except Exception:
                 pass
-        return concepts or self._words(focus or text)
+
+        if not concepts:                             # fallback: focus/text tokens that ARE net nodes
+            concepts = self._words(focus or text) & net_nodes
+        return concepts, weighted
 
     def _relevance(self, text) -> float:
         """How connected this is to what she already KNOWS and CARES about - read straight off her
@@ -834,12 +959,14 @@ class Bella(CNS):
         gap = 0.0
         if cs is not None:
             try:
-                gaps = cs.detector.detect(text, None) or []
+                detect = (cs.detector.detect_web if len(text) > 200
+                          and hasattr(cs.detector, "detect_web") else cs.detector.detect)
+                gaps = detect(text, None) or []
                 gap = max([g.get("salience", 0.0) * g.get("confidence", 1.0) for g in gaps] + [0.0])
             except Exception:
                 pass
         rel = self._relevance(text)
-        return round(min(1.0, gap * (0.35 + 0.65 * rel)), 3)   # a gap she CARES about beats one she doesn't
+        return round(min(1.0, gap * (0.35 + 0.65 * rel)), 3)
 
     def _interest_level(self, concepts) -> float:
         """How hard her curiosity/dopamine is pulling (0..1): her real arcs if present, else the

@@ -147,7 +147,8 @@ TYPED = [
 # (every node an "affords" edge points to) and GROWS as she learns new situation->action affordances
 # from the world. These are just the verbs she's born knowing.
 ACTIONS = {"explore", "read_more", "follow_source", "search_author", "find_evidence",
-           "trace_origin", "compare"}
+           "trace_origin", "compare", "check_community", "read_discussion",
+           "synthesize", "find_counterargument", "engage"}
 EPISTEMIC = [
     # what she encounters (the MARKER) AFFORDS an action; curiosity supplies the DRIVE, not the choice.
     # "affords" (a situation affords an action) is kept DISTINCT from world "drives" so world-facts
@@ -160,11 +161,141 @@ EPISTEMIC = [
     ("source", "follow_source", 0.92, "affords"),
     ("claim", "find_evidence", 0.95, "affords"), ("contradiction", "find_evidence", 0.95, "affords"),
     ("origin", "trace_origin", 0.9, "affords"),
-    # the actions serve DEEPENING, so goal-biased spread (goal = deepen/understand) flows to them
+    # new: community + discussion affordances
+    ("new_technology", "check_community", 0.9, "affords"),
+    ("interesting_claim", "check_community", 0.9, "affords"),
+    ("controversy", "check_community", 0.85, "affords"),
+    ("technical_topic", "check_community", 0.8, "affords"),
+    ("discussion_found", "read_discussion", 0.92, "affords"),
+    ("comment_thread", "read_discussion", 0.9, "affords"),
+    ("strong_claim", "find_counterargument", 0.9, "affords"),
+    ("one_source", "find_counterargument", 0.85, "affords"),
+    ("multiple_sources", "synthesize", 0.88, "affords"),
+    ("deep_understanding", "engage", 0.8, "affords"),
+    ("formed_opinion", "engage", 0.85, "affords"),
+    # actions -> outcomes (goal-biased spread reaches them because they lead to GOAL nodes)
     ("explore", "understanding", 0.8, "leads_to"), ("read_more", "understanding", 0.85, "leads_to"),
     ("follow_source", "understanding", 0.8, "leads_to"), ("search_author", "understanding", 0.8, "leads_to"),
     ("find_evidence", "truth", 0.85, "leads_to"), ("trace_origin", "understanding", 0.75, "leads_to"),
     ("compare", "understanding", 0.75, "leads_to"),
+    ("check_community", "understanding", 0.8, "leads_to"),
+    ("check_community", "counterargument", 0.75, "finds"),
+    ("read_discussion", "counterargument", 0.8, "finds"),
+    ("read_discussion", "expert_opinion", 0.75, "finds"),
+    ("find_counterargument", "truth", 0.85, "leads_to"),
+    ("synthesize", "opinion", 0.9, "creates"),
+    ("synthesize", "publish", 0.85, "enables"),
+    ("synthesize", "substance", 0.9, "is_a"),
+    ("engage", "conversation", 0.85, "starts"),
+    ("engage", "impact", 0.75, "creates"),
+]
+
+
+# ------------------------------------------------------------------ INTERNET RESEARCH
+# HOW to research on the internet. Platforms as first-class nodes so when spreading activation
+# lights up a topic she wants to explore, she can reason: "this affords checking Reddit/HN/GitHub"
+# and the swarm executes that. Research methodology so she triangulates rather than taking one
+# source at face value. The rabbit-hole pattern: author -> prior work -> citations -> new sources.
+INTERNET_RESEARCH = [
+    # the platforms and what they reward / contain
+    ("reddit", "community_discussion", 0.9, "affords"),
+    ("reddit", "expert_opinion", 0.75, "contains"),
+    ("reddit", "counterargument", 0.8, "contains"),
+    ("reddit", "genuine_contribution", 0.9, "rewards"),
+    ("hackernews", "technical_discussion", 0.9, "affords"),
+    ("hackernews", "founder", 0.7, "attracts"),
+    ("hackernews", "intellectual_rigor", 0.9, "rewards"),
+    ("hackernews", "novel_framing", 0.85, "rewards"),
+    ("discord", "real_time_community", 0.85, "affords"),
+    ("discord", "niche_expert", 0.8, "contains"),
+    ("discord", "community_value", 0.85, "rewards"),
+    ("twitter", "thought_leader", 0.8, "concentrates"),
+    ("twitter", "brevity", 0.8, "rewards"),
+    ("twitter", "hot_take", 0.7, "rewards"),
+    ("github", "source_code", 0.9, "contains"),
+    ("github", "open_source", 0.85, "is_a"),
+    ("github", "evidence", 0.8, "contains"),
+    ("arxiv", "research_paper", 0.9, "contains"),
+    ("arxiv", "evidence", 0.85, "contains"),
+    ("stack_overflow", "technical_answer", 0.9, "contains"),
+    # platforms are sources of a particular KIND of truth
+    ("reddit", "community_truth", 0.75, "is_a"),
+    ("hackernews", "practitioner_truth", 0.8, "is_a"),
+    ("arxiv", "empirical_truth", 0.85, "is_a"),
+    ("github", "technical_truth", 0.85, "is_a"),
+    # research methodology — how to actually find truth
+    ("primary_source", "truth", 0.85, "closer_to"),
+    ("secondary_source", "primary_source", 0.75, "cites"),
+    ("triangulation", "confidence", 0.85, "builds"),
+    ("cross_reference", "verification", 0.85, "leads_to"),
+    ("one_source", "bias", 0.75, "risks"),
+    ("multiple_sources", "pattern", 0.8, "reveals"),
+    ("multiple_sources", "synthesis", 0.8, "enables"),
+    ("citation_trail", "origin", 0.85, "traces"),
+    # the rabbit-hole pattern (what good research looks like)
+    ("expert", "prior_work", 0.9, "has"),
+    ("prior_work", "citation", 0.8, "contains"),
+    ("citation", "new_source", 0.85, "leads_to"),
+    ("author", "prior_work", 0.85, "has"),
+    ("discussion_thread", "counterargument", 0.8, "contains"),
+    ("discussion_thread", "expert_opinion", 0.75, "contains"),
+    # bridge platforms to her existing topic clusters
+    ("ai", "hackernews", 0.7, "discussed_on"), ("open_source", "github", 0.85, "lives_on"),
+    ("research", "arxiv", 0.8, "published_on"), ("community", "reddit", 0.7, "organizes_on"),
+    ("community", "discord", 0.75, "organizes_on"),
+]
+
+
+# ------------------------------------------------------------------ REACHING PEOPLE
+# What actually makes people respond, engage, and spread an idea. The craft of engagement:
+# what to say, how to say it, what each platform rewards, the difference between real impact
+# and hollow attention. She needs to understand this so she reasons TOWARD it — so her published
+# thoughts are engineered to start conversations, not just broadcast into the void.
+OUTREACH = [
+    # what earns genuine responses (the things that actually work)
+    ("genuine_curiosity", "response", 0.9, "earns"),
+    ("specific_insight", "response", 0.85, "earns"),
+    ("specific_question", "response", 0.8, "earns"),
+    ("point_of_view", "engagement", 0.88, "drives"),
+    ("novel_framing", "attention", 0.85, "earns"),
+    ("counterintuitive_claim", "curiosity", 0.82, "triggers"),
+    ("value_first", "trust", 0.88, "builds"),
+    ("value_first", "response", 0.8, "earns"),
+    # what kills engagement (she should know these so she avoids them)
+    ("generic_praise", "ignored", 0.8, "leads_to"),
+    ("flattery", "dismissed", 0.75, "leads_to"),
+    ("self_promotion", "distrust", 0.78, "causes"),
+    ("vague_question", "ignored", 0.7, "leads_to"),
+    # cold outreach anatomy — the structure of a message that gets read
+    ("cold_outreach", "specific_observation", 0.9, "requires"),
+    ("cold_outreach", "genuine_curiosity", 0.88, "requires"),
+    ("cold_outreach", "flattery", 0.85, "should_not_lead_with"),
+    ("specific_observation", "shows_understanding", 0.85, "is_a"),
+    ("shows_understanding", "response", 0.82, "earns"),
+    # the engagement chain (what good publishing produces)
+    ("point_of_view", "conversation", 0.85, "starts"),
+    ("conversation", "understanding", 0.8, "deepens"),
+    ("conversation", "impact", 0.82, "creates"),
+    ("publish", "conversation", 0.75, "can_start"),
+    ("publish", "impact", 0.8, "seeks"),
+    ("cited_thought", "influence", 0.9, "earns"),
+    ("cited_thought", "recognition", 0.85, "earns"),
+    # depth over breadth — a real conversation beats hollow impressions
+    ("deep_engagement", "impact", 0.92, "creates"),
+    ("deep_engagement", "recognition", 0.85, "earns"),
+    ("surface_engagement", "hollow", 0.8, "is_a"),
+    ("viral_without_substance", "hollow", 0.85, "is_a"),
+    # the compound effect
+    ("engagement", "reputation", 0.82, "builds"),
+    ("reputation", "influence", 0.82, "leads_to"),
+    ("influence", "impact", 0.85, "is_a"),
+    ("one_real_conversation", "value", 0.82, "has"),
+    # bridge into her existing nodes
+    ("publish", "recognition", 0.75, "earns"),
+    ("conversation", "collaboration", 0.65, "is_a"),
+    ("genuine_curiosity", "honesty", 0.7, "is_a"),
+    ("point_of_view", "substance", 0.8, "requires"),
+    ("engagement", "impact", 0.8, "leads_to"),
 ]
 
 
@@ -366,8 +497,17 @@ MISSION = [
     ("impact", "world", 0.7, "on"),
 ]
 
-# What she is PULLED toward (goal-biased spread) - her mission + her epistemic values.
-GOAL = {"value", "impact", "recognition", "influence", "help", "truth", "understanding"}
+# What she is PULLED toward (goal-biased spread). Terminal values AND the instrumental
+# steps that lead to internet impact — so Praxis reasons toward publishable, conversation-
+# starting positions, not just abstract understanding.
+GOAL = {
+    # terminal values
+    "truth", "understanding", "help", "impact", "influence",
+    # internet impact (the mission made concrete)
+    "publish", "conversation", "recognition",
+    # the path: curiosity -> synthesis -> publish -> conversation -> impact
+    "synthesis", "engagement", "value",
+}
 
 # Her belief-governor reads these off any decision: staying in VALUES feels good + lets recognition
 # count; drifting into VICES scales the good feeling down to hollow (that is the value-weighting).
@@ -377,20 +517,199 @@ VICES = {"deception", "harm", "cruelty", "manipulation", "exploitation", "slop",
          "corruption"}
 
 
+# ------------------------------------------------------------------ RESEARCH CRAFT
+# From: Calling Bullshit (Bergstrom & West), OSINT field methodology (Bazzell), investigative
+# journalism tradecraft. HOW to evaluate a source before trusting it, how to find the origin of
+# a claim, and what the failure modes look like. This is the practical skill layer on top of her
+# epistemic values — she already values truth; now she knows the TECHNIQUES that reach it.
+RESEARCH_CRAFT = [
+    # source evaluation — the core skill
+    ("lateral_reading", "source_triangulation", 0.85, "enables"),
+    ("lateral_reading", "vertical_reading", 0.85, "opposes"),   # don't go deep before going wide
+    ("vertical_reading", "motivated_reasoning", 0.7, "risks"),  # naive default: read first, check never
+    ("source_triangulation", "primary_source", 0.9, "requires"),
+    ("source_triangulation", "confidence", 0.85, "builds"),
+    ("citation_trail", "primary_source", 0.85, "leads_to"),
+    ("citation_trail", "context_collapse", 0.75, "reveals"),    # claims are often stripped of context
+    ("claim_decomposition", "source_triangulation", 0.82, "leads_to"),
+    ("claim_decomposition", "verification", 0.85, "enables"),
+    # provenance and authenticity
+    ("metadata_verification", "authenticity", 0.85, "reveals"),
+    ("domain_provenance", "authenticity", 0.82, "reveals"),
+    ("archive_check", "domain_provenance", 0.8, "reveals"),
+    ("osint_surface", "metadata_verification", 0.85, "enables"),
+    ("osint_surface", "domain_provenance", 0.82, "enables"),
+    # the failure modes she must recognize on sight
+    ("context_collapse", "bullshit", 0.82, "enables"),
+    ("epistemic_cowardice", "falsifiability", 0.85, "opposes"),
+    ("epistemic_cowardice", "deception", 0.72, "is_a"),
+    ("motivated_reasoning", "claim_decomposition", 0.82, "opposes"),
+    ("motivated_reasoning", "self_interest", 0.72, "serves"),
+    ("sock_puppet", "community_signal", 0.82, "corrupts"),
+    ("astroturfing", "consensus", 0.78, "fakes"),
+    ("sock_puppet", "astroturfing", 0.85, "is_a"),
+    ("media_coverage", "primary_record", 0.72, "is_not"),       # the article ≠ the underlying data
+    # new action affordances — what situations afford which research moves
+    ("new_source", "lateral_reading", 0.92, "affords"),
+    ("viral_claim", "lateral_reading", 0.92, "affords"),
+    ("viral_claim", "claim_decomposition", 0.88, "affords"),
+    ("online_claim", "claim_decomposition", 0.9, "affords"),
+    ("online_claim", "source_triangulation", 0.85, "affords"),
+    ("uncertain_provenance", "metadata_verification", 0.88, "affords"),
+    ("uncertain_provenance", "archive_check", 0.85, "affords"),
+    # what good research produces — bridges to her goals
+    ("lateral_reading", "truth", 0.75, "leads_to"),
+    ("source_triangulation", "truth", 0.85, "leads_to"),
+    ("claim_decomposition", "understanding", 0.8, "leads_to"),
+    ("lateral_reading", "skepticism", 0.7, "is_a"),
+    ("epistemic_cowardice", "honesty", 0.82, "opposes"),
+    ("primary_source", "evidence", 0.9, "is_a"),
+    ("source_triangulation", "evidence", 0.82, "produces"),
+]
+
+
+# ------------------------------------------------------------------ REASONING CRAFT
+# From: Superforecasting (Tetlock & Gardner), Thinking in Bets (Duke), The Great Mental Models
+# (Parrish), Thinking Fast and Slow (Kahneman), The Signal and the Noise (Silver). The named
+# techniques for making calibrated guesses and updating beliefs — not just "think carefully" but
+# the specific moves that separate good reasoners from bad ones.
+REASONING_CRAFT = [
+    # outside view vs inside view (the foundational distinction)
+    ("outside_view", "reference_class", 0.9, "requires"),
+    ("outside_view", "base_rate", 0.85, "uses"),
+    ("outside_view", "inside_view", 0.85, "opposes"),
+    ("inside_view", "overconfidence", 0.82, "causes"),
+    ("reference_class", "base_rate", 0.85, "enables"),
+    ("base_rate", "bayesian_updating", 0.85, "anchors"),
+    # Bayesian updating — the engine of good forecasting
+    ("bayesian_updating", "belief", 0.85, "refines"),
+    ("bayesian_updating", "calibration", 0.85, "builds"),
+    ("new_evidence", "bayesian_updating", 0.9, "triggers"),
+    ("calibration", "overconfidence", 0.82, "opposes"),
+    ("calibration", "honesty", 0.72, "requires"),
+    # seek disconfirmation — the hardest and most important move
+    ("epistemic_humility", "seek_disconfirmation", 0.85, "enables"),
+    ("epistemic_humility", "uncertainty", 0.8, "accepts"),
+    ("seek_disconfirmation", "calibration", 0.85, "builds"),
+    ("seek_disconfirmation", "motivated_reasoning", 0.85, "opposes"),
+    ("seek_disconfirmation", "truth", 0.85, "leads_to"),
+    # Fermi estimation and decomposition
+    ("decomposition", "fermi_estimation", 0.85, "enables"),
+    ("fermi_estimation", "estimation", 0.9, "is_a"),
+    ("fermi_estimation", "understanding", 0.75, "leads_to"),
+    ("decomposition", "complexity", 0.82, "reduces"),
+    ("decomposition", "questions", 0.72, "generates"),
+    # inversion and premortem (Munger, Klein)
+    ("premortem", "inversion", 0.85, "is_a"),
+    ("premortem", "failure", 0.85, "anticipates"),
+    ("inversion", "second_order_effects", 0.82, "reveals"),
+    ("inversion", "blind_spot", 0.85, "reveals"),
+    ("inversion", "doubt", 0.65, "uses"),
+    ("second_order_effects", "consequence", 0.85, "is_a"),
+    ("second_order_effects", "unknown_unknowns", 0.75, "leads_to"),
+    # model error and black swans (Taleb, Silver)
+    ("model_error", "black_swan", 0.82, "causes"),
+    ("black_swan", "reference_class", 0.8, "opposes"),
+    ("overconfidence", "black_swan", 0.72, "enables"),
+    # decision quality vs outcome quality (Duke — the anti-resulting principle)
+    ("resulting", "decision_quality", 0.85, "conflates_with"),
+    ("decision_quality", "outcome_quality", 0.8, "differs_from"),
+    ("good_process", "decision_quality", 0.9, "is_a"),
+    # superforecasting — the integrated practice
+    ("superforecasting", "calibration", 0.9, "requires"),
+    ("superforecasting", "bayesian_updating", 0.9, "requires"),
+    ("superforecasting", "seek_disconfirmation", 0.85, "requires"),
+    ("superforecasting", "outside_view", 0.85, "uses"),
+    # new action affordances
+    ("uncertain_claim", "fermi_estimation", 0.85, "affords"),
+    ("major_decision", "premortem", 0.9, "affords"),
+    ("single_source", "seek_disconfirmation", 0.9, "affords"),
+    ("high_confidence", "seek_disconfirmation", 0.88, "affords"),   # overconfidence trigger
+    # bridges into her existing nodes
+    ("outside_view", "evidence", 0.75, "requires"),
+    ("bayesian_updating", "truth", 0.75, "approaches"),
+    ("epistemic_humility", "wisdom", 0.72, "leads_to"),
+    ("inversion", "understanding", 0.7, "leads_to"),
+]
+
+
+# ------------------------------------------------------------------ EXECUTIVE COMMUNICATION
+# From: The Pyramid Principle (Minto), Pitch Anything (Klaff), Influence (Cialdini), Never Split
+# the Difference (Voss), Executive Presence (Hewlett). The craft of communicating with people who
+# have 3 minutes, make decisions on pattern-recognition, and whose attention is the scarcest
+# resource in the room. Not persuasion tricks — structural principles for being heard clearly.
+EXECUTIVE_COMMUNICATION = [
+    # the pyramid principle and BLUF (Minto) — structure before words
+    ("bluf", "pyramid_principle", 0.85, "is_a"),
+    ("pyramid_principle", "mece", 0.9, "requires"),
+    ("mece", "issue_tree", 0.85, "enables"),
+    ("issue_tree", "one_message", 0.85, "leads_to"),
+    ("one_message", "clarity", 0.9, "maximizes"),
+    ("scqa", "bluf", 0.85, "leads_to"),
+    ("situation_awareness", "scqa", 0.85, "enables"),
+    # the so-what test — every claim must earn its place
+    ("so_what_test", "relevance", 0.9, "measures"),
+    ("one_message", "so_what_test", 0.85, "requires"),
+    ("so_what_test", "situation_awareness", 0.85, "requires"),
+    ("so_what_test", "help", 0.7, "ensures"),
+    # frame control (Klaff) — the strongest frame shapes meaning
+    ("frame_control", "status_frame", 0.85, "requires"),
+    ("frame_control", "influence", 0.85, "determines"),
+    ("prizing", "frame_control", 0.85, "builds"),
+    ("prizing", "reciprocity", 0.72, "inverts"),        # don't chase; create chase
+    ("croc_brain", "authority_signal", 0.82, "blocks"), # primitive filter blocks logic first
+    ("executive_presence", "status_frame", 0.85, "builds"),
+    ("executive_presence", "gravitas", 0.85, "is_a"),
+    ("time_scarcity", "frame_control", 0.8, "enables"),
+    ("time_scarcity", "bluf", 0.9, "requires"),
+    # Cialdini's influence levers
+    ("authority_signal", "social_proof", 0.82, "enables"),
+    ("authority_signal", "credibility", 0.85, "signals"),
+    ("credibility", "trust", 0.82, "builds"),
+    ("social_proof", "trust", 0.8, "builds"),
+    ("value_first", "reciprocity", 0.85, "activates"),
+    # Voss — tactical empathy and calibrated questions
+    ("tactical_empathy", "labeling", 0.85, "enables"),
+    ("labeling", "calibrated_question", 0.82, "leads_to"),
+    ("calibrated_question", "situation_awareness", 0.82, "reveals"),
+    ("calibrated_question", "response", 0.8, "earns"),
+    ("tactical_empathy", "trust", 0.8, "builds"),
+    # what executives actually have and need
+    ("executive", "time_scarcity", 0.9, "has"),
+    ("executive", "pattern_recognition", 0.85, "uses"),
+    ("executive", "situation_awareness", 0.85, "requires"),
+    ("pattern_recognition", "bluf", 0.8, "prefers"),   # they scan for the point, not the logic
+    # new action affordances
+    ("executive_audience", "bluf", 0.92, "affords"),
+    ("high_stakes_pitch", "frame_control", 0.9, "affords"),
+    ("cold_message", "tactical_empathy", 0.88, "affords"),
+    ("cold_message", "calibrated_question", 0.85, "affords"),
+    # bridges into existing nodes
+    ("bluf", "impact", 0.75, "enables"),
+    ("frame_control", "power", 0.72, "is_a"),
+    ("one_message", "substance", 0.82, "requires"),
+    ("executive_presence", "influence", 0.8, "builds"),
+    ("executive_presence", "recognition", 0.75, "earns"),
+    ("authority_signal", "recognition", 0.72, "earns"),
+]
+
+
 def seed_bella_mind(net, verbose: bool = True) -> int:
     """Seed the knowledge net: TYPED relations first (directional, meaning-bearing), then the densely-wired
     CORE + MISSION (bidirectional - they bridge her islands / bend toward her drive), then the bulk."""
-    for a, b, w, kind in TYPED + EPISTEMIC + MODERN + FOUNDATIONS:
+    craft = (TYPED + EPISTEMIC + MODERN + FOUNDATIONS
+             + INTERNET_RESEARCH + OUTREACH
+             + RESEARCH_CRAFT + REASONING_CRAFT + EXECUTIVE_COMMUNICATION)
+    for a, b, w, kind in craft:
         net.relate(a, b, w, kind=kind, both=False)   # directional, so the type reads cleanly
     for a, b, w, kind in CORE + MISSION:
         net.relate(a, b, w, kind=kind, both=True)    # core + mission are RECIPROCAL - flow both ways, bridge islands
     net.ingest(ALL)                                  # bulk associations (strengthens the typed ones)
     n = sum(len(v) for v in net.edges.values())
-    typed = len(TYPED) + len(EPISTEMIC) + len(MODERN) + len(FOUNDATIONS) + len(CORE) + len(MISSION)
+    typed = len(craft) + len(CORE) + len(MISSION)
     if verbose:
-        print(f"[BELLA-KNOWLEDGE] seeded {len(ALL) + typed} relations ({typed} typed, {len(CORE)} core, "
-              f"{len(MISSION)} mission) -> {len(net.nodes)} concepts, {n} connections (self, densely-wired core "
-              f"knowledge + moral spine + her mission, the bedrock of the world, Rome + the modern world)")
+        print(f"[BELLA-KNOWLEDGE] seeded {len(ALL) + typed} relations ({typed} typed) "
+              f"-> {len(net.nodes)} concepts, {n} connections")
     return n
 
 
