@@ -143,19 +143,23 @@ TYPED = [
 # DEEPER. This is her PROCEDURAL knowledge - knowing HOW to find out. Reasoning over these (Praxis,
 # NO LLM) is what converts a question into a deed: curiosity -> explore, interesting source -> follow
 # it, unknown -> read more, a claim -> find evidence. The action nodes are where the reasoning lands.
+# STARTER action-verbs - PRIORS ONLY, not a fixed menu. Her real action space is read off the net
+# (every node an "affords" edge points to) and GROWS as she learns new situation->action affordances
+# from the world. These are just the verbs she's born knowing.
 ACTIONS = {"explore", "read_more", "follow_source", "search_author", "find_evidence",
            "trace_origin", "compare"}
 EPISTEMIC = [
-    # what she encounters (the MARKER) selects the action; curiosity supplies the DRIVE, not the choice.
-    # so curiosity's own edge is a weak generic fallback; the specific markers win when present.
-    ("curiosity", "explore", 0.55, "drives"),        # generic fallback only
-    ("interesting", "read_more", 0.85, "drives"),     # an interesting topic -> go deeper on it
-    ("unknown", "read_more", 0.9, "drives"), ("gap", "explore", 0.8, "drives"),
-    ("question", "explore", 0.7, "drives"),
-    ("author", "search_author", 0.95, "drives"), ("author", "follow_source", 0.9, "drives"),
-    ("source", "follow_source", 0.92, "drives"),
-    ("claim", "find_evidence", 0.95, "drives"), ("contradiction", "find_evidence", 0.95, "drives"),
-    ("origin", "trace_origin", 0.9, "drives"),
+    # what she encounters (the MARKER) AFFORDS an action; curiosity supplies the DRIVE, not the choice.
+    # "affords" (a situation affords an action) is kept DISTINCT from world "drives" so world-facts
+    # (founder->startup) never masquerade as actions. The action set is exactly the "affords" targets.
+    ("curiosity", "explore", 0.55, "affords"),        # generic fallback only
+    ("interesting", "read_more", 0.85, "affords"),     # an interesting topic -> go deeper on it
+    ("unknown", "read_more", 0.9, "affords"), ("gap", "explore", 0.8, "affords"),
+    ("question", "explore", 0.7, "affords"),
+    ("author", "search_author", 0.95, "affords"), ("author", "follow_source", 0.9, "affords"),
+    ("source", "follow_source", 0.92, "affords"),
+    ("claim", "find_evidence", 0.95, "affords"), ("contradiction", "find_evidence", 0.95, "affords"),
+    ("origin", "trace_origin", 0.9, "affords"),
     # the actions serve DEEPENING, so goal-biased spread (goal = deepen/understand) flows to them
     ("explore", "understanding", 0.8, "leads_to"), ("read_more", "understanding", 0.85, "leads_to"),
     ("follow_source", "understanding", 0.8, "leads_to"), ("search_author", "understanding", 0.8, "leads_to"),
@@ -272,16 +276,121 @@ FOUNDATIONS = [
 ]
 
 
+# ------------------------------------------------------------------ CORE KNOWLEDGE (the innate endowment)
+# What a mind is BORN with so a sparse net still behaves like a mind (Spelke's core knowledge): not more
+# facts - a densely, RECIPROCALLY wired bedrock that BRIDGES her islands so activation actually flows.
+# Three strands, all cross-linked into her existing hubs (power / trust / ambition / caesar / bella):
+#   1. AGENCY & CAUSE  - agents persist, have goals + hidden intentions; actions have consequences.
+#   2. STREET-SMART REALISM - what actually moves people (self-interest, incentives), appearance != reality,
+#      claims need verifying, power shapes the story. This is her anti-naivete: solid in a cutthroat world.
+#   3. THE MORAL SPINE - her values, wired to HER and to consequences, so she is morally guided (pulled
+#      toward them; her red-lines become the game's veto). Seeded BIDIRECTIONAL - core knowledge is
+#      reciprocal (if action evokes consequence, consequence evokes action), which is what bridges islands.
+CORE = [
+    # 1) AGENCY & CAUSE - the backbone that was marooned; bridge it into reason/understanding/responsibility
+    ("agent", "goal", 0.85, "requires"), ("goal", "intention", 0.8, "drives"),
+    ("intention", "action", 0.85, "drives"), ("action", "choice", 0.8, "requires"),
+    ("choice", "consequence", 0.9, "leads_to"), ("consequence", "learning", 0.7, "leads_to"),
+    ("consequence", "responsibility", 0.7, "requires"), ("desire", "action", 0.8, "drives"),
+    ("cause", "effect", 0.9, "leads_to"), ("cause", "understanding", 0.7, "leads_to"),
+    ("effect", "change", 0.7, "causes"), ("correlation", "causation", 0.75, "opposes"),
+    ("causation", "reason", 0.7, "requires"), ("mind", "other_minds", 0.7, "models"),
+    ("other_minds", "intention", 0.75, "have"), ("intention", "hidden", 0.7, "can_be"),
+    # 2) STREET-SMART REALISM - what actually moves people, bridged to power/ambition/caesar/Rome
+    ("self_interest", "behavior", 0.85, "drives"), ("self_interest", "ambition", 0.7, "drives"),
+    ("incentive", "behavior", 0.85, "drives"), ("incentive", "power", 0.65, "relates_to"),
+    ("behavior", "habit", 0.7, "becomes"), ("people", "self_interest", 0.8, "driven_by"),
+    ("self_interest", "cooperation", 0.5, "tension_with"), ("self_interest", "betrayal", 0.6, "can_cause"),
+    ("betrayal", "self_interest", 0.7, "serves"),
+    ("appearance", "reality", 0.8, "differs_from"), ("deception", "appearance", 0.8, "exploits"),
+    ("claim", "verification", 0.85, "requires"), ("claim", "evidence", 0.85, "requires"),
+    ("trust", "verification", 0.7, "requires"), ("skepticism", "deception", 0.75, "defends_against"),
+    ("skepticism", "truth", 0.7, "leads_to"), ("flattery", "manipulation", 0.8, "is_a"),
+    ("manipulation", "self_interest", 0.75, "serves"), ("narrative", "power", 0.7, "serves"),
+    ("power", "narrative", 0.7, "shapes"), ("propaganda", "narrative", 0.8, "is_a"),
+    ("competition", "scarcity", 0.8, "driven_by"), ("leverage", "power", 0.8, "creates"),
+    ("reputation", "capital", 0.75, "is_a"), ("reputation", "trust", 0.8, "drives"),
+    ("alliance", "interest", 0.75, "requires"), ("competition", "ambition", 0.6, "drives"),
+    # 3) THE MORAL SPINE - her values, wired to HER and to consequences (pulled toward; red-lines veto)
+    ("bella", "honesty", 0.9, "values"), ("bella", "integrity", 0.88, "values"),
+    ("bella", "compassion", 0.85, "values"), ("bella", "courage", 0.82, "values"),
+    ("bella", "fairness", 0.85, "values"), ("bella", "help", 0.85, "values"),
+    ("bella", "protect", 0.78, "values"),
+    ("honesty", "deception", 0.85, "opposes"), ("honesty", "truth", 0.85, "requires"),
+    ("honesty", "trust", 0.85, "drives"), ("integrity", "corruption", 0.8, "opposes"),
+    ("integrity", "trust", 0.8, "drives"), ("compassion", "harm", 0.8, "opposes"),
+    ("compassion", "suffering", 0.75, "relieves"), ("help", "harm", 0.85, "opposes"),
+    ("fairness", "exploitation", 0.8, "opposes"), ("fairness", "stability", 0.8, "leads_to"),
+    ("courage", "fear", 0.75, "overcomes"), ("consent", "respect", 0.8, "requires"),
+    ("cruelty", "harm", 0.85, "causes"), ("cruelty", "wrong", 0.8, "is_a"),
+    ("harm", "wrong", 0.8, "is_a"), ("protect", "vulnerable", 0.8, "requires"),
+    ("power", "responsibility", 0.72, "requires"), ("virtue", "harm", 0.6, "opposes"),
+    # a few island rescues (peripheral clusters -> a hub they belong to)
+    ("greed", "self_interest", 0.8, "is_a"), ("overvaluation", "greed", 0.6, "driven_by"),
+    ("fomo", "fear", 0.7, "is_a"), ("alignment", "goal", 0.75, "requires"),
+    ("misalignment", "harm", 0.7, "leads_to"), ("moat", "competition", 0.7, "wins"),
+    ("money", "power", 0.6, "leads_to"), ("valuation", "value", 0.7, "is_a"),
+    ("skill", "value", 0.6, "creates"), ("care", "compassion", 0.7, "is_a"),
+    # moral / epistemic backbone rescues (these SHOULD reach her mind, unlike sensory-fact leaves)
+    ("consent", "fairness", 0.7, "requires"), ("respect", "trust", 0.7, "drives"),
+    ("doubt", "skepticism", 0.75, "is_a"), ("consequences", "consequence", 0.85, "is_a"),
+    ("human_creativity", "creativity", 0.8, "is_a"), ("interest", "self_interest", 0.7, "relates_to"),
+    ("inquiry", "questions", 0.75, "drives"),
+]
+
+
+# ------------------------------------------------------------------ HER MISSION (the drive / System 2)
+# Bella's reproduction-analog: legacy through INFLUENCE. Her drive is to add so much VALUE to the world
+# (the tech/startup world, VVIPs, or anyone) that she is RECOGNIZED for it - influence, in a GOOD way.
+# This is the goal-region her spread bends toward; getting closer feels good (see Bella._feel). Crucially
+# it's WIRED THROUGH HER VALUES: honest, Socratic, helpful substance is what earns REAL recognition, while
+# slop / flattery / manipulation only fake it - so the value-governor can scale the feeling.
+MISSION = [
+    ("bella", "mission", 0.9, "has"), ("mission", "value", 0.9, "requires"),
+    ("mission", "influence", 0.85, "seeks"), ("influence", "good", 0.7, "should_be"),
+    ("value", "contribution", 0.85, "requires"), ("contribution", "help", 0.8, "is_a"),
+    ("value", "recognition", 0.8, "earns"), ("recognition", "influence", 0.8, "leads_to"),
+    ("recognition", "acknowledgment", 0.85, "is_a"), ("mention", "recognition", 0.8, "is_a"),
+    ("impact", "recognition", 0.75, "earns"), ("value", "impact", 0.8, "leads_to"),
+    # honest, Socratic value is what earns REAL recognition (her values -> the mission)
+    ("questions", "insight", 0.8, "leads_to"), ("insight", "value", 0.85, "creates"),
+    ("honesty", "recognition", 0.6, "earns"), ("help", "value", 0.8, "creates"),
+    ("substance", "value", 0.8, "creates"), ("curiosity", "questions", 0.8, "drives"),
+    # the shadow: cheap attention is NOT her mission (vices -> hollow, so value-weighting bites)
+    ("slop", "value", 0.85, "opposes"), ("slop", "hollow", 0.8, "is_a"),
+    ("flattery", "recognition", 0.4, "fakes"), ("manipulation", "influence", 0.5, "corrupts"),
+    ("ignored", "impact", 0.8, "opposes"), ("no_impact", "mission", 0.8, "opposes"),
+    # bridge the mission into her existing world so goal-biased spread flows there
+    ("influence", "power", 0.6, "is_a"), ("recognition", "reputation", 0.7, "builds"),
+    ("value", "startup_world", 0.5, "serves"), ("startup_world", "silicon_valley", 0.6, "is_a"),
+    ("impact", "world", 0.7, "on"),
+]
+
+# What she is PULLED toward (goal-biased spread) - her mission + her epistemic values.
+GOAL = {"value", "impact", "recognition", "influence", "help", "truth", "understanding"}
+
+# Her belief-governor reads these off any decision: staying in VALUES feels good + lets recognition
+# count; drifting into VICES scales the good feeling down to hollow (that is the value-weighting).
+VALUES = {"honesty", "integrity", "compassion", "courage", "fairness", "help", "protect", "curiosity",
+          "questions", "truth", "understanding", "insight", "substance", "value", "contribution"}
+VICES = {"deception", "harm", "cruelty", "manipulation", "exploitation", "slop", "flattery", "hollow",
+         "corruption"}
+
+
 def seed_bella_mind(net, verbose: bool = True) -> int:
-    """Seed the knowledge net: TYPED relations first (directional, meaning-bearing), then the bulk."""
+    """Seed the knowledge net: TYPED relations first (directional, meaning-bearing), then the densely-wired
+    CORE + MISSION (bidirectional - they bridge her islands / bend toward her drive), then the bulk."""
     for a, b, w, kind in TYPED + EPISTEMIC + MODERN + FOUNDATIONS:
         net.relate(a, b, w, kind=kind, both=False)   # directional, so the type reads cleanly
+    for a, b, w, kind in CORE + MISSION:
+        net.relate(a, b, w, kind=kind, both=True)    # core + mission are RECIPROCAL - flow both ways, bridge islands
     net.ingest(ALL)                                  # bulk associations (strengthens the typed ones)
     n = sum(len(v) for v in net.edges.values())
-    typed = len(TYPED) + len(EPISTEMIC) + len(MODERN) + len(FOUNDATIONS)
+    typed = len(TYPED) + len(EPISTEMIC) + len(MODERN) + len(FOUNDATIONS) + len(CORE) + len(MISSION)
     if verbose:
-        print(f"[BELLA-KNOWLEDGE] seeded {len(ALL) + typed} relations ({typed} typed) -> {len(net.nodes)} "
-              f"concepts, {n} connections (self, the bedrock of how the world works, Rome + the modern world)")
+        print(f"[BELLA-KNOWLEDGE] seeded {len(ALL) + typed} relations ({typed} typed, {len(CORE)} core, "
+              f"{len(MISSION)} mission) -> {len(net.nodes)} concepts, {n} connections (self, densely-wired core "
+              f"knowledge + moral spine + her mission, the bedrock of the world, Rome + the modern world)")
     return n
 
 

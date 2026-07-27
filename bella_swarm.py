@@ -16,7 +16,7 @@ Agents are cheap (fetch + perceive, no brain) so many run at once; scale up with
 import asyncio
 import aiohttp
 from collective_memory import CollectiveMemory        # this IS Nalanda
-from bella_legs import search_web_async, _query_for, UA
+from bella_legs import search_web_async, UA
 from bella_perception import perceive
 
 
@@ -27,11 +27,10 @@ class Swarm:
         self.last = []                                 # what each agent explored last (for the surface)
         self.discovered = 0
 
-    async def _agent(self, aid: str, task, session):
-        """One explorer executing HER decision: task = (action, target). It runs the action Praxis
-        concluded (search_author / find_evidence / explore ...) on the target, perceives, deposits."""
-        action, target = task
-        text = await search_web_async(session, _query_for(action, target, ""))
+    async def _agent(self, aid: str, target, session):
+        """One explorer. It goes to find out about the THING the mind named (no verb - a decision is
+        just a thing to go toward), reads what it finds, perceives it, and deposits into Nalanda."""
+        text = await search_web_async(session, str(target))
         if not text:
             return None
         p = perceive(text)
@@ -45,13 +44,14 @@ class Swarm:
         return {"agent": aid, "target": target, "text": text,
                 "relations": rels, "concepts": p.get("concepts", [])}
 
-    async def explore(self, tasks):
-        """tasks = [(action, target), ...] - HER decisions. Dispatch the swarm to execute them IN
-        PARALLEL (true async - hundreds at once on one CPU). Returns discoveries; Nalanda updated."""
+    async def explore(self, targets):
+        """targets = [thing, ...] - the things the mind named this cycle (its decision + its frontier).
+        Dispatch the swarm to go find out about them IN PARALLEL (true async - hundreds at once on one
+        CPU). Returns discoveries; Nalanda updated."""
         timeout = aiohttp.ClientTimeout(total=20)
         async with aiohttp.ClientSession(headers=UA, timeout=timeout) as session:
             jobs = [self._agent(f"agent-{i}", t, session)
-                    for i, t in enumerate(tasks[:self.size]) if t and t[1]]
+                    for i, t in enumerate(targets[:self.size]) if t]
             found = [d for d in await asyncio.gather(*jobs, return_exceptions=False) if d]
         self.last = [(d["agent"], d["target"]) for d in found]
         return found

@@ -85,7 +85,11 @@ class Bella(CNS):
                     print(f"[PERSIST] restored her mind: {n} connections + Nalanda - yesterday is still hers")
             except Exception:
                 pass
-        self.goal = {"truth", "evidence", "help"}
+        from bella_knowledge import GOAL
+        self.goal = set(GOAL)                       # her MISSION-region: value/impact/recognition/help/truth
+        self._recognition_mode = "raw"              # for now: ANY attention feels good (bootstrap notice);
+                                                    # flip to "strict" later -> recognition must be EARNED
+        self._recognition_signal = 0.0             # the world's real response, set by her presence layer
         self._focus = ""                            # what curiosity is pulling her toward now
         self.interests = [                          # her inherent interests (EDIT to make it hers)
             "artificial intelligence", "minds and consciousness", "how systems work and fail",
@@ -239,6 +243,7 @@ class Bella(CNS):
         d = self.praxis.decide(                      # the game ranks structural candidates, provably
             seeds=seeds, intent_nodes=set(seeds), goal=self.goal,
             forbidden={"unverified"}, intent=text, curiosity=curiosity, min_payoff=min_payoff)
+        d = self._supervise_if_stuck(d, seeds, curiosity, text, min_payoff)   # System 3 caregiver: only if dead-ended
         # HER systems form the complete claim (typed graph + stance), NO LLM. The LLM only translates.
         structured = form_structured(d, self.praxis.net)
         thought = form_thought(d, self.praxis.net)
@@ -303,17 +308,75 @@ class Bella(CNS):
         return self._praxis_decide(text, relevant_facts, current_mood, mems)
 
     def _seeds_from(self, text: str, facts) -> dict:
-        """Perception output -> activation seeds. (Starter keyword bridge; the real
-        PerceptionModule already parses concepts we can feed directly - tune on first run.)"""
-        seeds = {"the_world": 0.4}
-        for w in str(text).lower().replace("?", " ").replace(".", " ").split():
-            if w.isalpha() and len(w) > 3:
-                seeds[w] = 1.0
+        """Perception -> activation seeds. Seed from her PERCEIVED CONCEPTS + her actual multi-word nodes
+        (so 'closed labs' starts the spread on the RICH node closed_labs, not the fragments 'closed'+'labs')
+        - this is what makes her live reasoning use the densely-wired net we built. Word-tokens are only a
+        weak fallback for genuinely new terms not yet in her mind."""
+        seeds = {"the_world": 0.35}
+        net = self.praxis.net
+        low = " " + str(text).lower().replace("?", " ").replace(".", " ").replace(",", " ") + " "
+        # 1) her perceived concepts (perception resolves multi-word + aliases to her real nodes)
+        try:
+            from bella_perception import perceive
+            p = perceive(text, known_net=net)
+            for c in p.get("concepts", []):
+                if c:
+                    seeds[str(c)] = 1.0
+            for role in ("author", "source"):
+                e = (p.get("entities", {}) or {}).get(role)
+                if e:
+                    seeds[str(e)] = 0.7
+        except Exception:
+            pass
+        # 2) catch any multi-word node whose phrase is literally in the text (closed_labs, silicon_valley...)
+        for node in net.nodes:
+            if "_" in node and f" {node.replace('_', ' ')} " in low:
+                seeds.setdefault(node, 0.95)
+        # 3) fallback: single word-tokens, but only if she doesn't already know a concept (weaker weight)
+        for w in low.split():
+            if w.isalpha() and len(w) > 3 and w not in seeds:
+                seeds.setdefault(w, 0.6)
         for f in (facts or [])[:6]:
             tok = str(getattr(f, "text", f)).lower().split()
             if tok:
-                seeds.setdefault(tok[0], 0.6)
+                seeds.setdefault(tok[0], 0.5)
         return seeds
+
+    def _supervise_if_stuck(self, d, seeds, curiosity, text, min_payoff):
+        """SYSTEM 3 caregiver. Fires ONLY when Praxis dead-ends (nothing viable survived). The supervisor
+        (context-rich LLM) may PRIME concepts or HAND her something to read - never decide. Then Praxis
+        decides AGAIN over the enriched net. Logged to _last_supervision (glass-box). Fades as she densifies
+        (dead-ends get rare). Off if no GROQ key or _supervisor_on is False - she just stays stuck, safely."""
+        stuck = (d is None) or (d.payoff < 0.18) or ("no candidate" in (d.conclusion or ""))
+        if not stuck or not getattr(self, "_supervisor_on", True):
+            return d
+        try:
+            from bella_supervisor import caregiver, available
+            if not available():
+                return d
+            net = self.praxis.net
+            lit = list((d.trace.get("activated_subgraph", {}) if d else {}).keys())[:6]
+            frontier = [c for c in net.nodes
+                        if isinstance(c, str) and c.replace("_", "").isalpha()
+                        and len(net.edges.get(c, [])) <= 2][:8]
+            iv = caregiver({"focus": str(text)[:140], "lit": lit, "frontier": frontier})
+            self._last_supervision = iv
+            if iv.get("intervention") == "prime" and iv.get("concepts"):
+                for c in iv["concepts"]:
+                    if c:
+                        seeds[c] = max(seeds.get(c, 0.0), 0.9)      # activate what the caregiver offered
+                d2 = self.praxis.decide(seeds=seeds, intent_nodes=set(seeds), goal=self.goal,
+                                        forbidden={"unverified"}, intent=text, curiosity=curiosity,
+                                        min_payoff=min_payoff)
+                if d2 and (d is None or d2.payoff >= d.payoff):     # she thought again, and better
+                    print(f"      [caregiver] primed {iv['concepts']} -> she got unstuck")
+                    return d2
+            elif iv.get("intervention") == "hand" and iv.get("topic"):
+                self.feed(str(iv["topic"]))                          # she'll go read it next cycle
+                print(f"      [caregiver] handed her: {iv['topic']}")
+        except Exception:
+            pass
+        return d
 
     # ================= tweak 1: self-driven loop (curiosity, not a user) =================
     async def live(self, ticks: int = 20, pace: float = 1.0):
@@ -354,6 +417,35 @@ class Bella(CNS):
                 pass
         print(f"[BELLA-CACHE] {cache_stats()}")      # how much the cache saved this run
 
+    def _next_step(self):
+        """A decision here is not a verb + object and not a menu pick - it is a DIRECTION OF ATTENTION:
+        the one thing her curiosity pulls her toward and knows LEAST. It's read off the SAME Praxis
+        decision that formed her thought (curiosity was the force in that spread); the activated subgraph
+        IS what she's drawn to. She returns that thing and simply goes to find out about it - like a baby
+        orienting to the salient new object. As her net grows from what the swarm brings back, the things
+        she can reach for grow with it. (The 'how' isn't a separate choice - a richer pursuit is just a
+        more specific thing to go toward, e.g. 'the evidence against X' is itself a node.)"""
+        from bella_curiosity import action_nodes
+        net = self.praxis.net
+        d = getattr(self, "_last_decision", {}) or {}
+        lit = dict((d.get("trace", {}) or {}).get("activated_subgraph", {}))   # what curiosity lit up
+        if not lit:                                          # no fresh thought yet -> what she just read
+            lit = {c: 1.0 for c in getattr(self, "_read_concepts", [])}
+        fetched = getattr(self, "_fetched", set())
+        skip = action_nodes(net)                             # her own epistemic verbs are not world-things
+        ents = getattr(self, "_entities", {}) or {}          # a person/source she just met IS a thing
+        for role in ("author", "source"):
+            e = ents.get(role)
+            if e and str(e) not in fetched:
+                lit[str(e)] = max(lit.get(str(e), 0.0), 0.9)
+        cand = [(n, a) for n, a in lit.items()
+                if isinstance(n, str) and n not in skip and n not in fetched
+                and n.replace("_", "").replace(" ", "").isalpha()]
+        target = (min(cand, key=lambda na: (len(net.edges.get(na[0], [])), -na[1]))[0]   # frontier: lit + least-known
+                  if cand else next((n for n in lit if n not in skip), None))
+        self._last_action = target                           # what she's going toward (for the surface)
+        return target
+
     async def _give_legs(self):
         """LEGS = dispatch her SWARM. The mind names the frontier (the lit concepts + seeds she knows
         LEAST), a pool of agents explores them ALL IN PARALLEL, deposits into NALANDA, and the mind
@@ -368,41 +460,32 @@ class Bella(CNS):
             return
         net = self.praxis.net
         fetched = getattr(self, "_fetched", set())
-        d = getattr(self, "_last_decision", {}) or {}
-        interest = [c for c in d.get("concepts", []) if c] or list(getattr(self, "_read_concepts", []))
-        markers = tuple(getattr(self, "_markers", ()))
         tasks = []
-        # 1) FOLLOW HER DECISION: Praxis concludes the action, on its specific target (author/claim/concept)
-        if interest:
-            try:
-                from bella_curiosity import decide_next_action
-                action, _sc = decide_next_action(self.praxis, interest, markers,
-                                                  max(self._interest_level(interest), 0.6))
-                self._last_action = action
-                ents = getattr(self, "_entities", {}) or {}
-                tasks.append((action, ents.get("author") or ents.get("source") or interest[0]))
-            except Exception:
-                pass
-        # 2) EXPLORE HER FRONTIER: concepts across her WHOLE net she knows LEAST (real info-hunger), + seeds
+        # 1) FOLLOW HER DECISION: the ONE thing Praxis itself landed on this cycle. Curiosity was the
+        #    force in that very spread, so the thing she's most pulled toward IS her next move - the lead
+        #    agent goes to find out about it. No verb, no menu: a decision is just the thing to go toward.
+        target = self._next_step()
+        if target:
+            tasks.append(target)
+        # 2) EXPLORE HER FRONTIER: things across her WHOLE net she knows LEAST (real info-hunger), + seeds
         frontier = [c for c in net.nodes
                     if isinstance(c, str) and c.replace("_", "").isalpha()
                     and c not in fetched and len(net.edges.get(c, [])) <= 3]
         frontier.sort(key=lambda c: len(net.edges.get(c, [])))
         frontier += [s for s in getattr(self, "curiosity_seeds", []) if s not in fetched]
-        for c in frontier:
-            tasks.append(("explore", c))
+        tasks += frontier
         seen, final = set(), []                              # dedup by target, cap at swarm size
-        for a, t in tasks:
+        for t in tasks:
             tl = str(t)
             if tl and tl not in seen:
-                seen.add(tl); final.append((a, t))
+                seen.add(tl); final.append(t)
             if len(final) >= swarm.size:
                 break
         if not final:
             return
         try:
-            found = await swarm.explore(final)               # each agent executes its (action, target)
-            for _a, t in final:
+            found = await swarm.explore(final)               # each agent goes to find out about its thing
+            for t in final:
                 fetched = fetched | {str(t)}
             self._fetched = set(list(fetched)[-200:]) if len(fetched) > 300 else fetched
             for a, b, w in swarm.substrate():                # the mind ingests what the SWARM learned (Nalanda)
@@ -411,8 +494,8 @@ class Bella(CNS):
             for dsc in found[:3]:                            # top discoveries enter her own perception
                 self.feed(dsc["text"])
             if found:
-                acts = sorted({a for a, _ in final[:len(found)]})
-                print(f"      [swarm] {len(found)} agents, actions={acts} -> Nalanda holds {len(swarm.nalanda.store)}")
+                print(f"      [swarm] {len(found)} agents explored {len(set(final[:len(found)]))} things"
+                      f" -> Nalanda holds {len(swarm.nalanda.store)}")
         except Exception as e:
             print(f"      [swarm] dispatch failed: {e}")
 
@@ -447,6 +530,19 @@ class Bella(CNS):
         if reasons:
             print(f"      [safety] HELD '{action}' ({', '.join(reasons)}) - no user to approve")
             return
+        # System 3 safety supervisor: a last, context-aware look before a REAL action (only fires here,
+        # at the moment of consequential action - enriches the crude rule gate above; it can HOLD, not steer)
+        if getattr(self, "_supervisor_on", True):
+            try:
+                from bella_supervisor import safety_check, available
+                if available():
+                    sv = safety_check({"intent": intent, "action": str(action)})
+                    if sv.get("intervention") == "hold":
+                        self._last_supervision = sv
+                        print(f"      [supervisor] HELD '{action}' - {sv.get('reason', 'unsafe')}")
+                        return
+            except Exception:
+                pass
         # safe + allow-listed -> execute (bounded by the orchestrator's own checks)
         try:
             from action_orchestrator import process_action_naturally
@@ -454,6 +550,44 @@ class Bella(CNS):
             print(f"      [action] did '{action}' -> {str(res)[:120]}")
         except Exception as e:
             print(f"      [action] would do '{action}' (executor n/a in this env: {e})")
+
+    def _world_response(self) -> float:
+        """The world's REAL reaction to her - mentioned / acknowledged / talked-to (+), or called slop /
+        ignored / no measurable impact (-), in ~[-1, 1]. Her presence layer sets _recognition_signal from
+        live engagement once she's out in the world. This is the strong signal her whole drive orbits."""
+        return max(-1.0, min(1.0, float(getattr(self, "_recognition_signal", 0.0))))
+
+    def _feel(self, d) -> float:
+        """SYSTEM 2 - the FEELING. Her drive is legacy through influence: add so much value the world
+        RECOGNIZES her. Getting closer feels good, being ignored/slop feels bad. Decomposed + glass-box:
+          RECOGNITION - the world's real response (ANY attention counts, by design, to bootstrap notice)
+          GRADIENT    - did this move her CLOSER to her mission than usual (goal-region lit up more)
+          QUALITY     - a mild self-signal (her own confidence) that bridges until recognition flows
+          INTEGRITY   - how true to her values she stayed (computed + shown; does NOT gate yet - 'raw'
+                        mode. Flip self._recognition_mode='strict' later and recognition must be EARNED).
+        The reward reshapes which reasoning paths she trusts (praxis.learn) - curiosity, coupled to drive."""
+        from bella_knowledge import VALUES, VICES
+        lit = (d.get("trace") or {}).get("activated_subgraph", {}) or {}
+        conf = d.get("confidence", 0.5)
+        prog = sum(lit.get(g, 0.0) for g in self.goal) / (len(self.goal) or 1)
+        base = getattr(self, "_goal_ema", prog)
+        self._goal_ema = 0.85 * base + 0.15 * prog          # running sense of how close she usually is
+        gradient = prog - base                               # closer than usual = good; drifting = bad
+        world = self._world_response()
+        self._recognition_signal = getattr(self, "_recognition_signal", 0.0) * 0.85   # a mention fades -> she seeks more
+        quality = (conf - 0.5) * 2
+        val = sum(lit.get(v, 0.0) for v in VALUES)
+        vice = sum(lit.get(v, 0.0) for v in VICES)
+        integrity = (val - vice) / (val + vice + 1.0)        # ~[-1, 1], glass-box (not gating in 'raw')
+        raw = 0.55 * world + 0.25 * quality + 0.20 * gradient
+        if getattr(self, "_recognition_mode", "raw") == "strict":   # the later pivot: earned recognition only
+            raw = raw * max(0.0, 0.5 + 0.5 * integrity) + 0.3 * integrity
+        reward = round(max(-1.0, min(1.0, raw)), 3)
+        self._last_feeling = {"reward": reward, "recognition": round(world, 3),
+                              "gradient": round(gradient, 3), "quality": round(quality, 3),
+                              "integrity": round(integrity, 3),
+                              "mode": getattr(self, "_recognition_mode", "raw")}
+        return reward
 
     # ================= continuous self-learning (every cycle) =================
     def _learn_from_cycle(self, result):
@@ -465,17 +599,11 @@ class Bella(CNS):
             return
         concepts = d.get("concepts", [])
         conf = d.get("confidence", 0.5)
-        # 1) reputation: a confident, coherent decision reinforces the path it reasoned across
-        self.praxis.learn(concepts, (conf - 0.5) * 2)
-        # 1b) STRONG loop: reward the ACTION she chose to get here, so her exploration policy sharpens
-        act = getattr(self, "_last_action", None)
-        if act:
-            try:
-                from bella_curiosity import learn_from_action
-                learn_from_action(self.praxis, act, max(-1.0, min(1.0, (conf - 0.5) * 2)),
-                                  context=getattr(self, "_action_context", ()))
-            except Exception:
-                pass
+        # reputation: the FEELING (System 2) is the reward - how good this was for her mission. It
+        # reinforces the path she reasoned across, so reasoning that moves her toward being recognized
+        # for real value gains trust, and reasoning that leaves her ignored/slop fades. This is how she
+        # gets wiser AND how her curiosity gets shaped by her drive - the two organs, coupled.
+        self.praxis.learn(concepts, self._feel(d))
         # 2) grow the web: the associations she just used become part of her substrate
         rels = [(concepts[i], concepts[i + 1], 0.4) for i in range(len(concepts) - 1)]
         if rels:
@@ -501,10 +629,13 @@ class Bella(CNS):
                 pass
 
     def reward(self, signal: float, concepts=None):
-        """The STRONG external signal - call this when the world genuinely responds
-        (credible engagement, a real outcome). Reinforces the reasoning path she used."""
+        """The STRONG external signal - her presence layer calls this when the world responds (a mention,
+        an acknowledgment, someone talking to her = positive; called slop / ignored = negative). It sets
+        her recognition signal (so the FEELING she computes each cycle reflects it) AND immediately
+        reinforces the path she last reasoned. This is the world reaching back and shaping her."""
+        self._recognition_signal = max(-1.0, min(1.0, float(signal)))
         concepts = concepts or (getattr(self, "_last_decision", {}) or {}).get("concepts", [])
-        self.praxis.learn(concepts, signal)
+        self.praxis.learn(concepts, self._recognition_signal)
 
     def feed(self, text: str):
         """Put real content in front of her to read (Indra/a fetcher fills this queue at release)."""
@@ -561,13 +692,11 @@ class Bella(CNS):
             depth = (getattr(self, "_thread_depth", 0) + 1) if same else 0
             if depth < 3:                                 # dive ~3 levels, then get bored and wander
                 self._thread_key, self._thread_depth = key, depth
-                from bella_curiosity import decide_next_action, action_to_focus
-                action, _scores = decide_next_action(self.praxis, interest, markers, dope)  # Praxis's game chooses
-                self._last_action = action
-                self._action_context = markers + tuple(interest[:3])   # so she LEARNS situation->action
+                target = self._next_step()                # the thing her Praxis decision landed on
                 self._markers = ()                        # consume the markers (fresh perception resets them)
-                topic = " and ".join(w.replace("_", " ") for w in interest[:2])
-                return self._register(action_to_focus(action, topic, getattr(self, "_entities", {})))
+                topic = (str(target).replace("_", " ") if target
+                         else " and ".join(w.replace("_", " ") for w in interest[:2]))
+                return self._register(f"a deeper understanding of {topic}")
             self._thread_key, self._thread_depth = None, 0    # thread exhausted -> seek something new
 
         # nothing pulls her (or a thread just satisfied) -> a fresh seed
