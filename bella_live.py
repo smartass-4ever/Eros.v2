@@ -55,7 +55,7 @@ def _serve(port=8080):
 
 async def main():
     from bella import Bella
-    from bella_web import fetch_hn_headlines, fetch_article
+    from bella_web import fetch_hn_headlines, fetch_article, curiosity_about
     b = Bella()
     b._surface_path = STATE
     b._legs_on = True                                  # her decisions reach the world: dispatch -> fetch -> perceive
@@ -65,7 +65,7 @@ async def main():
             heads = fetch_hn_headlines(14)
             fed = 0
             for h in heads:
-                if b.curious_about(h["title"]) >= 0.20:
+                if curiosity_about(b.praxis.net, b.interests, h["title"]) >= 0.20:
                     b.feed(fetch_article(h["url"]) or h["title"]); fed += 1
             print(f"[LIVE] read {fed} of {len(heads)} live stories; thinking...")
         except Exception as e:
