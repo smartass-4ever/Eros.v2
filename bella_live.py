@@ -15,12 +15,39 @@ STATE = os.path.join(SURFACE, "state.json")
 
 
 def _serve(port=8080):
+    feed_path = os.path.join(SURFACE, "feed.xml")
+
     class H(http.server.SimpleHTTPRequestHandler):
         def __init__(self, *a, **k):
             super().__init__(*a, directory=SURFACE, **k)
+
+        def do_GET(self):
+            if self.path in ("/feed.xml", "/feed"):
+                if os.path.exists(feed_path):
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/atom+xml; charset=utf-8")
+                    self.end_headers()
+                    with open(feed_path, "rb") as f:
+                        self.wfile.write(f.read())
+                else:
+                    self.send_response(404); self.end_headers()
+                return
+            super().do_GET()
+
+        def do_POST(self):
+            if self.path == "/webmention":
+                length = int(self.headers.get("Content-Length", 0))
+                body = self.rfile.read(length).decode("utf-8", errors="replace")
+                print(f"[webmention] {body[:200]}")
+                self.send_response(202); self.end_headers()
+                return
+            self.send_response(405); self.end_headers()
+
         def end_headers(self):
             self.send_header("Cache-Control", "no-store"); super().end_headers()
+
         def log_message(self, *a): pass
+
     socketserver.TCPServer.allow_reuse_address = True
     with socketserver.TCPServer(("0.0.0.0", port), H) as s:
         s.serve_forever()
