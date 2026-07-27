@@ -73,7 +73,7 @@ def perceive(text: str, known_net=None) -> dict:
         markers.append("unknown")
     markers.append("interesting")
 
-    # RELATIONS - typed edges she extracts and will INGEST (reading -> knowledge)
+    # RELATIONS - TYPED edges (meaning-bearing, when a known verb pattern is present)
     relations = []
     for pat, kind in REL_VERBS:
         for mm in re.finditer(rf"(\w{{4,}})\s+(?:\w+\s+){{0,2}}?(?:{pat})\s+(?:\w+\s+){{0,2}}?(\w{{4,}})", low):
@@ -81,8 +81,33 @@ def perceive(text: str, known_net=None) -> dict:
             if a and b and a != b and a not in STOP and b not in STOP:
                 relations.append((a, b, 0.5, kind))
 
-    return {"concepts": concepts, "entities": entities,
-            "markers": tuple(dict.fromkeys(markers)), "relations": relations[:8]}
+    # ASSOCIATIONS - concepts that CO-OCCUR (fire together, wire together). This is how a mind actually
+    # learns from reading - the dense associative substrate spreading-activation runs across. Weak edges
+    # (the substrate); outcomes/reputation strengthen the trusted ones later. This is the big learning gain.
+    associations = _associations(low)
+
+    return {"concepts": concepts, "entities": entities, "markers": tuple(dict.fromkeys(markers)),
+            "relations": relations[:12], "associations": associations}
+
+
+def _associations(low, window=3, cap=45):
+    """Co-occurrence within a sentence -> associative pairs. Sentence-local + windowed, so it's real
+    association (things said together), not noise across the whole document."""
+    pairs, seen = [], set()
+    for sent in re.split(r"[.!?;]\s+", low):
+        ws, s = [], set()
+        for w in re.findall(r"[a-z][a-z-]{3,}", sent):
+            w = _word(w)
+            if w and w not in STOP and w not in s:
+                s.add(w); ws.append(w)
+            if len(ws) >= 9:
+                break
+        for i in range(len(ws)):
+            for j in range(i + 1, min(i + 1 + window, len(ws))):
+                key = tuple(sorted((ws[i], ws[j])))
+                if key not in seen:
+                    seen.add(key); pairs.append((ws[i], ws[j]))
+    return pairs[:cap]
 
 
 if __name__ == "__main__":

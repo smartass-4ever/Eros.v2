@@ -53,9 +53,24 @@ def build_state(bella) -> dict:
         "action": getattr(bella, "_last_action", "explore"),
         "stance": _stance(d),
         "trail": getattr(bella, "_trail", [])[-4:],
-        "heads": getattr(bella, "_swarm_heads", []),
-        "nalanda": getattr(bella, "_nalanda_n", 0),
+        "heads": _swarm_heads(bella),
+        "nalanda": _nalanda_count(bella),
     }
+
+
+def _swarm_heads(bella):
+    sw = getattr(bella, "swarm", None)
+    if sw is None:
+        return []
+    return [[aid, str(tgt).replace("_", " ")[:22], 1] for aid, tgt in getattr(sw, "last", [])[:8]]
+
+
+def _nalanda_count(bella):
+    sw = getattr(bella, "swarm", None)
+    try:
+        return len(sw.nalanda.store) if sw is not None else 0
+    except Exception:
+        return 0
 
 
 def emit(bella, path):

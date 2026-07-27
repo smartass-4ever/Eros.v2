@@ -64,10 +64,27 @@ class Bella(CNS):
             print(f"[DB] {e}")
         super().__init__()                          # boots the whole real being, unchanged
         self.praxis = PraxisV2(KnowledgeNet())      # her final decision system
-        seed_bella_mind(self.praxis.net)            # give her a mind to think WITH (not an empty net)
+        seed_bella_mind(self.praxis.net)            # the baseline mind (bootstrap)
+        self._mind_path = os.environ.get("BELLA_MIND_PATH")   # persistent volume path (restore after swarm exists)
         self._install_pill(BELLA_PILL)              # optional persona (default ON; guarantees disclosure)
         self._reduce_llm_calls()                    # cut the redundant LLM calls (Praxis/emotion cover them)
         self._route_voice_through_praxis()          # her voice = her Praxis thought, NOT the 9.7k-tok expression
+        try:                                        # her SWARM: lightweight agents that explore the world in parallel
+            from bella_swarm import Swarm
+            self.swarm = Swarm(size=int(os.environ.get("BELLA_SWARM_SIZE", "30")))
+        except Exception:
+            self.swarm = None
+        # Praxis <-> Nalanda BOTH WAYS: the mind reads the swarm's substrate (in _give_legs), and her
+        # own conclusions flow BACK into Nalanda (via _learn_from_cycle, which writes to self.collective).
+        self.collective = self.swarm.nalanda if getattr(self, "swarm", None) else None
+        if self._mind_path:                          # NOW restore her mind (net + Nalanda) - yesterday is still hers
+            try:
+                from bella_persist import load_mind
+                n = load_mind(self, self._mind_path)
+                if n:
+                    print(f"[PERSIST] restored her mind: {n} connections + Nalanda - yesterday is still hers")
+            except Exception:
+                pass
         self.goal = {"truth", "evidence", "help"}
         self._focus = ""                            # what curiosity is pulling her toward now
         self.interests = [                          # her inherent interests (EDIT to make it hers)
@@ -311,17 +328,93 @@ class Bella(CNS):
             print(f"[{t:02d}] curious about: {focus!r}\n      -> {thought[:200]}")
             await self._act_on()                     # decision -> action (piece 2), safely
             self._learn_from_cycle(result)           # continuous self-learning (every cycle)
+            await self._give_legs()                  # decision -> LEGS: dispatch to the world for NEW material
             if getattr(self, "_surface_path", None):  # stream her live cognition to the public surface
                 try:
                     from bella_state import emit
                     emit(self, self._surface_path)
                 except Exception:
                     pass
+            self._cyc = getattr(self, "_cyc", 0) + 1   # PERSIST her mind so she never reboots to zero
+            if getattr(self, "_mind_path", None) and self._cyc % 8 == 0:
+                try:
+                    from bella_persist import save_mind
+                    save_mind(self, self._mind_path)
+                except Exception:
+                    pass
             print()
             history = (history + [{"role": "user", "content": focus},
                                   {"role": "assistant", "content": thought}])[-40:]
             await asyncio.sleep(pace)
+        if getattr(self, "_mind_path", None):        # persist at the end of every batch (belt + braces)
+            try:
+                from bella_persist import save_mind
+                save_mind(self, self._mind_path)
+            except Exception:
+                pass
         print(f"[BELLA-CACHE] {cache_stats()}")      # how much the cache saved this run
+
+    async def _give_legs(self):
+        """LEGS = dispatch her SWARM. The mind names the frontier (the lit concepts + seeds she knows
+        LEAST), a pool of agents explores them ALL IN PARALLEL, deposits into NALANDA, and the mind
+        ingests everything they brought back + perceives the top discoveries. What one agent finds, the
+        whole mind knows. Curiosity outward, never re-fetching what she's read. This closes the loop."""
+        if not getattr(self, "_legs_on", False):
+            return
+        if len(getattr(self, "_inbox", []) or []) >= 10:     # only skip if she has a big backlog to read
+            return
+        swarm = getattr(self, "swarm", None)
+        if swarm is None:
+            return
+        net = self.praxis.net
+        fetched = getattr(self, "_fetched", set())
+        d = getattr(self, "_last_decision", {}) or {}
+        interest = [c for c in d.get("concepts", []) if c] or list(getattr(self, "_read_concepts", []))
+        markers = tuple(getattr(self, "_markers", ()))
+        tasks = []
+        # 1) FOLLOW HER DECISION: Praxis concludes the action, on its specific target (author/claim/concept)
+        if interest:
+            try:
+                from bella_curiosity import decide_next_action
+                action, _sc = decide_next_action(self.praxis, interest, markers,
+                                                  max(self._interest_level(interest), 0.6))
+                self._last_action = action
+                ents = getattr(self, "_entities", {}) or {}
+                tasks.append((action, ents.get("author") or ents.get("source") or interest[0]))
+            except Exception:
+                pass
+        # 2) EXPLORE HER FRONTIER: concepts across her WHOLE net she knows LEAST (real info-hunger), + seeds
+        frontier = [c for c in net.nodes
+                    if isinstance(c, str) and c.replace("_", "").isalpha()
+                    and c not in fetched and len(net.edges.get(c, [])) <= 3]
+        frontier.sort(key=lambda c: len(net.edges.get(c, [])))
+        frontier += [s for s in getattr(self, "curiosity_seeds", []) if s not in fetched]
+        for c in frontier:
+            tasks.append(("explore", c))
+        seen, final = set(), []                              # dedup by target, cap at swarm size
+        for a, t in tasks:
+            tl = str(t)
+            if tl and tl not in seen:
+                seen.add(tl); final.append((a, t))
+            if len(final) >= swarm.size:
+                break
+        if not final:
+            return
+        try:
+            found = await swarm.explore(final)               # each agent executes its (action, target)
+            for _a, t in final:
+                fetched = fetched | {str(t)}
+            self._fetched = set(list(fetched)[-200:]) if len(fetched) > 300 else fetched
+            for a, b, w in swarm.substrate():                # the mind ingests what the SWARM learned (Nalanda)
+                try: self.praxis.net.ingest([(a, b, w)])
+                except Exception: pass
+            for dsc in found[:3]:                            # top discoveries enter her own perception
+                self.feed(dsc["text"])
+            if found:
+                acts = sorted({a for a, _ in final[:len(found)]})
+                print(f"      [swarm] {len(found)} agents, actions={acts} -> Nalanda holds {len(swarm.nalanda.store)}")
+        except Exception as e:
+            print(f"      [swarm] dispatch failed: {e}")
 
     async def _act_on(self):
         """Decision -> action via the real CNS_MDC + action orchestrator, with VISIBLE safety.
@@ -427,8 +520,11 @@ class Bella(CNS):
         self._markers = p["markers"]
         self._entities = p["entities"]
         self._read_concepts = p["concepts"][:4]         # so she can pursue it even if it's new to her
-        for a, b, w, kind in p["relations"]:            # learn from what she just read
+        for a, b, w, kind in p["relations"]:            # TYPED relations she extracted (meaning)
             try: self.praxis.net.relate(a, b, w, kind=kind, both=False)
+            except Exception: pass
+        for a, b in p.get("associations", []):          # CO-OCCURRENCE -> the associative substrate (the big win)
+            try: self.praxis.net.ingest([(a, b, 0.3)])
             except Exception: pass
         return " ".join(p["concepts"][:3]) or "what I just read"
 

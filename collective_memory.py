@@ -60,14 +60,18 @@ class CollectiveMemory:
             return overlap * 2 + TIER_WEIGHT[tr.tier] + tr.hits * 0.5 + tr.salience
         return sorted(self.store.values(), key=score, reverse=True)[:k]
 
+    TIER_BASE = {"sensory": 0.2, "working": 0.28, "episodic": 0.36, "semantic": 0.5, "procedural": 0.6}
+
     def substrate(self):
-        """Emit the swarm's durable learned relations so each Bella can ingest() them into its
-        reasoning net. Confidence grows with recurrence. This deepens every Bella's mind."""
+        """Emit the swarm's learned relations so a mind can ingest() them into its reasoning net.
+        ALL tiers flow (fresh discoveries reach the mind too), weighted by how established they are -
+        working = tentative, semantic/procedural = trusted. Confidence grows with recurrence. This is
+        how what one agent discovers deepens every mind."""
         rels = []
         for tr in self.store.values():
-            if tr.tier in ("semantic", "procedural"):
-                for (a, b) in tr.relations:
-                    rels.append((a, b, min(1.0, 0.3 + 0.1 * tr.hits)))
+            base = self.TIER_BASE.get(tr.tier, 0.3)
+            for (a, b) in tr.relations:
+                rels.append((a, b, min(1.0, base + 0.05 * tr.hits)))
         return rels
 
     def snapshot(self):
