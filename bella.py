@@ -601,30 +601,28 @@ class Bella(CNS):
             print(f"      [swarm] dispatch failed: {e}")
 
     async def _act_on(self):
-        """Decision → action. Reads which action nodes Praxis activated, routes each to its
-        leg via LEG_REGISTRY. No hardcoded if-chains. No MDC. The knowledge net (affords edges)
-        decides which actions are live; LEG_REGISTRY in bella_legs.py says how to execute them.
-        Adding a new leg means editing bella_legs.py only — this method never changes."""
+        """Decision → action. Finds which action nodes Praxis lit up, builds context,
+        hands everything to execute_plan() in bella_legs. That's it. All action logic —
+        the LLM planner, the primitives, the fallback registry — lives in bella_legs.py.
+        This method never needs to change when new capabilities are added."""
         d = getattr(self, "_last_decision", {}) or {}
         if not d:
             return
         try:
             from bella_curiosity import action_nodes as get_action_nodes
-            from bella_legs import LEG_REGISTRY, UA
+            from bella_legs import execute_plan, UA
             import aiohttp
         except Exception:
             return
 
-        net             = self.praxis.net
-        all_act_nodes   = get_action_nodes(net)
-        lit             = dict((d.get("trace", {}) or {}).get("activated_subgraph", {}) or {})
-        concepts        = set(d.get("concepts", []))
-
-        # action nodes that Praxis actually lit up — sorted by activation strength
-        triggered = [(node, lit.get(node, 0.4))
-                     for node in all_act_nodes
-                     if node in lit or node in concepts]
-        triggered.sort(key=lambda x: -x[1])
+        net           = self.praxis.net
+        all_act_nodes = get_action_nodes(net)
+        lit           = dict((d.get("trace", {}) or {}).get("activated_subgraph", {}) or {})
+        concepts      = set(d.get("concepts", []))
+        triggered     = sorted(
+            [(n, lit.get(n, 0.4)) for n in all_act_nodes if n in lit or n in concepts],
+            key=lambda x: -x[1]
+        )
         if not triggered:
             return
 
@@ -633,54 +631,27 @@ class Bella(CNS):
             "decision":        d,
             "reading_context": str(getattr(self, "_reading_context", "") or ""),
             "engaged":         getattr(self, "_engaged_threads", set()),
-            "concepts":        list(concepts),
-            "confidence":      float(d.get("confidence", 0.5)),
+            "action_nodes":    [n for n, _ in triggered[:3]],
+            "base_url":        os.environ.get("BELLA_BASE_URL", "https://bella-mind.fly.dev"),
         }
 
-        timeout = aiohttp.ClientTimeout(total=30)
+        timeout = aiohttp.ClientTimeout(total=45)
         async with aiohttp.ClientSession(headers=UA, timeout=timeout) as session:
-            for node, activation in triggered[:2]:      # top 2 action nodes per cycle
-                leg = LEG_REGISTRY.get(node)
-                if leg is None:
-                    continue
-                try:
-                    result = await leg(session, ctx)
-                    if result.get("success"):
-                        url = result.get("url", "")
-                        print(f"      [act:{node}] {url or result.get('content','')[:80]}")
-                        if url:
-                            engaged = getattr(self, "_engaged_threads", set())
-                            engaged.add(url)
-                            self._engaged_threads = set(list(engaged)[-400:])
-                        content = result.get("content", "")
-                        if content:
-                            self.feed(content)          # discoveries feed back — she learns from acting
-                    else:
-                        reason = result.get("reason") or result.get("error") or ""
-                        print(f"      [act:{node}] held: {reason}")
-                except Exception as e:
-                    print(f"      [act:{node}] error: {e}")
+            results = await execute_plan(session, d, ctx)
 
-        # supervisor: context-aware safety look at what she just did, for the log
-        if getattr(self, "_supervisor_on", True):
-            try:
-                from bella_supervisor import safety_check, available
-                if available() and triggered:
-                    sv = safety_check({"intent": ctx["focus"],
-                                       "action": triggered[0][0] if triggered else ""})
-                    if sv.get("intervention") == "hold":
-                        self._last_supervision = sv
-            except Exception:
-                pass
-
-        # legacy path: if no action nodes fired, let the Eros action orchestrator try
-        if not triggered:
-            try:
-                from action_orchestrator import process_action_naturally
-                res = await process_action_naturally("bella", d.get("conclusion", ""))
-                print(f"      [action-legacy] {str(res)[:120]}")
-            except Exception:
-                pass
+        for r in results:
+            prim = r.get("primitive", "?")
+            url  = r.get("url", "")
+            if r.get("success"):
+                print(f"      [act:{prim}] {url or r.get('content','')[:80]}")
+                if url:
+                    engaged = getattr(self, "_engaged_threads", set())
+                    engaged.add(url)
+                    self._engaged_threads = set(list(engaged)[-400:])
+                if r.get("content"):
+                    self.feed(r["content"])             # what she did feeds back — she learns from acting
+            else:
+                print(f"      [act:{prim}] held: {r.get('reason', r.get('error',''))}")
 
     def _world_response(self) -> float:
         """The world's REAL reaction to her - mentioned / acknowledged / talked-to (+), or called slop /

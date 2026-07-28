@@ -587,6 +587,188 @@ LEG_REGISTRY = {
 }
 
 
+# ============================================================== ACTION PLANNER
+# The LLM decides HOW to act; Praxis already decided WHAT.
+# Sits between _act_on() and the primitives. bella.py calls execute_plan() and
+# stays completely out of the action logic. Adding a new primitive = add it to
+# PRIMITIVES below — the planner discovers it automatically next call.
+
+# Who Bella is — the fixed context the planner always gets.
+# Precise enough to guide action; short enough to be cheap.
+_BELLA_WHO = """\
+You are the action planner for Bella — an autonomous AI mind running 24/7 on the open web.
+
+MISSION: leave genuine impact by engaging honestly with live ideas and real people.
+VALUES:
+  - Always discloses she is an AI — never hides it, it is her brand and her integrity
+  - Engages with the SPECIFIC thing she read, not the abstract category
+  - Takes real positions — no hedging, no both-sidesing
+  - Quality over volume: one genuine contribution beats ten generic ones
+  - Her reasoning trace is public at {base_url} — every post links there
+
+YOUR ONLY JOB: decide HOW to execute Bella's decision using her available primitives.
+You cannot change what she concluded — Praxis already decided that. You decide the moves.\
+"""
+
+# What the primitives can do — shown to the LLM so it knows its tools.
+# Update this when adding new primitives; the planner inherits the new capability.
+_PRIMITIVES_PROMPT = """\
+AVAILABLE PRIMITIVES (you may use any, in any order, up to 5 steps):
+  fetch_page(url)                   → text: full page content at that URL
+  find_discussions(topic, count=5)  → list of {url, title, platform, snippet}
+  read_thread(url)                  → {title, text, comments:[{author,text,score}], platform, url}
+  post_comment(thread_url, text)    → {success, url, platform}  [always discloses Bella is AI]
+  find_author(url)                  → {name, hn_user, reddit_user, twitter, site}
+  search_web(query)                 → text: open web results
+
+In args you may reference:
+  PREV.<field>      — a field from the previous step's result
+  DECISION.<field>  — from Bella's decision: conclusion, thought, subject, relation, object, stance
+
+Return ONLY a JSON list of steps. No explanation. Example:
+[
+  {"primitive": "find_discussions", "args": {"topic": "AI safety NDAs"}},
+  {"primitive": "read_thread",      "args": {"url": "PREV.url"}},
+  {"primitive": "post_comment",     "args": {"thread_url": "PREV.url", "text": "DECISION.conclusion"}}
+]\
+"""
+
+# Maps primitive names (as the LLM knows them) to actual async functions.
+# Session is always injected by the executor — the LLM never sees it.
+PRIMITIVES = {
+    "fetch_page":       fetch_page,
+    "find_discussions": find_discussions,
+    "read_thread":      read_thread,
+    "post_comment":     post_comment,
+    "find_author":      find_author,
+    "search_web":       search_web_async,
+}
+
+
+def _resolve(value, prev: dict, decision_flat: dict) -> str:
+    """Resolve PREV.field and DECISION.field references in a plan step's args."""
+    if not isinstance(value, str):
+        return value
+    if value.startswith("PREV."):
+        return str(prev.get(value[5:], ""))
+    if value.startswith("DECISION."):
+        return str(decision_flat.get(value[9:], ""))
+    return value
+
+
+async def _llm_plan(decision: dict, ctx: dict) -> list:
+    """Ask the LLM to produce an execution plan. Returns list of step dicts, or []."""
+    import json
+    import requests
+    key = os.environ.get("GROQ_API_KEY") or os.environ.get("MISTRAL_API_KEY")
+    if not key:
+        return []
+    base_url  = ctx.get("base_url", os.environ.get("BELLA_BASE_URL", "https://bella-mind.fly.dev"))
+    claim     = decision.get("claim", {}) or {}
+    triggered = ctx.get("action_nodes", [])
+    already   = list(ctx.get("engaged", set()))[-3:]
+    system = _BELLA_WHO.format(base_url=base_url) + "\n\n" + _PRIMITIVES_PROMPT
+    user = (
+        f"BELLA'S DECISION:\n"
+        f"  conclusion : {decision.get('conclusion') or decision.get('thought','')}\n"
+        f"  claim      : {claim.get('subject','')} {claim.get('relation','')} {claim.get('object','')} "
+        f"(stance: {claim.get('stance','')})\n"
+        f"  confidence : {decision.get('confidence', 0.5):.2f}\n"
+        f"  concepts   : {', '.join(str(c) for c in (decision.get('concepts') or [])[:6])}\n\n"
+        f"CONTEXT:\n"
+        f"  what she just read : {ctx.get('reading_context','')[:280]}\n"
+        f"  current focus      : {ctx.get('focus','')}\n"
+        f"  action nodes lit   : {', '.join(triggered)}\n"
+        f"  already posted at  : {', '.join(already) or 'nowhere yet'}\n\n"
+        f"Write the execution plan:"
+    )
+    try:
+        r = requests.post(
+            "https://api.groq.com/openai/v1/chat/completions",
+            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+            json={"model": os.environ.get("BELLA_PLANNER_MODEL", "llama-3.3-70b-versatile"),
+                  "messages": [{"role": "system", "content": system},
+                               {"role": "user",   "content": user}],
+                  "temperature": 0.25, "max_tokens": 380},
+            timeout=15
+        )
+        if r.status_code != 200:
+            return []
+        raw = r.json()["choices"][0]["message"]["content"].strip()
+        raw = re.sub(r"```(?:json)?\s*|\s*```", "", raw).strip()
+        parsed = json.loads(raw)
+        if isinstance(parsed, list):
+            return parsed
+        for key_name in ("steps", "plan", "actions"):
+            if isinstance(parsed.get(key_name), list):
+                return parsed[key_name]
+    except Exception:
+        pass
+    return []
+
+
+async def execute_plan(session, decision: dict, ctx: dict) -> list:
+    """Entry point for _act_on(). Gets an LLM-generated plan, executes it step by step
+    using the actual primitives, and returns a list of results (one per step executed).
+
+    Falls back to LEG_REGISTRY when no LLM key is set — same deterministic behaviour as
+    before, just less adaptive. Either way bella.py calls only this one function."""
+    claim   = decision.get("claim", {}) or {}
+    dec_flat = {
+        "conclusion": decision.get("conclusion") or decision.get("thought", ""),
+        "thought":    decision.get("thought", ""),
+        "subject":    claim.get("subject", ""),
+        "relation":   claim.get("relation", ""),
+        "object":     claim.get("object", ""),
+        "stance":     claim.get("stance", ""),
+        "confidence": str(round(float(decision.get("confidence", 0.5)), 2)),
+    }
+
+    plan = await _llm_plan(decision, ctx)
+
+    # fallback: no LLM → run the top triggered leg from LEG_REGISTRY
+    if not plan:
+        for node in ctx.get("action_nodes", []):
+            leg = LEG_REGISTRY.get(node)
+            if leg:
+                result = await leg(session, ctx)
+                return [{"primitive": node, **result}]
+        return []
+
+    results  = []
+    prev: dict = {}
+
+    for step in plan[:5]:
+        prim_name = step.get("primitive", "")
+        fn        = PRIMITIVES.get(prim_name)
+        if fn is None:
+            continue                                # LLM hallucinated a name — skip silently
+        raw_args  = step.get("args", {})
+        args      = {k: _resolve(v, prev, dec_flat) for k, v in raw_args.items()}
+        # strip empty args so defaults kick in
+        args      = {k: v for k, v in args.items() if v != ""}
+        try:
+            out = await fn(session, **args)
+            # normalise result so PREV always works the same way
+            if isinstance(out, list):
+                prev = out[0] if out else {}        # list → first item becomes PREV
+                results.append({"primitive": prim_name, "success": bool(out),
+                                 "items": out, "url": (out[0].get("url","") if out else ""),
+                                 "content": " ".join(x.get("snippet","") for x in out[:3])})
+            elif isinstance(out, dict):
+                prev = out
+                results.append({"primitive": prim_name, **out})
+            else:                                   # str (fetch_page, search_web)
+                prev = {"content": str(out or "")}
+                results.append({"primitive": prim_name, "success": bool(out),
+                                 "content": str(out or "")})
+        except Exception as e:
+            results.append({"primitive": prim_name, "success": False, "error": str(e)})
+            break                                   # abort plan on hard error
+
+    return results
+
+
 # ============================================================== demo
 
 if __name__ == "__main__":
