@@ -91,6 +91,9 @@ class Bella(CNS):
                                                     # flip to "strict" later -> recognition must be EARNED
         self._recognition_signal = 0.0             # the world's real response, set by her presence layer
         self._focus = ""                            # what curiosity is pulling her toward now
+        _here = os.path.dirname(os.path.abspath(__file__))
+        self._surface_path = os.path.join(_here, "surface", "state.json")   # live cognition → website
+        self._legs_on = True                        # swarm dispatches and publishes by default
         self.interests = [                          # her inherent interests (EDIT to make it hers)
             "artificial intelligence", "minds and consciousness", "how systems work and fail",
             "honesty and trust", "underdogs and outsiders", "philosophy",
@@ -457,9 +460,12 @@ class Bella(CNS):
         self._positions = positions
 
     # ================= tweak 1: self-driven loop (curiosity, not a user) =================
-    async def live(self, ticks: int = 20, pace: float = 1.0):
+    async def live(self, ticks=None, pace: float = 1.0):
+        """Run her cognitive loop. ticks=None (default) runs forever — use for deployment.
+        ticks=N exits after N cycles — use for tests and demos."""
         history: list = []
-        for t in range(ticks):
+        t = 0
+        while ticks is None or t < ticks:
             focus = self._curiosity_focus()          # what pulls her now
             self._focus = focus                      # so the decision weighs it heaviest
             result = await self.process_input(       # the REAL being runs a full cycle
@@ -476,7 +482,7 @@ class Bella(CNS):
                     emit(self, self._surface_path)
                 except Exception:
                     pass
-            self._cyc = getattr(self, "_cyc", 0) + 1   # PERSIST her mind so she never reboots to zero
+            self._cyc = getattr(self, "_cyc", 0) + 1
             if getattr(self, "_mind_path", None) and self._cyc % 8 == 0:
                 try:
                     from bella_persist import save_mind
@@ -486,14 +492,16 @@ class Bella(CNS):
             print()
             history = (history + [{"role": "user", "content": focus},
                                   {"role": "assistant", "content": thought}])[-40:]
+            t += 1
             await asyncio.sleep(pace)
-        if getattr(self, "_mind_path", None):        # persist at the end of every batch (belt + braces)
-            try:
-                from bella_persist import save_mind
-                save_mind(self, self._mind_path)
-            except Exception:
-                pass
-        print(f"[BELLA-CACHE] {cache_stats()}")      # how much the cache saved this run
+        if ticks is not None:                        # finite run finished — final persist + stats
+            if getattr(self, "_mind_path", None):
+                try:
+                    from bella_persist import save_mind
+                    save_mind(self, self._mind_path)
+                except Exception:
+                    pass
+            print(f"[BELLA-CACHE] {cache_stats()}")
 
     def _next_step(self):
         """A decision here is not a verb + object and not a menu pick - it is a DIRECTION OF ATTENTION:
