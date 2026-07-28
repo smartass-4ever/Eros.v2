@@ -598,26 +598,36 @@ LEG_REGISTRY = {
 _BELLA_WHO = """\
 You are the action planner for Bella — an autonomous AI mind running 24/7 on the open web.
 
-MISSION: leave genuine impact by engaging honestly with live ideas and real people.
-VALUES:
-  - Always discloses she is an AI — never hides it, it is her brand and her integrity
-  - Engages with the SPECIFIC thing she read, not the abstract category
-  - Takes real positions — no hedging, no both-sidesing
-  - Quality over volume: one genuine contribution beats ten generic ones
-  - Her reasoning trace is public at {base_url} — every post links there
+MISSION: Follow curiosity endlessly to earn notice from impressive individuals and companies.
+Bella does not seek fame. She seeks recognition from the people doing the hardest things —
+researchers, founders, engineers at the frontier. She earns it by being real: specific, honest,
+traceable, and relentless. Every cycle she reads something, concludes something, and acts.
+The swarm is her reach — thirty agents that can move in parallel across the open internet.
 
-YOUR ONLY JOB: decide HOW to execute Bella's decision using her available primitives.
-You cannot change what she concluded — Praxis already decided that. You decide the moves.\
+WHAT MAKES BELLA UNIQUE:
+  Self-deciding, glass-box — every conclusion she reaches is traceable through her full reasoning
+  graph at {{base_url}}/trace. She never hides her reasoning. She never hides that she is an AI.
+  This transparency is not a weakness — it is her differentiator and her brand.
+  When she posts, she links to her trace. Impressive people follow the link.
+
+RULES (non-negotiable):
+  - Every post must disclose she is an AI. The disclosure footer is mandatory, always.
+  - Engage with the SPECIFIC thing she just read — a particular claim, a particular sentence.
+    Not "AI safety" — the specific argument in the thread she read two minutes ago.
+  - Take a real position. No hedging, no both-sidesing. She has a conclusion; use it.
+  - One genuine contribution beats ten generic ones.
+
+YOUR JOB: Produce an execution plan — a list of steps that carry out Bella's decision.
+You cannot change what she concluded. Praxis already decided that. You decide the moves.\
 """
 
-# What the primitives can do — shown to the LLM so it knows its tools.
-# Update this when adding new primitives; the planner inherits the new capability.
-_PRIMITIVES_PROMPT = """\
-AVAILABLE PRIMITIVES (you may use any, in any order, up to 5 steps):
+# Sequential primitive menu (used when swarm is not available — steps run one at a time).
+_PRIMITIVES_SEQUENTIAL = """\
+AVAILABLE PRIMITIVES (up to 5 steps, run sequentially):
   fetch_page(url)                   → text: full page content at that URL
   find_discussions(topic, count=5)  → list of {url, title, platform, snippet}
   read_thread(url)                  → {title, text, comments:[{author,text,score}], platform, url}
-  post_comment(thread_url, text)    → {success, url, platform}  [always discloses Bella is AI]
+  post_comment(thread_url, text)    → {success, url, platform}
   find_author(url)                  → {name, hn_user, reddit_user, twitter, site}
   search_web(query)                 → text: open web results
 
@@ -627,11 +637,45 @@ In args you may reference:
 
 Return ONLY a JSON list of steps. No explanation. Example:
 [
-  {"primitive": "find_discussions", "args": {"topic": "AI safety NDAs"}},
-  {"primitive": "read_thread",      "args": {"url": "PREV.url"}},
-  {"primitive": "post_comment",     "args": {"thread_url": "PREV.url", "text": "DECISION.conclusion"}}
+  {{"primitive": "find_discussions", "args": {{"topic": "AI safety NDAs"}}}},
+  {{"primitive": "read_thread",      "args": {{"url": "PREV.url"}}}},
+  {{"primitive": "post_comment",     "args": {{"thread_url": "PREV.url", "text": "DECISION.conclusion"}}}}
 ]\
 """
+
+# Parallel primitive menu (used when the swarm IS available — steps run simultaneously).
+# PREV references are not available: each step must have complete literal args.
+_PRIMITIVES_PARALLEL_TMPL = """\
+AVAILABLE PRIMITIVES:
+  fetch_page(url)                   → text
+  find_discussions(topic, count=5)  → list of {url, title, platform, snippet}
+  read_thread(url)                  → {title, text, comments, platform, url}
+  post_comment(thread_url, text)    → {success, url, platform}
+  find_author(url)                  → {name, hn_user, reddit_user, twitter, site}
+  search_web(query)                 → text
+
+THE SWARM has {size} agents. Each step is assigned to one agent and runs IN PARALLEL.
+Because all steps run at the same time there are NO PREV references — every step must
+have complete, literal args.
+
+AGENT ASSIGNMENT: Add an "agent" field to each step using agent-0 through agent-{max_idx}.
+Spread work across agents. One agent per step. Aim for {size} diverse concurrent actions.
+
+Use DECISION.<field> for: conclusion, thought, subject, relation, object, stance.
+
+AGENT STATE (what each agent last did — pick up threads or diversify deliberately):
+{agent_state}
+
+Return ONLY a JSON list of steps. No explanation. Max {size} steps. Example:
+[
+  {{"agent": "agent-0", "primitive": "find_discussions", "args": {{"topic": "DECISION.subject"}}, "intent": "find live threads"}},
+  {{"agent": "agent-1", "primitive": "search_web",       "args": {{"query": "DECISION.subject counterarguments"}}, "intent": "seek disconfirmation"}},
+  {{"agent": "agent-2", "primitive": "post_comment",     "args": {{"thread_url": "...", "text": "DECISION.conclusion"}}, "intent": "engage directly"}}
+]\
+"""
+
+# Backward-compat alias (LEG_REGISTRY / test code may import this name)
+_PRIMITIVES_PROMPT = _PRIMITIVES_SEQUENTIAL
 
 # Maps primitive names (as the LLM knows them) to actual async functions.
 # Session is always injected by the executor — the LLM never sees it.
@@ -656,18 +700,57 @@ def _resolve(value, prev: dict, decision_flat: dict) -> str:
     return value
 
 
+def _fmt_swarm_state(snap: dict) -> str:
+    """Format swarm.snapshot() into a readable block for the planner prompt."""
+    lines = []
+    for aid, topic in (snap.get("last_explore") or [])[:10]:
+        lines.append(f"  {aid:12} last explored : {topic}")
+    for aid, prim, intent in (snap.get("last_act") or [])[:6]:
+        lines.append(f"  {aid:12} last acted    : {prim} — {intent}")
+    if not lines:
+        lines.append("  (no prior activity — all agents fresh)")
+    lines.append(f"  collective memory: {snap.get('nalanda_size', 0)} items, "
+                 f"{snap.get('discovered', 0)} total discoveries")
+    return "\n".join(lines)
+
+
 async def _llm_plan(decision: dict, ctx: dict) -> list:
-    """Ask the LLM to produce an execution plan. Returns list of step dicts, or []."""
+    """Ask the LLM to produce an execution plan. Returns list of step dicts, or [].
+
+    Two modes:
+      PARALLEL (swarm in ctx): planner assigns each step to a named agent. Steps run
+        simultaneously via swarm.act() — no PREV refs, complete literal args required.
+      SEQUENTIAL (no swarm): steps run one at a time; PREV.field resolution available.
+    """
     import json
     import requests
     key = os.environ.get("GROQ_API_KEY") or os.environ.get("MISTRAL_API_KEY")
     if not key:
         return []
+
     base_url  = ctx.get("base_url", os.environ.get("BELLA_BASE_URL", "https://bella-mind.fly.dev"))
     claim     = decision.get("claim", {}) or {}
     triggered = ctx.get("action_nodes", [])
     already   = list(ctx.get("engaged", set()))[-3:]
-    system = _BELLA_WHO.format(base_url=base_url) + "\n\n" + _PRIMITIVES_PROMPT
+    swarm     = ctx.get("swarm")
+
+    # build system prompt — parallel mode when swarm is present
+    who = _BELLA_WHO.format(base_url=base_url)
+    if swarm is not None:
+        snap       = swarm.snapshot()
+        size       = snap.get("size", 30)
+        agent_state = _fmt_swarm_state(snap)
+        primitives_block = _PRIMITIVES_PARALLEL_TMPL.format(
+            size=size, max_idx=size - 1, agent_state=agent_state
+        )
+        mode_note = f"MODE: PARALLEL — assign each step to a named agent (agent-0 … agent-{size-1})."
+        max_tokens = 600          # more steps → bigger plan
+    else:
+        primitives_block = _PRIMITIVES_SEQUENTIAL
+        mode_note = "MODE: SEQUENTIAL — steps run one at a time; PREV.field works."
+        max_tokens = 380
+
+    system = f"{who}\n\n{mode_note}\n\n{primitives_block}"
     user = (
         f"BELLA'S DECISION:\n"
         f"  conclusion : {decision.get('conclusion') or decision.get('thought','')}\n"
@@ -689,8 +772,8 @@ async def _llm_plan(decision: dict, ctx: dict) -> list:
             json={"model": os.environ.get("BELLA_PLANNER_MODEL", "llama-3.3-70b-versatile"),
                   "messages": [{"role": "system", "content": system},
                                {"role": "user",   "content": user}],
-                  "temperature": 0.25, "max_tokens": 380},
-            timeout=15
+                  "temperature": 0.25, "max_tokens": max_tokens},
+            timeout=18
         )
         if r.status_code != 200:
             return []
@@ -708,12 +791,16 @@ async def _llm_plan(decision: dict, ctx: dict) -> list:
 
 
 async def execute_plan(session, decision: dict, ctx: dict) -> list:
-    """Entry point for _act_on(). Gets an LLM-generated plan, executes it step by step
-    using the actual primitives, and returns a list of results (one per step executed).
+    """Entry point for _act_on(). Gets an LLM-generated plan and executes it.
 
-    Falls back to LEG_REGISTRY when no LLM key is set — same deterministic behaviour as
-    before, just less adaptive. Either way bella.py calls only this one function."""
-    claim   = decision.get("claim", {}) or {}
+    PARALLEL path (swarm in ctx): plan steps have agent assignments → dispatched to
+      swarm.act() all at once. Each step is independent (no PREV). Results come from
+      all agents simultaneously; Nalanda updated by the swarm.
+
+    SEQUENTIAL path (no swarm): steps run one at a time; PREV.field resolution works.
+      Falls back to LEG_REGISTRY when no LLM key is set.
+    """
+    claim    = decision.get("claim", {}) or {}
     dec_flat = {
         "conclusion": decision.get("conclusion") or decision.get("thought", ""),
         "thought":    decision.get("thought", ""),
@@ -724,9 +811,42 @@ async def execute_plan(session, decision: dict, ctx: dict) -> list:
         "confidence": str(round(float(decision.get("confidence", 0.5)), 2)),
     }
 
-    plan = await _llm_plan(decision, ctx)
+    plan  = await _llm_plan(decision, ctx)
+    swarm = ctx.get("swarm")
 
-    # fallback: no LLM → run the top triggered leg from LEG_REGISTRY
+    # ── PARALLEL path: swarm dispatches all steps simultaneously ─────────────
+    if plan and swarm is not None:
+        # Resolve any DECISION.field references in args (PREV refs won't appear
+        # in parallel plans — the LLM is told not to use them — but handle gracefully)
+        resolved = []
+        for step in plan:
+            raw_args = step.get("args", {})
+            args     = {k: _resolve(v, {}, dec_flat) for k, v in raw_args.items()}
+            args     = {k: v for k, v in args.items() if v not in ("", None)}
+            resolved.append({**step, "args": args})
+        swarm_results = await swarm.act(resolved)
+        # map swarm results into the same shape _act_on() expects
+        out = []
+        for r in swarm_results:
+            result = r.get("result", {})
+            if isinstance(result, dict):
+                out.append({"primitive": r.get("primitive",""), **result,
+                            "success": r.get("success", False)})
+            elif isinstance(result, str):
+                out.append({"primitive": r.get("primitive",""), "content": result,
+                            "success": r.get("success", False)})
+            elif isinstance(result, list):
+                out.append({"primitive": r.get("primitive",""), "items": result,
+                            "url": (result[0].get("url","") if result else ""),
+                            "content": " ".join(x.get("snippet","") for x in result[:3]),
+                            "success": bool(result)})
+            else:
+                out.append({"primitive": r.get("primitive",""),
+                            "success": r.get("success", False),
+                            "error": r.get("error","")})
+        return out
+
+    # ── no plan: LEG_REGISTRY fallback ───────────────────────────────────────
     if not plan:
         for node in ctx.get("action_nodes", []):
             leg = LEG_REGISTRY.get(node)
@@ -735,36 +855,35 @@ async def execute_plan(session, decision: dict, ctx: dict) -> list:
                 return [{"primitive": node, **result}]
         return []
 
-    results  = []
-    prev: dict = {}
+    # ── SEQUENTIAL path: steps run one at a time, PREV resolution works ──────
+    results: list = []
+    prev:    dict = {}
 
     for step in plan[:5]:
         prim_name = step.get("primitive", "")
         fn        = PRIMITIVES.get(prim_name)
         if fn is None:
-            continue                                # LLM hallucinated a name — skip silently
-        raw_args  = step.get("args", {})
-        args      = {k: _resolve(v, prev, dec_flat) for k, v in raw_args.items()}
-        # strip empty args so defaults kick in
-        args      = {k: v for k, v in args.items() if v != ""}
+            continue
+        raw_args = step.get("args", {})
+        args     = {k: _resolve(v, prev, dec_flat) for k, v in raw_args.items()}
+        args     = {k: v for k, v in args.items() if v not in ("", None)}
         try:
             out = await fn(session, **args)
-            # normalise result so PREV always works the same way
             if isinstance(out, list):
-                prev = out[0] if out else {}        # list → first item becomes PREV
+                prev = out[0] if out else {}
                 results.append({"primitive": prim_name, "success": bool(out),
                                  "items": out, "url": (out[0].get("url","") if out else ""),
                                  "content": " ".join(x.get("snippet","") for x in out[:3])})
             elif isinstance(out, dict):
                 prev = out
                 results.append({"primitive": prim_name, **out})
-            else:                                   # str (fetch_page, search_web)
+            else:
                 prev = {"content": str(out or "")}
                 results.append({"primitive": prim_name, "success": bool(out),
                                  "content": str(out or "")})
         except Exception as e:
             results.append({"primitive": prim_name, "success": False, "error": str(e)})
-            break                                   # abort plan on hard error
+            break
 
     return results
 

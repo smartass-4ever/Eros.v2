@@ -633,6 +633,7 @@ class Bella(CNS):
             "engaged":         getattr(self, "_engaged_threads", set()),
             "action_nodes":    [n for n, _ in triggered[:3]],
             "base_url":        os.environ.get("BELLA_BASE_URL", "https://bella-mind.fly.dev"),
+            "swarm":           getattr(self, "swarm", None),   # planner sees swarm state + dispatches via swarm.act()
         }
 
         timeout = aiohttp.ClientTimeout(total=45)
