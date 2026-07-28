@@ -600,101 +600,87 @@ class Bella(CNS):
         except Exception as e:
             print(f"      [swarm] dispatch failed: {e}")
 
-        # ENGAGE: find conversations on the topic she just reasoned about and step into them.
-        # Only fires when she's formed a real position (confidence >= 0.65). She finds the room,
-        # reads it, and if she has something real to add — she adds it. Her legs decide nothing;
-        # the new primitives give her the ability. What she says is her Praxis conclusion.
-        d = getattr(self, "_last_decision", {}) or {}
-        if d.get("confidence", 0) >= 0.65 and d.get("conclusion"):
-            focus = str(getattr(self, "_focus", "") or "").strip()
-            if focus:
-                await self._engage_on_topic(focus, d)
-
-    async def _engage_on_topic(self, topic: str, decision: dict):
-        """Find conversations about this topic and step into them with her Praxis conclusion.
-        Uses the new fluid legs: find_discussions → read_thread → post_comment.
-        She reads the room before speaking — only engages if the thread is live and relevant.
-        Tracks where she's already spoken so she never double-posts."""
-        engaged = getattr(self, "_engaged_threads", set())
-        try:
-            import aiohttp
-            from bella_legs import find_discussions, read_thread, post_comment, UA
-            timeout = aiohttp.ClientTimeout(total=25)
-            async with aiohttp.ClientSession(headers=UA, timeout=timeout) as session:
-                threads = await find_discussions(session, topic, count=4)
-                for t in threads:
-                    url = t.get("url", "")
-                    if not url or url in engaged:
-                        continue
-                    # read the actual discussion before deciding to speak
-                    thread = await read_thread(session, url)
-                    if not thread.get("title") and not thread.get("comments"):
-                        continue
-                    conclusion = decision.get("conclusion") or decision.get("thought") or ""
-                    if not conclusion:
-                        continue
-                    result = await post_comment(session, url, conclusion)
-                    engaged.add(url)
-                    if result.get("success"):
-                        print(f"      [engage] posted on {result['platform']}: {result['url']}")
-                    else:
-                        print(f"      [engage] {result['platform']} held: {result.get('error','')}")
-                    break   # one engagement per cycle — quality over volume
-        except Exception as e:
-            print(f"      [engage] skipped: {e}")
-        self._engaged_threads = set(list(engaged)[-400:])   # keep recent history bounded
-
     async def _act_on(self):
-        """Decision -> action via the real CNS_MDC + action orchestrator, with VISIBLE safety.
-        No user exists to approve, so anything needing confirmation/auth or high-risk is HELD."""
-        d = getattr(self, "_last_decision", None)
+        """Decision → action. Reads which action nodes Praxis activated, routes each to its
+        leg via LEG_REGISTRY. No hardcoded if-chains. No MDC. The knowledge net (affords edges)
+        decides which actions are live; LEG_REGISTRY in bella_legs.py says how to execute them.
+        Adding a new leg means editing bella_legs.py only — this method never changes."""
+        d = getattr(self, "_last_decision", {}) or {}
         if not d:
             return
-        intent = self._focus or d.get("conclusion", "")
         try:
-            action = self.mdc.choose_action_for_intent(intent)      # real CNS_MDC
-        except Exception as e:
-            print(f"      [action] mdc unavailable ({e}); holding")
-            return
-        # visible safety gate
-        reasons = []
-        for check, label in (("requires_user_confirmation", "needs confirmation"),
-                             ("requires_auth", "needs auth")):
-            fn = getattr(self.mdc, check, None)
-            try:
-                if callable(fn) and fn(action):
-                    reasons.append(label)
-            except Exception:
-                pass
-        try:
-            risk = getattr(self.mdc, "get_action_risk", None)
-            if callable(risk) and risk(action) in ("high", "critical"):
-                reasons.append("high risk")
+            from bella_curiosity import action_nodes as get_action_nodes
+            from bella_legs import LEG_REGISTRY, UA
+            import aiohttp
         except Exception:
-            pass
-        if reasons:
-            print(f"      [safety] HELD '{action}' ({', '.join(reasons)}) - no user to approve")
             return
-        # System 3 safety supervisor: a last, context-aware look before a REAL action (only fires here,
-        # at the moment of consequential action - enriches the crude rule gate above; it can HOLD, not steer)
+
+        net             = self.praxis.net
+        all_act_nodes   = get_action_nodes(net)
+        lit             = dict((d.get("trace", {}) or {}).get("activated_subgraph", {}) or {})
+        concepts        = set(d.get("concepts", []))
+
+        # action nodes that Praxis actually lit up — sorted by activation strength
+        triggered = [(node, lit.get(node, 0.4))
+                     for node in all_act_nodes
+                     if node in lit or node in concepts]
+        triggered.sort(key=lambda x: -x[1])
+        if not triggered:
+            return
+
+        ctx = {
+            "focus":           str(getattr(self, "_focus", "") or ""),
+            "decision":        d,
+            "reading_context": str(getattr(self, "_reading_context", "") or ""),
+            "engaged":         getattr(self, "_engaged_threads", set()),
+            "concepts":        list(concepts),
+            "confidence":      float(d.get("confidence", 0.5)),
+        }
+
+        timeout = aiohttp.ClientTimeout(total=30)
+        async with aiohttp.ClientSession(headers=UA, timeout=timeout) as session:
+            for node, activation in triggered[:2]:      # top 2 action nodes per cycle
+                leg = LEG_REGISTRY.get(node)
+                if leg is None:
+                    continue
+                try:
+                    result = await leg(session, ctx)
+                    if result.get("success"):
+                        url = result.get("url", "")
+                        print(f"      [act:{node}] {url or result.get('content','')[:80]}")
+                        if url:
+                            engaged = getattr(self, "_engaged_threads", set())
+                            engaged.add(url)
+                            self._engaged_threads = set(list(engaged)[-400:])
+                        content = result.get("content", "")
+                        if content:
+                            self.feed(content)          # discoveries feed back — she learns from acting
+                    else:
+                        reason = result.get("reason") or result.get("error") or ""
+                        print(f"      [act:{node}] held: {reason}")
+                except Exception as e:
+                    print(f"      [act:{node}] error: {e}")
+
+        # supervisor: context-aware safety look at what she just did, for the log
         if getattr(self, "_supervisor_on", True):
             try:
                 from bella_supervisor import safety_check, available
-                if available():
-                    sv = safety_check({"intent": intent, "action": str(action)})
+                if available() and triggered:
+                    sv = safety_check({"intent": ctx["focus"],
+                                       "action": triggered[0][0] if triggered else ""})
                     if sv.get("intervention") == "hold":
                         self._last_supervision = sv
-                        print(f"      [supervisor] HELD '{action}' - {sv.get('reason', 'unsafe')}")
-                        return
             except Exception:
                 pass
-        # safe + allow-listed -> execute (bounded by the orchestrator's own checks)
-        try:
-            from action_orchestrator import process_action_naturally
-            res = await process_action_naturally("bella", f"{action}: {d.get('conclusion', '')}")
-            print(f"      [action] did '{action}' -> {str(res)[:120]}")
-        except Exception as e:
-            print(f"      [action] would do '{action}' (executor n/a in this env: {e})")
+
+        # legacy path: if no action nodes fired, let the Eros action orchestrator try
+        if not triggered:
+            try:
+                from action_orchestrator import process_action_naturally
+                res = await process_action_naturally("bella", d.get("conclusion", ""))
+                print(f"      [action-legacy] {str(res)[:120]}")
+            except Exception:
+                pass
 
     def _world_response(self) -> float:
         """The world's REAL reaction to her - mentioned / acknowledged / talked-to (+), or called slop /

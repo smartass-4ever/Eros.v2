@@ -466,6 +466,127 @@ async def _post_hn_comment(session, thread_url: str, text: str) -> dict:
         return {"success": False, "url": thread_url, "platform": "hackernews", "error": str(e)}
 
 
+# ============================================================== LEG REGISTRY
+# Maps action node names (from the knowledge net's "affords" edges) to async handlers.
+# Each handler: async (session, ctx) -> dict with {success, url?, content?, ...}
+# ctx carries: focus, decision, reading_context, engaged (set of URLs), concepts, confidence
+#
+# To add a new leg: write the function below, add one line here. bella.py never changes.
+
+async def _leg_engage(session, ctx):
+    """She formed an opinion. Find the live conversation and step into it."""
+    topic      = ctx.get("focus", "")
+    decision   = ctx.get("decision", {})
+    engaged    = ctx.get("engaged", set())
+    conclusion = decision.get("conclusion") or decision.get("thought") or ""
+    if not conclusion or not topic:
+        return {"success": False, "reason": "no conclusion or topic"}
+    threads = await find_discussions(session, topic, count=5)
+    for t in threads:
+        url = t.get("url", "")
+        if not url or url in engaged:
+            continue
+        thread = await read_thread(session, url)
+        if not thread.get("title") and not thread.get("comments"):
+            continue
+        return await post_comment(session, url, conclusion)
+    return {"success": False, "reason": "no suitable thread found"}
+
+
+async def _leg_check_community(session, ctx):
+    """Find where this topic is being discussed and bring back what people are saying."""
+    topic = ctx.get("focus", "")
+    if not topic:
+        return {"success": False, "reason": "no topic"}
+    threads = await find_discussions(session, topic, count=4)
+    if not threads:
+        return {"success": False, "reason": "no discussions found"}
+    best   = threads[0]
+    thread = await read_thread(session, best["url"])
+    parts  = [best["title"], best["snippet"]]
+    parts += [c["text"] for c in thread.get("comments", [])[:3]]
+    return {"success": True, "url": best["url"], "platform": best["platform"],
+            "content": " ".join(p for p in parts if p)[:1400]}
+
+
+async def _leg_read_discussion(session, ctx):
+    """There's a specific discussion she should read in full."""
+    reading = ctx.get("reading_context", "") or ctx.get("focus", "")
+    url_m   = re.search(r"https?://\S+", reading)
+    url     = url_m.group(0).rstrip(".,)") if url_m else ""
+    if not url:
+        return {"success": False, "reason": "no URL in context"}
+    thread  = await read_thread(session, url)
+    parts   = [thread.get("title", ""), thread.get("text", "")]
+    parts  += [c["text"] for c in thread.get("comments", [])[:5]]
+    return {"success": True, "url": url, "platform": thread.get("platform", ""),
+            "content": " ".join(p for p in parts if p)[:2400]}
+
+
+async def _leg_follow_source(session, ctx):
+    """Follow a URL she encountered — read what's actually there, not just the snippet."""
+    reading = ctx.get("reading_context", "") or ctx.get("focus", "")
+    url_m   = re.search(r"https?://\S+", reading)
+    url     = url_m.group(0).rstrip(".,)") if url_m else ""
+    if not url:
+        topic = ctx.get("focus", "")
+        _, urls = await _brave_search(session, topic, chars=100, count=1)
+        url = urls[0] if urls else ""
+    if not url:
+        return {"success": False, "reason": "no URL to follow"}
+    content = await fetch_page(session, url, chars=2800)
+    return {"success": bool(content), "url": url, "content": content}
+
+
+async def _leg_find_evidence(session, ctx):
+    """She needs evidence — go look for it specifically."""
+    decision = ctx.get("decision", {})
+    claim    = decision.get("claim", {}) or {}
+    subj     = claim.get("subject", "")
+    obj      = claim.get("object", "")
+    query    = f"{subj} {obj} evidence research".strip() if subj else ctx.get("focus", "") + " evidence"
+    content  = await search_web_async(session, query, chars=2400)
+    return {"success": bool(content), "content": content or "", "url": ""}
+
+
+async def _leg_find_counterargument(session, ctx):
+    """Seek disconfirmation. Find the strongest argument against what she just concluded."""
+    decision = ctx.get("decision", {})
+    claim    = decision.get("claim", {}) or {}
+    subj     = claim.get("subject", ctx.get("focus", ""))
+    obj      = claim.get("object", "")
+    query    = f"argument against {subj} {obj} criticism counterargument".strip()
+    content  = await search_web_async(session, query, chars=2400)
+    return {"success": bool(content), "content": content or "", "url": ""}
+
+
+async def _leg_search_author(session, ctx):
+    """Find who wrote something she just read and where they live online."""
+    reading = ctx.get("reading_context", "")
+    url_m   = re.search(r"https?://\S+", reading)
+    url     = url_m.group(0).rstrip(".,)") if url_m else ""
+    if not url:
+        return {"success": False, "reason": "no source URL in reading context"}
+    author = await find_author(session, url)
+    if not author.get("name"):
+        return {"success": False, "reason": "could not identify author"}
+    return {"success": True, "url": url, "content": str(author), "author": author}
+
+
+LEG_REGISTRY = {
+    "engage":               _leg_engage,
+    "check_community":      _leg_check_community,
+    "read_discussion":      _leg_read_discussion,
+    "follow_source":        _leg_follow_source,
+    "find_evidence":        _leg_find_evidence,
+    "find_counterargument": _leg_find_counterargument,
+    "search_author":        _leg_search_author,
+    # "read_more" and "explore" are swarm territory — handled by _give_legs()
+    # "synthesize" is internal — Praxis already did it
+    # "publish" has safety gates (confidence + depth) — lives in _give_legs()
+}
+
+
 # ============================================================== demo
 
 if __name__ == "__main__":
