@@ -600,6 +600,50 @@ class Bella(CNS):
         except Exception as e:
             print(f"      [swarm] dispatch failed: {e}")
 
+        # ENGAGE: find conversations on the topic she just reasoned about and step into them.
+        # Only fires when she's formed a real position (confidence >= 0.65). She finds the room,
+        # reads it, and if she has something real to add — she adds it. Her legs decide nothing;
+        # the new primitives give her the ability. What she says is her Praxis conclusion.
+        d = getattr(self, "_last_decision", {}) or {}
+        if d.get("confidence", 0) >= 0.65 and d.get("conclusion"):
+            focus = str(getattr(self, "_focus", "") or "").strip()
+            if focus:
+                await self._engage_on_topic(focus, d)
+
+    async def _engage_on_topic(self, topic: str, decision: dict):
+        """Find conversations about this topic and step into them with her Praxis conclusion.
+        Uses the new fluid legs: find_discussions → read_thread → post_comment.
+        She reads the room before speaking — only engages if the thread is live and relevant.
+        Tracks where she's already spoken so she never double-posts."""
+        engaged = getattr(self, "_engaged_threads", set())
+        try:
+            import aiohttp
+            from bella_legs import find_discussions, read_thread, post_comment, UA
+            timeout = aiohttp.ClientTimeout(total=25)
+            async with aiohttp.ClientSession(headers=UA, timeout=timeout) as session:
+                threads = await find_discussions(session, topic, count=4)
+                for t in threads:
+                    url = t.get("url", "")
+                    if not url or url in engaged:
+                        continue
+                    # read the actual discussion before deciding to speak
+                    thread = await read_thread(session, url)
+                    if not thread.get("title") and not thread.get("comments"):
+                        continue
+                    conclusion = decision.get("conclusion") or decision.get("thought") or ""
+                    if not conclusion:
+                        continue
+                    result = await post_comment(session, url, conclusion)
+                    engaged.add(url)
+                    if result.get("success"):
+                        print(f"      [engage] posted on {result['platform']}: {result['url']}")
+                    else:
+                        print(f"      [engage] {result['platform']} held: {result.get('error','')}")
+                    break   # one engagement per cycle — quality over volume
+        except Exception as e:
+            print(f"      [engage] skipped: {e}")
+        self._engaged_threads = set(list(engaged)[-400:])   # keep recent history bounded
+
     async def _act_on(self):
         """Decision -> action via the real CNS_MDC + action orchestrator, with VISIBLE safety.
         No user exists to approve, so anything needing confirmation/auth or high-risk is HELD."""
