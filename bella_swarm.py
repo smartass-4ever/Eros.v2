@@ -58,35 +58,77 @@ class Swarm:
 
     # ------------------------------------------------------------------ act (new)
     async def _agent_act(self, aid: str, step: dict, session, primitives: dict):
-        """One targeted agent. Executes whatever primitive the planner assigned it."""
-        prim_name = step.get("primitive", "")
-        fn        = primitives.get(prim_name)
-        if fn is None:
-            return None
-        args = {k: v for k, v in step.get("args", {}).items() if v not in ("", None)}
-        try:
-            out     = await fn(session, **args)
-            # extract text so we can deposit into Nalanda regardless of output type
-            if isinstance(out, str):
-                text = out
-            elif isinstance(out, dict):
-                text = out.get("content") or out.get("text") or out.get("title") or ""
-            elif isinstance(out, list) and out:
-                text = " ".join(x.get("snippet", x.get("title", "")) for x in out[:3])
-            else:
-                text = ""
-            if text:
-                p   = perceive(text)
-                key = p["concepts"][0] if p.get("concepts") else prim_name
-                self.nalanda.remember(key=str(key), content=text[:220], salience=0.7,
-                                      relations=[(a, b)
-                                                 for a, b, _w, _k in p.get("relations", [])])
-            self.discovered += 1
-            return {"agent": aid, "primitive": prim_name,
-                    "intent": step.get("intent", ""), "result": out, "success": True}
-        except Exception as e:
-            return {"agent": aid, "primitive": prim_name,
-                    "intent": step.get("intent", ""), "error": str(e), "success": False}
+        """One targeted agent. Executes a chain (mini sequential plan) or a single primitive.
+
+        Chain format: {"agent": "agent-N", "intent": "...", "chain": [{primitive, args}, ...]}
+          — steps run in order; PREV.<field> resolves from the previous step's output.
+        Single format: {"agent": "agent-N", "primitive": "...", "args": {...}} (backward compat).
+        """
+        intent = step.get("intent", "")
+        chain  = step.get("chain")
+        if not chain:
+            # wrap single step as a one-item chain
+            chain = [{"primitive": step.get("primitive", ""), "args": step.get("args", {})}]
+
+        prev: dict = {}
+        last_out   = None
+        last_prim  = chain[0].get("primitive", "?") if chain else "?"
+
+        for s in chain:
+            prim_name = s.get("primitive", "")
+            fn        = primitives.get(prim_name)
+            if fn is None:
+                continue
+            last_prim = prim_name
+            # resolve PREV refs within this chain (DECISION refs already resolved by execute_plan)
+            args = {}
+            for k, v in s.get("args", {}).items():
+                if isinstance(v, str) and v.startswith("PREV."):
+                    args[k] = str(prev.get(v[5:], ""))
+                else:
+                    args[k] = v
+            args = {k: v for k, v in args.items() if v not in ("", None)}
+            try:
+                out      = await fn(session, **args)
+                last_out = out
+                # normalise for PREV resolution in the next step
+                if isinstance(out, dict):
+                    prev = out
+                elif isinstance(out, list) and out:
+                    prev = out[0] if isinstance(out[0], dict) else {"url": "", "items": out}
+                elif isinstance(out, str):
+                    prev = {"content": out}
+                else:
+                    prev = {}
+            except Exception as e:
+                last_out = {"error": str(e), "success": False}
+                break
+
+        # deposit into Nalanda from the final step's output
+        text = ""
+        if isinstance(last_out, str):
+            text = last_out
+        elif isinstance(last_out, dict):
+            text = (last_out.get("content") or last_out.get("text")
+                    or last_out.get("title") or "")
+        elif isinstance(last_out, list) and last_out:
+            text = " ".join(x.get("snippet", x.get("title", ""))
+                            for x in last_out[:3] if isinstance(x, dict))
+        if text:
+            p   = perceive(text)
+            key = p["concepts"][0] if p.get("concepts") else (intent or last_prim)
+            self.nalanda.remember(key=str(key), content=text[:220], salience=0.7,
+                                  relations=[(a, b) for a, b, _w, _k in p.get("relations", [])])
+        self.discovered += 1
+
+        # determine success from last step's output
+        if isinstance(last_out, dict):
+            success = last_out.get("success", not last_out.get("error"))
+        else:
+            success = bool(last_out)
+
+        return {"agent": aid, "primitive": last_prim, "intent": intent,
+                "result": last_out, "success": success}
 
     async def act(self, plan: list) -> list:
         """Targeted action — the planner assigned each step to an agent. All run IN PARALLEL.

@@ -643,34 +643,52 @@ Return ONLY a JSON list of steps. No explanation. Example:
 ]\
 """
 
-# Parallel primitive menu (used when the swarm IS available — steps run simultaneously).
-# PREV references are not available: each step must have complete literal args.
+# Parallel primitive menu (used when the swarm IS available).
+# Each item is a CHAIN assigned to one agent. Chains run across agents IN PARALLEL;
+# steps within a chain run sequentially so PREV.field works inside a chain.
 _PRIMITIVES_PARALLEL_TMPL = """\
 AVAILABLE PRIMITIVES:
   fetch_page(url)                   → text
-  find_discussions(topic, count=5)  → list of {url, title, platform, snippet}
-  read_thread(url)                  → {title, text, comments, platform, url}
-  post_comment(thread_url, text)    → {success, url, platform}
-  find_author(url)                  → {name, hn_user, reddit_user, twitter, site}
+  find_discussions(topic, count=5)  → list of {{url, title, platform, snippet}}
+  read_thread(url)                  → {{title, text, comments, platform, url}}
+  post_comment(thread_url, text)    → {{success, url, platform}}
+  find_author(url)                  → {{name, hn_user, reddit_user, twitter, site}}
   search_web(query)                 → text
 
-THE SWARM has {size} agents. Each step is assigned to one agent and runs IN PARALLEL.
-Because all steps run at the same time there are NO PREV references — every step must
-have complete, literal args.
+THE SWARM has {size} agents (agent-0 through agent-{max_idx}).
+Each item in your plan assigns a mini sequential chain to ONE agent.
+All chains run IN PARALLEL across agents — agents work simultaneously.
+Within a single chain, PREV.<field> references the previous step's result.
+This means you CAN do: find_discussions → read_thread → post_comment on one agent.
 
-AGENT ASSIGNMENT: Add an "agent" field to each step using agent-0 through agent-{max_idx}.
-Spread work across agents. One agent per step. Aim for {size} diverse concurrent actions.
+DECISION.<field> resolves to: conclusion, thought, subject, relation, object, stance.
 
-Use DECISION.<field> for: conclusion, thought, subject, relation, object, stance.
-
-AGENT STATE (what each agent last did — pick up threads or diversify deliberately):
+AGENT STATE (what each agent last did — continue threads or diversify):
 {agent_state}
 
-Return ONLY a JSON list of steps. No explanation. Max {size} steps. Example:
+Return ONLY a JSON list of chain assignments. No explanation. Max {size} items. Example:
 [
-  {{"agent": "agent-0", "primitive": "find_discussions", "args": {{"topic": "DECISION.subject"}}, "intent": "find live threads"}},
-  {{"agent": "agent-1", "primitive": "search_web",       "args": {{"query": "DECISION.subject counterarguments"}}, "intent": "seek disconfirmation"}},
-  {{"agent": "agent-2", "primitive": "post_comment",     "args": {{"thread_url": "...", "text": "DECISION.conclusion"}}, "intent": "engage directly"}}
+  {{
+    "agent": "agent-0", "intent": "find live thread and engage directly",
+    "chain": [
+      {{"primitive": "find_discussions", "args": {{"topic": "DECISION.subject", "count": 4}}}},
+      {{"primitive": "read_thread",      "args": {{"url": "PREV.url"}}}},
+      {{"primitive": "post_comment",     "args": {{"thread_url": "PREV.url", "text": "DECISION.conclusion"}}}}
+    ]
+  }},
+  {{
+    "agent": "agent-1", "intent": "seek disconfirmation and read counterarguments",
+    "chain": [
+      {{"primitive": "search_web", "args": {{"query": "counterargument DECISION.subject"}}}},
+      {{"primitive": "find_discussions", "args": {{"topic": "PREV.content"}}}}
+    ]
+  }},
+  {{
+    "agent": "agent-2", "intent": "find who wrote the thing she read",
+    "chain": [
+      {{"primitive": "find_author", "args": {{"url": "DECISION.thought"}}}}
+    ]
+  }}
 ]\
 """
 
@@ -714,16 +732,15 @@ def _fmt_swarm_state(snap: dict) -> str:
     return "\n".join(lines)
 
 
-async def _llm_plan(decision: dict, ctx: dict) -> list:
-    """Ask the LLM to produce an execution plan. Returns list of step dicts, or [].
+async def _llm_plan(session, decision: dict, ctx: dict) -> list:
+    """Ask the LLM to produce an execution plan. Returns list of chain assignments, or [].
 
     Two modes:
-      PARALLEL (swarm in ctx): planner assigns each step to a named agent. Steps run
-        simultaneously via swarm.act() — no PREV refs, complete literal args required.
-      SEQUENTIAL (no swarm): steps run one at a time; PREV.field resolution available.
+      PARALLEL (swarm in ctx): each item is a chain assigned to one agent. Chains run
+        across agents simultaneously; PREV.field works within a single chain.
+      SEQUENTIAL (no swarm): flat steps run one at a time; PREV.field works throughout.
     """
     import json
-    import requests
     key = os.environ.get("GROQ_API_KEY") or os.environ.get("MISTRAL_API_KEY")
     if not key:
         return []
@@ -734,20 +751,19 @@ async def _llm_plan(decision: dict, ctx: dict) -> list:
     already   = list(ctx.get("engaged", set()))[-3:]
     swarm     = ctx.get("swarm")
 
-    # build system prompt — parallel mode when swarm is present
     who = _BELLA_WHO.format(base_url=base_url)
     if swarm is not None:
-        snap       = swarm.snapshot()
-        size       = snap.get("size", 30)
-        agent_state = _fmt_swarm_state(snap)
+        snap            = swarm.snapshot()
+        size            = snap.get("size", 30)
+        agent_state     = _fmt_swarm_state(snap)
         primitives_block = _PRIMITIVES_PARALLEL_TMPL.format(
             size=size, max_idx=size - 1, agent_state=agent_state
         )
-        mode_note = f"MODE: PARALLEL — assign each step to a named agent (agent-0 … agent-{size-1})."
-        max_tokens = 600          # more steps → bigger plan
+        mode_note  = f"MODE: PARALLEL CHAINS — assign a chain to each agent (agent-0 … agent-{size-1})."
+        max_tokens = 700
     else:
         primitives_block = _PRIMITIVES_SEQUENTIAL
-        mode_note = "MODE: SEQUENTIAL — steps run one at a time; PREV.field works."
+        mode_note  = "MODE: SEQUENTIAL — steps run one at a time; PREV.field works."
         max_tokens = 380
 
     system = f"{who}\n\n{mode_note}\n\n{primitives_block}"
@@ -766,23 +782,24 @@ async def _llm_plan(decision: dict, ctx: dict) -> list:
         f"Write the execution plan:"
     )
     try:
-        r = requests.post(
+        async with session.post(
             "https://api.groq.com/openai/v1/chat/completions",
-            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+            headers={"Authorization": f"Bearer {key}"},
             json={"model": os.environ.get("BELLA_PLANNER_MODEL", "llama-3.3-70b-versatile"),
                   "messages": [{"role": "system", "content": system},
                                {"role": "user",   "content": user}],
                   "temperature": 0.25, "max_tokens": max_tokens},
-            timeout=18
-        )
-        if r.status_code != 200:
-            return []
-        raw = r.json()["choices"][0]["message"]["content"].strip()
-        raw = re.sub(r"```(?:json)?\s*|\s*```", "", raw).strip()
+            timeout=aiohttp.ClientTimeout(total=20),
+        ) as r:
+            if r.status != 200:
+                return []
+            data = await r.json(content_type=None)
+        raw    = data["choices"][0]["message"]["content"].strip()
+        raw    = re.sub(r"```(?:json)?\s*|\s*```", "", raw).strip()
         parsed = json.loads(raw)
         if isinstance(parsed, list):
             return parsed
-        for key_name in ("steps", "plan", "actions"):
+        for key_name in ("steps", "plan", "actions", "chains"):
             if isinstance(parsed.get(key_name), list):
                 return parsed[key_name]
     except Exception:
@@ -811,19 +828,33 @@ async def execute_plan(session, decision: dict, ctx: dict) -> list:
         "confidence": str(round(float(decision.get("confidence", 0.5)), 2)),
     }
 
-    plan  = await _llm_plan(decision, ctx)
+    plan  = await _llm_plan(session, decision, ctx)
     swarm = ctx.get("swarm")
 
-    # ── PARALLEL path: swarm dispatches all steps simultaneously ─────────────
+    # ── PARALLEL path: swarm dispatches chains simultaneously ────────────────
     if plan and swarm is not None:
-        # Resolve any DECISION.field references in args (PREV refs won't appear
-        # in parallel plans — the LLM is told not to use them — but handle gracefully)
+        def _resolve_args(raw_args: dict) -> dict:
+            """Resolve DECISION.field; leave PREV.field for agents to handle."""
+            out = {}
+            for k, v in raw_args.items():
+                if isinstance(v, str) and v.startswith("PREV."):
+                    out[k] = v                          # agent resolves within its chain
+                elif isinstance(v, str) and v.startswith("DECISION."):
+                    out[k] = dec_flat.get(v[9:], "")   # resolve now
+                else:
+                    out[k] = v
+            return {k: v for k, v in out.items() if v not in ("", None)}
+
         resolved = []
-        for step in plan:
-            raw_args = step.get("args", {})
-            args     = {k: _resolve(v, {}, dec_flat) for k, v in raw_args.items()}
-            args     = {k: v for k, v in args.items() if v not in ("", None)}
-            resolved.append({**step, "args": args})
+        for item in plan:
+            chain = item.get("chain")
+            if chain:
+                resolved.append({
+                    **item,
+                    "chain": [{**s, "args": _resolve_args(s.get("args", {}))} for s in chain],
+                })
+            else:
+                resolved.append({**item, "args": _resolve_args(item.get("args", {}))})
         swarm_results = await swarm.act(resolved)
         # map swarm results into the same shape _act_on() expects
         out = []

@@ -650,7 +650,10 @@ class Bella(CNS):
                     engaged.add(url)
                     self._engaged_threads = set(list(engaged)[-400:])
                 if r.get("content"):
-                    self.feed(r["content"])             # what she did feeds back — she learns from acting
+                    self.feed(r["content"])
+                if prim == "post_comment":
+                    self.reward(+0.6)                   # world engagement signal — reinforces the path that led here
+                    print(f"      [reward +0.6] engagement posted at {url}")
             else:
                 print(f"      [act:{prim}] held: {r.get('reason', r.get('error',''))}")
 
